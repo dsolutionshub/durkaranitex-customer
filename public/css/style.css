@@ -1255,3 +1255,12 @@ input.form-control::placeholder {
   background-color: var(--bs-primary);
   color: white;
 }
+
+.product-detail-search {
+  width: 100%;
+}
+@media (min-width: 768px) {
+  .product-detail-search {
+    width: 50%;
+  }
+}
