@@ -16,6 +16,9 @@ const mukta = Mukta({
 
 export const metadata = {
   title: "Dhurgarani Tex",
+  icons: {
+    icon: "/images/dhurgarani-favicon.png",
+  },
 };
 
 export default function RootLayout({ children }) {
