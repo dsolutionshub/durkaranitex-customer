@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Carousel } from "react-bootstrap";
+import ImageCarousel from "./components/ProductDetailCarousel/page";
+import ProductAccordion from "./components/ProductAccordion/page";
+import SimilarProduct from "./components/SimilarProduct/page";
 
 const images = [
   "/images/produce_detail_1.jpg",
@@ -24,7 +25,7 @@ const sections = [
       <p><em>Disclaimer:</em> Product color may slightly vary due to photographic lighting sources or your monitor settings.</p>
     </div>`,
   },
-  { title: "Shipping", content: "Shipping details go here." },
+  // { title: "Shipping", content: "Shipping details go here." },
   {
     title: "Replacements & Exchanges",
     content: `Return & Replacements within 5 days of purchase for product damages only .
@@ -39,6 +40,10 @@ const ProductDetail = () => {
 
   const [openIndex, setOpenIndex] = useState(null);
 
+  const handleZoomToggle = (index) => {
+    setZoom(zoom === index ? null : index);
+  };
+
   const toggleAccordion = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
@@ -47,6 +52,10 @@ const ProductDetail = () => {
   const zoomOut = () => setZoom((prev) => Math.max(prev - 0.2, 1));
   const handleIncrease = () => setQuantity(quantity + 1);
   const handleDecrease = () => setQuantity(quantity > 1 ? quantity - 1 : 1);
+
+  useEffect(() => {
+    setOpenIndex(0);
+  }, []);
 
   return (
     <div>
@@ -62,11 +71,11 @@ const ProductDetail = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-10">
+      <div className="container mx-auto px-4 pt-10 pb-2">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="flex flex-col md:flex-row">
             <div className="flex flex-col md:flex-row">
-              <div className="flex md:flex-col space-x-2 md:space-x-0 md:space-y-2 mb-3 md:mb-0">
+              {/* <div className="flex md:flex-col space-x-2 md:space-x-0 md:space-y-2 mb-3 md:mb-0">
                 {images.map((img, index) => (
                   <div
                     key={index}
@@ -84,15 +93,15 @@ const ProductDetail = () => {
                     />
                   </div>
                 ))}
-              </div>
+              </div> */}
 
               <div className="relative flex flex-col items-center w-full max-w-lg md:max-w-xl lg:max-w-2xl ml-md-3">
-                <Carousel
+                {/* <Carousel
                   activeIndex={selectedIndex}
                   onSelect={(selected) => setSelectedIndex(selected)}
                   interval={null}
                   className="w-full"
-                  slide={false} // Fix white screen issue by disabling default slide animation
+                  slide={false}
                 >
                   {images.map((img, index) => (
                     <Carousel.Item key={index}>
@@ -124,155 +133,31 @@ const ProductDetail = () => {
                   >
                     ➖
                   </button>
-                </div>
+                </div> */}
+
+                <ImageCarousel
+                  images={images || []}
+                  selectedIndex={selectedIndex}
+                  setSelectedIndex={setSelectedIndex}
+                  handleZoomToggle={handleZoomToggle}
+                  zoom={zoom}
+                />
               </div>
             </div>
           </div>
 
-          <div>
-            <h2 className="text-2xl font-bold text-black">
-              Maroon Colour Kalyani Cotton Saree
-            </h2>
-            <div className="text-lg text-green-600 font-semibold mt-2">
-              Rs. 1,250.00{" "}
-              <span className="text-gray-500 line-through text-sm">
-                Rs. 2,048.00
-              </span>
-            </div>
-
-            <div style={{ width: "100%", maxWidth: "600px", margin: "0 auto" }}>
-              {sections.map((section, index) => {
-                const isOpen = openIndex === index;
-
-                return (
-                  <div
-                    key={index}
-                    style={{
-                      borderBottom: "1px solid #ddd",
-                      padding: "10px 0",
-                    }}
-                  >
-                    <button
-                      style={{
-                        width: "100%",
-                        textAlign: "left",
-                        fontSize: "16px",
-                        fontWeight: "600",
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        background: "transparent",
-                        border: "none",
-                        padding: ".5rem",
-                        cursor: "pointer",
-                        color: "#000",
-                      }}
-                      onClick={() => toggleAccordion(index)}
-                    >
-                      {section.title}
-                      <span style={{ fontSize: "18px" }}>
-                        {isOpen ? "➖" : "➕"}
-                      </span>
-                    </button>
-
-                    <div
-                      style={{
-                        maxHeight: isOpen ? "200px" : "0px",
-                        overflow: "hidden",
-                        opacity: isOpen ? "1" : "0",
-                        padding: isOpen ? "10px" : "0px 10px",
-                        transition:
-                          "max-height 0.4s ease, opacity 0.3s ease, padding 0.3s ease",
-                        fontSize: "14px",
-                        color: "#01279",
-                        fontWeight: "500",
-                      }}
-                    >
-                      <div
-                        dangerouslySetInnerHTML={{ __html: section.content }}
-                      />
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            <div className="flex items-center space-x-2 mt-4 text-gray-700">
-              <span className="text-sm">
-                🚚 <strong>Estimated Delivery:</strong> Mar 28 - Apr 01
-              </span>
-            </div>
-
-            {/* <div className="mt-5 flex items-center space-x-4">
-              <div className="flex items-center border rounded">
-                <button
-                  className="px-3 py-1 bg-gray-300 text-gray-700 rounded-l"
-                  onClick={handleDecrease}
-                >
-                  -
-                </button>
-                <input
-                  type="text"
-                  className="w-12 text-center border-t border-b border-gray-300"
-                  value={quantity}
-                  readOnly
-                />
-                <button
-                  className="px-3 py-1 bg-gray-300 text-gray-700 rounded-r"
-                  onClick={handleIncrease}
-                >
-                  +
-                </button>
-              </div>
-
-              <button className="bg-black text-white px-6 py-2 rounded text-sm mr-3">
-                Add To Cart
-              </button>
-              <button className="bg-green-800 text-white px-6 py-2 rounded text-sm">
-                Buy Now
-              </button>
-            </div> */}
-
-            <div className="mt-5 flex flex-col md:flex-row items-center md:items-center space-y-4 md:space-y-0 md:space-x-4 w-full">
-              {/* Quantity Selector */}
-              <div className="flex items-center border rounded">
-                <button
-                  className="px-3 py-1 bg-gray-300 text-gray-700 rounded-l"
-                  onClick={handleDecrease}
-                >
-                  -
-                </button>
-                <input
-                  type="text"
-                  className="w-12 text-center border-t border-b border-gray-300"
-                  value={quantity}
-                  readOnly
-                />
-                <button
-                  className="px-3 py-1 bg-gray-300 text-gray-700 rounded-r"
-                  onClick={handleIncrease}
-                >
-                  +
-                </button>
-              </div>
-
-              {/* Buttons */}
-              <div className="flex flex-col md:flex-row items-center justify-center w-full space-y-3 md:space-y-0 md:space-x-3 gap-3">
-                <button className="bg-black text-white px-6 py-2 rounded text-sm w-full md:w-auto">
-                  Add To Cart
-                </button>
-                <button className="bg-green-800 text-white px-6 py-2 rounded text-sm w-full md:w-auto">
-                  Buy Now
-                </button>
-              </div>
-            </div>
-
-            <div className="mt-4 text-sm text-gray-600 cursor-pointer">
-              ❤️ Add to wishlist
-            </div>
-          </div>
+          <ProductAccordion
+            sections={sections}
+            openIndex={openIndex}
+            toggleAccordion={toggleAccordion}
+            handleDecrease={handleDecrease}
+            handleIncrease={handleIncrease}
+            quantity={quantity}
+          />
         </div>
       </div>
+
+      <SimilarProduct />
     </div>
   );
 };

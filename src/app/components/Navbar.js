@@ -8,6 +8,7 @@ import { FaRegUser } from "react-icons/fa6";
 import { IoCartOutline } from "react-icons/io5";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function Navbar() {
   const router = useRouter();
@@ -22,7 +23,13 @@ export default function Navbar() {
   return (
     <nav className="bg-white px-5 py-3 items-center justify-between home-nav">
       <div className="flex-shrink-0">
-        <img src="/images/home/logo.svg" alt="logo" className="h-14" />
+        <Image
+          height={100}
+          width={100}
+          src="/images/home/logo.svg"
+          alt="logo"
+          className="h-14 w-[11rem]"
+        />
       </div>
 
       <ul className="flex gap-8 text-lg font-semibold uppercase text-gray-700">

@@ -8,11 +8,11 @@ const MAX = 500000;
 const STEP = 100;
 
 const ProductFilter = ({
-  categories,
-  selectedCategories,
+  categories = [],
+  selectedCategories = [],
   onChange,
   onPriceChange,
-  priceRange,
+  priceRange = { min: 500, max: 500000 },
 }) => {
   const [values, setValues] = useState([MIN, MAX]);
 
