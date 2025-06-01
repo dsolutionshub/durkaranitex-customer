@@ -1,7 +1,7 @@
 "use client";
 
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination } from "swiper/modules";
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import { useRef } from "react";
@@ -65,14 +65,22 @@ const FeaturedCard = () => {
   const router = useRouter();
   return (
     <div className="relative">
-      <button className="custom-prev">{<FaChevronLeft />}</button>
-      <button className="custom-next">{<FaChevronRight />}</button>
+      <button className="custom-prev custom-prev-home">
+        {<FaChevronLeft />}
+      </button>
+      <button className="custom-next custom-next-home">
+        {<FaChevronRight />}
+      </button>
 
       <Swiper
-        modules={[Navigation, Pagination]}
+        modules={[Autoplay, Navigation, Pagination]}
         navigation={{
           prevEl: ".custom-prev",
           nextEl: ".custom-next",
+        }}
+        autoplay={{
+          delay: 2000,
+          disableOnInteraction: false,
         }}
         spaceBetween={20}
         breakpoints={{
@@ -108,7 +116,7 @@ const FeaturedCard = () => {
 
 export default function FeaturedProducts() {
   return (
-    <div className="px-20">
+    <div className="md:px-20 feature-product-card">
       <Section
         title={"Featured Products"}
         desc={"Our hand-picked selection of the finest sarees for any occasion"}

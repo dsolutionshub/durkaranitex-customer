@@ -1240,6 +1240,59 @@ input.form-control::placeholder {
   right: -60px;
 }
 
+@media screen and (max-width: 650px) {
+  .custom-prev-home {
+    left: -45px;
+
+    height: 30px;
+    width: 30px;
+  }
+
+  .custom-next-home {
+    right: -40px;
+    height: 30px;
+    width: 30px;
+  }
+
+  .feature-product-card {
+    margin: 2rem 3.5rem;
+  }
+
+  .new-arrival-btn {
+    font-size: 1rem;
+  }
+
+  .sale-section-card {
+    margin-bottom: 2rem;
+  }
+
+  .sale-section {
+    height: 12rem;
+  }
+
+  .category-card {
+    height: 12rem;
+  }
+  .category-content-card {
+    left: 1rem;
+    h3 {
+      font-size: 1rem;
+      text-align: left;
+    }
+    p {
+      text-align: left;
+      bottom: 0px;
+      margin-bottom: 0px;
+    }
+    button {
+      padding: 0px;
+      transform: scale(0.7);
+      margin-top: .5rem !important;
+      margin-left: -2rem;
+    }
+  }
+}
+
 .feature-product-btn {
   background-color: white;
   color: var(--bs-primary);

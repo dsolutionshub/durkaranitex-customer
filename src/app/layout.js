@@ -17,7 +17,7 @@ const mukta = Mukta({
 export const metadata = {
   title: "Dhurgarani Tex",
   icons: {
-    icon: "/images/dhurgarani-favicon.png",
+    icon: "/dhurgaraniFavicon.png",
   },
 };
 

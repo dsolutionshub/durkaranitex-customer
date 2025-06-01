@@ -18,7 +18,7 @@ export function BannerCarousel() {
           width={100}
           src={item.src}
           alt="Banner"
-          className="w-full h-[90vh] md:h-[80vh] max-sm:h-[50vh] object-cover"
+          className="w-full object-cover sm:h-[60vh] md:h-[80vh] lg:h-[90vh]"
         />
       </div>
     );
