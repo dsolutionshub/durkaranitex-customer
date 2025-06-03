@@ -1243,7 +1243,6 @@ input.form-control::placeholder {
 @media screen and (max-width: 650px) {
   .custom-prev-home {
     left: -45px;
-
     height: 30px;
     width: 30px;
   }
@@ -1287,7 +1286,36 @@ input.form-control::placeholder {
     button {
       padding: 0px;
       transform: scale(0.7);
-      margin-top: .5rem !important;
+      margin-top: 0.5rem !important;
+      margin-left: -2rem;
+    }
+  }
+}
+
+@media screen and (min-width: 651px) and (max-width: 768px) {
+  .sale-section {
+    height: 12rem;
+  }
+
+  .category-card {
+    height: 16rem;
+    width: 100%;
+  }
+  .category-content-card {
+    left: 1rem;
+    h3 {
+      font-size: 1rem;
+      text-align: left;
+    }
+    p {
+      text-align: left;
+      bottom: 0px;
+      margin-bottom: 0px;
+    }
+    button {
+      padding: 0px;
+      transform: scale(0.7);
+      margin-top: 0.5rem !important;
       margin-left: -2rem;
     }
   }

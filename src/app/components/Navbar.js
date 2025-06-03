@@ -26,7 +26,7 @@ export default function Navbar() {
   return (
     <nav className="bg-white shadow-md px-4 py-3 relative z-50">
       {/* Mobile Navbar */}
-      <div className="flex items-center justify-between md:hidden relative">
+      <div className="flex items-center justify-between lg:hidden relative">
         {/* Hamburger Icon */}
         <div
           onClick={() => setMenuOpen(true)}
@@ -48,7 +48,7 @@ export default function Navbar() {
       </div>
 
       {/* Desktop Navbar */}
-      <div className="hidden md:flex items-center justify-between">
+      <div className="hidden lg:flex items-center justify-between">
         <img src="/images/home/logo.svg" alt="logo" className="h-14" />
 
         <ul className="flex gap-8 text-lg font-semibold uppercase text-gray-700">

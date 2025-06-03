@@ -62,7 +62,7 @@ const CollectionsBox = () => {
 
     <div className="px-10 sm:px-0 mb-10 sm:mb-0">
       {/* Mobile view */}
-      <div className="block sm:hidden space-y-4">
+      <div className="block lg:hidden space-y-4">
         {collections.map((item) => (
           <div
             key={item.id}
@@ -82,7 +82,7 @@ const CollectionsBox = () => {
 
       {/* Tablet and desktop view */}
       <div
-        className="hidden sm:grid grid-cols-3 grid-rows-2 gap-4"
+        className="hidden lg:grid grid-cols-3 grid-rows-2 gap-4"
         style={{ height: "75vh" }}
       >
         <div className="row-span-2 relative overflow-hidden rounded-lg shadow-2">
