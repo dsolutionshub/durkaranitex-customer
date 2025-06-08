@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { FaRegHeart, FaRegUser } from "react-icons/fa";
 import { IoCartOutline } from "react-icons/io5";
 import {
@@ -8,8 +10,6 @@ import {
   HiOutlineX,
   HiOutlineChevronRight,
 } from "react-icons/hi";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const router = useRouter();
@@ -56,7 +56,7 @@ export default function Navbar() {
             <li key={item.name}>
               <Link
                 href={item.href}
-                className="hover:text-blue-500 transition-colors duration-200"
+                className=" transition-colors duration-200 nav-anchor-link"
               >
                 {item.name}
               </Link>
@@ -107,7 +107,7 @@ export default function Navbar() {
               <Link
                 href={item.href}
                 onClick={() => setMenuOpen(false)}
-                className="flex justify-between items-center py-1 hover:text-blue-500"
+                className="flex justify-between items-center py-1 hover:text-blue-500 primary-color"
               >
                 {item.name}
                 <HiOutlineChevronRight className="text-xl" />
@@ -121,7 +121,7 @@ export default function Navbar() {
             <Link
               href="/wishlist"
               onClick={() => setMenuOpen(false)}
-              className="flex justify-between items-center py-2 hover:text-blue-500"
+              className="flex justify-between items-center py-2 hover:text-blue-500 primary-color"
             >
               <span className="flex items-center gap-2">
                 <FaRegHeart /> Wishlist
@@ -136,7 +136,7 @@ export default function Navbar() {
             <Link
               href="/login"
               onClick={() => setMenuOpen(false)}
-              className="flex justify-between items-center py-2 hover:text-blue-500"
+              className="flex justify-between items-center py-2 hover:text-blue-500 primary-color"
             >
               <span className="flex items-center gap-2">
                 <FaRegUser /> Login

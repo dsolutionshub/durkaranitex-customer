@@ -9,6 +9,7 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import Section from "./Section";
 import ProductCard from "./ProductCard";
 import { useRouter } from "next/navigation";
+import ProductCardMobile from "./ProductCardMobile";
 
 const products = [
   {
@@ -63,54 +64,58 @@ const products = [
 
 const FeaturedCard = () => {
   const router = useRouter();
-  return (
-    <div className="relative">
-      <button className="custom-prev custom-prev-home">
-        {<FaChevronLeft />}
-      </button>
-      <button className="custom-next custom-next-home">
-        {<FaChevronRight />}
-      </button>
 
-      <Swiper
-        modules={[Autoplay, Navigation, Pagination]}
-        navigation={{
-          prevEl: ".custom-prev",
-          nextEl: ".custom-next",
-        }}
-        autoplay={{
-          delay: 2000,
-          disableOnInteraction: false,
-        }}
-        spaceBetween={20}
-        breakpoints={{
-          480: { slidesPerView: 1 },
-          768: { slidesPerView: 2 },
-          1024: { slidesPerView: 3 },
-          1280: { slidesPerView: 4 },
-        }}
-        className="product-card featured-swiper"
-      >
-        {products.map((item, i) => (
-          <SwiperSlide key={i} className="h-full">
-            <ProductCard
-              title={item.title}
-              price={item.price}
-              image={item.imgsrc}
-              subImage={item.subImage}
-            />
-          </SwiperSlide>
-        ))}
-      </Swiper>
-      <div className="text-center mt-10">
-        <button
-          className="px-6 py-2 bg-green-800 text-white rounded-md hover:bg-green-700 transition"
-          onClick={() => router.push("/shop")}
-        >
-          View More
+  return (
+    <>
+      <ProductCardMobile products={products} />
+      <div className="relative d-none d-md-block">
+        <button className="custom-prev custom-prev-home">
+          {<FaChevronLeft />}
         </button>
+        <button className="custom-next custom-next-home">
+          {<FaChevronRight />}
+        </button>
+
+        <Swiper
+          modules={[Autoplay, Navigation, Pagination]}
+          navigation={{
+            prevEl: ".custom-prev",
+            nextEl: ".custom-next",
+          }}
+          autoplay={{
+            delay: 2000,
+            disableOnInteraction: false,
+          }}
+          spaceBetween={20}
+          breakpoints={{
+            480: { slidesPerView: 1 },
+            768: { slidesPerView: 2 },
+            1024: { slidesPerView: 3 },
+            1280: { slidesPerView: 4 },
+          }}
+          className="product-card featured-swiper"
+        >
+          {products.map((item, i) => (
+            <SwiperSlide key={i} className="h-full">
+              <ProductCard
+                title={item.title}
+                price={item.price}
+                image={item.imgsrc}
+                subImage={item.subImage}
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+        <div className="text-center mt-10">
+          <button
+            className="px-6 py-2 bg-green-800 text-white rounded-md hover:bg-green-700 transition"
+            onClick={() => router.push("/shop")}
+          >
+            View More
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

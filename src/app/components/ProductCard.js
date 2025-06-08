@@ -4,7 +4,21 @@ import { useRouter } from "next/navigation";
 import { FiHeart, FiShoppingCart } from "react-icons/fi";
 import "./productCardStyle.css";
 
-const FeatureButtons = () => (
+export const ProductInfo = ({ title, price, oldPrice }) => (
+  <div className="py-3 flex flex-col self-start">
+    <h5 className="text-black font-semibold mb-0 self-start">{title}</h5>
+    <div className="self-start">
+      <span className="primary-color fw-bold">Rs. {price}</span>{" "}
+      {oldPrice && (
+        <span className="text-muted text-decoration-line-through">
+          Rs. {oldPrice}
+        </span>
+      )}
+    </div>
+  </div>
+);
+
+export const FeatureButtons = () => (
   <>
     <button
       className="feature-product-btn"
@@ -19,20 +33,6 @@ const FeatureButtons = () => (
       <FiShoppingCart className="font-bold" />
     </button>
   </>
-);
-
-const ProductInfo = ({ title, price, oldPrice }) => (
-  <div className="py-3 flex flex-col self-start">
-    <h5 className="text-black font-semibold mb-0 self-start">{title}</h5>
-    <div className="self-start">
-      <span className="text-primary fw-bold">Rs. {price}</span>{" "}
-      {oldPrice && (
-        <span className="text-muted text-decoration-line-through">
-          Rs. {oldPrice}
-        </span>
-      )}
-    </div>
-  </div>
 );
 
 const ProductCard = ({ title, price, oldPrice, image, subImage }) => {

@@ -9,6 +9,7 @@ import ProductCard from "./ProductCard";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import Section from "./Section";
 import { useRouter } from "next/navigation";
+import ProductCardMobile from "./ProductCardMobile";
 
 const tabData = [
   { id: 1, label: "Silk Cotton" },
@@ -236,7 +237,9 @@ const CollectionTab = () => {
         </div>
       </div>
 
-      <div className="relative">
+      <ProductCardMobile products={filteredCollections} />
+
+      <div className="relative d-none d-md-block">
         <button className="custom-prev custom-prev-home">
           {<FaChevronLeft />}
         </button>

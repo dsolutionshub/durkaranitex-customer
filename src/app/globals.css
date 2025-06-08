@@ -3,6 +3,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --primary-main: #093f1f;
 }
 
 @theme inline {
@@ -32,6 +33,23 @@ ul {
     }
   }
 }
+.nav-anchor-link {
+  color: var(--primary-main) !important;
+  font-weight: 600;
+  text-decoration: none;
+  &:hover {
+    font-weight: 600;
+    color: var(--primary-main) !important;
+  }
+}
+
+.primary-color {
+  color: var(--primary-main);
+}
+
+.primary-bg {
+  background-color: var(--primary-main);
+}
 
 .whatsapp-image {
   position: fixed;
@@ -45,4 +63,23 @@ ul {
     right: -2.5rem;
     transform: scale(0.5);
   }
+}
+
+.wishlist-card {
+  @media screen and (max-width: 600px) {
+    padding: 1rem;
+  }
+}
+
+.button-primary {
+  border: 1px solid var(--primary-main);
+}
+
+/* globals.css or tailwind.config.js -> safelist this */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

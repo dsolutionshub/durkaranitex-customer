@@ -48,3 +48,7 @@ export function getFilteredProducts({
 
   return result;
 }
+
+export function formatPrice(value) {
+  return Number(value.replace(/,/g, ""));
+}
