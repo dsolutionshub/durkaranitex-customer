@@ -83,7 +83,7 @@ const FeaturedCard = () => {
             nextEl: ".custom-next",
           }}
           autoplay={{
-            delay: 2000,
+            delay: 3000,
             disableOnInteraction: false,
           }}
           spaceBetween={20}

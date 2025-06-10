@@ -2,6 +2,7 @@ import Image from "next/image";
 import React from "react";
 import { useRouter } from "next/navigation";
 import { FiHeart, FiShoppingCart } from "react-icons/fi";
+import useCartPanelStore from "@/store/useCartPanelStore";
 import "./productCardStyle.css";
 
 export const ProductInfo = ({ title, price, oldPrice }) => (
@@ -18,7 +19,7 @@ export const ProductInfo = ({ title, price, oldPrice }) => (
   </div>
 );
 
-export const FeatureButtons = () => (
+export const FeatureButtons = ({ handleOpenCart }) => (
   <>
     <button
       className="feature-product-btn"
@@ -26,10 +27,7 @@ export const FeatureButtons = () => (
     >
       <FiHeart className="font-bold" />
     </button>
-    <button
-      className="feature-product-btn"
-      onClick={(e) => e.stopPropagation()}
-    >
+    <button className="feature-product-btn" onClick={handleOpenCart}>
       <FiShoppingCart className="font-bold" />
     </button>
   </>
@@ -37,9 +35,15 @@ export const FeatureButtons = () => (
 
 const ProductCard = ({ title, price, oldPrice, image, subImage }) => {
   const rounter = useRouter();
+  const { isCartOpen, setCartOpen, handleGetCartDetail } = useCartPanelStore();
 
   const navigateToProductDetail = () => {
     rounter.push("/product-detail");
+  };
+
+  const handleOpenCart = (e) => {
+    e.stopPropagation();
+    handleGetCartDetail();
   };
 
   return (
@@ -84,7 +88,7 @@ const ProductCard = ({ title, price, oldPrice, image, subImage }) => {
           />
         </div>
         <div className="icon-wrapper">
-          <FeatureButtons />
+          <FeatureButtons handleOpenCart={handleOpenCart} />
         </div>
         <ProductInfo title={title} price={price} oldPrice={oldPrice} />
       </div>

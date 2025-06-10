@@ -51,6 +51,14 @@ ul {
   background-color: var(--primary-main);
 }
 
+.primary-border {
+  border: 1px solid var(--primary-main);
+}
+
+.dark-color {
+  color: #0a0a0a;
+}
+
 .whatsapp-image {
   position: fixed;
   z-index: 9999;
@@ -71,11 +79,6 @@ ul {
   }
 }
 
-.button-primary {
-  border: 1px solid var(--primary-main);
-}
-
-/* globals.css or tailwind.config.js -> safelist this */
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }

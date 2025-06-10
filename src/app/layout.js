@@ -1,12 +1,14 @@
-import "./globals.css";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "../app/styles/style.css";
 
+import Image from "next/image";
+import Link from "next/link";
 import { Mukta } from "next/font/google";
 import { PrimeReactProvider } from "primereact/api";
 import ClientLayout from "./ClientLayout";
-import Image from "next/image";
-import Link from "next/link";
+import Loader from "./components/loader/loader";
+
+import "./globals.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "../app/styles/style.css";
 
 const mukta = Mukta({
   subsets: ["latin"],
@@ -43,6 +45,7 @@ export default function RootLayout({ children }) {
               </Link>
               {children}
             </div>
+            <Loader />
           </ClientLayout>
         </PrimeReactProvider>
       </body>

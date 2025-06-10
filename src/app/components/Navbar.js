@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FaRegHeart, FaRegUser } from "react-icons/fa";
@@ -10,18 +10,25 @@ import {
   HiOutlineX,
   HiOutlineChevronRight,
 } from "react-icons/hi";
+import SidePanelCart from "./sidePanelCart/SidePanelCart";
+import useCartPanelStore from "@/store/useCartPanelStore";
+
+const navItems = [
+  { name: "Home", href: "/" },
+  { name: "Shop", href: "/shop" },
+  { name: "About us", href: "/about" },
+  { name: "Contact", href: "/contact" },
+];
 
 export default function Navbar() {
   const router = useRouter();
+  const { isCartOpen, handleGetCartDetail } = useCartPanelStore();
+
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const navItems = [
-    { name: "Home", href: "/" },
-    { name: "About", href: "/about" },
-    { name: "Product", href: "/shop" },
-    { name: "Contact", href: "/contact" },
-    { name: "FAQ", href: "/faq" },
-  ];
+  const handlePanel = useCallback(() => {
+    handleGetCartDetail();
+  }, [isCartOpen]);
 
   return (
     <nav className="bg-white shadow-md px-4 py-3 relative z-50">
@@ -42,13 +49,13 @@ export default function Navbar() {
 
         {/* Cart Icon */}
         <IoCartOutline
-          className="text-2xl cursor-pointer hover:text-green-600"
-          onClick={() => router.push("/cart")}
+          className="text-2xl cursor-pointer primary-color"
+          onClick={handlePanel}
         />
       </div>
 
       {/* Desktop Navbar */}
-      <div className="hidden lg:flex items-center justify-between">
+      <div className="hidden lg:flex items-center justify-between ">
         <img src="/images/home/logo.svg" alt="logo" className="h-14" />
 
         <ul className="flex gap-8 text-lg font-semibold uppercase text-gray-700">
@@ -64,16 +71,16 @@ export default function Navbar() {
           ))}
         </ul>
 
-        <div className="flex items-center gap-6 text-2xl">
+        <div className="flex items-center gap-6 text-2xl pr-5">
           <FaRegHeart
-            className="cursor-pointer hover:text-green-600"
+            className="cursor-pointer primary-color"
             onClick={() => router.push("/wishlist")}
           />
           <IoCartOutline
-            className="cursor-pointer hover:text-green-600"
-            onClick={() => router.push("/cart")}
+            className="cursor-pointer primary-color"
+            onClick={handlePanel}
           />
-          <FaRegUser className="cursor-pointer hover:text-green-600" />
+          <FaRegUser className="cursor-pointer primary-color" />
         </div>
       </div>
 
@@ -101,7 +108,7 @@ export default function Navbar() {
         </div>
 
         {/* Menu Items */}
-        <ul className="flex flex-col px-4 pt-4 text-gray-700 text-lg">
+        <ul className="flex flex-col px-4 pt-4 text-gray-700 text-lg ">
           {navItems.map((item) => (
             <li key={item.name}>
               <Link
@@ -147,6 +154,8 @@ export default function Navbar() {
           </li>
         </ul>
       </div>
+
+      <SidePanelCart />
     </nav>
   );
 }

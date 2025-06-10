@@ -261,7 +261,7 @@ const CollectionTab = () => {
             1280: { slidesPerView: 4 },
           }}
           autoplay={{
-            delay: 2000,
+            delay: 3000,
             disableOnInteraction: false,
           }}
           className="product-card"
