@@ -43,7 +43,7 @@ const removeFromWishlist = async (id) => {
 
   return (
     <div className="container mt-4">
-      <h2 className="mb-5 text-center text-dark fs-3">My Wishlist</h2>
+      <h2 className="mb-4 text-center text-dark fs-3">My Wishlist</h2>
 
       <div className="row mb-5">
         {wishlist.length > 0 ? (

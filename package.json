@@ -21,6 +21,7 @@
     "@reduxjs/toolkit": "^2.6.1",
     "bootstrap": "^5.3.5",
     "jquery-ui-dist": "^1.13.3",
+    "lucide-react": "^0.513.0",
     "next": "15.2.3",
     "next-auth": "^4.24.11",
     "primeflex": "^4.0.0",

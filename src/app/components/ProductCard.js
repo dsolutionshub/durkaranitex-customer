@@ -2,6 +2,7 @@ import Image from "next/image";
 import React from "react";
 import { useRouter } from "next/navigation";
 import { FiHeart, FiShoppingCart } from "react-icons/fi";
+import useCartPanelStore from "@/store/useCartPanelStore";
 import "./productCardStyle.css";
 import { RiDeleteBinLine } from "react-icons/ri";
 
@@ -38,7 +39,7 @@ const ProductInfo = ({ title, price, oldPrice }) => (
   <div className="py-3 flex flex-col self-start">
     <h5 className="text-black font-semibold mb-0 self-start">{title}</h5>
     <div className="self-start">
-      <span className="text-primary fw-bold">Rs. {price}</span>{" "}
+      <span className="primary-color fw-bold">Rs. {price}</span>{" "}
       {oldPrice && (
         <span className="text-muted text-decoration-line-through">
           Rs. {oldPrice}
@@ -50,9 +51,15 @@ const ProductInfo = ({ title, price, oldPrice }) => (
 
 const ProductCard = ({ title, price, oldPrice, image, subImage , type, btn1, btn2}) => {
   const rounter = useRouter();
+  const { isCartOpen, setCartOpen, handleGetCartDetail } = useCartPanelStore();
 
   const navigateToProductDetail = () => {
     rounter.push("/product-detail");
+  };
+
+  const handleOpenCart = (e) => {
+    e.stopPropagation();
+    handleGetCartDetail();
   };
 
   return (
@@ -97,7 +104,7 @@ const ProductCard = ({ title, price, oldPrice, image, subImage , type, btn1, btn
           />
         </div>
         <div className="icon-wrapper">
-          <FeatureButtons type={type} btn1_func={btn1} btn2_func={btn2}/>
+          <FeatureButtons handleOpenCart={handleOpenCart} type={type} btn1_func={btn1} btn2_func={btn2}/>
         </div>
         <ProductInfo title={title} price={price} oldPrice={oldPrice} />
       </div>

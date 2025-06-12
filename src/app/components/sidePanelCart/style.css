@@ -1,0 +1,48 @@
+.cart-sidebar {
+  width: 28rem;
+  background-color: white;
+  padding: 0 1rem 1rem 1.5rem;
+  svg {
+    font-size: 1.5rem;
+  }
+
+  .total-cost-card {
+    span {
+      font-size: 1.4rem;
+      font-weight: 500;
+    }
+    button {
+      border-radius: 1.5rem;
+    }
+  }
+
+  .cart-sidepanel-container {
+    max-height: 61vh;
+    overflow-y: auto;
+    margin-top: 1rem;
+    @media all and (max-width: 600px) {
+      margin-top: 0.8rem;
+      max-height: 55vh;
+    }
+  }
+  .cart-sidepanel-container::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .cart-sidepanel-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+
+  .cart-sidepanel-container::-webkit-scrollbar-thumb {
+    background-color: #dddcdc;
+    border-radius: 10px;
+  }
+
+  @media all and (max-width: 600px) {
+    width: 19rem;
+  }
+}
+.p-sidebar-mask {
+  background-color: rgba(0, 0, 0, 0.4);
+}

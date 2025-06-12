@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination } from "swiper/modules";
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -9,6 +9,7 @@ import ProductCard from "./ProductCard";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import Section from "./Section";
 import { useRouter } from "next/navigation";
+import ProductCardMobile from "./ProductCardMobile";
 
 const tabData = [
   { id: 1, label: "Silk Cotton" },
@@ -217,28 +218,37 @@ const CollectionTab = () => {
   });
 
   return (
-    <div className="px-20">
-      <div className="flex justify-center items-center gap-x-10 space-x-6 mb-8">
-        {tabData.map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
-            className={`relative transition-all duration-200 font-medium ${
-              activeTab === tab.id
-                ? 'text-green-800 after:content-[""] after:absolute after:left-0 after:-bottom-0.5 after:h-[2px] after:w-full after:bg-green-800'
-                : "text-gray-400 hover:text-green-800"
-            } tab-button`}
-          >
-            {tab.label}
-          </button>
-        ))}
+    <div className="md:px-20 feature-product-card">
+      <div className="overflow-x-auto sm:overflow-visible">
+        <div className="flex justify-start sm:justify-center items-center gap-4 sm:gap-x-10 mb-6 sm:mb-8 px-4 min-w-max">
+          {tabData.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`relative transition-all duration-200 font-medium text-sm sm:text-base whitespace-nowrap new-arrival-btn ${
+                activeTab === tab.id
+                  ? 'text-green-800 after:content-[""] after:absolute after:left-0 after:-bottom-0.5 after:h-[2px] after:w-full after:bg-green-800'
+                  : "text-gray-400 hover:text-green-800"
+              } tab-button`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
       </div>
-      <div className="relative">
-        <button className="custom-prev">{<FaChevronLeft />}</button>
-        <button className="custom-next">{<FaChevronRight />}</button>
+
+      <ProductCardMobile products={filteredCollections} />
+
+      <div className="relative d-none d-md-block">
+        <button className="custom-prev custom-prev-home">
+          {<FaChevronLeft />}
+        </button>
+        <button className="custom-next custom-next-home">
+          {<FaChevronRight />}
+        </button>
 
         <Swiper
-          modules={[Navigation, Pagination]}
+          modules={[Autoplay, Navigation, Pagination]}
           navigation={{
             prevEl: ".custom-prev",
             nextEl: ".custom-next",
@@ -249,6 +259,10 @@ const CollectionTab = () => {
             768: { slidesPerView: 2 },
             1024: { slidesPerView: 3 },
             1280: { slidesPerView: 4 },
+          }}
+          autoplay={{
+            delay: 3000,
+            disableOnInteraction: false,
           }}
           className="product-card"
         >
