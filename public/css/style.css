@@ -4,7 +4,7 @@
 :root {
   --bs-primary: #093f1f;
   --bs-primary-rgb: 9, 63, 31;
-  --bs-secondary: black;
+  /* --bs-secondary: black; */
   --bs-secondary-rgb: 0, 0, 0;
   --bs-link-color: #093f1f; /* Changes primary link color */
   --bs-link-hover-color: #062b15;

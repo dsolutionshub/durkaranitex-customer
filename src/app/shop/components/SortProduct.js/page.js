@@ -3,10 +3,10 @@ import React from "react";
 
 const sortOptions = [
   "Sort by All",
-  "Name, A to Z",
-  "Name, Z to A",
-  "Price, low to high",
-  "Price, high to low",
+  "Name A to Z",
+  "Name Z to A",
+  "Price low to high",
+  "Price high to low",
 ];
 
 const SortProduct = ({ selected, onChange }) => {

@@ -3,6 +3,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import useCartStore from "@/store/useCartStore";
+import { deleteQuantity, getCart, updateQuantity } from "../api/services/authService";
 
 const Cart = () => {
   const router = useRouter();
@@ -12,35 +13,67 @@ const Cart = () => {
 
   const items = useCartStore((state) => state.items);
 
-  const increaseCount = (id) => {
-    setProducts((prevProducts) =>
-      prevProducts.map((product) =>
-        product.id === id
-          ? { ...product, quantity: product.quantity + 1 }
-          : product
-      )
-    );
-  };
+const increaseCount = async (id, currentQuantity) => {
+  const newQuantity = currentQuantity + 1;
+  setProducts((prevProducts) =>
+    prevProducts.map((product) =>
+      product.id === id ? { ...product, quantity: newQuantity } : product
+    )
+  );
 
-  const decreaseCount = (id) => {
-    setProducts((prevProducts) =>
-      prevProducts.map((product) =>
-        product.id === id && product.quantity > 1
-          ? { ...product, quantity: product.quantity - 1 }
-          : product
-      )
-    );
+  // Send API in background
+  try {
+    await updateQuantity({ product_id: id, quantity: newQuantity });
+  } catch (err) {
+    console.error("Failed to increase quantity:", err);
+  }
+};
+
+const decreaseCount = async (id, currentQuantity) => {
+  if (currentQuantity <= 1) return;
+  const newQuantity = currentQuantity - 1;
+
+  setProducts((prevProducts) =>
+    prevProducts.map((product) =>
+      product.id === id ? { ...product, quantity: newQuantity } : product
+    )
+  );
+
+  try {
+    await deleteQuantity({ product_id: id, quantity: newQuantity });
+  } catch (err) {
+    console.error("Failed to decrease quantity:", err);
+  }
+};
+
+
+  const fetchCart = async () => {
+    try {
+      const response = await getCart();
+      const formattedProducts = response?.cart?.map((item) => ({
+        id: item.id,
+        productId: item.product_id,
+        quantity: item.quantity,
+        total: item.total,
+        title: item.product.title,
+        price: parseFloat(item.product.product_price),
+        imgSrc: item.product.images?.[0]?.image || "",
+      }));
+      setProducts(formattedProducts);
+    } catch (err) {
+      console.error("Failed to fetch cart:", err);
+    }
   };
 
   useEffect(() => {
-    setProducts(items);
-  }, [items]);
+    fetchCart()
+  }, []);
 
-  const removeProduct = (id) => {
-    setProducts((prevProducts) =>
-      prevProducts.filter((product) => product.id !== id)
-    );
-  };
+  // const removeProduct = (id) => {
+  //   setProducts((prevProducts) =>
+  //     prevProducts.filter((product) => product.id !== id)
+  //   );
+  // };
 
   return (
     <div className="container mt-5 mb-5">
@@ -101,7 +134,7 @@ const Cart = () => {
                     <div className="input-group-prepend">
                       <button
                         className="btn btn-outline-primary js-btn-minus"
-                        onClick={() => decreaseCount(product.id)}
+                        onClick={() => decreaseCount(product.id, product.quantity)}
                       >
                         -
                       </button>
@@ -109,12 +142,12 @@ const Cart = () => {
                     <input
                       type="text"
                       className="form-control text-center"
-                      defaultValue={product.quantity}
+                      value={product.quantity}
                     />
                     <div className="input-group-append">
                       <button
                         className="btn btn-outline-primary js-btn-plus"
-                        onClick={() => increaseCount(product.id)}
+                        onClick={() => increaseCount(product.id, product.quantity)}
                       >
                         +
                       </button>

@@ -3,26 +3,35 @@
 import React, { useState } from "react";
 import { Range } from "react-range";
 
-const MIN = 500;
-const MAX = 500000;
+
+const MIN = 50;
+const MAX = 900;
 const STEP = 100;
 
 const ProductFilter = ({
   categories = [],
   selectedCategories = [],
+  filterProducts,
   onChange,
   onPriceChange,
-  priceRange = { min: 500, max: 500000 },
+  priceRange = { min: 50, max: 900 },
 }) => {
-  const [values, setValues] = useState([MIN, MAX]);
+  const [values, setValues] = useState([priceRange.min, priceRange.max]);
 
   const handleChange = (values) => {
     setValues(values);
     onPriceChange({ min: values[0], max: values[1] });
+
+    const filteredProducts = categories.filter(
+      (item) => item.price >= values[0] && item.price <= values[1]
+    );
+
+    filterProducts(filteredProducts);
   };
 
   const handleCheckboxChange = (event, categoryName) => {
     if (event.target.checked) {
+      console.log(event.target.checked);
       onChange([...selectedCategories, categoryName]);
     } else {
       onChange(selectedCategories?.filter((name) => name !== categoryName));
@@ -43,12 +52,12 @@ const ProductFilter = ({
         >
           {categories?.map((category) => (
             <li
-              key={category?.name}
+              key={category?.id}
               className="flex items-center justify-between mb-2"
             >
               <div className="flex items-center cursor-pointer gap-2">
                 <input
-                  id={category?.name}
+                  id={category?.id}
                   type="checkbox"
                   checked={selectedCategories?.includes(category.name)}
                   onChange={(e) => handleCheckboxChange(e, category.name)}
@@ -121,7 +130,7 @@ const ProductFilter = ({
           />
         </div>
         <div className="mt-4 text-sm text-gray-700">
-          Selected Price Range: Rs. {priceRange.min} – Rs. {priceRange.max}
+          Selected Price Range: Rs. {values[0]} – Rs. {values[1]}
         </div>
       </div>
     </div>

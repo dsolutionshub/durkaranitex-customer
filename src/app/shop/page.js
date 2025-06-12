@@ -11,6 +11,7 @@ import SortProduct from "./components/SortProduct.js/page";
 import ProductPagination from "./components/ProductPagination/page";
 import ProductFilter from "./components/ProductFilter/page";
 import { getFilteredProducts } from "../utils/helperFn";
+import { getCategoryList, getProductList } from "../api/services/authService";
 
 const categories = [
   { name: "Semi-silk", count: 2220 },
@@ -27,11 +28,14 @@ function Shop() {
   const addToCart = useCartStore((state) => state.addToCart);
   const wishToCart = useCartStore((state) => state.addToWishlist);
 
-  const [priceRange, setPriceRange] = useState({ min: 500, max: 500000 });
+  const [priceRange, setPriceRange] = useState({ min: 50, max: 900 });
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [sortOption, setSortOption] = useState("Sort by All");
+  const [sortedProducts, setSortedProducts] = useState([])
   const [currentPage, setCurrentPage] = useState(1);
   const [searchProduct, setSearchProduct] = useState("");
+  const [productList, setProductList] = useState([])
+  const [categoryList, setCategoryList] = useState([])
 
   const filtered = getFilteredProducts({
     products: collections,
@@ -56,6 +60,62 @@ function Shop() {
   useEffect(() => {
     setCurrentPage(1);
   }, [searchProduct, selectedCategories, priceRange]);
+
+  const productDetails = async (filter) => {
+    let details = await getProductList(currentPage, filter)
+    let product = details.products
+    setProductList(product)
+    setSortedProducts(product);
+  }
+
+  const categoryDetails = async () => {
+    let details = await getCategoryList()
+    let category_list = details
+    setCategoryList(category_list)
+  }
+
+  useEffect(() => {
+    productDetails()
+  }, [currentPage])
+
+  useEffect(()=>{
+   categoryDetails()
+  },[])
+
+  const handleSearch = (value) => {
+    const data = sortedProducts.filter(item =>
+      (item.title ?? '').toLowerCase().includes(value.toLowerCase())
+    );
+    setSortedProducts(data);
+  };
+
+  useEffect(() => {
+    // let sorted = [...productList];
+
+    switch (sortOption) {
+      case "Name A to Z":
+        // sorted.sort((a, b) => (a.title ?? '').localeCompare(b.title ?? ''));
+        productDetails('a-z')
+        break;
+      case "Name Z to A":
+        // sorted.sort((a, b) => (b.title ?? '').localeCompare(a.title ?? ''));
+        productDetails('z-a')
+        break;
+      case "Price low to high":
+        // sorted.sort((a, b) => (a.price ?? '') - (b.price ?? ''));
+        productDetails('min-max')
+        break;
+      case "Price high to low":
+        // sorted.sort((a, b) => (b.price ?? '') - (a.price ?? ''));
+        productDetails('max-min')
+        break;
+      case "Sort by All":
+        productDetails()
+        break;
+    }
+    // setSortedProducts(sorted);
+  }, [sortOption])
+
   return (
     <>
       <div className="bg-light py-3">
@@ -69,7 +129,7 @@ function Shop() {
         </div>
       </div>
 
-      <div className="site-section" style={{ padding: "1rem" }}>
+      <div className="site-section bg-light" style={{ padding: "1rem" }}>
         <div className="container-fluid">
           <div className="row mb-5">
             <div className="col-md-9 order-2">
@@ -83,7 +143,7 @@ function Shop() {
                         className="form-control"
                         placeholder="Search"
                         value={searchProduct}
-                        onChange={(e) => setSearchProduct(e.target.value)}
+                        onChange={(e) => handleSearch(e.target.value)}
                       />
                       <span className="input-group-text">
                         <FaSearch />
@@ -98,21 +158,21 @@ function Shop() {
               </div>
 
               <div className="row mb-5">
-                {paginatedCollections?.length === 0 ? (
+                {productList?.length === 0 ? (
                   <p className="text-center text-muted w-100">
                     No products found.
                   </p>
                 ) : (
-                  paginatedCollections?.map((item) => (
+                  productList?.map((item) => (
                     <div
                       className="col-sm-6 col-md-4 col-lg-3 mb-4"
                       key={item.id}
                     >
                       <ProductCard
-                        title={item.title}
-                        price={item.price}
-                        oldPrice={item.oldPrice}
-                        image={item.imgSrc}
+                        title={item?.title}
+                        price={item?.price}
+                        oldPrice={item?.product_price}
+                        image={item?.images[0]?.['image']}
                       />
                     </div>
                   ))
@@ -129,11 +189,12 @@ function Shop() {
             </div>
 
             <ProductFilter
-              categories={categories}
+              categories={categoryList.categories}
               selectedCategories={selectedCategories}
+              filterProducts={setSortedProducts}
               onChange={setSelectedCategories}
               onPriceChange={handlePriceChange}
-              priceRange={priceRange}
+              priceRange={categoryList.product_amount}
             />
           </div>
         </div>

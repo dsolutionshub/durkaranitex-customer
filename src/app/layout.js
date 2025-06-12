@@ -7,6 +7,7 @@ import { PrimeReactProvider } from "primereact/api";
 import ClientLayout from "./ClientLayout";
 import Image from "next/image";
 import Link from "next/link";
+import Head from "next/head";
 
 const mukta = Mukta({
   subsets: ["latin"],
@@ -24,6 +25,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <Head>
+        <script src="https://accounts.google.com/gsi/client" async defer></script>
+      </Head>
       <body className={mukta.className}>
         <PrimeReactProvider>
           <ClientLayout>
