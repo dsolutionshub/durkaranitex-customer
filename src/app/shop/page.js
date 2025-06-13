@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
+import { BreadCrumb } from "primereact/breadcrumb";
 import { FaSearch } from "react-icons/fa";
 import { BiFilterAlt } from "react-icons/bi";
 
@@ -15,6 +15,9 @@ import { getErrorMessage, getFilteredProducts } from "../utils/helperFn";
 import { getCategoryList, getProductList } from "../api/services/authService";
 import { loader } from "../components/loader/loaderManager";
 import useCartPanelStore from "@/store/useCartPanelStore";
+
+const items = [{ label: "Shop" }];
+const home = { label: "Home", url: "/" };
 
 function Shop() {
   const itemsPerPage = 8;
@@ -134,26 +137,20 @@ function Shop() {
 
   return (
     <>
-      <div className="bg-light py-3">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-12 mb-0">
-              <Link href="/">Home</Link> <span className="mx-2 mb-0">/</span>{" "}
-              <strong className="text-black">Shop</strong>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="py-5 bg-light ">
+      <BreadCrumb
+        model={items}
+        home={home}
+        className="pt-4 pb-2 custom-breadcrumb"
+      />
+      <div className="py-0 md:py-4 bg-light">
         <div className="container-fluid">
           <div className="row mb-5">
-            <div className="col-lg-9 order-2">
+            <div className="col-xl-9 order-2">
               <div className="row p-1">
-                <div className="col-lg-12 mb-5">
-                  <div className="d-flex flex-column flex-lg-row justify-content-between align-items-start align-items-md-center">
+                <div className="col-xl-12 mb-5">
+                  <div className="d-flex flex-column flex-xl-row justify-content-between align-items-start align-items-md-center">
                     <h2 className="text-black h5">Shop All</h2>
-                    <div className="input-group mb-3 mb-lg-0 product-detail-search">
+                    <div className="input-group mb-3 mb-xl-0 product-detail-search">
                       <input
                         type="text"
                         className="form-control"
@@ -168,7 +165,7 @@ function Shop() {
 
                     <div className="flex items-center gap-3">
                       <button
-                        className="px-4 py-2 flex items-center gap-2 bg-green-900 text-light fs-6 lg:hidden"
+                        className="px-4 py-2 flex items-center gap-2 bg-green-900 text-light fs-6 xl:hidden"
                         onClick={handleOpenFilter}
                       >
                         <BiFilterAlt />

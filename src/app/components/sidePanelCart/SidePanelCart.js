@@ -95,7 +95,10 @@ const SidePanelCart = () => {
                         <h6 className="text-xlg dark-color mb-1 d-none d-md-block">
                           {product.title}
                         </h6>
-                        <h6 className="text-xlg dark-color mb-1 d-md-none">
+                        <h6
+                          className="text-xlg dark-color mb-1 d-md-none"
+                          title={product.title}
+                        >
                           {product.title?.length > 18
                             ? `${product?.title?.slice(0, 18)}...`
                             : product.title}

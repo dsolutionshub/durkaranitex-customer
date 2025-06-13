@@ -48,6 +48,7 @@ function FilterComponent({
                 <label
                   htmlFor={category?.id}
                   className="text-md text-black mb-0 cursor-pointer"
+                  title={category.name}
                 >
                   {category.name.length > 24
                     ? `${category.name.slice(0, 24)}...`
@@ -152,7 +153,7 @@ const ProductFilter = ({
 
   return (
     <>
-      <div className="col-md-3 order-1 mb-5 mb-md-0 hidden lg:block">
+      <div className="col-md-3 order-1 mb-5 mb-md-0 hidden xl:block">
         <FilterComponent
           categories={categories}
           selectedCategories={selectedCategories}
@@ -167,7 +168,7 @@ const ProductFilter = ({
         position="left"
         onHide={handleOpenFilter}
         showCloseIcon={false}
-        className="cart-sidebar lg:hidden"
+        className="cart-sidebar xl:hidden"
       >
         <div className="bg-white h-full w-full max-w-md right-0">
           <div className="pt-4 flex items-center justify-between mb-3">

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { MapPin, Phone } from "lucide-react";
+import { MapPin, Phone, Mail } from "lucide-react";
 import {
   FaFacebookF,
   FaInstagram,
@@ -23,8 +23,10 @@ const categoryList = [
 
 const quickLinks = [
   { label: "Home", path: "/" },
+  { label: "Shop", path: "/shop" },
   { label: "Contacts", path: "/contact" },
   { label: "Wishlist", path: "/wishlist" },
+  { label: "About Us", path: "/about" },
   { label: "Checkout", path: "/checkout" },
   { label: "My Cart", path: "/cart" },
 ];
@@ -75,7 +77,7 @@ export default function Footer() {
   return (
     <footer className="bg-white border-t border-gray-100">
       <div className="container mx-auto px-4 py-5">
-        <div className="grid md:grid-cols-4 gap-12">
+        <div className="grid lg:grid-cols-2 xl:grid-cols-4 gap-12">
           <div className="space-y-3 text-left">
             <div className="flex items-center">
               <Image
@@ -97,8 +99,8 @@ export default function Footer() {
               </p>
             </div>
             <div className="space-y-0">
-              <div className="flex items-start space-x-0 \">
-                <div className="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+              <div className="flex items-start space-x-0">
+                <div className="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center flex-shrink-0 ">
                   <MapPin className="w-5 h-5 text-green-600" />
                 </div>
 
@@ -109,12 +111,22 @@ export default function Footer() {
                   </p>
                 </div>
               </div>
-              <div className="flex items-center space-x-0">
+
+              <div className="flex items-start space-x-0  md:mt-3 lg:mt-0 mb-3">
                 <div className="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center">
                   <Phone className="w-5 h-5 text-green-600" />
                 </div>
                 <span className="font-medium text-gray-800 ml-3">
                   9489607841
+                </span>
+              </div>
+
+              <div className="flex items-start space-x-0">
+                <div className="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center">
+                  <Mail className="w-5 h-5 text-green-600" />
+                </div>
+                <span className="font-medium text-gray-800 ml-3">
+                  dhuragaraniTex@gmail.com
                 </span>
               </div>
             </div>
@@ -140,6 +152,24 @@ export default function Footer() {
                     <Icon className="w-5 h-5 text-green-600 group-hover:text-white" />
                   </Link>
                 ))}
+              </div>
+            </div>
+
+            <div className="mt-4">
+              <h5 className="text-xl font-bold text-black mb-6 text-left">
+                Your Payment is Safe with Us
+              </h5>
+              <div className="flex space-x-3">
+                <Image
+                  src={"/images/Razorpay_Secure_Payment-1.avif"}
+                  alt="image"
+                  height={150}
+                  width={400}
+                  className="h-18"
+                  style={{
+                    marginLeft: "-.8rem",
+                  }}
+                />
               </div>
             </div>
           </div>

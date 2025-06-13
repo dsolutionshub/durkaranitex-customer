@@ -51,7 +51,10 @@ const ProductCardMobile = ({ products }) => {
                   />
                 </div>
                 <div className="py-3 flex flex-col self-start">
-                  <h6 className="text-black font-semibold mb-0 self-start">
+                  <h6
+                    className="text-black font-semibold mb-0 self-start"
+                    title={item.title}
+                  >
                     {item?.title?.length > 10
                       ? item?.title.slice(0, 10)
                       : item?.title}

@@ -11,7 +11,7 @@ export default function CheckoutPage() {
   const [selectedPayment, setSelectedPayment] = useState("payNow");
 
   return (
-    <div className="min-h-screen bg-[#f5f2ff] py-10 px-4">
+    <div className="min-h-screen  py-10 px-4">
       <h2 className="text-2xl text-center pb-4 text-black font-semibold checkout-text">
         Checkout
       </h2>
@@ -46,6 +46,16 @@ export default function CheckoutPage() {
 
             <h4 className="font-semibold text-black my-4">Shipping Address</h4>
             <div className="space-y-4">
+              <div className="w-[21.5rem]">
+                <label className="block text-medium text-black font-medium">
+                  Name <span className="text-red-600">*</span>
+                </label>
+                <input
+                  type="text"
+                  className="w-full border rounded-md px-2 py-1 text-black placeholder-black"
+                  placeholder="Enter your Name"
+                />
+              </div>
               <div>
                 <label className="block text-medium text-black font-medium">
                   Street Address <span className="text-red-600">*</span>
@@ -97,6 +107,17 @@ export default function CheckoutPage() {
                   Contact Address
                 </h4>
                 <div className="space-y-4">
+                  <div className="w-[21.5rem]">
+                    <label className="block text-medium text-black font-medium">
+                      Name <span className="text-red-600">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      className="w-full border rounded-md px-2 py-1 text-black placeholder-black"
+                      placeholder="Enter your Name"
+                    />
+                  </div>
+
                   <div>
                     <label className="block text-medium text-black font-medium">
                       Street Address <span className="text-red-600">*</span>

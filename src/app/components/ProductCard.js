@@ -74,7 +74,10 @@ const ProductCard = ({ title, price, oldPrice, image, type, btn1, btn2 }) => {
           <FeatureButtons type={"heart"} btn1Func={btn1} btn2Func={btn2} />
         </div>
         <div className="py-3 flex flex-col self-start">
-          <h6 className="text-black font-semibold mb-0 self-start">
+          <h6
+            className="text-black font-semibold mb-0 self-start"
+            title={title}
+          >
             {title?.length > 18 ? `${title.slice(0, 18)}...` : title}
           </h6>
           <div className="self-start">
