@@ -1,53 +1,32 @@
 "use client";
 
+import { Sidebar } from "primereact/sidebar";
 import React, { useState } from "react";
+import { IoClose } from "react-icons/io5";
 import { Range } from "react-range";
-
 
 const MIN = 50;
 const MAX = 900;
 const STEP = 100;
 
-const ProductFilter = ({
-  categories = [],
-  selectedCategories = [],
-  filterProducts,
-  onChange,
-  onPriceChange,
-  priceRange = { min: 50, max: 900 },
-}) => {
-  const [values, setValues] = useState([priceRange.min, priceRange.max]);
-
-  const handleChange = (values) => {
-    setValues(values);
-    onPriceChange({ min: values[0], max: values[1] });
-
-    const filteredProducts = categories.filter(
-      (item) => item.price >= values[0] && item.price <= values[1]
-    );
-
-    filterProducts(filteredProducts);
-  };
-
-  const handleCheckboxChange = (event, categoryName) => {
-    if (event.target.checked) {
-      console.log(event.target.checked);
-      onChange([...selectedCategories, categoryName]);
-    } else {
-      onChange(selectedCategories?.filter((name) => name !== categoryName));
-    }
-  };
-
+function FilterComponent({
+  categories,
+  selectedCategories,
+  handleChange,
+  handleCheckboxChange,
+  values,
+}) {
   return (
-    <div className="col-md-3 order-1 mb-5 mb-md-0">
-      <div className="border px-4 py-3 rounded mb-4">
+    <>
+      <div className="border px-4 py-3 rounded mb-4 ">
         <h3 className="mb-3 h6 text-uppercase text-black d-block">
           Categories
         </h3>
         <ul
           className="list-none pl-0 mb-0 overflow-y-auto"
           style={{
-            maxHeight: "15rem",
+            maxHeight: "32rem",
+            paddingLeft: "0px",
           }}
         >
           {categories?.map((category) => (
@@ -67,10 +46,12 @@ const ProductFilter = ({
                   }}
                 />
                 <label
-                  htmlFor={category?.name}
+                  htmlFor={category?.id}
                   className="text-md text-black mb-0 cursor-pointer"
                 >
-                  {category.name}
+                  {category.name.length > 24
+                    ? `${category.name.slice(0, 24)}...`
+                    : category.name}
                 </label>
               </div>
               <span className="text-md text-black">({category.count})</span>
@@ -133,7 +114,79 @@ const ProductFilter = ({
           Selected Price Range: Rs. {values[0]} – Rs. {values[1]}
         </div>
       </div>
-    </div>
+    </>
+  );
+}
+
+const ProductFilter = ({
+  categories = [],
+  selectedCategories = [],
+  filterProducts,
+  onChange,
+  onPriceChange,
+  priceRange = { min: 50, max: 900 },
+  openFilter,
+  handleOpenFilter,
+}) => {
+  const [values, setValues] = useState([priceRange.min, priceRange.max]);
+
+  const handleChange = (values) => {
+    setValues(values);
+    onPriceChange({ min: values[0], max: values[1] });
+
+    const filteredProducts = categories.filter(
+      (item) => item.price >= values[0] && item.price <= values[1]
+    );
+
+    filterProducts(filteredProducts);
+  };
+
+  const handleCheckboxChange = (event, categoryName) => {
+    if (event.target.checked) {
+      console.log(event.target.checked);
+      onChange([...selectedCategories, categoryName]);
+    } else {
+      onChange(selectedCategories?.filter((name) => name !== categoryName));
+    }
+  };
+
+  return (
+    <>
+      <div className="col-md-3 order-1 mb-5 mb-md-0 hidden lg:block">
+        <FilterComponent
+          categories={categories}
+          selectedCategories={selectedCategories}
+          handleChange={handleChange}
+          handleCheckboxChange={handleCheckboxChange}
+          values={values}
+        />
+      </div>
+
+      <Sidebar
+        visible={openFilter}
+        position="left"
+        onHide={handleOpenFilter}
+        showCloseIcon={false}
+        className="cart-sidebar lg:hidden"
+      >
+        <div className="bg-white h-full w-full max-w-md right-0">
+          <div className="pt-4 flex items-center justify-between mb-3">
+            <h4 className="dark-color">Filter</h4>
+            <IoClose
+              onClick={handleOpenFilter}
+              className="dark-color cursor-pointer"
+            />
+          </div>
+          <FilterComponent
+            categories={categories}
+            selectedCategories={selectedCategories}
+            handleChange={handleChange}
+            handleCheckboxChange={handleCheckboxChange}
+            values={values}
+          />
+        </div>
+      </Sidebar>
+    </>
   );
 };
 

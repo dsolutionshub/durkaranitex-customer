@@ -5,18 +5,7 @@ import "./styles.css";
 import { registerLoader } from "./loaderManager";
 
 function BouncingDots() {
-  const delays = ["-0.3s", "-0.15s", "0s"];
-  return (
-    <div className="flex space-x-2">
-      {delays.map((delay, index) => (
-        <div
-          key={index}
-          className="w-4 h-4 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 animate-bounce"
-          style={{ animationDelay: delay }}
-        ></div>
-      ))}
-    </div>
-  );
+  return <div className="dots"></div>;
 }
 
 export default function Loader() {

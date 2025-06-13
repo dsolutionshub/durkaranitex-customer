@@ -1,15 +1,16 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/navigation";
-import { useRef } from "react";
+
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import Section from "./Section";
 import ProductCard from "./ProductCard";
-import { useRouter } from "next/navigation";
 import ProductCardMobile from "./ProductCardMobile";
+
+import "swiper/css";
+import "swiper/css/navigation";
 
 const products = [
   {

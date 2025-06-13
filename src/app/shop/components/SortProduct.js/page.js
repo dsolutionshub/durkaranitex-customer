@@ -11,7 +11,7 @@ const sortOptions = [
 
 const SortProduct = ({ selected, onChange }) => {
   return (
-    <div className="w-39">
+    <div className="w-30">
       <select
         id="sort"
         value={selected}

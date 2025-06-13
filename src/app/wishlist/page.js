@@ -1,15 +1,20 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import useCartStore from "@/store/useCartStore";
-import { getWishlist, modifyWishlist} from "../api/services/authService";
 import Link from "next/link";
+
+import useCartPanelStore from "@/store/useCartPanelStore";
+import { getWishlist, modifyWishlist } from "../api/services/authService";
 import ProductCard from "../components/ProductCard";
+import { loader } from "../components/loader/loaderManager";
+import { getErrorMessage } from "../utils/helperFn";
 
 const Wishlist = () => {
+  const { handleGetCartDetail } = useCartPanelStore();
   const [wishlist, setWishlist] = useState([]);
 
   const fetchWishlist = async () => {
+    loader(true);
     try {
       const response = await getWishlist();
       if (response?.WishLists) {
@@ -23,29 +28,37 @@ const Wishlist = () => {
         setWishlist(transformed);
       }
     } catch (error) {
-      console.error("Failed to fetch wishlist:", error);
+      getErrorMessage(error);
+    } finally {
+      loader(false);
     }
+  };
+
+  const handleOpenCart = () => {
+    handleGetCartDetail();
   };
 
   useEffect(() => {
     fetchWishlist();
   }, []);
 
-const removeFromWishlist = async (id) => {
-  try {
-    const data = await modifyWishlist({ product_id: id });
-    fetchWishlist(); 
-  } catch (error) {
-    console.error("Failed to remove item from wishlist:", error);
-  }
-};
-
+  const removeFromWishlist = async (id) => {
+    loader(true);
+    try {
+      const data = await modifyWishlist({ product_id: id });
+      fetchWishlist();
+    } catch (error) {
+      getErrorMessage(error);
+    } finally {
+      loader(false);
+    }
+  };
 
   return (
     <div className="container mt-4">
       <h2 className="mb-4 text-center text-dark fs-3">My Wishlist</h2>
 
-      <div className="row mb-5">
+      <div className="row mb-5 wishlist-card">
         {wishlist.length > 0 ? (
           wishlist.map((item) => (
             <div className="col-sm-6 col-md-4 col-lg-3 mb-4" key={item.id}>
@@ -56,15 +69,17 @@ const removeFromWishlist = async (id) => {
                 image={item.image}
                 type="wishlist"
                 btn1={() => removeFromWishlist(item.id)}
-                btn2={() => console.log("Add to cart clicked")} // or your cart logic
+                btn2={handleOpenCart}
               />
             </div>
           ))
         ) : (
-          <p className="mb-5 text-center text-dark fs-5">
-            No products were added to the wishlist.{" "}
-            <Link href="/shop" className="text-primary fw-bold">
-              Back to shopping
+          <p className="mb-5 text-center text-dark fs-5 ">
+            No products were added to the wishlist page. <br />
+            <Link href="/shop" className="">
+              <button className="px-6 py-2 bg-green-800 text-white rounded-md hover:bg-green-700 transition mt-3">
+                Back to shopping
+              </button>
             </Link>
           </p>
         )}

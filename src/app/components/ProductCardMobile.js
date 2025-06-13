@@ -3,15 +3,23 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { SwiperSlide, Swiper } from "swiper/react";
 import { FeatureButtons } from "./ProductCard";
+import useCartPanelStore from "@/store/useCartPanelStore";
+
 import "swiper/css";
 import "swiper/css/navigation";
 
 const ProductCardMobile = ({ products }) => {
   const router = useRouter();
+  const { handleGetCartDetail } = useCartPanelStore();
 
   const navigateToProductDetail = () => {
     router.push("/product-detail");
   };
+
+  const handleOpenCart = () => {
+    handleGetCartDetail();
+  };
+
   return (
     <div className="d-block d-md-none  mb-4">
       <div className="relative">
@@ -22,7 +30,7 @@ const ProductCardMobile = ({ products }) => {
             minHeight: "20rem",
           }}
         >
-          {products.map((item, i) => (
+          {products?.map((item, i) => (
             <SwiperSlide key={i} className="">
               <div
                 className="flex flex-col items-center relative lg:hidden"
@@ -36,7 +44,11 @@ const ProductCardMobile = ({ products }) => {
                   height={100}
                 />
                 <div className="flex items-center gap-2 absolute top-44">
-                  <FeatureButtons />
+                  <FeatureButtons
+                    type={"heart"}
+                    btn1Func={() => {}}
+                    btn2Func={handleOpenCart}
+                  />
                 </div>
                 <div className="py-3 flex flex-col self-start">
                   <h6 className="text-black font-semibold mb-0 self-start">

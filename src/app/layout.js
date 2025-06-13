@@ -9,6 +9,7 @@ import Loader from "./components/loader/loader";
 import "./globals.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../app/styles/style.css";
+import Head from "next/head";
 
 const mukta = Mukta({
   subsets: ["latin"],
