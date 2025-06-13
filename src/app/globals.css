@@ -79,6 +79,21 @@ ul {
   }
 }
 
+.product-container-mobile {
+  @media screen and (max-width: 600px) {
+    display: flex;
+    justify-content: center;
+    margin-left: 0rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+    width: 100%;
+    .product-list-card-mobile {
+      width: 47%;
+      padding: 0px;
+    }
+  }
+}
+
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }

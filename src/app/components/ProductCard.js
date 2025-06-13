@@ -59,23 +59,6 @@ const ProductCard = ({ title, price, oldPrice, image, type, btn1, btn2 }) => {
   return (
     <>
       {/* Mobile View */}
-      {/* <div
-        className="flex flex-col items-center relative lg:hidden"
-        onClick={navigateToProductDetail}
-      >
-        <Image
-          src={image}
-          alt={title}
-          className="w-full h-80 object-cover rounded-2xl"
-          width={100}
-          height={100}
-        />
-        <div className="flex items-center gap-2 absolute top-64">
-          <FeatureButtons type={type} btn1Func={btn1} btn2Func={btn2} />
-        </div>
-        <ProductInfo title={title} price={price} oldPrice={oldPrice} />
-      </div> */}
-
       <div
         className="flex flex-col items-center relative lg:hidden"
         onClick={navigateToProductDetail}
@@ -83,7 +66,7 @@ const ProductCard = ({ title, price, oldPrice, image, type, btn1, btn2 }) => {
         <Image
           src={image}
           alt={title}
-          className="w-full h-60 object-cover rounded-2xl"
+          className="w-full h-60 object-cover rounded-2xl product-page-card-mobile"
           width={100}
           height={100}
         />
@@ -92,10 +75,11 @@ const ProductCard = ({ title, price, oldPrice, image, type, btn1, btn2 }) => {
         </div>
         <div className="py-3 flex flex-col self-start">
           <h6 className="text-black font-semibold mb-0 self-start">
-            {title?.length > 10 ? title.slice(0, 10) : title}
+            {title?.length > 18 ? `${title.slice(0, 18)}...` : title}
           </h6>
           <div className="self-start">
             <span className="primary-color font-semibold">Rs. {price}</span>{" "}
+            <br className="md:hidden" />
             {oldPrice && (
               <span className="text-muted text-decoration-line-through">
                 Rs. {oldPrice}

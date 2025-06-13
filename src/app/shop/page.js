@@ -145,11 +145,11 @@ function Shop() {
         </div>
       </div>
 
-      <div className="site-section bg-light" style={{ padding: "1rem" }}>
+      <div className="py-5 bg-light ">
         <div className="container-fluid">
           <div className="row mb-5">
             <div className="col-lg-9 order-2">
-              <div className="row">
+              <div className="row p-1">
                 <div className="col-lg-12 mb-5">
                   <div className="d-flex flex-column flex-lg-row justify-content-between align-items-start align-items-md-center">
                     <h2 className="text-black h5">Shop All</h2>
@@ -184,7 +184,7 @@ function Shop() {
                 </div>
               </div>
 
-              <div className="row mb-5">
+              <div className="row mb-md-5 md:p-1 product-container-mobile">
                 {productList?.length === 0 ? (
                   <p className="text-center text-muted w-100">
                     No products found.
@@ -192,7 +192,7 @@ function Shop() {
                 ) : (
                   productList?.map((item) => (
                     <div
-                      className="col-6 col-sm-6 col-md-4 col-lg-3 mb-4"
+                      className="col-md-4 col-lg-3 mb-4 product-list-card-mobile"
                       key={item.id}
                     >
                       <ProductCard

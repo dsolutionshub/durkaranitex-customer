@@ -49,6 +49,13 @@
   z-index: 3;
 }
 
+.product-page-card-mobile {
+  @media screen and (max-width: 600px) {
+    height: 14rem;
+    width: 16rem;
+  }
+}
+
 @media (max-width: 1023px) {
   .icon-wrapper {
     display: none;
