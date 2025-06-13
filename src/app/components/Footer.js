@@ -30,10 +30,10 @@ const quickLinks = [
 ];
 
 const userPolicies = [
-  { label: "Terms & Conditions", path: "/terms" },
-  { label: "Privacy Policy", path: "/privacy" },
-  { label: "Replacement Policy", path: "/returns" },
-  { label: "Shipping Policy", path: "/shipping" },
+  { label: "Terms & Conditions", path: "/terms-and-conditions" },
+  { label: "Privacy Policy", path: "/privacy-policy" },
+  { label: "Replacement Policy", path: "/replacement-policy" },
+  { label: "Shipping Policy", path: "/shipping-policy" },
 ];
 
 const socialLinks = [
