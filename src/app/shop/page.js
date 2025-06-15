@@ -15,9 +15,9 @@ import { getErrorMessage, getFilteredProducts } from "../utils/helperFn";
 import { getCategoryList, getProductList } from "../api/services/authService";
 import { loader } from "../components/loader/loaderManager";
 import useCartPanelStore from "@/store/useCartPanelStore";
+import { BREAD_CRUMB_HOME } from "../utils/constants";
 
 const items = [{ label: "Shop" }];
-const home = { label: "Home", url: "/" };
 
 function Shop() {
   const itemsPerPage = 8;
@@ -139,7 +139,7 @@ function Shop() {
     <>
       <BreadCrumb
         model={items}
-        home={home}
+        home={BREAD_CRUMB_HOME}
         className="pt-4 pb-2 custom-breadcrumb"
       />
       <div className="py-0 md:py-4 bg-light">
