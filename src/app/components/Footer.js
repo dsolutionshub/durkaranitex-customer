@@ -61,10 +61,10 @@ function FooterSection({ title, listItems }) {
           <li key={item.label}>
             <Link
               href={item.path}
-              className="text-black-600 hover:text-green-600 transition-colors duration-300 font-medium group inline-block"
+              className="text-black-600 hover:primary-color transition-colors duration-300 font-medium group inline-block"
             >
               {item.label}
-              <span className="block h-[2px] bg-green-600 transform scale-x-0 group-hover:scale-x-100 transition-all duration-300"></span>
+              <span className="block h-[2px] bg-[var(--primary-main)] transform scale-x-0 group-hover:scale-x-100 transition-all duration-300"></span>
             </Link>
           </li>
         ))}
@@ -101,7 +101,7 @@ export default function Footer() {
             <div className="space-y-0">
               <div className="flex items-start space-x-0">
                 <div className="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center flex-shrink-0 ">
-                  <MapPin className="w-5 h-5 text-green-600" />
+                  <MapPin className="w-5 h-5 primary-color" />
                 </div>
 
                 <div className="text-gray-600 leading-relaxed ml-3">
@@ -114,7 +114,7 @@ export default function Footer() {
 
               <div className="flex items-start space-x-0  md:mt-3 lg:mt-0 mb-3">
                 <div className="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center">
-                  <Phone className="w-5 h-5 text-green-600" />
+                  <Phone className="w-5 h-5 primary-color" />
                 </div>
                 <span className="font-medium text-gray-800 ml-3">
                   9489607841
@@ -123,7 +123,7 @@ export default function Footer() {
 
               <div className="flex items-start space-x-0">
                 <div className="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center">
-                  <Mail className="w-5 h-5 text-green-600" />
+                  <Mail className="w-5 h-5 primary-color" />
                 </div>
                 <span className="font-medium text-gray-800 ml-3">
                   dhuragaraniTex@gmail.com
@@ -147,9 +147,9 @@ export default function Footer() {
                   <Link
                     key={path}
                     href={path}
-                    className="w-11 h-11 bg-gradient-to-br from-green-100 to-green-50 rounded-xl flex items-center justify-center hover:from-green-600 hover:to-green-500 group transition-all duration-300 hover:scale-110 shadow-md"
+                    className="w-11 h-11 bg-gradient-to-br from-green-100 to-green-50 rounded-xl flex items-center justify-center hover:from-[var(--primary-main)] hover:to-green-500 group transition-all duration-300 hover:scale-110 shadow-md"
                   >
-                    <Icon className="w-5 h-5 text-green-600 group-hover:text-white" />
+                    <Icon className="w-5 h-5 primary-color group-hover:text-white" />
                   </Link>
                 ))}
               </div>

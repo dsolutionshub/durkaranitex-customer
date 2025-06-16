@@ -51,7 +51,7 @@
 .product-accordion-button {
   width: 100%;
   text-align: left;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 600;
   display: flex;
   justify-content: space-between;
@@ -97,4 +97,11 @@
     width: 100%;
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
   }
+}
+
+.product-detail-quantity-label {
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 0px;
+  color: var(--dark-color);
 }
