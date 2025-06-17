@@ -1,18 +1,20 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import { BreadCrumb } from "primereact/breadcrumb";
+
 import ImageCarousel from "./components/ProductDetailCarousel/page";
 import ProductAccordion from "./components/ProductAccordion/page";
 import SimilarProduct from "./components/SimilarProduct/page";
 import { useSearchParams } from "next/navigation";
 import { getProductDetails } from "../api/services/authService";
+import { BREAD_CRUMB_HOME } from "../utils/constants";
 
 const images = [
-  "/images/produce_detail_1.jpg",
+  "/images/produce_detail_4.webp",
   "/images/produce_detail_5.webp",
   "/images/produce_detail_3.jpg",
-  "/images/produce_detail_4.webp",
+  "/images/produce_detail_1.jpg",
 ];
 
 const sections = [
@@ -78,91 +80,22 @@ const ProductDetail = () => {
 
   return (
     <div>
-      <div className="bg-gray-100 py-3">
-        <div className="container mx-auto px-4">
-          <div className="text-sm">
-            <Link href="/" className="text-blue-600">
-              Home
-            </Link>
-            <span className="mx-2">/</span>
-            <strong className="text-black">Cotton Sarees</strong>
-          </div>
-        </div>
-      </div>
+      <BreadCrumb
+        model={[{ label: "Shop" }, { label: "Cotton Saree" }]}
+        home={BREAD_CRUMB_HOME}
+        className="custom-breadcrumb"
+      />
 
-      <div className="container mx-auto px-4 pt-10 pb-2 bg-light">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="flex flex-col md:flex-row">
-            <div className="flex flex-col md:flex-row">
-              {/* <div className="flex md:flex-col space-x-2 md:space-x-0 md:space-y-2 mb-3 md:mb-0">
-                {images.map((img, index) => (
-                  <div
-                    key={index}
-                    className={`border rounded-lg overflow-hidden cursor-pointer ${
-                      index === selectedIndex ? "border-blue-500" : ""
-                    }`}
-                    onClick={() => setSelectedIndex(index)}
-                  >
-                    <Image
-                      src={img}
-                      alt="Thumbnail"
-                      width={80}
-                      height={80}
-                      className="object-cover"
-                    />
-                  </div>
-                ))}
-              </div> */}
-
-              <div className="relative flex flex-col items-center w-full max-w-lg md:max-w-xl lg:max-w-2xl ml-md-3">
-                {/* <Carousel
-                  activeIndex={selectedIndex}
-                  onSelect={(selected) => setSelectedIndex(selected)}
-                  interval={null}
-                  className="w-full"
-                  slide={false}
-                >
-                  {images.map((img, index) => (
-                    <Carousel.Item key={index}>
-                      <div className="relative w-full overflow-hidden rounded-lg">
-                        <Image
-                          src={img}
-                          alt="Product Image"
-                          width={500 * zoom}
-                          height={500 * zoom}
-                          className="object-cover transition-transform w-full h-full"
-                          style={{ transform: `scale(${zoom})` }}
-                          priority
-                        />
-                      </div>
-                    </Carousel.Item>
-                  ))}
-                </Carousel>
-
-                <div className="flex gap-4 mt-4">
-                  <button
-                    onClick={zoomIn}
-                    className="p-2 bg-gray-200 rounded-full"
-                  >
-                    ➕
-                  </button>
-                  <button
-                    onClick={zoomOut}
-                    className="p-2 bg-gray-200 rounded-full"
-                  >
-                    ➖
-                  </button>
-                </div> */}
-
-                <ImageCarousel
-                  images={productInfo?.product?.images || []}
-                  selectedIndex={selectedIndex}
-                  setSelectedIndex={setSelectedIndex}
-                  handleZoomToggle={handleZoomToggle}
-                  zoom={zoom}
-                />
-              </div>
-            </div>
+      <div className="container mx-auto px-4 lg:pt-3 pb-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-5 xl:gap-0">
+          <div className="relative flex flex-col items-center w-full max-w-lg md:max-w-xl lg:max-w-2xl ml-md-3">
+            <ImageCarousel
+              images={images || []}
+              selectedIndex={selectedIndex}
+              setSelectedIndex={setSelectedIndex}
+              handleZoomToggle={handleZoomToggle}
+              zoom={zoom}
+            />
           </div>
 
           <ProductAccordion

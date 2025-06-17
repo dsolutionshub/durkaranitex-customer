@@ -49,7 +49,7 @@ export default function ImageCarousel({
         </Carousel>
       </div>
 
-      <div className="flex md:flex-row gap-5 mt-4 space-x-2 md:space-x-0 md:space-y-2 mb-3 md:mb-0">
+      <div className="flex md:flex-row md:gap-2 lg:gap-12 mt-4 space-x-2 md:space-x-0 md:space-y-2 mb-3 md:mb-0">
         {images?.map((img, index) => (
           <div
             key={index}

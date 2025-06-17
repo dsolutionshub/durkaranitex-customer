@@ -1147,7 +1147,7 @@ input.form-control::placeholder {
 }
 
 .product-card {
-  height: 400px;
+  /* height: 400px; */
   width: 100%;
 }
 .swiper-wrapper {
@@ -1302,6 +1302,15 @@ input.form-control::placeholder {
     height: 16rem;
     width: 100%;
   }
+
+  .custom-prev-home {
+    top: 8.5rem;
+  }
+
+  .custom-next-home {
+    top: 8.5rem;
+  }
+
   .category-content-card {
     left: 1rem;
     h3 {
