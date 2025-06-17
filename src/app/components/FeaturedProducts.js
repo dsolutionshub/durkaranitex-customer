@@ -120,13 +120,13 @@ const FeaturedCard = () => {
   );
 };
 
-export default function FeaturedProducts() {
+export default function FeaturedProducts({collection}) {
   return (
     <div className="md:px-20 feature-product-card">
       <Section
         title={"Featured Products"}
         desc={"Our hand-picked selection of the finest sarees for any occasion"}
-        section={<FeaturedCard />}
+        section={<FeaturedCard data={collection}/>}
       />
     </div>
   );

@@ -5,6 +5,8 @@ import Link from "next/link";
 import ImageCarousel from "./components/ProductDetailCarousel/page";
 import ProductAccordion from "./components/ProductAccordion/page";
 import SimilarProduct from "./components/SimilarProduct/page";
+import { useSearchParams } from "next/navigation";
+import { getProductDetails } from "../api/services/authService";
 
 const images = [
   "/images/produce_detail_1.jpg",
@@ -34,6 +36,11 @@ const sections = [
 ];
 
 const ProductDetail = () => {
+
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
+
+  const [productInfo, setProductInfo] = useState([])
   const [quantity, setQuantity] = useState(1);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [zoom, setZoom] = useState(1);
@@ -56,6 +63,18 @@ const ProductDetail = () => {
   useEffect(() => {
     setOpenIndex(0);
   }, []);
+
+  const getDetails = async () => {
+    if (!id) return;
+    const data = await getProductDetails(id)
+    setProductInfo(data)
+    console.log(data);
+    
+  }
+
+  useEffect(() => {
+    getDetails()
+  }, [id])
 
   return (
     <div>
@@ -136,7 +155,7 @@ const ProductDetail = () => {
                 </div> */}
 
                 <ImageCarousel
-                  images={images || []}
+                  images={productInfo?.product?.images || []}
                   selectedIndex={selectedIndex}
                   setSelectedIndex={setSelectedIndex}
                   handleZoomToggle={handleZoomToggle}
@@ -147,7 +166,7 @@ const ProductDetail = () => {
           </div>
 
           <ProductAccordion
-            sections={sections}
+            sections={productInfo?.product}
             openIndex={openIndex}
             toggleAccordion={toggleAccordion}
             handleDecrease={handleDecrease}

@@ -1,3 +1,4 @@
+'use client'
 import "../../style.css";
 
 export default function ProductAccordion({
@@ -11,15 +12,15 @@ export default function ProductAccordion({
   return (
     <div>
       <h2 className="text-2xl font-bold text-black">
-        Maroon Colour Kalyani Cotton Saree
+        {sections?.title}
       </h2>
       <div className="text-lg text-green-600 font-semibold mt-2">
-        Rs. 1,250.00{" "}
-        <span className="text-gray-500 line-through text-sm">Rs. 2,048.00</span>
+        {sections?.price}{" "}
+        <span className="text-gray-500 line-through text-sm">{sections?.product_price}</span>
       </div>
 
       <div style={{ width: "100%", maxWidth: "600px", margin: "0 auto" }}>
-        {sections?.map((section, index) => {
+        {[]?.map((section, index) => {
           const isOpen = openIndex === index;
 
           return (

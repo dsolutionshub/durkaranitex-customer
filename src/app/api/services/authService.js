@@ -2,11 +2,26 @@ import { apiRequest } from "./apiClient";
 import {
     CATEGORY_LIST,
     GET_CART,
+    GET_HOME,
+    PRODUCT_DETAIL,
     PRODUCT_LIST,
     REMOVE_WISH_LIST,
     UPDATE_QUANTITY,
     WISH_LIST,
 } from "@/app/utils/apiEndpoints";
+
+//Login
+export async function googleSignIn(payload){
+    const response = await apiRequest(GOOGLE_LOGIN, "POST", payload);
+    sessionStorage.setItem('token', response.token)
+    return response;
+}
+
+//Home 
+export async function getHome() {
+    const response = await apiRequest(GET_HOME, "GET");
+    return response;
+}
 
 // Product
 export async function getProductList(page, filter, category) {
@@ -16,7 +31,7 @@ export async function getProductList(page, filter, category) {
   if (category) params.append("category", category);
 
   const url = `${PRODUCT_LIST}?${params.toString()}`;
-
+ 
   const response = await apiRequest(url, "GET");
   return response;
 }
@@ -26,6 +41,10 @@ export async function getCategoryList() {
     return response;
 }
 
+export async function getProductDetails(id) {
+    const response = await apiRequest(`${PRODUCT_DETAIL}/${id}`, "GET");
+    return response;
+}
 
 // Wishlist
 export async function getWishlist() {

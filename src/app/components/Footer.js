@@ -143,9 +143,9 @@ export default function Footer() {
                 Stay Connected
               </h5>
               <div className="flex space-x-3">
-                {socialLinks.map(({ path, icon: Icon }) => (
+                {socialLinks.map(({ path, icon: Icon }, i) => (
                   <Link
-                    key={path}
+                    key={i}
                     href={path}
                     className="w-11 h-11 bg-gradient-to-br from-green-100 to-green-50 rounded-xl flex items-center justify-center hover:from-green-600 hover:to-green-500 group transition-all duration-300 hover:scale-110 shadow-md"
                   >

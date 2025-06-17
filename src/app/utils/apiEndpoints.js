@@ -1,10 +1,14 @@
 //Product
-export const PRODUCT_LIST = "/api/products-list/";
+export const PRODUCT_LIST = "/api/products-list";
 export const CATEGORY_LIST = "/api/product-categories"
+export const PRODUCT_DETAIL = "/api/product"
 
-//login
+//Login
 export const GOOGLE_LOGIN = "/api/google-signin"
 export const LOGIN = "/api/login"
+
+//Home
+export const GET_HOME = "/api/home"
 
 //Wishlist
 export const WISH_LIST = "/api/wishlist/list"

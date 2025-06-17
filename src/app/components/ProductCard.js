@@ -50,18 +50,12 @@ const ProductInfo = ({ title, price, oldPrice }) => (
 );
 
 const ProductCard = ({ title, price, oldPrice, image, type, btn1, btn2 }) => {
-  const rounter = useRouter();
-
-  const navigateToProductDetail = () => {
-    rounter.push("/product-detail");
-  };
 
   return (
     <>
       {/* Mobile View */}
       <div
         className="flex flex-col items-center relative lg:hidden"
-        onClick={navigateToProductDetail}
       >
         <Image
           src={image}
@@ -95,7 +89,6 @@ const ProductCard = ({ title, price, oldPrice, image, type, btn1, btn2 }) => {
       {/* Desktop View */}
       <div
         className="product-card group relative flex flex-col items-center hidden lg:block"
-        onClick={navigateToProductDetail}
       >
         <div className="image-wrapper">
           <Image
