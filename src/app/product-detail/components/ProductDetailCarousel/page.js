@@ -29,8 +29,8 @@ export default function ImageCarousel({
                 onDoubleClick={() => handleZoomToggle(index)}
               >
                 <Image
-                  src={img}
-                  alt={`Image ${index}`}
+                  src={img.image}
+                  alt={`Image ${img.id}`}
                   width={500}
                   height={500}
                   className={`carousel-image ${zoom === index ? "zoomed" : ""}`}

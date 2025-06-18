@@ -15,6 +15,7 @@ import { getErrorMessage, getFilteredProducts } from "../utils/helperFn";
 import { getCategoryList, getProductList } from "../api/services/authService";
 import { loader } from "../components/loader/loaderManager";
 import useCartPanelStore from "@/store/useCartPanelStore";
+import { useRouter } from 'next/navigation';
 import { BREAD_CRUMB_HOME } from "../utils/constants";
 
 const items = [{ label: "Shop" }];
@@ -135,6 +136,12 @@ function Shop() {
     // setSortedProducts(sorted);
   }, [sortOption]);
 
+  const router = useRouter();
+
+  const navigateToProductDetail = (product_id) => {
+    router.push(`/product-detail?id=${product_id}`);
+  };
+
   return (
     <>
       <BreadCrumb
@@ -191,6 +198,7 @@ function Shop() {
                     <div
                       className="col-md-4 col-lg-3 mb-4 product-list-card-mobile"
                       key={item.id}
+                      onClick={() => navigateToProductDetail(item.id)}
                     >
                       <ProductCard
                         type={"heart"}

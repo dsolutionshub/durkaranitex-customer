@@ -6,6 +6,8 @@ import { BreadCrumb } from "primereact/breadcrumb";
 import ImageCarousel from "./components/ProductDetailCarousel/page";
 import ProductAccordion from "./components/ProductAccordion/page";
 import SimilarProduct from "./components/SimilarProduct/page";
+import { useSearchParams } from "next/navigation";
+import { getProductDetails } from "../api/services/authService";
 import { BREAD_CRUMB_HOME } from "../utils/constants";
 
 const images = [
@@ -36,6 +38,11 @@ const sections = [
 ];
 
 const ProductDetail = () => {
+
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
+
+  const [productInfo, setProductInfo] = useState([])
   const [quantity, setQuantity] = useState(1);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [zoom, setZoom] = useState(1);
@@ -59,6 +66,18 @@ const ProductDetail = () => {
     setOpenIndex(0);
   }, []);
 
+  const getDetails = async () => {
+    if (!id) return;
+    const data = await getProductDetails(id)
+    setProductInfo(data)
+    console.log(data);
+    
+  }
+
+  useEffect(() => {
+    getDetails()
+  }, [id])
+
   return (
     <div>
       <BreadCrumb
@@ -80,7 +99,7 @@ const ProductDetail = () => {
           </div>
 
           <ProductAccordion
-            sections={sections}
+            sections={productInfo?.product}
             openIndex={openIndex}
             toggleAccordion={toggleAccordion}
             handleDecrease={handleDecrease}

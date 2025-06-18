@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+import { googleSignIn } from "../../services/authService";
 
 const handler = NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
@@ -14,6 +15,22 @@ const handler = NextAuth({
       session.user.id = token.sub;
       return session;
     },
+    events: {
+    async signIn({ user, account }) {
+      try {
+        const payload = {
+          email: user.email,
+          name: user.name,
+          uid: account?.providerAccountId,
+        };
+
+        const response = await googleSignIn(payload);
+        console.log("Google SignIn API response:", response);
+      } catch (err) {
+        console.error("Error calling googleSignIn:", err);
+      }
+    },
+  },
   },
 });
 
