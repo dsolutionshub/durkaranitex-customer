@@ -58,7 +58,7 @@ const ShareProductBox = () => {
         onHide={() => setVisibleBottom(false)}
         dismissableMask
         showCloseIcon={false}
-        style={{ height: "15rem", padding: "2rem" }}
+        style={{ height: "15rem", padding: "2rem", backgroundColor: "white" }}
       >
         <div className="flex flex-column gap-4">
           <div className="flex gap-4 justify-content-start">
@@ -78,7 +78,7 @@ const ShareProductBox = () => {
               onClick={() => alert("Instagram share not implemented")}
             />
             <IconButton
-              icon={<BsThreeDotsVertical size={30} className="dark-color" />}
+              icon={<BsThreeDotsVertical size={28} className="dark-color" />}
               label="More"
             />
           </div>

@@ -1,21 +1,22 @@
 "use client";
 import React, { useState } from "react";
-import ToggleSwitch from "./components/ToggleSwitch";
+import Image from "next/image";
 import { FiCreditCard } from "react-icons/fi";
 import { LiaRupeeSignSolid } from "react-icons/lia";
 import { RiDeleteBinLine } from "react-icons/ri";
-import Image from "next/image";
+
+import ToggleSwitch from "./components/ToggleSwitch";
 
 export default function CheckoutPage() {
   const [showContactAddress, setShowContactAddress] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState("payNow");
 
   return (
-    <div className="min-h-screen  py-10 px-4">
-      <h2 className="text-2xl text-center pb-4 text-black font-semibold checkout-text">
+    <div className="min-h-screen py-10 md:mx-3">
+      <h2 className="text-2xl text-center pb-1 md:pb-4 text-black font-semibold checkout-text">
         Checkout
       </h2>
-      <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-6">
+      <div className="max-w-6xl mx-auto grid lg:grid-cols-3 gap-6 ">
         <div className="md:col-span-2 space-y-6">
           <div className="bg-white p-6 rounded-xl shadow">
             <h4 className="font-semibold text-black mb-4">
@@ -46,15 +47,17 @@ export default function CheckoutPage() {
 
             <h4 className="font-semibold text-black my-4">Shipping Address</h4>
             <div className="space-y-4">
-              <div className="w-[21.5rem]">
-                <label className="block text-medium text-black font-medium">
-                  Name <span className="text-red-600">*</span>
-                </label>
-                <input
-                  type="text"
-                  className="w-full border rounded-md px-2 py-1 text-black placeholder-black"
-                  placeholder="Enter your Name"
-                />
+              <div className="grid grid-cols-1 md:grid-cols-2">
+                <div>
+                  <label className="block text-medium text-black font-medium">
+                    Name <span className="text-red-600">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full border rounded-md px-2 py-1 text-black placeholder-black"
+                    placeholder="Enter your Name"
+                  />
+                </div>
               </div>
               <div>
                 <label className="block text-medium text-black font-medium">
@@ -81,7 +84,7 @@ export default function CheckoutPage() {
                   <label className="block text-medium text-black font-medium">
                     State <span className="text-red-600">*</span>
                   </label>
-                  <select className="w-full border rounded-md px-2 py-1 text-black placeholder-black">
+                  <select className="w-full border rounded-md px-2 py-1 text-black">
                     <option>Select state</option>
                   </select>
                 </div>
@@ -107,15 +110,17 @@ export default function CheckoutPage() {
                   Contact Address
                 </h4>
                 <div className="space-y-4">
-                  <div className="w-[21.5rem]">
-                    <label className="block text-medium text-black font-medium">
-                      Name <span className="text-red-600">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      className="w-full border rounded-md px-2 py-1 text-black placeholder-black"
-                      placeholder="Enter your Name"
-                    />
+                  <div className="grid grid-cols-1 md:grid-cols-2">
+                    <div>
+                      <label className="block text-medium text-black font-medium">
+                        Name <span className="text-red-600">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        className="w-full border rounded-md px-2 py-1 text-black placeholder-black"
+                        placeholder="Enter your Name"
+                      />
+                    </div>
                   </div>
 
                   <div>

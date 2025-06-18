@@ -39,10 +39,10 @@ const userPolicies = [
 ];
 
 const socialLinks = [
-  { path: "#", icon: FaFacebookF },
-  { path: "#", icon: FaInstagram },
-  { path: "#", icon: FaLinkedinIn },
-  { path: "#", icon: FaYoutube },
+  { id: 1, path: "#", icon: FaFacebookF },
+  { id: 2, path: "#", icon: FaInstagram },
+  { id: 3, path: "#", icon: FaLinkedinIn },
+  { id: 4, path: "#", icon: FaYoutube },
 ];
 
 function FooterSection({ title, listItems }) {
@@ -143,9 +143,9 @@ export default function Footer() {
                 Stay Connected
               </h5>
               <div className="flex space-x-3">
-                {socialLinks.map(({ path, icon: Icon }) => (
+                {socialLinks.map(({ id, path, icon: Icon }) => (
                   <Link
-                    key={path}
+                    key={id}
                     href={path}
                     className="w-11 h-11 bg-gradient-to-br from-green-100 to-green-50 rounded-xl flex items-center justify-center hover:from-[var(--primary-main)] hover:to-green-500 group transition-all duration-300 hover:scale-110 shadow-md"
                   >

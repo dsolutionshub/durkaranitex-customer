@@ -2,7 +2,7 @@
 
 export default function ToggleSwitch({ enabled, setEnabled }) {
   return (
-    <div className="flex items-center space-x-3 gap-3">
+    <div className="flex flex-col md:flex-row md:items-start gap-2 md:gap-3">
       <button
         type="button"
         onClick={() => setEnabled(!enabled)}

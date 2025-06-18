@@ -1,10 +1,10 @@
 import { FaMinus, FaPlus } from "react-icons/fa6";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
-import { IoShareSocialSharp } from "react-icons/io5";
 
 import "../../style.css";
 import { useState } from "react";
 import ShareProductBox from "../ShareProductBox/page";
+import useCartPanelStore from "@/store/useCartPanelStore";
 
 export default function ProductAccordion({
   sections,
@@ -14,6 +14,7 @@ export default function ProductAccordion({
   handleIncrease,
   quantity,
 }) {
+  const { handleGetCartDetail } = useCartPanelStore();
   const [isLiked, setIsLiked] = useState(false);
 
   function handleLike() {
@@ -78,7 +79,7 @@ export default function ProductAccordion({
       </div>
 
       <div className="mt-4 flex flex-col lg:flex-row items-center md:items-center space-y-4 md:space-y-0 md:space-x-4 w-full">
-        <div className="mb-4">
+        <div className="mb-4 self-start md:self-center">
           <p className="product-detail-quantity-label">Quantity:</p>
           <div className="d-flex align-items-center	justify-content-evenly bg-gray-100 w-[9rem] h-[2.5rem] border">
             <button className="text-black " onClick={handleDecrease}>
@@ -100,7 +101,10 @@ export default function ProductAccordion({
         </div>
 
         <div className="flex flex-col md:flex-row items-center justify-center space-y-3 md:space-y-0 md:space-x-3 gap-3 product-detail-cart-btn">
-          <button className="bg-black text-white px-6 py-2 rounded text-sm w-full md:w-auto font-bold">
+          <button
+            className="bg-black text-white px-6 py-2 rounded text-sm w-full md:w-auto font-bold"
+            onClick={() => handleGetCartDetail()}
+          >
             Add To Cart
           </button>
           <button className="bg-green-800 text-white px-6 py-2 rounded text-sm w-full md:w-auto font-bold">
