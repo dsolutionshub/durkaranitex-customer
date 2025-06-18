@@ -99,6 +99,7 @@ const FeaturedCard = () => {
           {products.map((item, i) => (
             <SwiperSlide key={i} className="h-full">
               <ProductCard
+                type={"heart"}
                 title={item.title}
                 price={item.price}
                 image={item.imgsrc}
@@ -120,13 +121,13 @@ const FeaturedCard = () => {
   );
 };
 
-export default function FeaturedProducts({collection}) {
+export default function FeaturedProducts({ collection }) {
   return (
     <div className="md:px-20 feature-product-card">
       <Section
         title={"Featured Products"}
         desc={"Our hand-picked selection of the finest sarees for any occasion"}
-        section={<FeaturedCard data={collection}/>}
+        section={<FeaturedCard data={collection} />}
       />
     </div>
   );

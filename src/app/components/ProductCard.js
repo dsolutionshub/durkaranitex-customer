@@ -50,13 +50,10 @@ const ProductInfo = ({ title, price, oldPrice }) => (
 );
 
 const ProductCard = ({ title, price, oldPrice, image, type, btn1, btn2 }) => {
-
   return (
     <>
       {/* Mobile View */}
-      <div
-        className="flex flex-col items-center relative lg:hidden"
-      >
+      <div className="flex flex-col items-center relative lg:hidden">
         <Image
           src={image}
           alt={title}
@@ -67,7 +64,7 @@ const ProductCard = ({ title, price, oldPrice, image, type, btn1, btn2 }) => {
         <div className="flex items-center gap-2 absolute top-44">
           <FeatureButtons type={"heart"} btn1Func={btn1} btn2Func={btn2} />
         </div>
-        <div className="py-3 flex flex-col self-start">
+        <div className="flex flex-col self-start">
           <h6
             className="text-black font-semibold mb-0 self-start"
             title={title}
@@ -75,21 +72,21 @@ const ProductCard = ({ title, price, oldPrice, image, type, btn1, btn2 }) => {
             {title?.length > 18 ? `${title.slice(0, 18)}...` : title}
           </h6>
           <div className="self-start">
-            <span className="primary-color font-semibold">Rs. {price}</span>{" "}
-            <br className="md:hidden" />
             {oldPrice && (
               <span className="text-muted text-decoration-line-through">
                 Rs. {oldPrice}
               </span>
             )}
+            <br className="md:hidden" />
+            <span className="primary-color font-semibold">
+              Rs. {price}
+            </span>{" "}
           </div>
         </div>
       </div>
 
       {/* Desktop View */}
-      <div
-        className="product-card group relative flex flex-col items-center hidden lg:block"
-      >
+      <div className="product-card group relative flex flex-col items-center hidden lg:block">
         <div className="image-wrapper">
           <Image
             src={image}

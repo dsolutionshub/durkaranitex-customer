@@ -3,19 +3,24 @@ import Image from "next/image";
 
 import { formatPrice } from "@/app/utils/helperFn";
 
-const CartProducts = ({ products, decreaseCount, increaseCount }) => {
+const CartProducts = ({
+  products,
+  decreaseCount,
+  increaseCount,
+  removeFromCart,
+}) => {
   return (
     <>
-      {/* Mobile  */}
-      <div className="d-block d-md-none w-100  px-2 mb-4">
-        <div className="text-black d-flex justify-content-between ">
+      {/* Mobile */}
+      <div className="d-block d-md-none w-100 px-2 mb-4">
+        <div className="text-black d-flex justify-content-between">
           <p className="mb-0">Product</p>
           <p className="mb-0">Price</p>
         </div>
         <hr className="m-0 pb-2" />
         {products.map((item) => (
           <div key={item.id}>
-            <div className=" d-flex justify-content-between align-items-center my-3">
+            <div className="d-flex justify-content-between align-items-center my-3">
               <div className="d-flex gap-2">
                 <Image
                   src={item?.imgSrc}
@@ -39,7 +44,8 @@ const CartProducts = ({ products, decreaseCount, increaseCount }) => {
               </p>
             </div>
 
-            <div className="d-flex align-items-center	justify-content-evenly bg-gray-100 w-[7rem] h-[2.5rem] border">
+            {/* Quantity Buttons */}
+            <div className="d-flex align-items-center justify-content-evenly bg-gray-100 w-[7rem] h-[2.5rem] border">
               <button
                 className="text-black fs-1"
                 onClick={() => decreaseCount(item?.id)}
@@ -48,7 +54,7 @@ const CartProducts = ({ products, decreaseCount, increaseCount }) => {
               </button>
               <p className="mb-0 text-black">{item?.quantity}</p>
               <button
-                className="text-black "
+                className="text-black"
                 onClick={() => increaseCount(item?.id)}
               >
                 +
@@ -59,6 +65,7 @@ const CartProducts = ({ products, decreaseCount, increaseCount }) => {
         ))}
       </div>
 
+      {/* Desktop */}
       <div className="d-none d-md-block row mb-5">
         <table className="table table-bordered" style={{ width: "100%" }}>
           <thead style={{ fontSize: "20px" }}>
@@ -109,34 +116,32 @@ const CartProducts = ({ products, decreaseCount, increaseCount }) => {
                 </td>
                 <td className="py-4">Rs. {product.price}</td>
 
-                <td className="p-4 ">
+                {/* Desktop Quantity Buttons */}
+                <td className="p-4">
                   <div
-                    className="input-group mb-3"
-                    style={{ maxWidth: "120px", margin: "auto" }}
+                    className="d-flex align-items-center justify-content-evenly bg-gray-100 w-[7rem] h-[2.5rem] border"
+                    style={{ margin: "auto" }}
                   >
-                    <div className="input-group-prepend">
-                      <button
-                        className="btn btn-outline-primary js-btn-minus"
-                        onClick={() => decreaseCount(product.id)}
-                      >
-                        -
-                      </button>
-                    </div>
-                    <input
-                      type="text"
-                      className="form-control text-center"
-                      defaultValue={product.quantity}
-                    />
-                    <div className="input-group-append">
-                      <button
-                        className="btn btn-outline-primary js-btn-plus"
-                        onClick={() => increaseCount(product.id)}
-                      >
-                        +
-                      </button>
-                    </div>
+                    <button
+                      className="text-black fs-1"
+                      onClick={() => decreaseCount(product.id)}
+                    >
+                      -
+                    </button>
+                    <p className="mb-0 text-black">{product.quantity}</p>
+                    <button
+                      className="text-black"
+                      onClick={() => increaseCount(product.id)}
+                      style={{
+                        fontWeight: "600",
+                        fontSize: "1.2rem",
+                      }}
+                    >
+                      +
+                    </button>
                   </div>
                 </td>
+
                 <td className="py-4">
                   Rs. {product.quantity * formatPrice(product.price)}
                 </td>

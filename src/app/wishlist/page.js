@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
+import { Heart } from "lucide-react";
+
 import useCartPanelStore from "@/store/useCartPanelStore";
 import { getWishlist, modifyWishlist } from "../api/services/authService";
 import ProductCard from "../components/ProductCard";
@@ -38,10 +40,6 @@ const Wishlist = () => {
     handleGetCartDetail();
   };
 
-  useEffect(() => {
-    fetchWishlist();
-  }, []);
-
   const removeFromWishlist = async (id) => {
     loader(true);
     try {
@@ -53,6 +51,10 @@ const Wishlist = () => {
       loader(false);
     }
   };
+
+  useEffect(() => {
+    fetchWishlist();
+  }, []);
 
   return (
     <div className="container mt-4">
@@ -74,11 +76,16 @@ const Wishlist = () => {
             </div>
           ))
         ) : (
-          <p className="mb-5 text-center text-dark fs-5 ">
-            No products were added to the wishlist page. <br />
+          <p className="mb-5 text-center text-dark fs-5">
+            <Heart size={66} className="mx-auto text-gray-300 mb-3" />
+            <span className="d-block fw-bold text-xl mb-2">
+              Your wishlist is empty
+            </span>
+            Save your favorite sarees here!
+            <br />
             <Link href="/shop" className="">
-              <button className="px-6 py-2 bg-green-800 text-white rounded-md hover:bg-green-700 transition mt-3">
-                Back to shopping
+              <button className="bg-green-800 text-white py-2 px-3 rounded mt-3">
+                Explore Sarees
               </button>
             </Link>
           </p>

@@ -3,21 +3,29 @@
 import React, { useCallback, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FaRegHeart, FaRegUser } from "react-icons/fa";
-import { IoCartOutline } from "react-icons/io5";
+
+import SidePanelCart from "./sidePanelCart/SidePanelCart";
+import useCartPanelStore from "@/store/useCartPanelStore";
+
+import {
+  FaRegAddressCard,
+  FaRegEnvelope,
+  FaRegHeart,
+  FaRegUser,
+} from "react-icons/fa";
 import {
   HiOutlineMenu,
   HiOutlineX,
   HiOutlineChevronRight,
+  HiOutlineHome,
 } from "react-icons/hi";
-import SidePanelCart from "./sidePanelCart/SidePanelCart";
-import useCartPanelStore from "@/store/useCartPanelStore";
+import { IoBagOutline, IoCartOutline } from "react-icons/io5";
 
 const navItems = [
-  { name: "Home", href: "/" },
-  { name: "Shop", href: "/shop" },
-  { name: "About us", href: "/about" },
-  { name: "Contact", href: "/contact" },
+  { name: "Home", href: "/", icon: <HiOutlineHome /> },
+  { name: "Shop", href: "/shop", icon: <IoBagOutline /> },
+  { name: "About us", href: "/about", icon: <FaRegAddressCard /> },
+  { name: "Contact", href: "/contact", icon: <FaRegEnvelope /> },
 ];
 
 export default function Navbar() {
@@ -108,15 +116,17 @@ export default function Navbar() {
         </div>
 
         {/* Menu Items */}
-        <ul className="flex flex-col px-4 pt-4 text-gray-700 text-lg ">
+        <ul className="flex flex-col px-4 pt-4 text-gray-700 text-lg">
           {navItems.map((item) => (
             <li key={item.name}>
               <Link
                 href={item.href}
                 onClick={() => setMenuOpen(false)}
-                className="flex justify-between items-center py-1 hover:text-blue-500 primary-color"
+                className="flex justify-between items-center py-2 hover:text-blue-500 primary-color"
               >
-                {item.name}
+                <span className="flex items-center gap-2">
+                  {item.icon} {item.name}
+                </span>
                 <HiOutlineChevronRight className="text-xl" />
               </Link>
               <hr className="border-gray-300" />
@@ -154,7 +164,6 @@ export default function Navbar() {
           </li>
         </ul>
       </div>
-
       <SidePanelCart />
     </nav>
   );

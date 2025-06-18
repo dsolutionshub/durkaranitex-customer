@@ -77,7 +77,7 @@ const SidePanelCart = () => {
           />
         </div>
 
-        <div className="flex-grow overflow-y-auto mt-3">
+        <div className="flex-grow overflow-y-auto mt-2">
           {cartProducts?.length > 0 ? (
             <>
               <div className="cart-sidepanel-container">
@@ -92,19 +92,18 @@ const SidePanelCart = () => {
                         className="h-24 w-24 md:w-30 md:h-30 object-cover rounded-md"
                       />
                       <div className="flex-1 ">
-                        <h6 className="text-xlg dark-color mb-1 d-none d-md-block">
-                          {product.title}
-                        </h6>
                         <h6
-                          className="text-xlg dark-color mb-1 d-md-none"
+                          className="text-xlg dark-color mb-1  product-title"
                           title={product.title}
                         >
-                          {product.title?.length > 18
-                            ? `${product?.title?.slice(0, 18)}...`
-                            : product.title}
+                          {product.title}
                         </h6>
+
                         <p className=" text-md dark-color mb-1">
-                          Rs. {product.price}
+                          <span className="text-gray-500 line-through">
+                            Rs. {product.oldPrice || 100000.0}
+                          </span>{" "}
+                          <br /> Rs. {product.price}
                         </p>
                         <div className="d-none d-md-block">
                           <RenderQuantity

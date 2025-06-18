@@ -149,13 +149,13 @@ function Shop() {
         home={BREAD_CRUMB_HOME}
         className="pt-4 pb-2 custom-breadcrumb"
       />
-      <div className="py-0 md:py-4 bg-light">
+      <div className="py-0 md:py-4 pt-1">
         <div className="container-fluid">
-          <div className="row mb-5">
+          <div className="row">
             <div className="col-xl-9 order-2">
               <div className="row p-1">
-                <div className="col-xl-12 mb-5">
-                  <div className="d-flex flex-column flex-xl-row justify-content-between align-items-start align-items-md-center">
+                <div className="col-xl-12">
+                  <div className="d-flex flex-column flex-xl-row justify-content-between align-items-center">
                     <h2 className="text-black h5">Shop All</h2>
                     <div className="input-group mb-3 mb-xl-0 product-detail-search">
                       <input
@@ -188,7 +188,7 @@ function Shop() {
                 </div>
               </div>
 
-              <div className="row mb-md-5 md:p-1 product-container-mobile">
+              <div className="row my-5 md:p-1 product-container-mobile">
                 {productList?.length === 0 ? (
                   <p className="text-center text-muted w-100">
                     No products found.
@@ -196,7 +196,7 @@ function Shop() {
                 ) : (
                   productList?.map((item) => (
                     <div
-                      className="col-md-4 col-lg-3 mb-4 product-list-card-mobile"
+                      className="col-md-4 col-lg-3 md:mb-4 product-list-card-mobile"
                       key={item.id}
                       onClick={() => navigateToProductDetail(item.id)}
                     >
