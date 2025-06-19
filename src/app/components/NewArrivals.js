@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
@@ -7,9 +8,8 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import ProductCard from "./ProductCard";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import Section from "./Section";
-import { useRouter } from "next/navigation";
 import ProductCardMobile from "./ProductCardMobile";
+import Section from "./Section";
 
 const tabData = [
   { id: 1, label: "Silk Cotton" },
@@ -292,5 +292,11 @@ const CollectionTab = () => {
 };
 
 export default function Collections() {
-  return <Section title={"NEW COLLECTIONS"} section={<CollectionTab />} />;
+  return (
+    <Section
+      title={"NEW COLLECTIONS"}
+      section={<CollectionTab />}
+      desc={"Discover our latest additions to keep you in style"}
+    />
+  );
 }

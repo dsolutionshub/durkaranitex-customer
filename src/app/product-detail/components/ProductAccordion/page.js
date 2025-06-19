@@ -23,9 +23,7 @@ export default function ProductAccordion({
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-black">
-        {sections?.title}
-      </h2>
+      <h2 className="text-2xl font-bold text-black">{sections?.title}</h2>
       <div className="flex justify-between items-center">
         <div className="text-lg primary-color font-semibold mt-2">
           Rs. 1,250.00{" "}

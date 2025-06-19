@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { BreadCrumb } from "primereact/breadcrumb";
+import { useSearchParams } from "next/navigation";
 
 import ImageCarousel from "./components/ProductDetailCarousel/page";
 import ProductAccordion from "./components/ProductAccordion/page";
 import SimilarProduct from "./components/SimilarProduct/page";
-import { useSearchParams } from "next/navigation";
+import CustomBreadCrumb from "../components/CustomBreadCrumb";
+
 import { getProductDetails } from "../api/services/authService";
-import { BREAD_CRUMB_HOME } from "../utils/constants";
 
 const images = [
   "/images/produce_detail_4.webp",
@@ -38,11 +38,10 @@ const sections = [
 ];
 
 const ProductDetail = () => {
-
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
 
-  const [productInfo, setProductInfo] = useState([])
+  const [productInfo, setProductInfo] = useState([]);
   const [quantity, setQuantity] = useState(1);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [zoom, setZoom] = useState(1);
@@ -68,22 +67,19 @@ const ProductDetail = () => {
 
   const getDetails = async () => {
     if (!id) return;
-    const data = await getProductDetails(id)
-    setProductInfo(data)
+    const data = await getProductDetails(id);
+    setProductInfo(data);
     console.log(data);
-    
-  }
+  };
 
   useEffect(() => {
-    getDetails()
-  }, [id])
+    getDetails();
+  }, [id]);
 
   return (
     <div>
-      <BreadCrumb
+      <CustomBreadCrumb
         model={[{ label: "Shop" }, { label: "Cotton Saree" }]}
-        home={BREAD_CRUMB_HOME}
-        className="custom-breadcrumb"
       />
 
       <div className="container mx-auto px-4 lg:pt-3 pb-2">
@@ -99,7 +95,7 @@ const ProductDetail = () => {
           </div>
 
           <ProductAccordion
-            sections={productInfo?.product}
+            sections={productInfo?.product || []}
             openIndex={openIndex}
             toggleAccordion={toggleAccordion}
             handleDecrease={handleDecrease}

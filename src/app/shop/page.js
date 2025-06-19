@@ -1,24 +1,23 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { BreadCrumb } from "primereact/breadcrumb";
 import { FaSearch } from "react-icons/fa";
 import { BiFilterAlt } from "react-icons/bi";
+import { useRouter } from "next/navigation";
 
-import useCartStore from "@/store/useCartStore";
 import ProductCard from "../components/ProductCard";
-import collections from "./productList.json";
 import SortProduct from "./components/SortProduct.js/page";
+import CustomBreadCrumb from "../components/CustomBreadCrumb";
 import ProductPagination from "./components/ProductPagination/page";
 import ProductFilter from "./components/ProductFilter/page";
+import { loader } from "../components/loader/loaderManager";
+
+import collections from "./productList.json";
+import useCartPanelStore from "@/store/useCartPanelStore";
+import useCartStore from "@/store/useCartStore";
 import { getErrorMessage, getFilteredProducts } from "../utils/helperFn";
 import { getCategoryList, getProductList } from "../api/services/authService";
-import { loader } from "../components/loader/loaderManager";
-import useCartPanelStore from "@/store/useCartPanelStore";
-import { useRouter } from 'next/navigation';
-import { BREAD_CRUMB_HOME } from "../utils/constants";
-
-const items = [{ label: "Shop" }];
+import { SHOP_MODEL } from "../utils/constants";
 
 function Shop() {
   const itemsPerPage = 8;
@@ -144,11 +143,7 @@ function Shop() {
 
   return (
     <>
-      <BreadCrumb
-        model={items}
-        home={BREAD_CRUMB_HOME}
-        className="pt-4 pb-2 custom-breadcrumb"
-      />
+      <CustomBreadCrumb model={SHOP_MODEL} />
       <div className="py-0 md:py-4 pt-1">
         <div className="container-fluid">
           <div className="row">

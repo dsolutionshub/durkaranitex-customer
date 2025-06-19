@@ -2,6 +2,7 @@
 
 import React, { useCallback, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 import SidePanelCart from "./sidePanelCart/SidePanelCart";
@@ -23,7 +24,7 @@ import { IoBagOutline, IoCartOutline } from "react-icons/io5";
 
 const navItems = [
   { name: "Home", href: "/", icon: <HiOutlineHome /> },
-  { name: "Shop", href: "/shop", icon: <IoBagOutline /> },
+  { name: "Products", href: "/shop", icon: <IoBagOutline /> },
   { name: "About us", href: "/about", icon: <FaRegAddressCard /> },
   { name: "Contact", href: "/contact", icon: <FaRegEnvelope /> },
 ];
@@ -38,11 +39,20 @@ export default function Navbar() {
     handleGetCartDetail();
   }, [isCartOpen]);
 
+  const handleNavigateHome = () => {
+    router.push("/");
+  };
+
   return (
-    <nav className="bg-white shadow-md px-4 py-3 relative z-50">
+    <nav
+      className="bg-white shadow-md px-4 py-[1.2rem] md:py-[.7rem] relative z-50"
+      style={{
+        position: "sticky",
+        top: "0rem",
+      }}
+    >
       {/* Mobile Navbar */}
       <div className="flex items-center justify-between lg:hidden relative">
-        {/* Hamburger Icon */}
         <div
           onClick={() => setMenuOpen(true)}
           className="text-2xl cursor-pointer"
@@ -50,12 +60,17 @@ export default function Navbar() {
           <HiOutlineMenu />
         </div>
 
-        {/* Center Logo */}
         <div className="absolute left-1/2 transform -translate-x-1/2">
-          <img src="/images/home/logo.svg" alt="logo" className="h-10" />
+          <Image
+            src={"/images/home/logo.svg"}
+            height={100}
+            width={400}
+            alt="logo"
+            className="h-[2.7rem] w-[8rem] cursor-pointer"
+            onClick={handleNavigateHome}
+          />
         </div>
 
-        {/* Cart Icon */}
         <IoCartOutline
           className="text-2xl cursor-pointer primary-color"
           onClick={handlePanel}
@@ -64,9 +79,16 @@ export default function Navbar() {
 
       {/* Desktop Navbar */}
       <div className="hidden lg:flex items-center justify-between ">
-        <img src="/images/home/logo.svg" alt="logo" className="h-14" />
+        <Image
+          src={"/images/home/logo.svg"}
+          height={100}
+          width={400}
+          alt="logo"
+          className="h-[3.5rem] w-[12rem] cursor-pointer"
+          onClick={handleNavigateHome}
+        />
 
-        <ul className="flex gap-8 text-lg font-semibold uppercase text-gray-700">
+        <ul className="flex gap-8 text-lg font-semibold text-gray-700 mb-0">
           {navItems.map((item) => (
             <li key={item.name}>
               <Link
@@ -92,7 +114,6 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Overlay */}
       {menuOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-40"
@@ -100,13 +121,11 @@ export default function Navbar() {
         />
       )}
 
-      {/* Side Panel */}
       <div
         className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-50 transform transition-transform duration-300 ${
           menuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        {/* Header */}
         <div className="flex items-center justify-between px-4 py-4 border-b">
           <span className="text-lg font-bold">Menu</span>
           <HiOutlineX
@@ -115,7 +134,6 @@ export default function Navbar() {
           />
         </div>
 
-        {/* Menu Items */}
         <ul className="flex flex-col px-4 pt-4 text-gray-700 text-lg">
           {navItems.map((item) => (
             <li key={item.name}>
@@ -133,7 +151,6 @@ export default function Navbar() {
             </li>
           ))}
 
-          {/* Wishlist */}
           <li>
             <Link
               href="/wishlist"
@@ -148,7 +165,6 @@ export default function Navbar() {
             <hr className="border-gray-300" />
           </li>
 
-          {/* Login */}
           <li>
             <Link
               href="/login"

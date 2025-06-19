@@ -134,8 +134,9 @@ select option:first-child {
   scrollbar-width: none;
 }
 
+/* .custom-breadcrumb-container */
 .custom-breadcrumb {
-  padding: 2rem 0 0.4rem 0;
+  padding: 2rem 0 0 0;
   a {
     text-decoration: none;
     font-size: 1.2rem;
@@ -147,7 +148,6 @@ select option:first-child {
   }
   @media screen and (max-width: 600px) {
     padding: 1.6rem 0 0.4rem 0;
-
     a {
       font-size: 1rem;
     }

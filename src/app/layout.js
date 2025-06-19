@@ -1,4 +1,3 @@
-
 import Image from "next/image";
 import Link from "next/link";
 import { Mukta } from "next/font/google";
@@ -28,7 +27,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <Head>
-        <script src="https://accounts.google.com/gsi/client" async defer></script>
+        <script
+          src="https://accounts.google.com/gsi/client"
+          async
+          defer
+        ></script>
       </Head>
       <body className={mukta.className}>
         <PrimeReactProvider>
