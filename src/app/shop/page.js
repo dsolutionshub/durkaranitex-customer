@@ -151,7 +151,7 @@ function Shop() {
               <div className="row p-1">
                 <div className="col-xl-12">
                   <div className="d-flex flex-column flex-xl-row justify-content-between align-items-center">
-                    <h2 className="text-black h5">Shop All</h2>
+                    <h2 className="text-black h5">Our Saree Collection</h2>
                     <div className="input-group mb-3 mb-xl-0 product-detail-search">
                       <input
                         type="text"

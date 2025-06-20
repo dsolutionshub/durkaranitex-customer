@@ -9,24 +9,24 @@ import SidePanelCart from "./sidePanelCart/SidePanelCart";
 import useCartPanelStore from "@/store/useCartPanelStore";
 
 import {
-  FaRegAddressCard,
-  FaRegEnvelope,
-  FaRegHeart,
-  FaRegUser,
-} from "react-icons/fa";
-import {
-  HiOutlineMenu,
-  HiOutlineX,
-  HiOutlineChevronRight,
-  HiOutlineHome,
-} from "react-icons/hi";
-import { IoBagOutline, IoCartOutline } from "react-icons/io5";
+  Heart,
+  User,
+  ShoppingCart,
+  Menu,
+  X,
+  ChevronRight,
+  Home,
+  Info,
+  Mail,
+  ShoppingBag,
+} from "lucide-react";
+
 
 const navItems = [
-  { name: "Home", href: "/", icon: <HiOutlineHome /> },
-  { name: "Products", href: "/shop", icon: <IoBagOutline /> },
-  { name: "About us", href: "/about", icon: <FaRegAddressCard /> },
-  { name: "Contact", href: "/contact", icon: <FaRegEnvelope /> },
+  { name: "Home", href: "/", icon: <Home /> },
+  { name: "Products", href: "/shop", icon: <ShoppingBag /> },
+  { name: "About us", href: "/about", icon: <Info /> },
+  { name: "Contact", href: "/contact", icon: <Mail /> },
 ];
 
 export default function Navbar() {
@@ -57,7 +57,7 @@ export default function Navbar() {
           onClick={() => setMenuOpen(true)}
           className="text-2xl cursor-pointer"
         >
-          <HiOutlineMenu />
+          <Menu />
         </div>
 
         <div className="absolute left-1/2 transform -translate-x-1/2">
@@ -71,7 +71,7 @@ export default function Navbar() {
           />
         </div>
 
-        <IoCartOutline
+        <ShoppingCart
           className="text-2xl cursor-pointer primary-color"
           onClick={handlePanel}
         />
@@ -102,15 +102,15 @@ export default function Navbar() {
         </ul>
 
         <div className="flex items-center gap-6 text-2xl pr-5">
-          <FaRegHeart
+          <Heart
             className="cursor-pointer primary-color"
             onClick={() => router.push("/wishlist")}
           />
-          <IoCartOutline
+          <ShoppingBag
             className="cursor-pointer primary-color"
             onClick={handlePanel}
           />
-          <FaRegUser className="cursor-pointer primary-color" />
+          <User className="cursor-pointer primary-color" />
         </div>
       </div>
 
@@ -128,7 +128,7 @@ export default function Navbar() {
       >
         <div className="flex items-center justify-between px-4 py-4 border-b">
           <span className="text-lg font-bold">Menu</span>
-          <HiOutlineX
+          <X
             className="text-2xl cursor-pointer"
             onClick={() => setMenuOpen(false)}
           />
@@ -145,7 +145,7 @@ export default function Navbar() {
                 <span className="flex items-center gap-2">
                   {item.icon} {item.name}
                 </span>
-                <HiOutlineChevronRight className="text-xl" />
+                <ChevronRight className="text-xl" />
               </Link>
               <hr className="border-gray-300" />
             </li>
@@ -158,9 +158,9 @@ export default function Navbar() {
               className="flex justify-between items-center py-2 hover:text-blue-500 primary-color"
             >
               <span className="flex items-center gap-2">
-                <FaRegHeart /> Wishlist
+                <Heart /> Wishlist
               </span>
-              <HiOutlineChevronRight className="text-xl" />
+              <ChevronRight className="text-xl" />
             </Link>
             <hr className="border-gray-300" />
           </li>
@@ -172,9 +172,9 @@ export default function Navbar() {
               className="flex justify-between items-center py-2 hover:text-blue-500 primary-color"
             >
               <span className="flex items-center gap-2">
-                <FaRegUser /> Login
+                <User /> Login
               </span>
-              <HiOutlineChevronRight className="text-xl" />
+              <ChevronRight className="text-xl" />
             </Link>
             <hr className="border-gray-300" />
           </li>

@@ -3,7 +3,7 @@ import { Image } from "primereact/image";
 import Section from "./Section";
 
 const collections = [
-  { id: 1, title: "Soft silk sarees", imgSrc: "/images/1.jpeg", isLarge: true },
+  { id: 1, title: "Soft silk sarees", imgSrc: "/images/image.jpeg", isLarge: true },
   {
     id: 2,
     title: "Semi soft silk sarees",
@@ -19,7 +19,7 @@ const collections = [
   {
     id: 4,
     title: "Banarasi tissue silk Sarees",
-    imgSrc: "/images/4.jpeg",
+    imgSrc: "/images/image (1).jpeg",
     isLarge: true,
   },
 ];
