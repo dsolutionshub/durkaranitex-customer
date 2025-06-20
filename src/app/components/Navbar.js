@@ -66,7 +66,7 @@ export default function Navbar() {
             height={100}
             width={400}
             alt="logo"
-            className="h-[2.7rem] w-[8rem] cursor-pointer"
+            className="h-[9.7rem] w-[8rem] cursor-pointer"
             onClick={handleNavigateHome}
           />
         </div>
