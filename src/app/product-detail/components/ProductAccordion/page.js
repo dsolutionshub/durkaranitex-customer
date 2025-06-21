@@ -1,3 +1,4 @@
+"use client"
 import { FaMinus, FaPlus } from "react-icons/fa6";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 
