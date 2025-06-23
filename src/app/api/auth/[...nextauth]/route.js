@@ -17,12 +17,6 @@ const handler = NextAuth({
   callbacks: {
     async jwt({ token, account, profile }) {
       if (account && profile) {
-        console.log("Calling backend API with:", {
-          email: profile.email,
-          name: profile.name,
-          googleId: profile.sub,
-        });
-
         try {
           const response = await googleSignIn({
             email: profile.email,

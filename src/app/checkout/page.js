@@ -18,6 +18,7 @@ export default function CheckoutPage() {
   const router = useRouter();
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
     if (status === "loading") return;
     if (!session) {
       router.push("/login");

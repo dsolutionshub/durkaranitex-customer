@@ -71,6 +71,9 @@ import OrderHistory from "./components/OrderHistory";
 import AccountDetails from "./components/AccountDetails";
 import AddressForm from "./components/Addresses";
 import { getProfileInfo } from "../api/services/authService";
+import { getErrorMessage } from "../utils/helperFn";
+import { loader } from "../components/loader/loaderManager";
+import { signOut } from "next-auth/react";
 
 const tabs = [
   { key: "account", label: "Account", Icon: User },
@@ -79,32 +82,51 @@ const tabs = [
   { key: "logout", label: "Log Out", Icon: LogOut },
 ];
 
-export default function AccountPage() {
-  const [selectedTab, setSelectedTab] = useState("account");
-  const [profileInfo, setProfileInfo] = useState([])
-  
-  const profile_info = async()=>{
-    const {customer} = await getProfileInfo()
-    setProfileInfo(customer)
-  }
-
-  useEffect(()=>{
-     profile_info()
-  },[])
-
-  const renderContent = (selectedTab) => {
-  switch (selectedTab) {
-    case "account":
-      return <AccountDetails data={profileInfo} />;
-    case "orders":
-      return <OrderHistory />;
-    case "addresses":
-      return <AddressForm />;
-    default:
-      return null;
-  }
+const LogOutComponent = ({ handleLogout }) => {
+  return (
+    <button className="dark-color" onClick={handleLogout}>
+      Logout
+    </button>
+  );
 };
 
+export default function AccountPage() {
+  const [selectedTab, setSelectedTab] = useState("account");
+  const [profileInfo, setProfileInfo] = useState([]);
+
+  const handleLogout = () => {
+    sessionStorage.removeItem("accessToken");
+    signOut({ callbackUrl: "/login" });
+  };
+
+  const profile_info = async () => {
+    loader(true);
+    try {
+      const { customer } = await getProfileInfo();
+      setProfileInfo(customer || []);
+    } catch (error) {
+      getErrorMessage(error);
+    } finally {
+      loader(false);
+    }
+  };
+
+  useEffect(() => {
+    profile_info();
+  }, []);
+
+  const renderContent = (selectedTab) => {
+    switch (selectedTab) {
+      case "account":
+        return <AccountDetails data={profileInfo} />;
+      case "orders":
+        return <OrderHistory />;
+      case "addresses":
+        return <AddressForm />;
+      default:
+        return <LogOutComponent handleLogout={handleLogout} />;
+    }
+  };
 
   return (
     <div className="px-4 py-10 min-h-screen">

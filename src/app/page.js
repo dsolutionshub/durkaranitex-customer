@@ -9,16 +9,25 @@ import NewCollections from "./components/NewArrivals";
 import CategorySection from "./components/CategoryCard";
 
 import { getHome } from "./api/services/authService";
+import { getErrorMessage } from "./utils/helperFn";
+import { loader } from "./components/loader/loaderManager";
 
 export default function Home() {
   const [homeDetails, setHomeDetails] = useState([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
+  const fetchData = async () => {
+    loader(true);
+    try {
       const data = await getHome();
       setHomeDetails(data);
-    };
+    } catch (error) {
+      getErrorMessage(error);
+    } finally {
+      loader(false);
+    }
+  };
 
+  useEffect(() => {
     fetchData();
   }, []);
 
