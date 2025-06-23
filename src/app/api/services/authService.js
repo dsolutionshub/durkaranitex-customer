@@ -1,11 +1,20 @@
 import { apiRequest } from "./apiClient";
 import {
+    ADD_CART,
+    ADD_CUSTOMER_ADDRESS,
     CATEGORY_LIST,
+    DELETE_CUSTOMER_ADDRESS,
     GET_CART,
+    GET_CUSTOMER_ADDRESS_LIST,
     GET_HOME,
+    GET_STATE_LIST,
+    GOOGLE_LOGIN,
+    LOGIN_CHECK,
     PRODUCT_DETAIL,
     PRODUCT_LIST,
+    PROFILE_INFO,
     REMOVE_WISH_LIST,
+    UPDATE_CUSTOMER_ADDRESS,
     UPDATE_QUANTITY,
     WISH_LIST,
 } from "@/app/utils/apiEndpoints";
@@ -13,7 +22,11 @@ import {
 //Login
 export async function googleSignIn(payload){
     const response = await apiRequest(GOOGLE_LOGIN, "POST", payload);
-    sessionStorage.setItem('token', response.token)
+    return response;
+}
+
+export async function loginCheck() {
+    const response = await apiRequest(LOGIN_CHECK, "GET");
     return response;
 }
 
@@ -71,4 +84,41 @@ export async function updateQuantity(payload) {
 export async function deleteQuantity(payload) {
     const response = await apiRequest(UPDATE_QUANTITY, "POST", payload);
     return response;
+}
+
+export async function modifyCart(payload) {
+    const response = await apiRequest(ADD_CART, "POST", payload);
+    return response;
+}
+
+//Address
+export async function getStateList(){
+    const response = await apiRequest(GET_STATE_LIST, 'GET')
+    return response
+}
+
+export async function getCustomerAddressList(){
+    const response = await apiRequest(GET_CUSTOMER_ADDRESS_LIST, 'GET')
+    return response
+}
+
+export async function addAddress(payload) {
+    const response = await apiRequest(ADD_CUSTOMER_ADDRESS, "POST", payload);
+    return response;
+}
+
+export async function updateAddress(payload, id) {
+    const response = await apiRequest(`${UPDATE_CUSTOMER_ADDRESS}/${id}`, "POST", payload);
+    return response;
+}
+
+export async function deleteAddress(payload, id) {
+    const response = await apiRequest(`${DELETE_CUSTOMER_ADDRESS}/${id}`, "POST", payload);
+    return response;
+}
+
+//Profile
+export async function getProfileInfo(){
+    const response = await apiRequest(PROFILE_INFO, 'GET')
+    return response
 }

@@ -144,55 +144,83 @@
 
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddressForm from "../components/AddressForm";
 import { MapPin, User, Mail, Phone, Home, Edit, Trash } from "lucide-react";
+import { addAddress, deleteAddress, getCustomerAddressList, getStateList, updateAddress } from "@/app/api/services/authService";
+import { GET_STATE_LIST } from "@/app/utils/apiEndpoints";
+import { getErrorMessage } from "@/app/utils/helperFn";
+import { loader } from "@/app/components/loader/loaderManager";
 
 export default function AddressPage() {
-  const [addresses, setAddresses] = useState([
-    {
-      id: 1,
-      fullName: "Loosu Preethi",
-      email: "preethi@example.com",
-      phone: "9876543210",
-      street:
-        "6/380, Ashok Nagar, Perumagoundampatti, Salem, Tamil Nadu 637502",
-      city: "Chennai",
-      state: "Tamil Nadu",
-      isDefault: true,
-    },
-  ]);
-
+  const [addresses, setAddresses] = useState([]);
+  const [states, setStates] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [editingAddress, setEditingAddress] = useState(null);
 
-  const handleDelete = (id) => {
-    setAddresses(addresses.filter((addr) => addr.id !== id));
-  };
-
-  const handleEdit = (address) => {
+  const handleEdit = async (address) => {
     setEditingAddress(address);
     setShowForm(true);
+    const state_list = await GET_STATE_LIST()
+    console.log(state_list);
   };
 
-  const handleSave = (data) => {
-    if (editingAddress) {
-      setAddresses((prev) =>
-        prev.map((a) =>
-          a.id === editingAddress.id ? { ...data, id: a.id } : a
-        )
-      );
-    } else {
-      setAddresses((prev) => [...prev, { ...data, id: Date.now() }]);
-    }
-    setEditingAddress(null);
-    setShowForm(false);
-  };
+  const handleSave = async (formData, isNew) => {
+    loader(true);
+    try {
+      if (isNew) {
+        await addAddress(formData);
+      } else {
+        await updateAddress(formData, formData.id);
+      }
+      await getAddressList();
+      setEditingAddress(null);
+      setShowForm(false);
+    } catch (error) {
+      getErrorMessage(error);
+    } finally {
+      loader(false);
+    };
+  }
 
   const handleCancel = () => {
     setEditingAddress(null);
     setShowForm(false);
   };
+
+  const stateList = async () => {
+    const { data } = await getStateList()
+    setStates(data.states);
+  }
+
+  const getAddressList = async () => {
+    const { data } = await getCustomerAddressList()
+    console.log(data)
+    setAddresses(data)
+  }
+
+  const handleDelete = async (id) => {
+    // setAddresses(addresses.filter((addr) => addr.id !== id));
+    const data = await deleteAddress(addresses, id)
+    await getAddressList()
+  };
+
+  // {
+  //   id: 1,
+  //   fullName: "Preethi",
+  //   email: "preethi@example.com",
+  //   phone: "9876543210",
+  //   street:
+  //     "6/380, Ashok Nagar, Perumagoundampatti, Salem, Tamil Nadu 637502",
+  //   city: "Chennai",
+  //   state: "Tamil Nadu",
+  //   isDefault: true,
+  // },
+
+  useEffect(() => {
+    getAddressList()
+    stateList()
+  }, [])
 
   return (
     <div className="mx-auto">
@@ -219,18 +247,17 @@ export default function AddressPage() {
         </div>
       ) : (
         <div className="space-y-4">
-          {addresses.map((address) => (
+          {addresses.map((address, index) => (
             <div
-              key={address.id}
-              className={`border rounded-md shadow-sm flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-start ${
-                address.isDefault ? "border-green-600" : "border-gray-300"
-              } p-6 sm:p-4`}
+              key={address.id ?? index}
+              className={`border rounded-md shadow-sm flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-start ${address.isDefault ? "border-green-600" : "border-gray-300"
+                } p-6 sm:p-4`}
             >
               {/* Address Info */}
               <div className="space-y-2 text-base text-black">
                 <div className="flex items-center gap-2">
                   <User className="w-5 h-5 shrink-0" />
-                  <span className="font-semibold">{address.fullName}</span>
+                  <span className="font-semibold">{address.name}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Mail className="w-5 h-5 shrink-0" />
@@ -238,16 +265,15 @@ export default function AddressPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <Phone className="w-5 h-5 shrink-0" />
-                  <span>{address.phone}</span>
+                  <span>{address.mobile}</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <Home className="w-5 h-5 mt-0.5 shrink-0" />
                   <span className="leading-snug">
-                    {address.street}, {address.city}, {address.state}
+                    {address.address}, {address.pincode}, {address.city} , {address.state.name}
                   </span>
                 </div>
 
-                {/* Default Address badge + mobile icons */}
                 <div className="flex items-center justify-between sm:justify-start sm:gap-2 mt-2">
                   {address.isDefault && (
                     <span className="inline-block bg-green-100 text-green-800 text-medium font-medium px-2 py-1 rounded-md">

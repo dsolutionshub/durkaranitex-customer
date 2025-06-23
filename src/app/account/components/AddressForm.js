@@ -1,31 +1,52 @@
+'use client'
+import { addAddress, getStateList } from "@/app/api/services/authService";
 import { useState, useEffect } from "react";
 
 export default function AddressForm({ visible, initialData, onSave, onCancel }) {
+  const [states, setStates] = useState([]);
+  const [isNew, setIsNew] = useState(false);
+
   const [form, setForm] = useState({
-    fullName: "",
+    name: "",
     email: "",
-    phone: "",
-    street: "",
+    mobile: "",
+    address: "",
     city: "",
-    state: "",
+    state_id: 1,
+    pincode: "637200",
     isDefault: false,
   });
 
   useEffect(() => {
-    if (initialData) {
-      setForm(initialData);
-    } else {
-      setForm({
-        fullName: "",
-        email: "",
-        phone: "",
-        street: "",
-        city: "",
-        state: "",
-        isDefault: false,
-      });
+  const fetchStates = async () => {
+    try {
+      const { data } = await getStateList();
+      setStates(data.states);
+      console.log(data);
+    } catch (err) {
+      console.error("Error fetching states:", err);
     }
-  }, [initialData]);
+  };
+
+  if (initialData) {
+    setForm(initialData);
+    setIsNew(false);
+  } else {
+    setForm({
+      name: "",
+      email: "",
+      mobile: "",
+      address: "",
+      city: "",
+      state_id: 1,
+      pincode: "637200",
+      isDefault: false,
+    });
+    setIsNew(true);
+  }
+
+  fetchStates();
+ }, [initialData]);
 
   if (!visible) return null;
 
@@ -39,7 +60,7 @@ export default function AddressForm({ visible, initialData, onSave, onCancel }) 
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSave(form);
+    onSave(form, isNew);
   };
 
   return (
@@ -50,8 +71,8 @@ export default function AddressForm({ visible, initialData, onSave, onCancel }) 
         <div>
           <label className="block text-sm font-medium">Full Name</label>
           <input
-            name="fullName"
-            value={form.fullName}
+            name="name"
+            value={form.name}
             onChange={handleChange}
             required
             className="w-full border px-3 py-2 rounded"
@@ -73,8 +94,8 @@ export default function AddressForm({ visible, initialData, onSave, onCancel }) 
         <div>
           <label className="block text-sm font-medium">Phone</label>
           <input
-            name="phone"
-            value={form.phone}
+            name="mobile"
+            value={form.mobile}
             onChange={handleChange}
             required
             className="w-full border px-3 py-2 rounded"
@@ -84,8 +105,8 @@ export default function AddressForm({ visible, initialData, onSave, onCancel }) 
         <div>
           <label className="block text-sm font-medium">Street</label>
           <input
-            name="street"
-            value={form.street}
+            name="address"
+            value={form.address}
             onChange={handleChange}
             required
             className="w-full border px-3 py-2 rounded"
@@ -103,7 +124,7 @@ export default function AddressForm({ visible, initialData, onSave, onCancel }) 
             placeholder="City"
           />
         </div>
-        <div>
+        {/* <div>
           <label className="block text-sm font-medium">State</label>
           <input
             name="state"
@@ -113,6 +134,21 @@ export default function AddressForm({ visible, initialData, onSave, onCancel }) 
             className="w-full border px-3 py-2 rounded"
             placeholder="State"
           />
+        </div> */}
+        <div>
+          <label className="block text-sm font-medium">State</label>
+          <select
+            name="state_id"
+            value={form.state_id}
+            onChange={handleChange}
+            className="w-full border px-3 py-2 rounded"
+          >
+            {states.map((s) => (
+              <option key={s.id} value={s.id}>
+                {s.name}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 

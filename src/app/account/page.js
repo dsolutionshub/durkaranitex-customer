@@ -65,11 +65,12 @@
 
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { User, Package, MapPin, LogOut } from "lucide-react";
 import OrderHistory from "./components/OrderHistory";
 import AccountDetails from "./components/AccountDetails";
 import AddressForm from "./components/Addresses";
+import { getProfileInfo } from "../api/services/authService";
 
 const tabs = [
   { key: "account", label: "Account", Icon: User },
@@ -78,10 +79,23 @@ const tabs = [
   { key: "logout", label: "Log Out", Icon: LogOut },
 ];
 
-const renderContent = (selectedTab) => {
+export default function AccountPage() {
+  const [selectedTab, setSelectedTab] = useState("account");
+  const [profileInfo, setProfileInfo] = useState([])
+  
+  const profile_info = async()=>{
+    const {customer} = await getProfileInfo()
+    setProfileInfo(customer)
+  }
+
+  useEffect(()=>{
+     profile_info()
+  },[])
+
+  const renderContent = (selectedTab) => {
   switch (selectedTab) {
     case "account":
-      return <AccountDetails />;
+      return <AccountDetails data={profileInfo} />;
     case "orders":
       return <OrderHistory />;
     case "addresses":
@@ -91,8 +105,6 @@ const renderContent = (selectedTab) => {
   }
 };
 
-export default function AccountPage() {
-  const [selectedTab, setSelectedTab] = useState("account");
 
   return (
     <div className="px-4 py-10 min-h-screen">
@@ -102,7 +114,7 @@ export default function AccountPage() {
           My Account
         </h1>
         <p className="text-gray-700 text-center">
-          Hello <span className="font-semibold">Karthi N 👋</span>
+          Hello <span className="font-semibold">{profileInfo?.name} 👋</span>
         </p>
 
         {/* Tabs and Content */}

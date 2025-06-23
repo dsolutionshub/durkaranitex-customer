@@ -16,14 +16,17 @@ import collections from "./productList.json";
 import useCartPanelStore from "@/store/useCartPanelStore";
 import useCartStore from "@/store/useCartStore";
 import { getErrorMessage, getFilteredProducts } from "../utils/helperFn";
-import { getCategoryList, getProductList } from "../api/services/authService";
 import { SHOP_MODEL } from "../utils/constants";
+import { getCategoryList, getProductList, modifyCart, modifyWishlist } from "../api/services/authService";
+import { BREAD_CRUMB_HOME } from "../utils/constants";
+
+const items = [{ label: "Shop" }];
 
 function Shop() {
   const itemsPerPage = 8;
   const { handleGetCartDetail } = useCartPanelStore();
 
-  const addToCart = useCartStore((state) => state.addToCart);
+  // const addToCart = useCartStore((state) => state.addToCart);
   const wishToCart = useCartStore((state) => state.addToWishlist);
 
   const [priceRange, setPriceRange] = useState({ min: 50, max: 900 });
@@ -35,6 +38,7 @@ function Shop() {
   const [productList, setProductList] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
   const [openFilter, setOpenFilter] = useState(false);
+  const [quantities, setQuantities] = useState({});
 
   const filtered = getFilteredProducts({
     products: collections,
@@ -141,6 +145,34 @@ function Shop() {
     router.push(`/product-detail?id=${product_id}`);
   };
 
+  const addToWishlist = async (id) => {
+    loader(true);
+    try {
+      const data = await modifyWishlist({ product_id: id });
+    } catch (error) {
+      getErrorMessage(error);
+    } finally {
+      loader(false);
+    }
+  };
+
+  const addToCart = async (id) => {
+
+    const currentQty = quantities[id] || 0;
+    const newQty = currentQty + 1;
+
+    setQuantities(prev => ({ ...prev, [id]: newQty }));
+    loader(true);
+    try {
+      const data = await modifyCart({ product_id: id, quantity: newQty});
+      handleOpenCart()
+    } catch (error) {
+      getErrorMessage(error);
+    } finally {
+      loader(false);
+    }
+  };
+
   return (
     <>
       <CustomBreadCrumb model={SHOP_MODEL} />
@@ -197,7 +229,8 @@ function Shop() {
                     >
                       <ProductCard
                         type={"heart"}
-                        btn2={handleOpenCart}
+                        btn1={() => addToWishlist(item.id)}
+                        btn2={() => addToCart(item.id)}
                         title={item?.title}
                         price={item?.price}
                         oldPrice={item?.product_price}
