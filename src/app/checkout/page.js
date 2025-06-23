@@ -1,6 +1,9 @@
 "use client";
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
+
 import { FiCreditCard } from "react-icons/fi";
 import { LiaRupeeSignSolid } from "react-icons/lia";
 import { RiDeleteBinLine } from "react-icons/ri";
@@ -11,11 +14,25 @@ export default function CheckoutPage() {
   const [showContactAddress, setShowContactAddress] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState("payNow");
 
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (status === "loading") return;
+    if (!session) {
+      router.push("/login");
+    } else {
+      const { accessToken } = session.user;
+      sessionStorage.setItem("accessToken", accessToken);
+    }
+  }, [session, status, router]);
+
   return (
     <div className="min-h-screen py-10 md:mx-3">
       <h2 className="text-2xl text-center pb-1 md:pb-4 text-black font-semibold checkout-text">
         Checkout
       </h2>
+
       <div className="max-w-6xl mx-auto grid lg:grid-cols-3 gap-6 ">
         <div className="md:col-span-2 space-y-6">
           <div className="bg-white p-6 rounded-xl shadow">
