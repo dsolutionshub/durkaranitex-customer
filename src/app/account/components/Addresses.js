@@ -147,12 +147,14 @@
 import { useEffect, useState } from "react";
 import AddressForm from "../components/AddressForm";
 import { MapPin, User, Mail, Phone, Home, Edit, Trash } from "lucide-react";
-import { deleteAddress, getCustomerAddressList, getStateList } from "@/app/api/services/authService";
+import { addAddress, deleteAddress, getCustomerAddressList, getStateList, updateAddress } from "@/app/api/services/authService";
 import { GET_STATE_LIST } from "@/app/utils/apiEndpoints";
+import { getErrorMessage } from "@/app/utils/helperFn";
+import { loader } from "@/app/components/loader/loaderManager";
 
 export default function AddressPage() {
   const [addresses, setAddresses] = useState([]);
-
+  const [states, setStates] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [editingAddress, setEditingAddress] = useState(null);
 
@@ -163,27 +165,36 @@ export default function AddressPage() {
     console.log(state_list);
   };
 
-  const handleSave = (data) => {
-    if (editingAddress) {
-      setAddresses((prev) =>
-        prev.map((a) =>
-          a.id === editingAddress.id ? { ...data, id: a.id } : a
-        )
-      );
-    } else {
-      setAddresses((prev) => [...prev, { ...data, id: Date.now() }]);
-    }
-    setEditingAddress(null);
-    setShowForm(false);
-  };
+  const handleSave = async (formData, isNew) => {
+    loader(true);
+    try {
+      if (isNew) {
+        await addAddress(formData);
+      } else {
+        await updateAddress(formData, formData.id);
+      }
+      await getAddressList();
+      setEditingAddress(null);
+      setShowForm(false);
+    } catch (error) {
+      getErrorMessage(error);
+    } finally {
+      loader(false);
+    };
+  }
 
   const handleCancel = () => {
     setEditingAddress(null);
     setShowForm(false);
   };
 
-  const getAddressList = async()=>{
-    const {data} = await getCustomerAddressList()
+  const stateList = async () => {
+    const { data } = await getStateList()
+    setStates(data.states);
+  }
+
+  const getAddressList = async () => {
+    const { data } = await getCustomerAddressList()
     console.log(data)
     setAddresses(data)
   }
@@ -191,24 +202,25 @@ export default function AddressPage() {
   const handleDelete = async (id) => {
     // setAddresses(addresses.filter((addr) => addr.id !== id));
     const data = await deleteAddress(addresses, id)
-    getAddressList()
+    await getAddressList()
   };
 
-    // {
-    //   id: 1,
-    //   fullName: "Preethi",
-    //   email: "preethi@example.com",
-    //   phone: "9876543210",
-    //   street:
-    //     "6/380, Ashok Nagar, Perumagoundampatti, Salem, Tamil Nadu 637502",
-    //   city: "Chennai",
-    //   state: "Tamil Nadu",
-    //   isDefault: true,
-    // },
+  // {
+  //   id: 1,
+  //   fullName: "Preethi",
+  //   email: "preethi@example.com",
+  //   phone: "9876543210",
+  //   street:
+  //     "6/380, Ashok Nagar, Perumagoundampatti, Salem, Tamil Nadu 637502",
+  //   city: "Chennai",
+  //   state: "Tamil Nadu",
+  //   isDefault: true,
+  // },
 
-  useEffect(()=>{
-     getAddressList()
-  },[])
+  useEffect(() => {
+    getAddressList()
+    stateList()
+  }, [])
 
   return (
     <div className="mx-auto">
@@ -238,9 +250,8 @@ export default function AddressPage() {
           {addresses.map((address, index) => (
             <div
               key={address.id ?? index}
-              className={`border rounded-md shadow-sm flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-start ${
-                address.isDefault ? "border-green-600" : "border-gray-300"
-              } p-6 sm:p-4`}
+              className={`border rounded-md shadow-sm flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-start ${address.isDefault ? "border-green-600" : "border-gray-300"
+                } p-6 sm:p-4`}
             >
               {/* Address Info */}
               <div className="space-y-2 text-base text-black">
@@ -259,11 +270,10 @@ export default function AddressPage() {
                 <div className="flex items-start gap-2">
                   <Home className="w-5 h-5 mt-0.5 shrink-0" />
                   <span className="leading-snug">
-                    {address.address}, {address.pincode}, {address.city}
+                    {address.address}, {address.pincode}, {address.city} , {address.state.name}
                   </span>
                 </div>
 
-                {/* Default Address badge + mobile icons */}
                 <div className="flex items-center justify-between sm:justify-start sm:gap-2 mt-2">
                   {address.isDefault && (
                     <span className="inline-block bg-green-100 text-green-800 text-medium font-medium px-2 py-1 rounded-md">

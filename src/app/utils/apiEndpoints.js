@@ -26,3 +26,6 @@ export const GET_CUSTOMER_ADDRESS_LIST = "/api/customer-address/list"
 export const ADD_CUSTOMER_ADDRESS = "/api/customer-address/add"
 export const UPDATE_CUSTOMER_ADDRESS = "/api/customer-address/update"
 export const DELETE_CUSTOMER_ADDRESS = "/api/customer-address/delete"
+
+//Profile
+export const PROFILE_INFO = "/api/profile/info"

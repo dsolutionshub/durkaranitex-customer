@@ -12,6 +12,7 @@ import {
     LOGIN_CHECK,
     PRODUCT_DETAIL,
     PRODUCT_LIST,
+    PROFILE_INFO,
     REMOVE_WISH_LIST,
     UPDATE_CUSTOMER_ADDRESS,
     UPDATE_QUANTITY,
@@ -114,4 +115,10 @@ export async function updateAddress(payload, id) {
 export async function deleteAddress(payload, id) {
     const response = await apiRequest(`${DELETE_CUSTOMER_ADDRESS}/${id}`, "POST", payload);
     return response;
+}
+
+//Profile
+export async function getProfileInfo(){
+    const response = await apiRequest(PROFILE_INFO, 'GET')
+    return response
 }

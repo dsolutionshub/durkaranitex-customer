@@ -45,7 +45,6 @@ export default function Navbar() {
   };
   const loginChecking = async()=>{
      const data = await loginCheck()
-     console.log(data);  
   }
 
   useEffect(()=>{
@@ -119,7 +118,7 @@ export default function Navbar() {
             className="cursor-pointer primary-color"
             onClick={handlePanel}
           />
-          <User className="cursor-pointer primary-color" />
+          <User className="cursor-pointer primary-color" onClick={() => router.push("/account")}/>
         </div>
       </div>
 

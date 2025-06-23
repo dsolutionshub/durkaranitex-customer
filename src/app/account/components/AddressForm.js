@@ -3,7 +3,9 @@ import { addAddress, getStateList } from "@/app/api/services/authService";
 import { useState, useEffect } from "react";
 
 export default function AddressForm({ visible, initialData, onSave, onCancel }) {
-  const [states, setStates] = useState([]);  
+  const [states, setStates] = useState([]);
+  const [isNew, setIsNew] = useState(false);
+
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -15,29 +17,36 @@ export default function AddressForm({ visible, initialData, onSave, onCancel }) 
     isDefault: false,
   });
 
-  const stateList = async()=>{
-    const {data} = await getStateList()
-    setStates(data.states);
-    console.log(data)
+  useEffect(() => {
+  const fetchStates = async () => {
+    try {
+      const { data } = await getStateList();
+      setStates(data.states);
+      console.log(data);
+    } catch (err) {
+      console.error("Error fetching states:", err);
+    }
+  };
+
+  if (initialData) {
+    setForm(initialData);
+    setIsNew(false);
+  } else {
+    setForm({
+      name: "",
+      email: "",
+      mobile: "",
+      address: "",
+      city: "",
+      state_id: 1,
+      pincode: "637200",
+      isDefault: false,
+    });
+    setIsNew(true);
   }
 
-  useEffect(() => {
-    if (initialData) {
-      setForm(initialData);
-    } else {
-      setForm({
-        name: "",
-        email: "",
-        mobile: "",
-        address: "",
-        city: "",
-        state_id: 1,
-        pincode: "637200",
-        isDefault: false,
-      });
-    }
-    stateList()
-  }, [initialData]);
+  fetchStates();
+ }, [initialData]);
 
   if (!visible) return null;
 
@@ -51,13 +60,8 @@ export default function AddressForm({ visible, initialData, onSave, onCancel }) 
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSave(form);
+    onSave(form, isNew);
   };
-
-  const modifyForm = async () => {
-    const data = await addAddress(form)
-    console.log(data);
-  }
 
   return (
     <form onSubmit={handleSubmit} className="bg-white text-black p-6 rounded-md mt-6 shadow-inner">
@@ -171,7 +175,6 @@ export default function AddressForm({ visible, initialData, onSave, onCancel }) 
         <button
           type="submit"
           className="px-4 py-2 bg-green-800 rounded"
-          onClick={modifyForm}
         >
           Save
         </button>
