@@ -1,14 +1,15 @@
 import Image from "next/image";
+import Head from "next/head";
 import Link from "next/link";
 import { Mukta } from "next/font/google";
 import { PrimeReactProvider } from "primereact/api";
 import ClientLayout from "./ClientLayout";
 import Loader from "./components/loader/loader";
+import { Toaster } from "react-hot-toast";
 
-import "./globals.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../app/styles/style.css";
-import Head from "next/head";
+import "./globals.css";
 
 const mukta = Mukta({
   subsets: ["latin"],
@@ -53,6 +54,7 @@ export default function RootLayout({ children }) {
               {children}
             </div>
             <Loader />
+            <Toaster position="top-center" reverseOrder={false} />
           </ClientLayout>
         </PrimeReactProvider>
       </body>

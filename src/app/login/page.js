@@ -1,14 +1,16 @@
 "use client";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { signIn, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 
 import { Gift, Sparkles, ShieldCheck } from "lucide-react";
+import { useAuthStore } from "@/store/useAuthStore";
 
 export default function LoginPage() {
-  const { data: session, status } = useSession();
   const router = useRouter();
+  const { data: session, status } = useSession();
+  const { handleGoogleSignIn } = useAuthStore();
 
   useEffect(() => {
     if (status === "authenticated" && session?.backendToken) {
@@ -46,7 +48,7 @@ export default function LoginPage() {
         </p>
 
         <button
-          onClick={() => signIn("google", { callbackUrl: "/checkout" })}
+          onClick={handleGoogleSignIn}
           className="btn btn-light border d-flex align-items-center justify-content-center gap-2 w-100 shadow-sm"
         >
           <Image

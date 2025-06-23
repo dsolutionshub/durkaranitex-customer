@@ -73,7 +73,7 @@ import AddressForm from "./components/Addresses";
 import { getProfileInfo } from "../api/services/authService";
 import { getErrorMessage } from "../utils/helperFn";
 import { loader } from "../components/loader/loaderManager";
-import { signOut } from "next-auth/react";
+import { useAuthStore } from "@/store/useAuthStore";
 
 const tabs = [
   { key: "account", label: "Account", Icon: User },
@@ -91,13 +91,9 @@ const LogOutComponent = ({ handleLogout }) => {
 };
 
 export default function AccountPage() {
+  const { handleLogout } = useAuthStore();
   const [selectedTab, setSelectedTab] = useState("account");
   const [profileInfo, setProfileInfo] = useState([]);
-
-  const handleLogout = () => {
-    sessionStorage.removeItem("accessToken");
-    signOut({ callbackUrl: "/login" });
-  };
 
   const profile_info = async () => {
     loader(true);
