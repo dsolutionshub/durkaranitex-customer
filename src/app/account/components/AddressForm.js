@@ -1,30 +1,42 @@
+'use client'
+import { addAddress, getStateList } from "@/app/api/services/authService";
 import { useState, useEffect } from "react";
 
 export default function AddressForm({ visible, initialData, onSave, onCancel }) {
+  const [states, setStates] = useState([]);  
   const [form, setForm] = useState({
-    fullName: "",
+    name: "",
     email: "",
-    phone: "",
-    street: "",
+    mobile: "",
+    address: "",
     city: "",
-    state: "",
+    state_id: 1,
+    pincode: "637200",
     isDefault: false,
   });
+
+  const stateList = async()=>{
+    const {data} = await getStateList()
+    setStates(data.states);
+    console.log(data)
+  }
 
   useEffect(() => {
     if (initialData) {
       setForm(initialData);
     } else {
       setForm({
-        fullName: "",
+        name: "",
         email: "",
-        phone: "",
-        street: "",
+        mobile: "",
+        address: "",
         city: "",
-        state: "",
+        state_id: 1,
+        pincode: "637200",
         isDefault: false,
       });
     }
+    stateList()
   }, [initialData]);
 
   if (!visible) return null;
@@ -42,6 +54,11 @@ export default function AddressForm({ visible, initialData, onSave, onCancel }) 
     onSave(form);
   };
 
+  const modifyForm = async () => {
+    const data = await addAddress(form)
+    console.log(data);
+  }
+
   return (
     <form onSubmit={handleSubmit} className="bg-white text-black p-6 rounded-md mt-6 shadow-inner">
       <h3 className="font-semibold text-lg text-gray-800 mb-4">Address Form</h3>
@@ -50,8 +67,8 @@ export default function AddressForm({ visible, initialData, onSave, onCancel }) 
         <div>
           <label className="block text-sm font-medium">Full Name</label>
           <input
-            name="fullName"
-            value={form.fullName}
+            name="name"
+            value={form.name}
             onChange={handleChange}
             required
             className="w-full border px-3 py-2 rounded"
@@ -73,8 +90,8 @@ export default function AddressForm({ visible, initialData, onSave, onCancel }) 
         <div>
           <label className="block text-sm font-medium">Phone</label>
           <input
-            name="phone"
-            value={form.phone}
+            name="mobile"
+            value={form.mobile}
             onChange={handleChange}
             required
             className="w-full border px-3 py-2 rounded"
@@ -84,8 +101,8 @@ export default function AddressForm({ visible, initialData, onSave, onCancel }) 
         <div>
           <label className="block text-sm font-medium">Street</label>
           <input
-            name="street"
-            value={form.street}
+            name="address"
+            value={form.address}
             onChange={handleChange}
             required
             className="w-full border px-3 py-2 rounded"
@@ -103,7 +120,7 @@ export default function AddressForm({ visible, initialData, onSave, onCancel }) 
             placeholder="City"
           />
         </div>
-        <div>
+        {/* <div>
           <label className="block text-sm font-medium">State</label>
           <input
             name="state"
@@ -113,6 +130,21 @@ export default function AddressForm({ visible, initialData, onSave, onCancel }) 
             className="w-full border px-3 py-2 rounded"
             placeholder="State"
           />
+        </div> */}
+        <div>
+          <label className="block text-sm font-medium">State</label>
+          <select
+            name="state_id"
+            value={form.state_id}
+            onChange={handleChange}
+            className="w-full border px-3 py-2 rounded"
+          >
+            {states.map((s) => (
+              <option key={s.id} value={s.id}>
+                {s.name}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 
@@ -139,6 +171,7 @@ export default function AddressForm({ visible, initialData, onSave, onCancel }) 
         <button
           type="submit"
           className="px-4 py-2 bg-green-800 rounded"
+          onClick={modifyForm}
         >
           Save
         </button>

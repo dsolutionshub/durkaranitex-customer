@@ -1,9 +1,35 @@
 'use client'
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function LoginPage() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (status === "authenticated" && session?.backendToken) {
+      sessionStorage.setItem("backendToken", session.backendToken);
+      router.replace("/checkout");
+    }
+  }, [status, session, router]);
+
+  const google_sign = async () => {
+    try {
+      const res = await signIn("google", { redirect: false });
+      console.log(res);
+      if (res?.error) {
+        console.error("Google sign-in failed:", res.error);
+      } else {
+        console.log("Google sign-in response:", res);
+      }
+    } catch (err) {
+      console.error("Google sign-in error:", err);
+    }
+  };
+
   return (
     <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
       <div className="bg-white p-4 rounded shadow text-center" style={{ maxWidth: "500px", width: "100%" , maxHeight:"300px", height: "100%"}}>
@@ -23,7 +49,7 @@ export default function LoginPage() {
         <p className="text-muted mb-4">Login to manage your account.</p>
 
         <button
-          onClick={() => signIn("google", { callbackUrl: "/checkout" })}
+          onClick={google_sign}
           className="btn btn-light border d-flex align-items-center justify-content-center gap-2 w-100 shadow-sm"
         >
           <Image src="/images/google-icon.svg" alt="Google" width={20} height={20} />
