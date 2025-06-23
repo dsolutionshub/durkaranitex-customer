@@ -1,14 +1,9 @@
 "use client";
 
 import React, { useCallback, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-
-import SidePanelCart from "./sidePanelCart/SidePanelCart";
-import useCartPanelStore from "@/store/useCartPanelStore";
-import { loginCheck } from "../api/services/authService";
-
 import {
   Heart,
   User,
@@ -22,6 +17,11 @@ import {
   ShoppingBag,
 } from "lucide-react";
 
+import SidePanelCart from "./sidePanelCart/SidePanelCart";
+import useCartPanelStore from "@/store/useCartPanelStore";
+import { loginCheck } from "../api/services/authService";
+
+import { getErrorMessage } from "../utils/helperFn";
 
 const navItems = [
   { name: "Home", href: "/", icon: <Home /> },
@@ -43,13 +43,18 @@ export default function Navbar() {
   const handleNavigateHome = () => {
     router.push("/");
   };
-  const loginChecking = async()=>{
-     const data = await loginCheck()
-  }
 
-  useEffect(()=>{
-    loginChecking()
-  },[])
+  const loginChecking = async () => {
+    try {
+      await loginCheck();
+    } catch (error) {
+      getErrorMessage(error);
+    }
+  };
+
+  useEffect(() => {
+    // loginChecking();
+  }, []);
 
   return (
     <nav
@@ -118,7 +123,10 @@ export default function Navbar() {
             className="cursor-pointer primary-color"
             onClick={handlePanel}
           />
-          <User className="cursor-pointer primary-color" onClick={() => router.push("/account")}/>
+          <User
+            className="cursor-pointer primary-color"
+            onClick={() => router.push("/account")}
+          />
         </div>
       </div>
 
