@@ -8,7 +8,7 @@ import Loader from "./components/loader/loader";
 import { Toaster } from "react-hot-toast";
 
 import "bootstrap/dist/css/bootstrap.min.css";
-import "../app/styles/style.css";
+import "./styles/style.css";
 import "./globals.css";
 
 const mukta = Mukta({
