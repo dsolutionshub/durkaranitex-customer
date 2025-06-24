@@ -16,7 +16,7 @@ const ShippingPolicy = () => {
         <section className="mb-8">
           <h2 className="text-2xl font-semibold text-black mb-4">Shipping Information</h2>
           <p className="text-black leading-relaxed mb-6">
-            We're committed to delivering your beautiful sarees safely and efficiently. Here's everything you need to know about our shipping process and policies.
+            We&apos;re committed to delivering your beautiful sarees safely and efficiently. Here&apos;s everything you need to know about our shipping process and policies.
           </p>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -141,7 +141,7 @@ const ShippingPolicy = () => {
         <section className="mb-8">
           <h2 className="text-2xl font-semibold text-black mb-4">Order Tracking</h2>
           <p className="text-black leading-relaxed mb-4">
-            Once your order ships, you'll receive:
+            Once your order ships, you&apos;ll receive:
           </p>
           <ul className="text-black space-y-2">
             <li>• Shipping confirmation email with tracking number</li>
@@ -159,7 +159,7 @@ const ShippingPolicy = () => {
           <ul className="text-black space-y-2">
             <li>• Contact us immediately at shipping@sareestore.com</li>
             <li>• Provide your order number and tracking details</li>
-            <li>• We'll work with our courier partners to resolve issues quickly</li>
+            <li>• We&apos;ll work with our courier partners to resolve issues quickly</li>
             <li>• Replacement shipping for damaged or lost packages</li>
           </ul>
         </section>

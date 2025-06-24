@@ -21,7 +21,7 @@ const About = () => {
             Celebrating Indian Heritage Through Timeless Sarees
           </h2>
           <p className="text-xl text-black leading-relaxed max-w-3xl mx-auto">
-            For over two decades, we've been curating the finest collection of authentic Indian sarees, bringing you closer to the rich tapestry of Indian culture and craftsmanship.
+            For over two decades, we&apos;ve been curating the finest collection of authentic Indian sarees, bringing you closer to the rich tapestry of Indian culture and craftsmanship.
           </p>
         </div>
 
@@ -95,7 +95,7 @@ const About = () => {
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div>
               <p className="text-black leading-relaxed mb-4">
-                Founded in 1998 by textile enthusiast Rajesh Kumar, our saree collection began as a small boutique in Mumbai's bustling textile district. What started as a passion for preserving traditional Indian weaving techniques has grown into one of India's most trusted saree destinations.
+                Founded in 1998 by textile enthusiast Rajesh Kumar, our saree collection began as a small boutique in Mumbai&apos;s bustling textile district. What started as a passion for preserving traditional Indian weaving techniques has grown into one of India&apos;s most trusted saree destinations.
               </p>
               <p className="text-black leading-relaxed mb-4">
                 We believe every saree tells a story – of the skilled artisan who wove it, the rich cultural heritage it represents, and the special moments it will be part of in your life. Our carefully curated collection spans from traditional handloom sarees to contemporary designer pieces.
@@ -157,7 +157,7 @@ const About = () => {
         <div className="bg-gradient-to-r from-pink-100 to-purple-100 p-8 rounded-lg">
           <h2 className="text-2xl font-semibold text-black mb-4">Our Promise</h2>
           <p className="text-black leading-relaxed">
-            We promise to deliver not just a saree, but a piece of art that connects you to the rich cultural heritage of India. Whether you're looking for a wedding saree, party wear, or everyday elegance, we're here to help you find the perfect piece that makes you feel beautiful and confident. Every purchase supports traditional artisans and helps preserve the timeless craft of saree weaving for future generations.
+            We promise to deliver not just a saree, but a piece of art that connects you to the rich cultural heritage of India. Whether you&apos;re looking for a wedding saree, party wear, or everyday elegance, we&apos;re here to help you find the perfect piece that makes you feel beautiful and confident. Every purchase supports traditional artisans and helps preserve the timeless craft of saree weaving for future generations.
           </p>
         </div>
       </main>

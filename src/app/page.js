@@ -35,7 +35,7 @@ export default function Home() {
     <div>
       <BannerCarousel />
       <CollectionsSection />
-      <FeaturedProducts collection={homeDetails.shop_collection} />
+      <FeaturedProducts collection={homeDetails?.shop_collection} />
       <NewCollections />
       <SaleSection />
       <CategorySection />
