@@ -50,9 +50,15 @@ export function getFilteredProducts({
 }
 
 // Price Format
+// export function formatPrice(value) {
+//   return Number(value.replace(/,/g, ""));
+// }
 export function formatPrice(value) {
-  return Number(value.replace(/,/g, ""));
+  if (value == null) return "₹0"; 
+  const stringValue = value.toString(); 
+  return "₹" + stringValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
+
 
 // Error Messsage
 export const getErrorMessage = (error) => {

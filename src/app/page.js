@@ -33,12 +33,12 @@ export default function Home() {
 
   return (
     <div>
-      <BannerCarousel />
-      <CollectionsSection />
-      <FeaturedProducts collection={homeDetails?.shop_collection} />
-      <NewCollections />
-      <SaleSection />
-      <CategorySection />
+          <BannerCarousel />
+          <CollectionsSection />
+          <FeaturedProducts />
+          <NewCollections data={homeDetails?.new_collection_categories}/>
+          <SaleSection />
+          <CategorySection collection={homeDetails?.shop_collection}/>
     </div>
   );
 }

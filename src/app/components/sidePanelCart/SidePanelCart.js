@@ -5,9 +5,10 @@ import { IoClose } from "react-icons/io5";
 import Link from "next/link";
 import useCartPanelStore from "@/store/useCartPanelStore";
 import "./style.css";
-import { ShoppingCart,
+import { ShoppingCart} from "lucide-react";
+import { useEffect, useState } from "react";
+import { getCart } from "@/app/api/services/authService";
 
-} from "lucide-react";
 function RenderQuantity({
   decrementQty,
   incrementQty,
@@ -18,14 +19,14 @@ function RenderQuantity({
     <div className="flex items-center mt-2 gap-3">
       <div className="flex items-center border rounded dark-color">
         <button
-          onClick={() => decrementQty(product.id)}
+          onClick={() => decrementQty(product?.product_id)}
           className="px-2 py-1 text-sm"
         >
           −
         </button>
-        <span className="px-4">{product.quantity || 0}</span>
+        <span className="px-4">{product?.quantity || 0}</span>
         <button
-          onClick={() => incrementQty(product.id)}
+          onClick={() => incrementQty(product?.product_id)}
           className="px-2 py-1 text-sm"
         >
           +
@@ -34,7 +35,7 @@ function RenderQuantity({
 
       <button
         className="ml-4 text-sm underline text-gray-600 hover:text-red-600"
-        onClick={() => removeFromCart(product.id)}
+        onClick={() => removeFromCart(product?.product_id)}
       >
         Remove
       </button>
@@ -56,11 +57,24 @@ const SidePanelCart = () => {
     (acc, item) => acc + parseFloat(item.price) * (item.quantity || 0),
     0
   );
+  const [products, setProducts] = useState([])
+  const [totalAmount, setTotalAmount] = useState(0)
+  // const [totalProducts, setTotalProducts] = useState(0)
 
   function handleNavigate(page) {
     router.push(page);
     setCartOpen(false);
   }
+
+  const getProducts = async()=>{
+    const data = await getCart()
+    setProducts(data.cart)
+    setTotalAmount(data.total_amount)
+  }
+
+  useEffect(()=>{
+     getProducts()
+  },[])
 
   return (
     <Sidebar
@@ -72,7 +86,7 @@ const SidePanelCart = () => {
     >
       <div className="bg-white h-full w-full max-w-md right-0 ">
         <div className="pt-4 flex items-center justify-between">
-          <h4 className="dark-color">Shopping Cart ({cartProducts?.length})</h4>
+          <h4 className="dark-color">Shopping Cart ({products?.length})</h4>
           <IoClose
             onClick={() => setCartOpen(false)}
             className="dark-color cursor-pointer"
@@ -80,32 +94,32 @@ const SidePanelCart = () => {
         </div>
 
         <div className="flex-grow overflow-y-auto mt-2">
-          {cartProducts?.length > 0 ? (
+          {products?.length > 0 ? (
             <>
               <div className="cart-sidepanel-container">
-                {cartProducts.map((product) => (
-                  <div key={product?.id} className="mb-4 ">
+                {products.map((product) => (
+                  <div key={product?.product?.id} className="mb-4 ">
                     <div className="flex gap-3 md:gap-4 items-start">
                       <Image
                         height={150}
                         width={150}
-                        src={product?.imgsrc}
-                        alt={product?.title}
+                        src={product?.product?.images[0]?.image}
+                        alt={product?.product?.title}
                         className="h-24 w-24 md:w-30 md:h-30 object-cover rounded-md"
                       />
                       <div className="flex-1 ">
                         <h6
                           className="text-xlg dark-color mb-1  product-title"
-                          title={product.title}
+                          title={product?.product?.title}
                         >
-                          {product.title}
+                          {product?.product?.title}
                         </h6>
 
                         <p className=" text-md dark-color mb-1">
                           <span className="text-gray-500 line-through">
-                            Rs. {product.oldPrice || 100000.0}
+                            Rs. {product?.product?.product_price || 100000.0}
                           </span>{" "}
-                          <br /> Rs. {product.price}
+                          <br /> Rs. {product?.product?.price}
                         </p>
                         <div className="d-none d-md-block">
                           <RenderQuantity
@@ -132,7 +146,7 @@ const SidePanelCart = () => {
               <div className="mt-2 total-cost-card">
                 <div className="flex justify-between dark-color mb-4">
                   <span>Subtotal</span>
-                  <span>Rs. {subtotal.toFixed(2)}</span>
+                  <span>Rs. {totalAmount}</span>
                 </div>
                 <button
                   className="w-full  primary-border py-2 font-semibold mb-2 primary-color"

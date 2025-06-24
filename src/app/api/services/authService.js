@@ -54,8 +54,9 @@ export async function getHome() {
 
 // Product
 export async function getProductList(page, filter, category) {
-  const params = new URLSearchParams({ page });
+  const params = new URLSearchParams();
 
+  if (page) params.append("page", page);
   if (filter) params.append("filter", filter);
   if (category) params.append("category", category);
 

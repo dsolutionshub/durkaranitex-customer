@@ -8,7 +8,7 @@ const CartProducts = ({
   decreaseCount,
   increaseCount,
   removeFromCart,
-}) => {
+}) => {  
   return (
     <>
       {/* Mobile */}
@@ -33,7 +33,7 @@ const CartProducts = ({
                   <p className="mb-0 text-black">{item?.title}</p>
                   <button
                     className="text-gray-500 underline p-0 m-0"
-                    onClick={() => removeFromCart(item?.id)}
+                    onClick={() => removeFromCart(item?.productId)}
                   >
                     Remove
                   </button>
@@ -48,14 +48,14 @@ const CartProducts = ({
             <div className="d-flex align-items-center justify-content-evenly bg-gray-100 w-[7rem] h-[2.5rem] border">
               <button
                 className="text-black fs-1"
-                onClick={() => decreaseCount(item?.id)}
+                onClick={() => decreaseCount(item?.productId, item?.quantity)}
               >
                 -
               </button>
               <p className="mb-0 text-black">{item?.quantity}</p>
               <button
                 className="text-black"
-                onClick={() => increaseCount(item?.id)}
+                onClick={() => increaseCount(item?.productId, item?.quantity)}
               >
                 +
               </button>
@@ -79,7 +79,7 @@ const CartProducts = ({
           <tbody>
             {products?.map((product) => (
               <tr
-                key={product.id}
+                key={product?.id}
                 style={{
                   textAlign: "center",
                   verticalAlign: "middle",
@@ -90,8 +90,8 @@ const CartProducts = ({
                   <Image
                     width={70}
                     height={50}
-                    src={product.imgSrc}
-                    alt={product.title}
+                    src={product?.imgSrc}
+                    alt={product?.title}
                   />
                   <div
                     style={{
@@ -100,10 +100,10 @@ const CartProducts = ({
                       flexDirection: "column",
                     }}
                   >
-                    <p style={{ marginBottom: "0" }}>{product.title}</p>
+                    <p style={{ marginBottom: "0" }}>{product?.title}</p>
 
                     <span
-                      onClick={() => removeFromCart(product.id)}
+                      onClick={() => removeFromCart(product?.productId)}
                       style={{
                         textDecoration: "underline",
                         cursor: "pointer",
@@ -114,7 +114,7 @@ const CartProducts = ({
                     </span>
                   </div>
                 </td>
-                <td className="py-4">Rs. {product.price}</td>
+                <td className="py-4">Rs. {product?.price}</td>
 
                 {/* Desktop Quantity Buttons */}
                 <td className="p-4">
@@ -124,14 +124,14 @@ const CartProducts = ({
                   >
                     <button
                       className="text-black fs-1"
-                      onClick={() => decreaseCount(product.id)}
+                      onClick={() => decreaseCount(product?.productId, product?.quantity)}
                     >
                       -
                     </button>
-                    <p className="mb-0 text-black">{product.quantity}</p>
+                    <p className="mb-0 text-black">{product?.quantity}</p>
                     <button
                       className="text-black"
-                      onClick={() => increaseCount(product.id)}
+                      onClick={() => increaseCount(product?.productId, product?.quantity)}
                       style={{
                         fontWeight: "600",
                         fontSize: "1.2rem",
@@ -141,9 +141,8 @@ const CartProducts = ({
                     </button>
                   </div>
                 </td>
-
                 <td className="py-4">
-                  Rs. {product.quantity * formatPrice(product.price)}
+                  Rs. {product?.total}
                 </td>
               </tr>
             ))}

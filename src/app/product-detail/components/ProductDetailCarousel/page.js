@@ -29,7 +29,7 @@ export default function ImageCarousel({
                 onDoubleClick={() => handleZoomToggle(index)}
               >
                 <Image
-                  src={img.image}
+                  src={img?.image}
                   alt={`Image ${img.id}`}
                   width={500}
                   height={500}
@@ -59,7 +59,7 @@ export default function ImageCarousel({
             onClick={() => setSelectedIndex(index)}
           >
             <Image
-              src={img}
+              src={img.image}
               alt="Thumbnail"
               width={80}
               height={80}

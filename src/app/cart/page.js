@@ -7,89 +7,61 @@ import CustomBreadCrumb from "../components/CustomBreadCrumb";
 
 import useCartStore from "@/store/useCartStore";
 import { CART_MODEL } from "../utils/constants";
+import { deleteQuantity, getCart, updateQuantity } from "../api/services/authService";
+import { getErrorMessage } from "../utils/helperFn";
+import { loader } from "../components/loader/loaderManager";
 
 const Cart = () => {
   const router = useRouter();
   const removeFromCart = useCartStore((state) => state.removeFromCart);
+  const [totalCost, setTotalCost] = useState(0)
 
-  const [products, setProducts] = useState([
-    {
-      id: 1,
-      title: "Silk Saree",
-      price: "2,500",
-      oldPrice: "4000",
-      imgSrc: "/images/15.jpeg",
-      quantity: 2,
-    },
-    {
-      id: 2,
-      title: "Cotton Saree",
-      price: "1,800",
-      oldPrice: "3000",
-      imgSrc: "/images/16.jpeg",
-      quantity: 1,
-    },
-    {
-      id: 3,
-      title: "Designer Saree",
-      price: "1,200",
-      oldPrice: "3000",
-      imgSrc: "/images/17.jpeg",
-      quantity: 3,
-    },
-    ,
-  ]);
+  const [products, setProducts] = useState([]);
 
   const items = useCartStore((state) => state.items);
 
+  const fetchCart = async () => {
+    loader(true);
+    try {
+      const response = await getCart();
+      setTotalCost(response.total_amount);
+
+      const formattedProducts = response?.cart?.map((item) => ({
+        id: item?.id,
+        productId: item?.product_id,
+        quantity: item?.quantity,
+        total: item?.total,
+        title: item?.product?.title,
+        price: parseFloat(item?.product?.price),
+        imgSrc: item?.product?.images?.[0]?.image || "",
+      }));
+
+      setProducts(formattedProducts);
+    } catch (err) {
+      getErrorMessage(err)
+    } finally {
+      loader(false);
+    }
+  };
+
+
   const increaseCount = async (id, currentQuantity) => {
     const newQuantity = currentQuantity + 1;
-    setProducts((prevProducts) =>
-      prevProducts.map((product) =>
-        product.id === id ? { ...product, quantity: newQuantity } : product
-      )
-    );
-
-    // Send API in background
     try {
       await updateQuantity({ product_id: id, quantity: newQuantity });
+      await fetchCart()
     } catch (err) {
       console.error("Failed to increase quantity:", err);
     }
   };
 
   const decreaseCount = async (id, currentQuantity) => {
-    if (currentQuantity <= 1) return;
     const newQuantity = currentQuantity - 1;
-
-    setProducts((prevProducts) =>
-      prevProducts.map((product) =>
-        product.id === id ? { ...product, quantity: newQuantity } : product
-      )
-    );
-
     try {
       await deleteQuantity({ product_id: id, quantity: newQuantity });
+      await fetchCart()
     } catch (err) {
       console.error("Failed to decrease quantity:", err);
-    }
-  };
-
-  const fetchCart = async () => {
-    try {
-      const response = await getCart();
-      const formattedProducts = response?.cart?.map((item) => ({
-        id: item.id,
-        productId: item.product_id,
-        quantity: item.quantity,
-        total: item.total,
-        title: item.product.title,
-        price: parseFloat(item.product.product_price),
-        imgSrc: item.product.images?.[0]?.image || "",
-      }));
-      setProducts(formattedProducts);
-    } catch (err) {
-      console.error("Failed to fetch cart:", err);
     }
   };
 
@@ -117,7 +89,7 @@ const Cart = () => {
           <div className="col-md-6 order-1 order-md-0">
             <div className="row mt-3 mt-md-0 mb-3  mb-md-5">
               <div className="col-md-6">
-                <button className="shop btn btn-outline-primary btn-sm btn-block primary-color">
+                <button className="shop btn btn-outline-primary btn-sm btn-block primary-color" onClick={() => router.push("/shop")}>
                   Continue Shopping
                 </button>
               </div>
@@ -159,7 +131,7 @@ const Cart = () => {
                     <span className="text-black ">Subtotal</span>
                   </div>
                   <div className="col-md-6 text-right">
-                    <strong className="text-black">Rs. 2300.0</strong>
+                    <strong className="text-black">Rs. {totalCost}</strong>
                   </div>
                 </div>
                 <div className="row mb-3">

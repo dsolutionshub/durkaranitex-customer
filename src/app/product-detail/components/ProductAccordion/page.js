@@ -6,6 +6,9 @@ import "../../style.css";
 import { useState } from "react";
 import ShareProductBox from "../ShareProductBox/page";
 import useCartPanelStore from "@/store/useCartPanelStore";
+import { modifyCart, modifyWishlist } from "@/app/api/services/authService";
+import { getErrorMessage } from "@/app/utils/helperFn";
+import { loader } from "@/app/components/loader/loaderManager";
 
 export default function ProductAccordion({
   sections,
@@ -18,8 +21,27 @@ export default function ProductAccordion({
   const { handleGetCartDetail } = useCartPanelStore();
   const [isLiked, setIsLiked] = useState(false);
 
-  function handleLike() {
+  async function handleLike() {
     setIsLiked((prev) => !prev);
+    loader(true)
+    try{
+    const data = await modifyWishlist({product_id: sections?.id})
+    }catch(err){
+      getErrorMessage(err)
+    }finally{
+      loader(false)
+    }
+  }
+
+  const addToCart = async()=>{
+    loader(true)
+    try{
+    const data = await modifyCart({product_id:sections?.id, quantity: quantity})
+    }catch(err){
+      getErrorMessage(err)
+    }finally{
+      loader(false)
+    }
   }
 
   return (
@@ -27,9 +49,9 @@ export default function ProductAccordion({
       <h2 className="text-2xl font-bold text-black">{sections?.title}</h2>
       <div className="flex justify-between items-center">
         <div className="text-lg primary-color font-semibold mt-2">
-          Rs. 1,250.00{" "}
+          Rs. {sections?.price}{" "}
           <span className="text-gray-500 line-through text-sm">
-            Rs. 2,048.00
+            Rs. {sections?.product_price}
           </span>
         </div>
         <div className="flex gap-3 items-center">
@@ -46,7 +68,7 @@ export default function ProductAccordion({
       </div>
 
       <div style={{ width: "100%", maxWidth: "600px" }}>
-        {sections?.map((section, index) => {
+        {/* {sections?.map((section, index) => {
           const isOpen = openIndex === index;
 
           return (
@@ -74,7 +96,7 @@ export default function ProductAccordion({
               </div>
             </div>
           );
-        })}
+        })} */}
       </div>
 
       <div className="mt-4 flex flex-col lg:flex-row items-center md:items-center space-y-4 md:space-y-0 md:space-x-4 w-full">
@@ -102,7 +124,7 @@ export default function ProductAccordion({
         <div className="flex flex-col md:flex-row items-center justify-center space-y-3 md:space-y-0 md:space-x-3 gap-3 product-detail-cart-btn">
           <button
             className="bg-black text-white px-6 py-2 rounded text-sm w-full md:w-auto font-bold"
-            onClick={() => handleGetCartDetail()}
+            onClick={addToCart}
           >
             Add To Cart
           </button>
