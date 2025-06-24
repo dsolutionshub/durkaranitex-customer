@@ -2,10 +2,12 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Sidebar } from "primereact/sidebar";
 import { IoClose } from "react-icons/io5";
-
+import Link from "next/link";
 import useCartPanelStore from "@/store/useCartPanelStore";
 import "./style.css";
+import { ShoppingCart,
 
+} from "lucide-react";
 function RenderQuantity({
   decrementQty,
   incrementQty,
@@ -147,9 +149,21 @@ const SidePanelCart = () => {
               </div>
             </>
           ) : (
-            <p className="text-center text-gray-600 text-md mt-10">
-              🛒 Your cart is currently empty
-            </p>
+            <div className="flex flex-col items-center justify-center text-center h-full px-4">
+  <ShoppingCart size={66} className="text-gray-300 mb-4" />
+  <h2 className="text-xl font-semibold mb-2">Your cart is empty</h2>
+  <p className="text-gray-600 mb-4">Add some beautiful sarees to get started!</p>
+  <button
+    onClick={() => {
+      setCartOpen(false);
+      router.push("/shop");
+    }}
+    className="bg-green-800 text-white py-2 px-4 rounded"
+  >
+    Continue Shopping
+  </button>
+</div>
+
           )}
         </div>
       </div>
