@@ -1,5 +1,4 @@
 import axios from "axios";
-import { getErrorMessage } from "@/app/utils/helperFn";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -38,7 +37,9 @@ axiosInstance.interceptors.response.use(
 
     console.log(`API Error [${status}]:`, errorMessage);
 
-    return Promise.reject(new Error(errorMessage));
+    error.customMessage = errorMessage;
+
+    return Promise.reject(error);
   }
 );
 
@@ -52,6 +53,6 @@ export async function apiRequest(endpoint, method = "GET", body = null) {
 
     return response.data;
   } catch (error) {
-    getErrorMessage(error);
+    throw error;
   }
 }

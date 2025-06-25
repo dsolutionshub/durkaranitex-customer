@@ -1,47 +1,12 @@
+import { getCart } from "@/app/api/services/authService";
 import { loader } from "@/app/components/loader/loaderManager";
 import { getErrorMessage } from "@/app/utils/helperFn";
 import { create } from "zustand";
 
 const useCartPanelStore = create((set, get) => ({
   isCartOpen: false,
-  cartProducts: [
-    {
-      id: 1,
-      title: "Embossed Silk Set",
-      imgsrc: "/images/combo_1.jpeg",
-      subImage: "/images/combo_2.jpeg",
-      description: "Finding perfect t-shirt",
-      price: "1300.00",
-      quantity: 2,
-    },
-    {
-      id: 2,
-      title: "Semi Slik Combo Set",
-      imgsrc: "/images/combo_2.jpeg",
-      subImage: "/images/combo_1.jpeg",
-      description: "Finding perfect products",
-      price: "1500.00",
-      quantity: 1,
-    },
-    {
-      id: 3,
-      title: "Cotton blended combos",
-      imgsrc: "/images/combo_9.jpeg",
-      subImage: "/images/combo_2.jpeg",
-      description: "Finding perfect products",
-      price: "1000.00",
-      quantity: 6,
-    },
-     {
-      id: 5,
-      title: "Embossed Silk Set",
-      imgsrc: "/images/combo_1.jpeg",
-      subImage: "/images/combo_2.jpeg",
-      description: "Finding perfect t-shirt",
-      price: "1300.00",
-      quantity: 2,
-    },
-  ],
+  cartProducts: [],
+  cartTotalAmount: 0,
 
   setCartOpen: (open) => set({ isCartOpen: open }),
 
@@ -51,6 +16,7 @@ const useCartPanelStore = create((set, get) => ({
         item.id === id ? { ...item, quantity: item.quantity + 1 } : item
       ),
     })),
+
   decrementQty: (id) =>
     set((state) => ({
       cartProducts: state.cartProducts.map((item) =>
@@ -59,22 +25,29 @@ const useCartPanelStore = create((set, get) => ({
           : item
       ),
     })),
+
   removeFromCart: (id) =>
     set((state) => ({
       cartProducts: state.cartProducts.filter((item) => item.id !== id),
     })),
 
-  handleGetCartDetail: () => {
+  cardDetails: async () => {
     loader(true);
     try {
-      // Cart detail API
+      const data = await getCart();
+      set({ cartProducts: data?.cart || [] });
+      set({ cartTotalAmount: data?.total_amount });
     } catch (error) {
-      const MSG = getErrorMessage(error);
-      console.log(MSG);
+      getErrorMessage(error);
     } finally {
       loader(false);
-      set({ isCartOpen: true });
     }
+  },
+
+  handleGetCartDetail: async () => {
+    const { cardDetails } = get();
+    await cardDetails();
+    set({ isCartOpen: true });
   },
 }));
 

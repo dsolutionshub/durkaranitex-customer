@@ -156,3 +156,20 @@ select option:first-child {
     }
   }
 }
+
+.custom-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  background-color: #b6b9c0;
+  border-radius: 4px;
+}
+
+.p-dialog-mask {
+  background-color: rgba(0, 0, 0, 0.6);
+}

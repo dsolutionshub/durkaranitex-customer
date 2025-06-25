@@ -2,12 +2,15 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Sidebar } from "primereact/sidebar";
 import { IoClose } from "react-icons/io5";
-import Link from "next/link";
+import { ShoppingCart } from "lucide-react";
+
 import useCartPanelStore from "@/store/useCartPanelStore";
+
 import "./style.css";
-import { ShoppingCart} from "lucide-react";
-import { useEffect, useState } from "react";
-import { getCart } from "@/app/api/services/authService";
+import { loader } from "../loader/loaderManager";
+import { getErrorMessage } from "@/app/utils/helperFn";
+import { handleCheckout } from "@/app/api/services/authService";
+import { useAuthStore } from "@/store/useAuthStore";
 
 function RenderQuantity({
   decrementQty,
@@ -52,29 +55,35 @@ const SidePanelCart = () => {
     incrementQty,
     decrementQty,
     removeFromCart,
+    cartTotalAmount,
   } = useCartPanelStore();
+  const { navigateToLogin } = useAuthStore();
+
   const subtotal = cartProducts.reduce(
     (acc, item) => acc + parseFloat(item.price) * (item.quantity || 0),
     0
   );
-  const [products, setProducts] = useState([])
-  const [totalAmount, setTotalAmount] = useState(0)
-  // const [totalProducts, setTotalProducts] = useState(0)
 
   function handleNavigate(page) {
     router.push(page);
     setCartOpen(false);
   }
 
-  const getProducts = async()=>{
-    const data = await getCart()
-    setProducts(data.cart)
-    setTotalAmount(data.total_amount)
+  async function handleNavigateToCheckout() {
+    loader(true);
+    try {
+      await handleCheckout();
+      handleNavigate("/checkout");
+    } catch (error) {
+      const status = error.response.status;
+      if (status === 401) {
+        navigateToLogin("/checkout");
+      }
+      getErrorMessage(error);
+    } finally {
+      loader(false);
+    }
   }
-
-  useEffect(()=>{
-     getProducts()
-  },[])
 
   return (
     <Sidebar
@@ -86,7 +95,7 @@ const SidePanelCart = () => {
     >
       <div className="bg-white h-full w-full max-w-md right-0 ">
         <div className="pt-4 flex items-center justify-between">
-          <h4 className="dark-color">Shopping Cart ({products?.length})</h4>
+          <h4 className="dark-color">Shopping Cart ({cartProducts?.length})</h4>
           <IoClose
             onClick={() => setCartOpen(false)}
             className="dark-color cursor-pointer"
@@ -94,10 +103,10 @@ const SidePanelCart = () => {
         </div>
 
         <div className="flex-grow overflow-y-auto mt-2">
-          {products?.length > 0 ? (
+          {cartProducts?.length > 0 ? (
             <>
               <div className="cart-sidepanel-container">
-                {products.map((product) => (
+                {cartProducts.map((product) => (
                   <div key={product?.product?.id} className="mb-4 ">
                     <div className="flex gap-3 md:gap-4 items-start">
                       <Image
@@ -146,7 +155,7 @@ const SidePanelCart = () => {
               <div className="mt-2 total-cost-card">
                 <div className="flex justify-between dark-color mb-4">
                   <span>Subtotal</span>
-                  <span>Rs. {totalAmount}</span>
+                  <span>Rs. {cartTotalAmount}</span>
                 </div>
                 <button
                   className="w-full  primary-border py-2 font-semibold mb-2 primary-color"
@@ -156,7 +165,7 @@ const SidePanelCart = () => {
                 </button>
                 <button
                   className="w-full primary-bg text-white py-2 rounded-full font-semibold"
-                  onClick={() => handleNavigate("/checkout")}
+                  onClick={handleNavigateToCheckout}
                 >
                   CHECK OUT
                 </button>
@@ -164,20 +173,21 @@ const SidePanelCart = () => {
             </>
           ) : (
             <div className="flex flex-col items-center justify-center text-center h-full px-4">
-  <ShoppingCart size={66} className="text-gray-300 mb-4" />
-  <h2 className="text-xl font-semibold mb-2">Your cart is empty</h2>
-  <p className="text-gray-600 mb-4">Add some beautiful sarees to get started!</p>
-  <button
-    onClick={() => {
-      setCartOpen(false);
-      router.push("/shop");
-    }}
-    className="bg-green-800 text-white py-2 px-4 rounded"
-  >
-    Continue Shopping
-  </button>
-</div>
-
+              <ShoppingCart size={66} className="text-gray-300 mb-4" />
+              <h2 className="text-xl font-semibold mb-2">Your cart is empty</h2>
+              <p className="text-gray-600 mb-4">
+                Add some beautiful sarees to get started!
+              </p>
+              <button
+                onClick={() => {
+                  setCartOpen(false);
+                  router.push("/shop");
+                }}
+                className="bg-green-800 text-white py-2 px-4 rounded"
+              >
+                Continue Shopping
+              </button>
+            </div>
           )}
         </div>
       </div>

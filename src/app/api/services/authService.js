@@ -6,15 +6,18 @@ import {
   CATEGORY_LIST,
   DELETE_CUSTOMER_ADDRESS,
   GET_CART,
+  GET_CHECKOUT_LIST,
   GET_CUSTOMER_ADDRESS_LIST,
   GET_HOME,
   GET_STATE_LIST,
   GOOGLE_LOGIN,
+  HANDLE_CHECKOUT,
   LOGIN_CHECK,
   PRODUCT_DETAIL,
   PRODUCT_LIST,
   PROFILE_INFO,
   REMOVE_WISH_LIST,
+  UPDATE_CHECKOUT_ADDRESS,
   UPDATE_CUSTOMER_ADDRESS,
   UPDATE_QUANTITY,
   WISH_LIST,
@@ -145,5 +148,21 @@ export async function deleteAddress(payload, id) {
 //Profile
 export async function getProfileInfo() {
   const response = await apiRequest(PROFILE_INFO, "GET");
+  return response;
+}
+
+//Checkout
+export async function handleCheckout() {
+  const response = await apiRequest(HANDLE_CHECKOUT, "POST");
+  return response;
+}
+
+export async function getCheckoutList() {
+  const response = await apiRequest(GET_CHECKOUT_LIST, "GET");
+  return response;
+}
+
+export async function updateCheckoutAddress(payload) {
+  const response = await apiRequest(UPDATE_CHECKOUT_ADDRESS, "POST", payload);
   return response;
 }

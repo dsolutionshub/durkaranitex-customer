@@ -1,8 +1,12 @@
+import { useAuthStore } from "@/store/useAuthStore";
 import Image from "next/image";
 import { RiDeleteBinLine } from "react-icons/ri";
 
-const OrderSummary = () => {
+const OrderSummary = ({ checkoutData }) => {
+  const { navigateToLogin } = useAuthStore();
+
   const handlePayment = () => {
+    // toast.error("Please Select or Add Address");
     navigateToLogin("/checkout");
   };
 
@@ -12,87 +16,44 @@ const OrderSummary = () => {
         <h4 className="font-semibold text-black mb-4">Order Details</h4>
         <h5 className="font-semibold text-black mb-4">Product Summary</h5>
         <div className="space-y-3 text-sm">
-          <div className="flex items-center space-x-3 border-b border-gray-300 pb-3">
-            <div className="h-14 w-14 flex-shrink-0 bg-neutral-light rounded-md overflow-hidden">
-              <Image
-                alt="image"
-                src={"/images/1.jpeg"}
-                width={50}
-                height={50}
-                className="h-14 w-14 flex-shrink-0 bg-neutral-light rounded-md overflow-hidden"
-              />
-            </div>
-            <div className="flex-grow">
-              <p className="font-semibold text-black m-0">
-                Premium Wireless Headphones
-              </p>
-              <div className="flex justify-between">
-                <p className="text-gray-500 m-0">Qty: 1</p>
-                <p className="text-gray-500 m-0">₹2,499</p>
+          {checkoutData?.products_list?.length > 0 ? (
+            checkoutData?.products_list.map((item) => (
+              <div
+                className="flex items-center space-x-3 border-b border-gray-300 pb-3"
+                key={item.id}
+              >
+                <div className="h-14 w-14 flex-shrink-0 bg-neutral-light rounded-md overflow-hidden">
+                  <Image
+                    alt="image"
+                    src={"/images/1.jpeg"}
+                    width={50}
+                    height={50}
+                    className="h-14 w-14 flex-shrink-0 bg-neutral-light rounded-md overflow-hidden"
+                  />
+                </div>
+                <div className="flex-grow">
+                  <p className="font-semibold text-black m-0">
+                    {item?.product?.title}
+                  </p>
+                  <div className="flex justify-between">
+                    <p className="text-gray-500 m-0">Qty: {item?.quantity}</p>
+                    <p className="text-gray-500 m-0">₹{item?.price}</p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className="text-black font-semibold mb-0">
+                    ₹{item?.total_amount}
+                  </p>
+                  <div className="flex items-center gap-1 cursor-pointer">
+                    <RiDeleteBinLine className="text-red-600" />
+                    <button className="text-red-600 text-sm">Remove</button>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div className="text-right">
-              <p className="text-black font-semibold">₹2,499</p>
-              <div className="flex items-center gap-1">
-                <RiDeleteBinLine className="text-red-600" />
-                <button className="text-red-600 text-sm">Remove</button>
-              </div>
-            </div>
-          </div>
-          <div className="flex items-center space-x-3 border-b border-gray-300 pb-3">
-            <div className="h-14 w-14 flex-shrink-0 bg-neutral-light rounded-md overflow-hidden">
-              <Image
-                alt="image"
-                src={"/images/1.jpeg"}
-                width={50}
-                height={50}
-                className="h-14 w-14 flex-shrink-0 bg-neutral-light rounded-md overflow-hidden"
-              />
-            </div>
-            <div className="flex-grow">
-              <p className="font-semibold text-black m-0">
-                Premium Wireless Headphones
-              </p>
-              <div className="flex justify-between">
-                <p className="text-gray-500 m-0">Qty: 1</p>
-                <p className="text-gray-500 m-0">₹2,499</p>
-              </div>
-            </div>
-            <div className="text-right">
-              <p className="text-black font-semibold">₹2,499</p>
-              <div className="flex items-center gap-1">
-                <RiDeleteBinLine className="text-red-600" />
-                <button className="text-red-600 text-sm">Remove</button>
-              </div>
-            </div>
-          </div>
-          <div className="flex items-center space-x-3 border-b border-gray-300 pb-3">
-            <div className="h-14 w-14 flex-shrink-0 bg-neutral-light rounded-md overflow-hidden">
-              <Image
-                alt="image"
-                src={"/images/1.jpeg"}
-                width={50}
-                height={50}
-                className="h-14 w-14 flex-shrink-0 bg-neutral-light rounded-md overflow-hidden"
-              />
-            </div>
-            <div className="flex-grow">
-              <p className="font-semibold text-black m-0">
-                Premium Wireless Headphones
-              </p>
-              <div className="flex justify-between">
-                <p className="text-gray-500 m-0">Qty: 1</p>
-                <p className="text-gray-500 m-0">₹2,499</p>
-              </div>
-            </div>
-            <div className="text-right">
-              <p className="text-black font-semibold">₹2,499</p>
-              <div className="flex items-center gap-1 cursor-pointer">
-                <RiDeleteBinLine className="text-red-600" />
-                <button className="text-red-600 text-sm">Remove</button>
-              </div>
-            </div>
-          </div>
+            ))
+          ) : (
+            <p>No Product found</p>
+          )}
         </div>
       </div>
 
@@ -100,8 +61,8 @@ const OrderSummary = () => {
         <h5 className="font-semibold text-black mb-4">Payment Summary</h5>
         <div className="text-sm space-y-3">
           <div className="flex justify-between text-black font-medium">
-            <span>Subtotal (4 items)</span>
-            <span>₹7,296</span>
+            <span>Subtotal ({checkoutData?.total_products} items)</span>
+            <span>₹{checkoutData?.sub_total}</span>
           </div>
           <div className="flex items-center space-x-2 gap-2">
             <input
@@ -120,13 +81,13 @@ const OrderSummary = () => {
           <hr />
           <div className="flex justify-between font-bold text-xl text-black font-semibold">
             <span>Total</span>
-            <span>₹7,521</span>
+            <span>₹{checkoutData?.total_full_payment}</span>
           </div>
           <button
             className="w-full mt-3 bg-green-800 text-white py-2 rounded"
             onClick={handlePayment}
           >
-            Pay Now ₹7,521
+            Pay Now ₹{checkoutData?.total_full_payment}
           </button>
         </div>
       </div>

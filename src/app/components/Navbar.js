@@ -32,7 +32,8 @@ const navItems = [
 
 export default function Navbar() {
   const router = useRouter();
-  const { isCartOpen, handleGetCartDetail } = useCartPanelStore();
+  const { isCartOpen, handleGetCartDetail, cartProducts, cardDetails } =
+    useCartPanelStore();
 
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -54,6 +55,7 @@ export default function Navbar() {
 
   useEffect(() => {
     // loginChecking();
+    cardDetails();
   }, []);
 
   return (
@@ -120,26 +122,22 @@ export default function Navbar() {
             onClick={() => router.push("/wishlist")}
           >
             <Heart className="primary-color" />
-            {/* {wishlistCount > 0 && ( */}
             <span
               className="absolute -top-1 -right-2 bg-red-500 text-white text-xs font-bold 
               h-[1.2rem] w-[1.2rem] flex items-center justify-center rounded-full"
             >
               {10}
             </span>
-            {/* )} */}
           </div>
 
           <div className="relative cursor-pointer" onClick={handlePanel}>
             <ShoppingBag className="primary-color" />
-            {/* {cartCount > 0 && ( */}
             <span
               className="absolute -top-1 -right-2 bg-red-500 text-white text-xs font-bold
               h-[1.2rem] w-[1.2rem] flex items-center justify-center rounded-full"
             >
-              {10}
+              {cartProducts?.length || 0}
             </span>
-            {/* )} */}
           </div>
 
           <User

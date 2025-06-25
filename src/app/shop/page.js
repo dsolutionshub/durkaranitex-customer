@@ -12,19 +12,26 @@ import ProductPagination from "./components/ProductPagination/page";
 import ProductFilter from "./components/ProductFilter/page";
 import { loader } from "../components/loader/loaderManager";
 
-import collections from "./productList.json";
 import useCartPanelStore from "@/store/useCartPanelStore";
 import useCartStore from "@/store/useCartStore";
 import { getErrorMessage, getFilteredProducts } from "../utils/helperFn";
 import { SHOP_MODEL } from "../utils/constants";
-import { getCategoryList, getProductList, modifyCart, modifyWishlist } from "../api/services/authService";
-import { BREAD_CRUMB_HOME } from "../utils/constants";
+import {
+  getCategoryList,
+  getProductList,
+  modifyCart,
+  modifyWishlist,
+} from "../api/services/authService";
+import { useAuthStore } from "@/store/useAuthStore";
+import { useSession } from "next-auth/react";
 
 const items = [{ label: "Shop" }];
 
 function Shop() {
   const itemsPerPage = 8;
+  const { data: session, status } = useSession();
   const { handleGetCartDetail } = useCartPanelStore();
+  const { navigateToLogin, syncAccessToken } = useAuthStore();
 
   // const addToCart = useCartStore((state) => state.addToCart);
   const wishToCart = useCartStore((state) => state.addToWishlist);
@@ -41,7 +48,7 @@ function Shop() {
   const [quantities, setQuantities] = useState({});
 
   const filtered = getFilteredProducts({
-    products: collections,
+    products: [],
     search: searchProduct,
     priceRange,
     selectedCategories,
@@ -96,10 +103,6 @@ function Shop() {
     setOpenFilter((prev) => !prev);
   };
 
-  const handleOpenCart = () => {
-    handleGetCartDetail();
-  };
-
   useEffect(() => {
     productDetails();
   }, [currentPage]);
@@ -148,8 +151,12 @@ function Shop() {
   const addToWishlist = async (id) => {
     loader(true);
     try {
-      const data = await modifyWishlist({ product_id: id });
+      await modifyWishlist({ product_id: id });
     } catch (error) {
+      const status = error?.response?.status;
+      if (status === 401) {
+        navigateToLogin("/shop");
+      }
       getErrorMessage(error);
     } finally {
       loader(false);
@@ -157,21 +164,30 @@ function Shop() {
   };
 
   const addToCart = async (id) => {
-
     const currentQty = quantities[id] || 0;
     const newQty = currentQty + 1;
 
-    setQuantities(prev => ({ ...prev, [id]: newQty }));
+    setQuantities((prev) => ({ ...prev, [id]: newQty }));
     loader(true);
     try {
-      const data = await modifyCart({ product_id: id, quantity: newQty});
-      handleOpenCart()
+      const data = await modifyCart({ product_id: id, quantity: newQty });
+      handleGetCartDetail();
     } catch (error) {
+      const status = error?.response?.status;
+      if (status === 401) {
+        navigateToLogin("/shop");
+      }
       getErrorMessage(error);
     } finally {
       loader(false);
     }
   };
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      syncAccessToken(session);
+    }
+  }, [status, session, syncAccessToken]);
 
   return (
     <>

@@ -147,7 +147,13 @@
 import { useEffect, useState } from "react";
 import AddressForm from "../components/AddressForm";
 import { MapPin, User, Mail, Phone, Home, Edit, Trash } from "lucide-react";
-import { addAddress, deleteAddress, getCustomerAddressList, getStateList, updateAddress } from "@/app/api/services/authService";
+import {
+  addAddress,
+  deleteAddress,
+  getCustomerAddressList,
+  getStateList,
+  updateAddress,
+} from "@/app/api/services/authService";
 import { GET_STATE_LIST } from "@/app/utils/apiEndpoints";
 import { getErrorMessage } from "@/app/utils/helperFn";
 import { loader } from "@/app/components/loader/loaderManager";
@@ -161,7 +167,7 @@ export default function AddressPage() {
   const handleEdit = async (address) => {
     setEditingAddress(address);
     setShowForm(true);
-    const state_list = await GET_STATE_LIST()
+    const state_list = await GET_STATE_LIST();
     console.log(state_list);
   };
 
@@ -180,8 +186,8 @@ export default function AddressPage() {
       getErrorMessage(error);
     } finally {
       loader(false);
-    };
-  }
+    }
+  };
 
   const handleCancel = () => {
     setEditingAddress(null);
@@ -189,20 +195,20 @@ export default function AddressPage() {
   };
 
   const stateList = async () => {
-    const { data } = await getStateList()
+    const { data } = await getStateList();
     setStates(data.states);
-  }
+  };
 
   const getAddressList = async () => {
-    const { data } = await getCustomerAddressList()
-    console.log(data)
-    setAddresses(data)
-  }
+    const { data } = await getCustomerAddressList();
+    console.log(data);
+    setAddresses(data);
+  };
 
   const handleDelete = async (id) => {
     // setAddresses(addresses.filter((addr) => addr.id !== id));
-    const data = await deleteAddress(addresses, id)
-    await getAddressList()
+    const data = await deleteAddress(addresses, id);
+    await getAddressList();
   };
 
   // {
@@ -218,9 +224,9 @@ export default function AddressPage() {
   // },
 
   useEffect(() => {
-    getAddressList()
-    stateList()
-  }, [])
+    getAddressList();
+    stateList();
+  }, []);
 
   return (
     <div className="mx-auto">
@@ -250,8 +256,9 @@ export default function AddressPage() {
           {addresses.map((address, index) => (
             <div
               key={address.id ?? index}
-              className={`border rounded-md shadow-sm flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-start ${address.isDefault ? "border-green-600" : "border-gray-300"
-                } p-6 sm:p-4`}
+              className={`border rounded-md shadow-sm flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-start ${
+                address.isDefault ? "border-green-600" : "border-gray-300"
+              } p-6 sm:p-4`}
             >
               {/* Address Info */}
               <div className="space-y-2 text-base text-black">
@@ -270,7 +277,8 @@ export default function AddressPage() {
                 <div className="flex items-start gap-2">
                   <Home className="w-5 h-5 mt-0.5 shrink-0" />
                   <span className="leading-snug">
-                    {address.address}, {address.pincode}, {address.city} , {address.state.name}
+                    {address.address}, {address.pincode}, {address.city} ,{" "}
+                    {address.state.name}
                   </span>
                 </div>
 
