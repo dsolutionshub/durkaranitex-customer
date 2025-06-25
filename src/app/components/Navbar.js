@@ -115,14 +115,33 @@ export default function Navbar() {
         </ul>
 
         <div className="flex items-center gap-6 text-2xl pr-5">
-          <Heart
-            className="cursor-pointer primary-color"
+          <div
+            className="relative cursor-pointer"
             onClick={() => router.push("/wishlist")}
-          />
-          <ShoppingBag
-            className="cursor-pointer primary-color"
-            onClick={handlePanel}
-          />
+          >
+            <Heart className="primary-color" />
+            {/* {wishlistCount > 0 && ( */}
+            <span
+              className="absolute -top-1 -right-2 bg-red-500 text-white text-xs font-bold 
+              h-[1.2rem] w-[1.2rem] flex items-center justify-center rounded-full"
+            >
+              {10}
+            </span>
+            {/* )} */}
+          </div>
+
+          <div className="relative cursor-pointer" onClick={handlePanel}>
+            <ShoppingBag className="primary-color" />
+            {/* {cartCount > 0 && ( */}
+            <span
+              className="absolute -top-1 -right-2 bg-red-500 text-white text-xs font-bold
+              h-[1.2rem] w-[1.2rem] flex items-center justify-center rounded-full"
+            >
+              {10}
+            </span>
+            {/* )} */}
+          </div>
+
           <User
             className="cursor-pointer primary-color"
             onClick={() => router.push("/account")}

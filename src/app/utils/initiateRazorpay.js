@@ -7,11 +7,9 @@ export const initiateRazorpayPayment = ({ order }) => {
     description: "Purchase",
     order_id: order.id,
     handler: function (response) {
-      // ✅ On successful payment
       window.location.href = `/payment-status?status=success&payment_id=${response.razorpay_payment_id}`;
     },
     modal: {
-      // ❌ If user closes/cancels payment
       ondismiss: function () {
         window.location.href = "/payment-status?status=failed";
       },

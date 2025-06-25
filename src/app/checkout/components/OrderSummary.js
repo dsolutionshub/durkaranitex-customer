@@ -2,6 +2,10 @@ import Image from "next/image";
 import { RiDeleteBinLine } from "react-icons/ri";
 
 const OrderSummary = () => {
+  const handlePayment = () => {
+    navigateToLogin("/checkout");
+  };
+
   return (
     <div className="space-y-6">
       <div className="bg-white p-6 rounded-xl shadow">
@@ -120,7 +124,7 @@ const OrderSummary = () => {
           </div>
           <button
             className="w-full mt-3 bg-green-800 text-white py-2 rounded"
-            onClick={() => navigateToLogin("/checkout")}
+            onClick={handlePayment}
           >
             Pay Now ₹7,521
           </button>
