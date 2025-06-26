@@ -12,8 +12,10 @@ import useCartPanelStore from "@/store/useCartPanelStore";
 import { getWishlist, modifyWishlist } from "../api/services/authService";
 import { WISHLIST_MODEL } from "../utils/constants";
 import { getErrorMessage } from "../utils/helperFn";
+import { useRouter } from "next/navigation";
 
 const Wishlist = () => {
+  const router = useRouter();
   const { handleGetCartDetail } = useCartPanelStore();
   const [wishlist, setWishlist] = useState([]);
 
@@ -56,6 +58,13 @@ const Wishlist = () => {
 
   useEffect(() => {
     fetchWishlist();
+  }, []);
+
+  useEffect(() => {
+    const token = sessionStorage.getItem("accessToken");
+    if (!token || token === "undefined") {
+      router.replace("/login");
+    }
   }, []);
 
   return (

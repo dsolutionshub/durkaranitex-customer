@@ -10,7 +10,6 @@ import "./style.css";
 import { loader } from "../loader/loaderManager";
 import { getErrorMessage } from "@/app/utils/helperFn";
 import { handleCheckout } from "@/app/api/services/authService";
-import { useAuthStore } from "@/store/useAuthStore";
 
 function RenderQuantity({
   decrementQty,
@@ -57,7 +56,6 @@ const SidePanelCart = () => {
     removeFromCart,
     cartTotalAmount,
   } = useCartPanelStore();
-  const { navigateToLogin } = useAuthStore();
 
   const subtotal = cartProducts.reduce(
     (acc, item) => acc + parseFloat(item.price) * (item.quantity || 0),
@@ -77,7 +75,8 @@ const SidePanelCart = () => {
     } catch (error) {
       const status = error.response.status;
       if (status === 401) {
-        navigateToLogin("/checkout");
+        sessionStorage.setItem("postLoginRedirect", "/checkout");
+        router.push("/login");
       }
       getErrorMessage(error);
     } finally {

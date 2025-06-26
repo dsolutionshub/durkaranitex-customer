@@ -4,7 +4,6 @@ import { signIn, signOut } from "next-auth/react";
 export const useAuthStore = create((set) => ({
   navigateToLogin: (path = "/") => {
     if (typeof window !== "undefined") {
-      sessionStorage.setItem("postLoginRedirect", path);
       window.location.href = "/login";
     }
   },
@@ -26,7 +25,6 @@ export const useAuthStore = create((set) => ({
 
   handleLogout: (redirectPath = "/") => {
     sessionStorage.removeItem("accessToken");
-    signOut({ callbackUrl: "/login" });
     sessionStorage.clear();
   },
 }));

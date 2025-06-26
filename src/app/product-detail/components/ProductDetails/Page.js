@@ -79,7 +79,7 @@ const ProductDetails = () => {
   return (
     <div>
       <CustomBreadCrumb
-        model={[{ label: "Shop" }, { label: "Cotton Saree" }]}
+        model={[{ label: "Shop" }, { label: productInfo?.product?.title }]}
       />
 
       <div className="container mx-auto px-4 lg:pt-3 pb-2">

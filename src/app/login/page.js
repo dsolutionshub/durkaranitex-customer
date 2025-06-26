@@ -1,114 +1,59 @@
 "use client";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
-
-import { Gift, Sparkles, ShieldCheck } from "lucide-react";
-import { useAuthStore } from "@/store/useAuthStore";
+import { useRouter } from "next/navigation";
+import LoginForm from "./components/LoginForm";
+import Link from "next/link";
 
 export default function LoginPage() {
   const router = useRouter();
-  const { data: session, status } = useSession();
-  const { handleGoogleSignIn } = useAuthStore();
+  const [isLogin, setIsLogin] = useState(true);
 
   useEffect(() => {
-    if (status === "authenticated" && session?.backendToken) {
-      sessionStorage.setItem("backendToken", session.backendToken);
-      router.replace("/checkout");
+    const token = sessionStorage.getItem("accessToken");
+    if (token && token !== "undefined") {
+      router.replace("/");
     }
-  }, [status, session, router]);
+  }, []);
 
   return (
-    <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
-      <div
-        className="bg-white p-4 rounded shadow text-center"
-        style={{
-          maxWidth: "500px",
-          width: "100%",
-          maxHeight: "500px",
-          height: "100%",
-        }}
-      >
-        <div className="d-flex justify-content-center">
-          <div className="text-center mb-1">
-            <Image
-              height={100}
-              width={100}
-              src="/images/home/logo.svg"
-              alt="Dhurgarani Tex"
-              className="h-20 w-auto mx-auto mb-6"
-            />
-          </div>
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-6">
+        <div className="text-center">
+          <Image
+            src="/images/home/logo.svg"
+            alt="Dhurgarani Tex"
+            width={200}
+            height={100}
+            className="mx-auto mb-4"
+          />
+          <h2 className="text-2xl font-bold text-black">
+            {isLogin ? "Welcome Back" : "Join Our Collection"}
+          </h2>
+          <p className="text-black mt-1 text-sm">
+            {isLogin
+              ? "Sign in to your account"
+              : "Discover the finest Sarees crafted with love"}
+          </p>
         </div>
 
-        <h4 className="fw-bold text-dark">Join Our Collection</h4>
-        <p className="text-muted mb-4">
-          Discover the finest Saress crafted with love
-        </p>
+        <LoginForm setIsLogin={setIsLogin} isLogin={isLogin} />
 
-        <button
-          onClick={handleGoogleSignIn}
-          className="btn btn-light border d-flex align-items-center justify-content-center gap-2 w-100 shadow-sm"
-        >
-          <Image
-            src="/images/google-icon.svg"
-            alt="Google"
-            width={30}
-            height={30}
-          />
-          <span className="fw-semibold">Continue with Google</span>
-        </button>
-
-        {/* Terms and Privacy */}
-        <div className="text-center text-m text-gray-900 mb-10 mt-4">
+        <div className="text-center text-sm text-black mt-3">
           By continuing, you agree to our{" "}
-          <a
-            href="#"
-            className="text-green-600 hover:text-green-700 font-medium "
+          <Link
+            href={"/terms-and-conditions"}
+            className="text-green-800 hover:underline"
           >
             Terms of Service
-          </a>{" "}
+          </Link>{" "}
           and{" "}
-          <a
-            href="#"
-            className="text-green-600 hover:text-green-700 font-medium"
+          <Link
+            href={"/privacy-policy"}
+            className="text-green-800 hover:underline"
           >
             Privacy Policy
-          </a>
-        </div>
-
-        {/* Features */}
-        <div className="mt-3 flex flex-col items-center space-y-4 text-center">
-          {/* Exclusive collections */}
-          <div className="flex items-center text-emerald-600">
-            <div className="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center mr-3">
-              <Gift className="w-6 h-6" />
-            </div>
-            <span className="text-base text-gray-900">
-              Exclusive collections
-            </span>
-          </div>
-
-          {/* Personalized recommendations */}
-          <div className="flex items-center text-emerald-600">
-            <div className="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center mr-3">
-              <Sparkles className="w-6 h-6" />
-            </div>
-            <span className="text-base text-gray-900">
-              Personalized recommendations
-            </span>
-          </div>
-
-          {/* Secure & fast checkout */}
-          <div className="flex items-center text-emerald-600">
-            <div className="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center mr-3">
-              <ShieldCheck className="w-6 h-6" />
-            </div>
-            <span className="text-base text-gray-900">
-              Secure & fast checkout
-            </span>
-          </div>
+          </Link>
         </div>
       </div>
     </div>

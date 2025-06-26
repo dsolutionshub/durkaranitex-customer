@@ -12,6 +12,9 @@ import { getHome } from "./api/services/authService";
 import { getErrorMessage } from "./utils/helperFn";
 import { loader } from "./components/loader/loaderManager";
 
+import "./globals.css";
+import "./styles/style.css";
+
 export default function Home() {
   const [homeDetails, setHomeDetails] = useState([]);
 
@@ -33,12 +36,12 @@ export default function Home() {
 
   return (
     <div>
-          <BannerCarousel />
-          <CollectionsSection />
-          <FeaturedProducts />
-          <NewCollections data={homeDetails?.new_collection_categories}/>
-          <SaleSection />
-          <CategorySection collection={homeDetails?.shop_collection}/>
+      <BannerCarousel />
+      <CollectionsSection />
+      <FeaturedProducts />
+      <NewCollections data={homeDetails?.new_collection_categories} />
+      <SaleSection />
+      <CategorySection collection={homeDetails?.shop_collection} />
     </div>
   );
 }

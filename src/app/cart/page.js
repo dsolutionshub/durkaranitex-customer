@@ -7,14 +7,18 @@ import CustomBreadCrumb from "../components/CustomBreadCrumb";
 
 import useCartStore from "@/store/useCartStore";
 import { CART_MODEL } from "../utils/constants";
-import { deleteQuantity, getCart, updateQuantity } from "../api/services/authService";
+import {
+  deleteQuantity,
+  getCart,
+  updateQuantity,
+} from "../api/services/authService";
 import { getErrorMessage } from "../utils/helperFn";
 import { loader } from "../components/loader/loaderManager";
 
 const Cart = () => {
   const router = useRouter();
   const removeFromCart = useCartStore((state) => state.removeFromCart);
-  const [totalCost, setTotalCost] = useState(0)
+  const [totalCost, setTotalCost] = useState(0);
 
   const [products, setProducts] = useState([]);
 
@@ -38,18 +42,17 @@ const Cart = () => {
 
       setProducts(formattedProducts);
     } catch (err) {
-      getErrorMessage(err)
+      getErrorMessage(err);
     } finally {
       loader(false);
     }
   };
 
-
   const increaseCount = async (id, currentQuantity) => {
     const newQuantity = currentQuantity + 1;
     try {
       await updateQuantity({ product_id: id, quantity: newQuantity });
-      await fetchCart()
+      await fetchCart();
     } catch (err) {
       console.error("Failed to increase quantity:", err);
     }
@@ -59,7 +62,7 @@ const Cart = () => {
     const newQuantity = currentQuantity - 1;
     try {
       await deleteQuantity({ product_id: id, quantity: newQuantity });
-      await fetchCart()
+      await fetchCart();
     } catch (err) {
       console.error("Failed to decrease quantity:", err);
     }
@@ -67,6 +70,13 @@ const Cart = () => {
 
   useEffect(() => {
     fetchCart();
+  }, []);
+
+  useEffect(() => {
+    const token = sessionStorage.getItem("accessToken");
+    if (!token || token === "undefined") {
+      router.replace("/login");
+    }
   }, []);
 
   // const removeProduct = (id) => {
@@ -89,7 +99,10 @@ const Cart = () => {
           <div className="col-md-6 order-1 order-md-0">
             <div className="row mt-3 mt-md-0 mb-3  mb-md-5">
               <div className="col-md-6">
-                <button className="shop btn btn-outline-primary btn-sm btn-block primary-color" onClick={() => router.push("/shop")}>
+                <button
+                  className="shop btn btn-outline-primary btn-sm btn-block primary-color"
+                  onClick={() => router.push("/shop")}
+                >
                   Continue Shopping
                 </button>
               </div>

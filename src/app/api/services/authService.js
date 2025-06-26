@@ -13,10 +13,12 @@ import {
   GOOGLE_LOGIN,
   HANDLE_CHECKOUT,
   HANDLE_PAYMENT,
+  LOGIN,
   LOGIN_CHECK,
   PRODUCT_DETAIL,
   PRODUCT_LIST,
   PROFILE_INFO,
+  REGISTER,
   REMOVE_WISH_LIST,
   UPDATE_CHECKOUT_ADDRESS,
   UPDATE_CUSTOMER_ADDRESS,
@@ -45,8 +47,19 @@ export async function googleSignIn(payload) {
   }
 }
 
+// Login
 export async function loginCheck() {
   const response = await apiRequest(LOGIN_CHECK, "GET");
+  return response;
+}
+
+export async function login(payload) {
+  const response = await apiRequest(LOGIN, "POST", payload);
+  return response;
+}
+
+export async function register(payload) {
+  const response = await apiRequest(REGISTER, "POST", payload);
   return response;
 }
 

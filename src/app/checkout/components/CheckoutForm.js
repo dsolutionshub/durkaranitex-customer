@@ -91,7 +91,6 @@ export default function CheckoutForm({
         setSelectedAddressId={setSelectedAddressId}
         checkoutData={checkoutData}
       />
-
       <div className="bg-white p-6 rounded-xl shadow">
         <h3 className="text-medium text-black font-medium mb-4">
           Payment Method
@@ -161,14 +160,13 @@ export default function CheckoutForm({
           )}
         </div>
       </div>
-
       <AddAdressModel
         isModalOpen={isModalOpen}
         handleCloseModel={handleCloseModel}
         isEdit={isEdit}
         selectedAddressId={selectedAddressId}
         getAddressList={getAddressList}
-      />
+      />{" "}
     </div>
   );
 }

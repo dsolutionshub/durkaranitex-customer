@@ -1,18 +1,17 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
 
-import { useAuthStore } from "@/store/useAuthStore";
 import CheckoutForm from "./components/CheckoutForm";
 import OrderSummary from "./components/OrderSummary";
 import { getErrorMessage } from "../utils/helperFn";
 import { getCheckoutList, payment } from "../api/services/authService";
 import { loader } from "../components/loader/loaderManager";
+import { useRouter } from "next/navigation";
 
 export default function CheckoutPage() {
-  const { data: session, status } = useSession();
-  const { syncAccessToken, navigateToLogin } = useAuthStore();
+  const router = useRouter();
+
   const [checkoutData, setCheckoutData] = useState(null);
   const [selectedPayment, setSelectedPayment] = useState("payNow");
 
@@ -32,7 +31,8 @@ export default function CheckoutPage() {
       getErrorMessage(error);
       const status = error?.response?.status;
       if (status === 401) {
-        navigateToLogin("/shop");
+        sessionStorage.setItem("postLoginRedirect", "/chekout");
+        router.push("/login");
       }
     } finally {
       loader(false);
@@ -52,10 +52,11 @@ export default function CheckoutPage() {
   };
 
   useEffect(() => {
-    if (status === "authenticated") {
-      syncAccessToken(session);
+    const token = sessionStorage.getItem("accessToken");
+    if (!token || token === "undefined") {
+      router.replace("/login");
     }
-  }, [status, session, syncAccessToken]);
+  }, []);
 
   useEffect(() => {
     handleCheckoutList();

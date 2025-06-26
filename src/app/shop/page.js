@@ -22,16 +22,13 @@ import {
   modifyCart,
   modifyWishlist,
 } from "../api/services/authService";
-import { useAuthStore } from "@/store/useAuthStore";
-import { useSession } from "next-auth/react";
 
 const items = [{ label: "Shop" }];
 
 function Shop() {
   const itemsPerPage = 8;
-  const { data: session, status } = useSession();
+  const router = useRouter();
   const { handleGetCartDetail } = useCartPanelStore();
-  const { navigateToLogin, syncAccessToken } = useAuthStore();
 
   // const addToCart = useCartStore((state) => state.addToCart);
   const wishToCart = useCartStore((state) => state.addToWishlist);
@@ -142,8 +139,6 @@ function Shop() {
     // setSortedProducts(sorted);
   }, [sortOption]);
 
-  const router = useRouter();
-
   const navigateToProductDetail = (product_id) => {
     router.push(`/product-detail?id=${product_id}`);
   };
@@ -155,7 +150,8 @@ function Shop() {
     } catch (error) {
       const status = error?.response?.status;
       if (status === 401) {
-        navigateToLogin("/shop");
+        sessionStorage.setItem("postLoginRedirect", "/shop");
+        router.push("/login");
       }
       getErrorMessage(error);
     } finally {
@@ -170,24 +166,19 @@ function Shop() {
     setQuantities((prev) => ({ ...prev, [id]: newQty }));
     loader(true);
     try {
-      const data = await modifyCart({ product_id: id, quantity: newQty });
+      await modifyCart({ product_id: id, quantity: newQty });
       handleGetCartDetail();
     } catch (error) {
       const status = error?.response?.status;
       if (status === 401) {
-        navigateToLogin("/shop");
+        sessionStorage.setItem("postLoginRedirect", "/shop");
+        router.push("/login");
       }
       getErrorMessage(error);
     } finally {
       loader(false);
     }
   };
-
-  useEffect(() => {
-    if (status === "authenticated") {
-      syncAccessToken(session);
-    }
-  }, [status, session, syncAccessToken]);
 
   return (
     <>
