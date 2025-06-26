@@ -95,18 +95,20 @@ const LoginForm = ({ isLogin, setIsLogin }) => {
       const { data } = isLogin
         ? await login(loginFormData)
         : await register(signupFormData);
-
-      sessionStorage.setItem("accessToken", data?.token);
-      sessionStorage.setItem("customer", JSON.stringify(data?.customer));
-      const redirectPath = sessionStorage.getItem("postLoginRedirect") || "/";
-      router.replace(redirectPath);
+      if (!data?.token) {
+        setIsLogin(true);
+        toast.success("Account created please login");
+      } else {
+        sessionStorage.setItem("accessToken", data?.token);
+        sessionStorage.setItem("customer", JSON.stringify(data?.customer));
+        const redirectPath = sessionStorage.getItem("postLoginRedirect") || "/";
+        router.replace(redirectPath);
+      }
       formik.resetForm();
     } catch (error) {
       const MSG = getErrorMessage(error);
       toast.error(MSG);
-
       const errorData = error?.response?.data;
-
       if (Array.isArray(errorData?.error)) {
         const fieldErrors = {};
         errorData.error.forEach(({ field, message }) => {
