@@ -1,50 +1,42 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import toast from "react-hot-toast";
 
 import { useAuthStore } from "@/store/useAuthStore";
 import CheckoutForm from "./components/CheckoutForm";
 import OrderSummary from "./components/OrderSummary";
 import { getErrorMessage } from "../utils/helperFn";
-import { getCheckoutList } from "../api/services/authService";
+import { getCheckoutList, payment } from "../api/services/authService";
 import { loader } from "../components/loader/loaderManager";
 
 export default function CheckoutPage() {
   const { data: session, status } = useSession();
-  const { syncAccessToken } = useAuthStore();
+  const { syncAccessToken, navigateToLogin } = useAuthStore();
   const [checkoutData, setCheckoutData] = useState(null);
+  const [selectedPayment, setSelectedPayment] = useState("payNow");
 
-  const [editingAddress, setEditingAddress] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handleEdit = (address) => {
-    setEditingAddress(address);
-    setIsModalOpen(true);
-  };
-
-  const handleUpdateAddress = (updatedAddress) => {
-    setAddresses((prev) =>
-      prev.map((addr) =>
-        addr.id === updatedAddress.id ? updatedAddress : addr
-      )
-    );
-    setIsModalOpen(false);
-    setEditingAddress(null);
-  };
-
-  const handleDelete = (id) => {
-    if (window.confirm("Are you sure you want to delete this address?")) {
-      setAddresses((prev) => prev.filter((addr) => addr.id !== id));
+  const handlePayment = async () => {
+    if (!checkoutData?.address) {
+      toast.error("Please Select or Add Address");
+      return;
     }
-  };
-
-  const handleSetDefault = (id) => {
-    setAddresses((prev) =>
-      prev.map((addr) => ({
-        ...addr,
-        isDefault: addr.id === id,
-      }))
-    );
+    loader(true);
+    try {
+      const data = await payment({
+        checkout_id: checkoutData?.checkout_id,
+        payment_type: selectedPayment === "payNow" ? "online" : "cod",
+      });
+      console.log(data);
+    } catch (error) {
+      getErrorMessage(error);
+      const status = error?.response?.status;
+      if (status === 401) {
+        navigateToLogin("/shop");
+      }
+    } finally {
+      loader(false);
+    }
   };
 
   const handleCheckoutList = async () => {
@@ -78,12 +70,13 @@ export default function CheckoutPage() {
       <div className="max-w-6xl mx-auto grid lg:grid-cols-3 gap-6 ">
         <CheckoutForm
           checkoutData={checkoutData}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-          onSetDefault={handleSetDefault}
+          selectedPayment={selectedPayment}
+          setSelectedPayment={setSelectedPayment}
         />
-
-        <OrderSummary checkoutData={checkoutData} />
+        <OrderSummary
+          checkoutData={checkoutData}
+          handlePayment={handlePayment}
+        />
       </div>
     </div>
   );

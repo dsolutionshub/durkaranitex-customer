@@ -1,15 +1,7 @@
-import { useAuthStore } from "@/store/useAuthStore";
 import Image from "next/image";
 import { RiDeleteBinLine } from "react-icons/ri";
 
-const OrderSummary = ({ checkoutData }) => {
-  const { navigateToLogin } = useAuthStore();
-
-  const handlePayment = () => {
-    // toast.error("Please Select or Add Address");
-    navigateToLogin("/checkout");
-  };
-
+const OrderSummary = ({ checkoutData, handlePayment }) => {
   return (
     <div className="space-y-6">
       <div className="bg-white p-6 rounded-xl shadow">

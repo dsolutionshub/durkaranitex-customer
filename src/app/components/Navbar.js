@@ -32,8 +32,14 @@ const navItems = [
 
 export default function Navbar() {
   const router = useRouter();
-  const { isCartOpen, handleGetCartDetail, cartProducts, cardDetails } =
-    useCartPanelStore();
+  const {
+    isCartOpen,
+    handleGetCartDetail,
+    cartProducts,
+    cardDetails,
+    wishlistDetails,
+    wishListData,
+  } = useCartPanelStore();
 
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -56,6 +62,7 @@ export default function Navbar() {
   useEffect(() => {
     // loginChecking();
     cardDetails();
+    wishlistDetails();
   }, []);
 
   return (
@@ -86,10 +93,15 @@ export default function Navbar() {
           />
         </div>
 
-        <ShoppingCart
-          className="text-2xl cursor-pointer primary-color"
-          onClick={handlePanel}
-        />
+        <div className="relative cursor-pointer" onClick={handlePanel}>
+          <ShoppingCart className="primary-color" />
+          <span
+            className="absolute -top-1 -right-2 bg-red-500 text-white text-xs font-bold
+              h-[1.2rem] w-[1.2rem] flex items-center justify-center rounded-full"
+          >
+            {cartProducts?.length || 0}
+          </span>
+        </div>
       </div>
 
       {/* Desktop Navbar */}
@@ -126,7 +138,7 @@ export default function Navbar() {
               className="absolute -top-1 -right-2 bg-red-500 text-white text-xs font-bold 
               h-[1.2rem] w-[1.2rem] flex items-center justify-center rounded-full"
             >
-              {10}
+              {wishListData?.length || 0}
             </span>
           </div>
 

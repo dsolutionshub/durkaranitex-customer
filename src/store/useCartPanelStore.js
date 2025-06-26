@@ -1,4 +1,4 @@
-import { getCart } from "@/app/api/services/authService";
+import { getCart, getWishlist } from "@/app/api/services/authService";
 import { loader } from "@/app/components/loader/loaderManager";
 import { getErrorMessage } from "@/app/utils/helperFn";
 import { create } from "zustand";
@@ -7,6 +7,7 @@ const useCartPanelStore = create((set, get) => ({
   isCartOpen: false,
   cartProducts: [],
   cartTotalAmount: 0,
+  wishListData: [],
 
   setCartOpen: (open) => set({ isCartOpen: open }),
 
@@ -37,6 +38,18 @@ const useCartPanelStore = create((set, get) => ({
       const data = await getCart();
       set({ cartProducts: data?.cart || [] });
       set({ cartTotalAmount: data?.total_amount });
+    } catch (error) {
+      getErrorMessage(error);
+    } finally {
+      loader(false);
+    }
+  },
+
+  wishlistDetails: async () => {
+    loader(true);
+    try {
+      const data = await getWishlist();
+      set({ wishListData: data?.WishLists || [] });
     } catch (error) {
       getErrorMessage(error);
     } finally {

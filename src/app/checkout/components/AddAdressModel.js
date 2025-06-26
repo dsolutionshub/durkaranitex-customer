@@ -1,21 +1,16 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Dialog } from "primereact/dialog";
 import { IoClose } from "react-icons/io5";
+import { useFormik } from "formik";
 import { loader } from "@/app/components/loader/loaderManager";
 import { getErrorMessage } from "@/app/utils/helperFn";
-import { addAddress, getStateList } from "@/app/api/services/authService";
+import {
+  addAddress,
+  getStateList,
+  updateAddress,
+} from "@/app/api/services/authService";
 import toast from "react-hot-toast";
-
-const formFields = {
-  name: { label: "Full Name", placeholder: "Enter full name" },
-  email: { label: "Email", placeholder: "Enter Email" },
-  mobile: { label: "Mobile Number", placeholder: "Enter mobile number" },
-  address: { label: "Address", placeholder: "Enter address" },
-  address1: { label: "Address Line 2", placeholder: "Optional" },
-  city: { label: "City", placeholder: "Enter city" },
-  state_id: { label: "State", placeholder: "Select state", type: "select" },
-  pincode: { label: "PIN Code", placeholder: "6-digit PIN" },
-};
+import { addressValidationSchema } from "@/app/utils/validationSchema";
 
 export default function AddAdressModel({
   isModalOpen,
@@ -24,19 +19,9 @@ export default function AddAdressModel({
   selectedAddressId,
   getAddressList,
 }) {
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    mobile: "",
-    address: "",
-    address1: "",
-    city: "",
-    state_id: "",
-    pincode: "",
-  });
   const [stateList, setStateList] = useState([]);
 
-  const handleGetStateList = async () => {
+  const fetchStates = async () => {
     loader(true);
     try {
       const { data } = await getStateList();
@@ -48,8 +33,8 @@ export default function AddAdressModel({
     }
   };
 
-  const resetForm = () => {
-    setForm({
+  const formik = useFormik({
+    initialValues: {
       name: "",
       email: "",
       mobile: "",
@@ -58,45 +43,42 @@ export default function AddAdressModel({
       city: "",
       state_id: "",
       pincode: "",
-    });
-  };
+    },
+    validationSchema: addressValidationSchema,
+    enableReinitialize: true,
+    onSubmit: async (values) => {
+      const formData = new FormData();
+      Object.entries(values).forEach(([key, value]) =>
+        formData.append(key, value)
+      );
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const formData = new FormData();
-
-    for (const key in form) {
-      formData.append(key, form[key]);
-    }
-
-    loader(true);
-    try {
-      if (isEdit) {
-        await updateAddress(formData, selectedAddressId);
-      } else {
-        await addAddress(formData);
+      loader(true);
+      try {
+        if (isEdit) {
+          await updateAddress(formData, selectedAddressId);
+        } else {
+          await addAddress(formData);
+        }
+        handleCloseModel();
+        getAddressList();
+      } catch (error) {
+        const msg = getErrorMessage(error);
+        toast.error(msg);
+      } finally {
+        loader(false);
       }
-      resetForm();
-      handleCloseModel();
-      getAddressList();
-    } catch (error) {
-      const MSG = getErrorMessage(error);
-      toast.error(MSG);
-    } finally {
-      loader(false);
-    }
-  };
+    },
+  });
 
   useEffect(() => {
-    handleGetStateList();
+    fetchStates();
   }, []);
 
   useEffect(() => {
     if (isEdit) {
-      setForm(isEdit);
+      formik.setValues(isEdit);
     } else {
-      resetForm();
+      formik.resetForm();
     }
   }, [isEdit, isModalOpen]);
 
@@ -107,7 +89,7 @@ export default function AddAdressModel({
         width: "95vw",
         maxWidth: "500px",
         backgroundColor: "#fff",
-        padding: "1.2rem 1rem",
+        padding: "1rem",
       }}
       className="shadow-2xl rounded-md"
       onHide={handleCloseModel}
@@ -122,61 +104,84 @@ export default function AddAdressModel({
           className="cursor-pointer"
         />
       </div>
-      <form className="space-y-2 p-2" onSubmit={handleSubmit}>
-        {Object.entries(formFields).map(([key, config]) => {
-          if (["address1", "city", "state_id", "pincode"].includes(key))
-            return null;
-          return (
-            <div key={key}>
-              <label htmlFor={key} className="block font-medium mb-0">
-                {config.label} *
-              </label>
-              <input
-                required
-                id={key}
-                type="text"
-                value={form[key]}
-                onChange={(e) => setForm({ ...form, [key]: e.target.value })}
-                className={`w-full border rounded px-3 py-2 border-gray-300`}
-                placeholder={config.placeholder}
-              />
-            </div>
-          );
-        })}
+
+      <form className="space-y-1 p-2" onSubmit={formik.handleSubmit}>
+        {[
+          { name: "name", label: "Full Name" },
+          { name: "email", label: "Email" },
+          { name: "mobile", label: "Mobile Number" },
+          { name: "address", label: "Address" },
+        ].map(({ name, label }) => (
+          <div key={name}>
+            <label htmlFor={name} className="block font-medium">
+              {label} *
+            </label>
+            <input
+              id={name}
+              name={name}
+              type="text"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values[name]}
+              className={`w-full border rounded px-3 py-2 ${
+                formik.touched[name] && formik.errors[name]
+                  ? "border-red-500"
+                  : "border-gray-300"
+              }`}
+              placeholder={`Enter ${label.toLowerCase()}`}
+            />
+            {formik.touched[name] && formik.errors[name] && (
+              <p className="text-red-500 text-sm mb-0">{formik.errors[name]}</p>
+            )}
+          </div>
+        ))}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {["address1", "city"].map((key) => {
-            const config = formFields[key];
-            return (
-              <div key={key}>
-                <label htmlFor={key} className="block font-medium mb-0">
-                  {config.label} {key === "address1" ? "" : "*"}
-                </label>
-                <input
-                  required={key !== "address1"}
-                  id={key}
-                  type="text"
-                  value={form[key]}
-                  onChange={(e) => setForm({ ...form, [key]: e.target.value })}
-                  className={`w-full border rounded px-3 py-2 border-gray-300`}
-                  placeholder={config.placeholder}
-                />
-              </div>
-            );
-          })}
+          {["address1", "city"].map((name) => (
+            <div key={name}>
+              <label htmlFor={name} className="block font-medium">
+                {name === "address1" ? "Address Line 2" : "City"}{" "}
+                {name === "city" && "*"}
+              </label>
+              <input
+                id={name}
+                name={name}
+                type="text"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values[name]}
+                className={`w-full border rounded px-3 py-2 ${
+                  formik.touched[name] && formik.errors[name]
+                    ? "border-red-500"
+                    : "border-gray-300"
+                }`}
+                placeholder={name === "address1" ? "Optional" : "Enter city"}
+              />
+              {formik.touched[name] && formik.errors[name] && (
+                <p className="text-red-500 text-sm mb-0">
+                  {formik.errors[name]}
+                </p>
+              )}
+            </div>
+          ))}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label htmlFor="state_id" className="block font-medium mb-0">
-              {formFields.state_id.label} *
+            <label htmlFor="state_id" className="block font-medium">
+              State *
             </label>
             <select
-              required
               id="state_id"
-              value={form.state_id}
-              onChange={(e) => setForm({ ...form, state_id: e.target.value })}
-              className={`w-full border rounded px-3 py-2 border-gray-300`}
+              name="state_id"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.state_id}
+              className={`w-full border rounded px-3 py-2 ${
+                formik.touched.state_id && formik.errors.state_id
+                  ? "border-red-500"
+                  : "border-gray-300"
+              }`}
             >
               <option value="">Select state</option>
               {stateList.map((state) => (
@@ -185,26 +190,39 @@ export default function AddAdressModel({
                 </option>
               ))}
             </select>
+            {formik.touched.state_id && formik.errors.state_id && (
+              <p className="text-red-500 text-sm mb-0">
+                {formik.errors.state_id}
+              </p>
+            )}
           </div>
 
           <div>
-            <label htmlFor="pincode" className="block font-medium mb-0">
-              {formFields.pincode.label} *
+            <label htmlFor="pincode" className="block font-medium">
+              PIN Code *
             </label>
             <input
-              required
               id="pincode"
+              name="pincode"
               type="text"
-              value={form.pincode}
-              onChange={(e) => setForm({ ...form, pincode: e.target.value })}
-              className={`w-full border rounded px-3 py-2 border-gray-300`}
-              placeholder={formFields.pincode.placeholder}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.pincode}
               maxLength={6}
+              className={`w-full border rounded px-3 py-2 ${
+                formik.touched.pincode && formik.errors.pincode
+                  ? "border-red-500"
+                  : "border-gray-300"
+              }`}
+              placeholder="6-digit PIN code"
             />
+            {formik.touched.pincode && formik.errors.pincode && (
+              <p className="text-red-500 text-sm">{formik.errors.pincode}</p>
+            )}
           </div>
         </div>
 
-        <div className="flex justify-end gap-3 pt-4">
+        <div className="flex justify-end gap-3 pt-2">
           <button
             type="button"
             onClick={handleCloseModel}

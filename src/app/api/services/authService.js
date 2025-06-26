@@ -12,6 +12,7 @@ import {
   GET_STATE_LIST,
   GOOGLE_LOGIN,
   HANDLE_CHECKOUT,
+  HANDLE_PAYMENT,
   LOGIN_CHECK,
   PRODUCT_DETAIL,
   PRODUCT_LIST,
@@ -164,5 +165,10 @@ export async function getCheckoutList() {
 
 export async function updateCheckoutAddress(payload) {
   const response = await apiRequest(UPDATE_CHECKOUT_ADDRESS, "POST", payload);
+  return response;
+}
+
+export async function payment(payload) {
+  const response = await apiRequest(HANDLE_PAYMENT, "POST", payload);
   return response;
 }
