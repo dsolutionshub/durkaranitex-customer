@@ -31,7 +31,7 @@ export default function CheckoutPage() {
       getErrorMessage(error);
       const status = error?.response?.status;
       if (status === 401) {
-        sessionStorage.setItem("postLoginRedirect", "/chekout");
+        sessionStorage.setItem("postLoginRedirect", "/checkout");
         router.push("/login");
       }
     } finally {

@@ -8,13 +8,14 @@ import { loginSchema, signupSchema } from "@/app/utils/validationSchema";
 import { loader } from "@/app/components/loader/loaderManager";
 import { getErrorMessage } from "@/app/utils/helperFn";
 import { login, register } from "@/app/api/services/authService";
+import useCartPanelStore from "@/store/useCartPanelStore";
 
 const loginFields = [
   {
     name: "email",
-    placeholder: "Enter email",
+    placeholder: "Enter email / Mobile Number",
     type: "text",
-    label: "Email",
+    label: "Email / Mobile Number",
   },
   {
     name: "password",
@@ -62,6 +63,7 @@ const signupFields = [
 
 const LoginForm = ({ isLogin, setIsLogin }) => {
   const router = useRouter();
+  const { cardDetails, wishlistDetails } = useCartPanelStore();
   const fields = isLogin ? loginFields : signupFields;
 
   const formik = useFormik({
@@ -103,6 +105,9 @@ const LoginForm = ({ isLogin, setIsLogin }) => {
         sessionStorage.setItem("customer", JSON.stringify(data?.customer));
         const redirectPath = sessionStorage.getItem("postLoginRedirect") || "/";
         router.replace(redirectPath);
+        toast.success("Welcome back! Happy shopping!");
+        wishlistDetails();
+        cardDetails();
       }
       formik.resetForm();
     } catch (error) {
@@ -140,7 +145,7 @@ const LoginForm = ({ isLogin, setIsLogin }) => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values[field.name] || ""}
-            className="mt-1 w-full p-2 border rounded-md pr-10"
+            className="mt-1 w-full p-2 border rounded-md pr-10 dark-color"
           />
           {formik.touched[field.name] && formik.errors[field.name] && (
             <div className="text-red-500 text-sm">
@@ -152,7 +157,8 @@ const LoginForm = ({ isLogin, setIsLogin }) => {
 
       <button
         type="submit"
-        className="w-full bg-green-600 text-white font-medium rounded-md h-12 hover:bg-green-700 mt-2"
+        className="w-full bg-[var(--primary-main)] text-white 
+        font-medium rounded h-12 hover:bg-[var(--primary-dark)] mt-2"
       >
         {isLogin ? "Login" : "Sign Up"}
       </button>
@@ -162,7 +168,7 @@ const LoginForm = ({ isLogin, setIsLogin }) => {
         <button
           type="button"
           onClick={handleIsLogin}
-          className="text-green-600 hover:text-green-700 font-medium"
+          className="text-[var(--primary-main)] hover:text-[var(--primary-dark)] font-medium"
         >
           {!isLogin ? "Login" : " Sign Up"}
         </button>

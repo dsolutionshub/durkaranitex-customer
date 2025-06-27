@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import toast from "react-hot-toast";
 import { FaSearch } from "react-icons/fa";
 import { BiFilterAlt } from "react-icons/bi";
 import { useRouter } from "next/navigation";
@@ -15,7 +16,7 @@ import { loader } from "../components/loader/loaderManager";
 import useCartPanelStore from "@/store/useCartPanelStore";
 import useCartStore from "@/store/useCartStore";
 import { getErrorMessage, getFilteredProducts } from "../utils/helperFn";
-import { SHOP_MODEL } from "../utils/constants";
+import { LOGIN_ERROR_MSG, SHOP_MODEL } from "../utils/constants";
 import {
   getCategoryList,
   getProductList,
@@ -146,12 +147,14 @@ function Shop() {
   const addToWishlist = async (id) => {
     loader(true);
     try {
-      await modifyWishlist({ product_id: id });
+      const data = await modifyWishlist({ product_id: id });
+      toast.success(data?.message);
     } catch (error) {
       const status = error?.response?.status;
       if (status === 401) {
         sessionStorage.setItem("postLoginRedirect", "/shop");
         router.push("/login");
+        toast.error(LOGIN_ERROR_MSG);
       }
       getErrorMessage(error);
     } finally {
@@ -166,13 +169,15 @@ function Shop() {
     setQuantities((prev) => ({ ...prev, [id]: newQty }));
     loader(true);
     try {
-      await modifyCart({ product_id: id, quantity: newQty });
+      const data = await modifyCart({ product_id: id, quantity: newQty });
+      toast.success(data?.message);
       handleGetCartDetail();
     } catch (error) {
       const status = error?.response?.status;
       if (status === 401) {
         sessionStorage.setItem("postLoginRedirect", "/shop");
         router.push("/login");
+        toast.error(LOGIN_ERROR_MSG);
       }
       getErrorMessage(error);
     } finally {

@@ -97,7 +97,7 @@ const Wishlist = () => {
               Save your favorite sarees here!
               <br />
               <Link href="/shop" className="">
-                <button className="bg-green-800 text-white py-2 px-3 rounded mt-3">
+                <button className="bg-[var(--primary-main)] text-white py-2 px-3 rounded mt-3">
                   Explore Sarees
                 </button>
               </Link>

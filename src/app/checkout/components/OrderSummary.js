@@ -62,7 +62,7 @@ const OrderSummary = ({ checkoutData, handlePayment }) => {
               className="flex-grow border rounded-md p-2 bg-white"
               placeholder="Enter coupon code"
             />
-            <button className="bg-green-800 text-white py-2 px-3 rounded ">
+            <button className="bg-[var(--primary-dark)] text-white py-2 px-3 rounded ">
               Apply
             </button>
           </div>
@@ -76,7 +76,7 @@ const OrderSummary = ({ checkoutData, handlePayment }) => {
             <span>₹{checkoutData?.total_full_payment}</span>
           </div>
           <button
-            className="w-full mt-3 bg-green-800 text-white py-2 rounded"
+            className="w-full mt-3 bg-[var(--primary-dark)] text-white py-2 rounded"
             onClick={handlePayment}
           >
             Pay Now ₹{checkoutData?.total_full_payment}

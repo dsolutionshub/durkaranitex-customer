@@ -107,7 +107,7 @@ export default function CheckoutForm({
               name="payment"
               checked={selectedPayment === "payNow"}
               onChange={() => setSelectedPayment("payNow")}
-              className="accent-green-800 mr-3 scale-115 cursor-pointer"
+              className="accent-[var(--primary-main)] mr-3 scale-115 cursor-pointer"
             />
             <FiCreditCard className="mr-2 ml-1" size={25} />
             <div>
@@ -132,7 +132,7 @@ export default function CheckoutForm({
               name="payment"
               checked={selectedPayment === "payLater"}
               onChange={() => setSelectedPayment("payLater")}
-              className="accent-green-800 mr-3 scale-115 cursor-pointer"
+              className="accent-[var(--primary-main)] mr-3 scale-115 cursor-pointer"
             />
             <LiaRupeeSignSolid className="mr-2" size={25} />
             <div>

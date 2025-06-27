@@ -25,7 +25,7 @@ export default function LoginPage() {
             alt="Dhurgarani Tex"
             width={200}
             height={100}
-            className="mx-auto mb-4"
+            className="mx-auto mb-2"
           />
           <h2 className="text-2xl font-bold text-black">
             {isLogin ? "Welcome Back" : "Join Our Collection"}
@@ -43,14 +43,14 @@ export default function LoginPage() {
           By continuing, you agree to our{" "}
           <Link
             href={"/terms-and-conditions"}
-            className="text-green-800 hover:underline"
+            className="text-[var(--primary-dark)] hover:underline"
           >
             Terms of Service
           </Link>{" "}
           and{" "}
           <Link
             href={"/privacy-policy"}
-            className="text-green-800 hover:underline"
+            className="text-[var(--primary-dark)] hover:underline"
           >
             Privacy Policy
           </Link>

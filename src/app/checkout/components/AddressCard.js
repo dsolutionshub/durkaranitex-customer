@@ -15,8 +15,8 @@ export default function AddressCard({
       <div className="bg-gradient-to-r from-green-50 to-green-50  p-4 sm:p-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-green-100 rounded-lg flex-shrink-0">
-              <Package className="h-5 w-5 sm:h-6 sm:w-6 text-green-600" />
+            <div className="p-2 bg-[var(--primary-light)] rounded-lg flex-shrink-0">
+              <Package className="h-5 w-5 sm:h-6 sm:w-6 text-[var(--primary-main)]" />
             </div>
             <div>
               <h4 className="text-lg sm:text-xl font-bold text-gray-900 mb-0">
@@ -29,7 +29,8 @@ export default function AddressCard({
           </div>
           <button
             onClick={() => handleOpenModel("add")}
-            className="bg-gradient-to-r from-green-600 to-green-600 hover:from-green-700 hover:to-green-700 
+            className="bg-gradient-to-r from-[var(--primary-main)] to-[var(--primary-main)] hover:from-[var(--primary-dark)]
+              hover:to-[var(--primary-dark)] 
               text-white shadow-md hover:shadow-lg transition-all duration-200 w-full 
               sm:w-auto text-sm sm:text-base px-4 py-2 rounded-md flex items-center justify-center"
           >
@@ -42,8 +43,11 @@ export default function AddressCard({
       <div className="p-4 sm:p-6">
         {addressList?.length === 0 ? (
           <div className="text-center py-8 sm:py-12 flex flex-column items-center">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-green-100 to-green-100 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
-              <Home className="h-8 w-8 sm:h-10 sm:w-10 text-green-600" />
+            <div
+              className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-[var(--primary-light)] to-[var(--primary-light)] 
+            rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6"
+            >
+              <Home className="h-8 w-8 sm:h-10 sm:w-10 text-[var(--primary-main)]" />
             </div>
             <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
               No delivery address yet
@@ -54,8 +58,8 @@ export default function AddressCard({
             </p>
             <button
               onClick={() => handleOpenModel("add")}
-              className="bg-gradient-to-r from-green-600 to-green-600 hover:from-green-700
-              hover:to-green-700 text-white px-6 sm:px-8 py-2 sm:py-3 
+              className="bg-gradient-to-r from-[var(--primary-main)] to-[var(--primary-main)] hover:from-[var(--primary-dark)]
+              hover:to-[var(--primary-dark)] text-white px-6 sm:px-8 py-2 sm:py-3 
               rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm sm:text-base flex items-center justify-center"
             >
               <Plus className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
@@ -82,9 +86,9 @@ export default function AddressCard({
 
                   <div
                     className={`flex-1 px-4 py-3 rounded-md relative transition-all duration-300 border-l-5
-                        border-b-1 border-r-1 border-t-1 border-green-600 ${
+                        border-b-1 border-r-1 border-t-1 border-green-800 ${
                           isSelected
-                            ? "border-green-600 bg-green-50 shadow"
+                            ? "border-green-800 bg-green-50 shadow"
                             : "border-gray-200 bg-white "
                         }`}
                   >

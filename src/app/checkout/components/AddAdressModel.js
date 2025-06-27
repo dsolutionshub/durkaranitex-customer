@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { useFormik } from "formik";
+import toast from "react-hot-toast";
 import { Dialog } from "primereact/dialog";
 import { IoClose } from "react-icons/io5";
-import { useFormik } from "formik";
+
 import { loader } from "@/app/components/loader/loaderManager";
 import { getErrorMessage } from "@/app/utils/helperFn";
 import {
@@ -9,7 +11,6 @@ import {
   getStateList,
   updateAddress,
 } from "@/app/api/services/authService";
-import toast from "react-hot-toast";
 import { addressValidationSchema } from "@/app/utils/validationSchema";
 
 export default function AddAdressModel({
@@ -89,15 +90,16 @@ export default function AddAdressModel({
         width: "95vw",
         maxWidth: "500px",
         backgroundColor: "#fff",
-        padding: "1rem",
       }}
-      className="shadow-2xl rounded-md"
+      className="shadow-2xl rounded-md m-2 md:m-0 p-[.5rem] md:p-[1rem]"
       onHide={handleCloseModel}
       breakpoints={{ "960px": "75vw", "640px": "100vw" }}
       showHeader={false}
     >
       <div className="flex items-center justify-between px-2">
-        <h5 className="mb-0">{isEdit ? "Edit Address" : "Add New Address"}</h5>
+        <h5 className="mb-0 dark-color mt-1 md:mt-0">
+          {isEdit ? "Edit Address" : "Add New Address"}
+        </h5>
         <IoClose
           onClick={handleCloseModel}
           size={21}
@@ -136,7 +138,7 @@ export default function AddAdressModel({
           </div>
         ))}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4">
           {["address1", "city"].map((name) => (
             <div key={name}>
               <label htmlFor={name} className="block font-medium">
@@ -232,7 +234,7 @@ export default function AddAdressModel({
           </button>
           <button
             type="submit"
-            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+            className="bg-[var(--primary-main)] text-white px-4 py-2 rounded hover:bg-[var(--primary-dark)]"
           >
             {isEdit ? "Update Address" : "Add Address"}
           </button>

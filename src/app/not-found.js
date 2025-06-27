@@ -55,8 +55,8 @@ export default function NotFound() {
             404
           </h1>
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="p-6 rounded-full border border-green-200 bg-green-50">
-              <Search className="w-16 h-16 text-green-600" />
+            <div className="p-6 rounded-full border border-green-200 bg-[var(--primary-light)]">
+              <Search className="w-16 h-16 text-[var(--primary-main)]" />
             </div>
           </div>
         </div>
@@ -75,7 +75,7 @@ export default function NotFound() {
 
         {/* Dots */}
         <div className="flex justify-center gap-2 mb-8">
-          {[400, 500, 600].map((tone, i) => (
+          {[500, 600, 700].map((tone, i) => (
             <div
               key={tone}
               className={`w-3 h-3 bg-green-${tone} rounded-full animate-pulse`}
@@ -90,17 +90,19 @@ export default function NotFound() {
             href="/"
             icon={Home}
             label="Go to Homepage"
-            className="bg-green-600 hover:bg-green-700 text-white"
+            className="bg-[var(--primary-main)] hover:bg-[var(--primary-main)] text-white"
           />
-          <Button
-            href="/products"
-            icon={Search}
-            label="Browse Sarees"
-            className="border border-green-600 text-green-600 hover:bg-green-50"
-          />
+
+          <button
+            className="text-[var(--primary-main)] hover:bg-green-50 px-3 py-1 rounded"
+            style={{ border: "1px solid var(--primary-main)" }}
+          >
+            Browser Sarees
+          </button>
           <button
             onClick={() => router.back()}
-            className="w-full md:w-auto flex items-center justify-center px-4 py-2 rounded text-green-600 hover:bg-green-50"
+            className="w-full md:w-auto flex items-center justify-center px-4 py-2 rounded 
+            text-[var(var(--primary-main))] hover:bg-[var(--primary-light)]"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Go Back
@@ -119,11 +121,12 @@ export default function NotFound() {
               <Link
                 key={href}
                 href={href}
-                className="text-decoration-none group p-4 min-w-[120px] flex flex-col items-center cursor-pointer rounded-lg hover:bg-green-50 transition-all"
+                className="text-decoration-none group p-4 min-w-[120px] flex flex-col items-center cursor-pointer rounded-lg
+                 transition-all"
                 style={{ animationDelay: `${i * 100}ms` }}
               >
-                <div className="w-12 h-12 flex items-center justify-center bg-green-100 rounded-full group-hover:bg-green-200 mb-3">
-                  <Icon className="w-6 h-6 text-green-600" />
+                <div className="w-12 h-12 flex items-center justify-center bg-[var(--primary-light)] rounded-full group-hover:bg-green-200 mb-3">
+                  <Icon className="w-6 h-6 text-[var(--primary-main)]" />
                 </div>
                 <h4 className="text-sm font-medium text-gray-800 group-hover:text-green-700 mb-1">
                   {label}

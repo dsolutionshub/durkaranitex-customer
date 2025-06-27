@@ -34,7 +34,7 @@ export default function ProductAccordion({
       getErrorMessage(error);
       const status = error?.response?.status;
       if (status === 401) {
-        sessionStorage.setItem("postLoginRedirect", "/chekout");
+        sessionStorage.setItem("postLoginRedirect", "/checkout");
         router.push("/login");
       }
     } finally {
@@ -76,7 +76,6 @@ export default function ProductAccordion({
 
   return (
     <div>
-      
       <h2 className="text-2xl font-bold text-black">{sections?.title}</h2>
       <div className="flex justify-between items-center">
         <div className="text-lg primary-color font-semibold mt-2">
