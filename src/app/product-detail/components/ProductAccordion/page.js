@@ -1,14 +1,16 @@
-'use client'
+"use client";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { FaMinus, FaPlus } from "react-icons/fa6";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 
-import "../../style.css";
-import { useState } from "react";
 import ShareProductBox from "../ShareProductBox/page";
 import useCartPanelStore from "@/store/useCartPanelStore";
 import { modifyCart, modifyWishlist } from "@/app/api/services/authService";
 import { getErrorMessage } from "@/app/utils/helperFn";
 import { loader } from "@/app/components/loader/loaderManager";
+
+import "../../style.css";
 
 export default function ProductAccordion({
   sections,
@@ -18,34 +20,63 @@ export default function ProductAccordion({
   handleIncrease,
   quantity,
 }) {
+  const router = useRouter();
   const { handleGetCartDetail } = useCartPanelStore();
   const [isLiked, setIsLiked] = useState(false);
+  const [showButtons, setShowButtons] = useState(true);
 
   async function handleLike() {
     setIsLiked((prev) => !prev);
-    loader(true)
-    try{
-    const data = await modifyWishlist({product_id: sections?.id})
-    }catch(err){
-      getErrorMessage(err)
-    }finally{
-      loader(false)
+    loader(true);
+    try {
+      await modifyWishlist({ product_id: sections?.id });
+    } catch (error) {
+      getErrorMessage(error);
+      const status = error?.response?.status;
+      if (status === 401) {
+        sessionStorage.setItem("postLoginRedirect", "/chekout");
+        router.push("/login");
+      }
+    } finally {
+      loader(false);
     }
   }
 
-  const addToCart = async()=>{
-    loader(true)
-    try{
-    const data = await modifyCart({product_id:sections?.id, quantity: quantity})
-    }catch(err){
-      getErrorMessage(err)
-    }finally{
-      loader(false)
+  const addToCart = async () => {
+    loader(true);
+    try {
+      await modifyCart({
+        product_id: sections?.id,
+        quantity: quantity,
+      });
+    } catch (error) {
+      getErrorMessage(error);
+      handleGetCartDetail();
+    } finally {
+      loader(false);
     }
-  }
+  };
+
+  const handleByeNow = () => {
+    router.push("/checkout");
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrolledPast100vh = window.scrollY > window.innerHeight;
+      setShowButtons(!scrolledPast100vh);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
     <div>
+      
       <h2 className="text-2xl font-bold text-black">{sections?.title}</h2>
       <div className="flex justify-between items-center">
         <div className="text-lg primary-color font-semibold mt-2">
@@ -121,14 +152,26 @@ export default function ProductAccordion({
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row items-center justify-center space-y-3 md:space-y-0 md:space-x-3 gap-3 product-detail-cart-btn">
+        <div
+          className={`flex flex-col md:flex-row items-center justify-center space-y-3
+        md:space-y-0 md:space-x-3 gap-3 product-detail-cart-btn
+        ${
+          showButtons
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
+        }
+        `}
+        >
           <button
             className="bg-black text-white px-6 py-2 rounded text-sm w-full md:w-auto font-bold"
             onClick={addToCart}
           >
             Add To Cart
           </button>
-          <button className="bg-green-800 text-white px-6 py-2 rounded text-sm w-full md:w-auto font-bold">
+          <button
+            className="bg-green-800 text-white px-6 py-2 rounded text-sm w-full md:w-auto font-bold"
+            onClick={handleByeNow}
+          >
             Buy Now
           </button>
         </div>

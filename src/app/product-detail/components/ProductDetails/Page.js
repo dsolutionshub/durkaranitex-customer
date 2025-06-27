@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 import ImageCarousel from "../ProductDetailCarousel/page";
@@ -83,7 +83,10 @@ const ProductDetails = () => {
   return (
     <div>
       <CustomBreadCrumb
-        model={[{ label: "Shop" }, { label: productInfo?.product?.title }]}
+        model={[
+          { label: "Shop", url: "/" },
+          { label: productInfo?.product?.title },
+        ]}
       />
 
       <div className="container mx-auto px-4 lg:pt-3 pb-2">

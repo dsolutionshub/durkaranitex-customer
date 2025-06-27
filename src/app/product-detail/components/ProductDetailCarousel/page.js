@@ -50,7 +50,10 @@ export default function ImageCarousel({
               </Carousel.Item>
             ) : (
               <Carousel.Item key={index}>
-                <div className="h-[500px] w-[500px] bg-gray-200 flex items-center justify-center">
+                <div
+                  className="h-[300px] w-[300px] xl:h-[500px] xl:w-[500px] 
+                bg-gray-200 flex items-center justify-center"
+                >
                   No Image
                 </div>
               </Carousel.Item>
@@ -78,16 +81,8 @@ export default function ImageCarousel({
               />
             ) : (
               <div
-                style={{
-                  width: "80px",
-                  height: "80px",
-                  backgroundColor: "#ddd",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  color: "#666",
-                  fontSize: 12,
-                }}
+                className="h-[70px] w-[70px] md:h-[80px] md:w-[80px] flex items-center 
+              justify-center dark-color text-sx bg-gray-200"
               >
                 No Image
               </div>

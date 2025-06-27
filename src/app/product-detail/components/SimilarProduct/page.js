@@ -45,6 +45,7 @@ const SimilarProducts = () => {
           {products?.map((item, i) => (
             <SwiperSlide key={i} className="h-full">
               <ProductCard
+                type={"heart"}
                 title={item.title}
                 price={item.price}
                 image={item.imgsrc}
