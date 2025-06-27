@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 import ImageCarousel from "../ProductDetailCarousel/page";
@@ -9,6 +9,7 @@ import SimilarProduct from "../SimilarProduct/page";
 import CustomBreadCrumb from "../../../components/CustomBreadCrumb";
 
 import { getProductDetails } from "../../../api/services/authService";
+import { getErrorMessage } from "@/app/utils/helperFn";
 
 const images = [
   "/images/produce_detail_4.webp",
@@ -67,14 +68,17 @@ const ProductDetails = () => {
 
   const getDetails = async () => {
     if (!id) return;
-    const data = await getProductDetails(id);
-    setProductInfo(data);
-    console.log(data);
+    try {
+      const data = await getProductDetails(id);
+      setProductInfo(data);
+    } catch (error) {
+      getErrorMessage(error);
+    }
   };
 
   useEffect(() => {
     getDetails();
-  }, [id]);
+  }, []);
 
   return (
     <div>

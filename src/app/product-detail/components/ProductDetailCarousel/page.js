@@ -22,30 +22,40 @@ export default function ImageCarousel({
           slide={false}
           className="carousel"
         >
-          {images?.map((img, index) => (
-            <Carousel.Item key={index}>
-              <div
-                className="image-container"
-                onDoubleClick={() => handleZoomToggle(index)}
-              >
-                <Image
-                  src={img?.image}
-                  alt={`Image ${img.id}`}
-                  width={500}
-                  height={500}
-                  className={`carousel-image ${zoom === index ? "zoomed" : ""}`}
-                />
+          {images?.map((img, index) =>
+            img?.image ? (
+              <Carousel.Item key={index}>
+                <div
+                  className="image-container"
+                  onDoubleClick={() => handleZoomToggle(index)}
+                >
+                  <Image
+                    src={img?.image}
+                    alt={`Image ${img.id}`}
+                    width={500}
+                    height={500}
+                    className={`carousel-image ${
+                      zoom === index ? "zoomed" : ""
+                    }`}
+                  />
 
-                <div className="zoom-icon-wrapper">
-                  {zoom === index ? (
-                    <FaSearchMinus className="zoom-icon" />
-                  ) : (
-                    <FaSearchPlus className="zoom-icon" />
-                  )}
+                  <div className="zoom-icon-wrapper">
+                    {zoom === index ? (
+                      <FaSearchMinus className="zoom-icon" />
+                    ) : (
+                      <FaSearchPlus className="zoom-icon" />
+                    )}
+                  </div>
                 </div>
-              </div>
-            </Carousel.Item>
-          ))}
+              </Carousel.Item>
+            ) : (
+              <Carousel.Item key={index}>
+                <div className="h-[500px] w-[500px] bg-gray-200 flex items-center justify-center">
+                  No Image
+                </div>
+              </Carousel.Item>
+            )
+          )}
         </Carousel>
       </div>
 
@@ -58,13 +68,30 @@ export default function ImageCarousel({
             }`}
             onClick={() => setSelectedIndex(index)}
           >
-            <Image
-              src={img.image}
-              alt="Thumbnail"
-              width={80}
-              height={80}
-              className="object-cover"
-            />
+            {img.image ? (
+              <Image
+                src={img.image}
+                alt="Thumbnail"
+                width={80}
+                height={80}
+                className="object-cover"
+              />
+            ) : (
+              <div
+                style={{
+                  width: "80px",
+                  height: "80px",
+                  backgroundColor: "#ddd",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "#666",
+                  fontSize: 12,
+                }}
+              >
+                No Image
+              </div>
+            )}
           </div>
         ))}
       </div>
