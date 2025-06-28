@@ -56,6 +56,20 @@
   }
 }
 
+.product-page-card-mobile-wishlist {
+  @media screen and (max-width: 600px) {
+    img {
+      height: 18rem;
+    }
+  }
+}
+
+.product-page-card-mobile-wishlist img + div.absolute.top-44 {
+  @media screen and (max-width: 600px) {
+    top: 13.5rem;
+  }
+}
+
 @media (max-width: 1023px) {
   .icon-wrapper {
     display: none;

@@ -1,8 +1,6 @@
 import React from "react";
 import Image from "next/image";
 
-import { formatPrice } from "@/app/utils/helperFn";
-
 const CartProducts = ({
   products,
   decreaseCount,
@@ -18,7 +16,7 @@ const CartProducts = ({
           <p className="mb-0">Price</p>
         </div>
         <hr className="m-0 pb-2" />
-        {products.map((item) => (
+        {products?.map((item) => (
           <div key={item.id}>
             <div className="d-flex justify-content-between align-items-center my-3">
               <div className="d-flex gap-2">
@@ -39,9 +37,7 @@ const CartProducts = ({
                   </button>
                 </div>
               </div>
-              <p className="mb-0 text-black">
-                Rs. {item?.quantity * formatPrice(item?.price)}
-              </p>
+              <p className="mb-0 text-black">Rs. {item?.price}</p>
             </div>
 
             {/* Quantity Buttons */}
@@ -68,7 +64,7 @@ const CartProducts = ({
 
       {/* Desktop */}
       <div className="d-none d-md-block row mb-5">
-        {!products?.length > 0 ? (
+        {products?.length > 0 ? (
           <table className="table table-bordered" style={{ width: "100%" }}>
             <thead style={{ fontSize: "20px" }}>
               <tr style={{ textAlign: "center", verticalAlign: "middle" }}>

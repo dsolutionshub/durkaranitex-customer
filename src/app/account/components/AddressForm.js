@@ -1,8 +1,15 @@
-'use client'
-import { addAddress, getStateList } from "@/app/api/services/authService";
+"use client";
+import { getStateList } from "@/app/api/services/authService";
+import { loader } from "@/app/components/loader/loaderManager";
+import { getErrorMessage } from "@/app/utils/helperFn";
 import { useState, useEffect } from "react";
 
-export default function AddressForm({ visible, initialData, onSave, onCancel }) {
+export default function AddressForm({
+  visible,
+  initialData,
+  onSave,
+  onCancel,
+}) {
   const [states, setStates] = useState([]);
   const [isNew, setIsNew] = useState(false);
 
@@ -13,40 +20,42 @@ export default function AddressForm({ visible, initialData, onSave, onCancel }) 
     address: "",
     city: "",
     state_id: 1,
-    pincode: "637200",
+    pincode: "",
     isDefault: false,
   });
 
   useEffect(() => {
-  const fetchStates = async () => {
-    try {
-      const { data } = await getStateList();
-      setStates(data.states);
-      console.log(data);
-    } catch (err) {
-      console.error("Error fetching states:", err);
+    const fetchStates = async () => {
+      loader(true);
+      try {
+        const { data } = await getStateList();
+        setStates(data.states);
+      } catch (error) {
+        getErrorMessage(error);
+      } finally {
+        loader(false);
+      }
+    };
+
+    if (initialData) {
+      setForm(initialData);
+      setIsNew(false);
+    } else {
+      setForm({
+        name: "",
+        email: "",
+        mobile: "",
+        address: "",
+        city: "",
+        state_id: 1,
+        pincode: "",
+        isDefault: false,
+      });
+      setIsNew(true);
     }
-  };
 
-  if (initialData) {
-    setForm(initialData);
-    setIsNew(false);
-  } else {
-    setForm({
-      name: "",
-      email: "",
-      mobile: "",
-      address: "",
-      city: "",
-      state_id: 1,
-      pincode: "637200",
-      isDefault: false,
-    });
-    setIsNew(true);
-  }
-
-  fetchStates();
- }, [initialData]);
+    fetchStates();
+  }, [initialData]);
 
   if (!visible) return null;
 
@@ -64,7 +73,10 @@ export default function AddressForm({ visible, initialData, onSave, onCancel }) 
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white text-black p-6 rounded-md mt-6 shadow-inner">
+    <form
+      onSubmit={handleSubmit}
+      className="bg-white text-black p-6 rounded-md mt-6 shadow-inner"
+    >
       <h3 className="font-semibold text-lg text-gray-800 mb-4">Address Form</h3>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -124,17 +136,17 @@ export default function AddressForm({ visible, initialData, onSave, onCancel }) 
             placeholder="City"
           />
         </div>
-        {/* <div>
-          <label className="block text-sm font-medium">State</label>
+        <div>
+          <label className="block text-sm font-medium">Pincode</label>
           <input
-            name="state"
-            value={form.state}
+            name="pincode"
+            value={form.pincode}
             onChange={handleChange}
             required
             className="w-full border px-3 py-2 rounded"
-            placeholder="State"
+            placeholder="Pincode"
           />
-        </div> */}
+        </div>
         <div>
           <label className="block text-sm font-medium">State</label>
           <select
@@ -153,14 +165,14 @@ export default function AddressForm({ visible, initialData, onSave, onCancel }) 
       </div>
 
       <div className="mt-4">
-        <label className="inline-flex items-center space-x-2">
+        <label className="inline-flex items-center space-x-2 ">
           <input
             type="checkbox"
             name="isDefault"
             checked={form.isDefault}
             onChange={handleChange}
           />
-          <span>Make this my default address</span>
+          <span className="pl-2">Make this my default address</span>
         </label>
       </div>
 
@@ -172,10 +184,7 @@ export default function AddressForm({ visible, initialData, onSave, onCancel }) 
         >
           Cancel
         </button>
-        <button
-          type="submit"
-          className="px-4 py-2 bg-green-800 rounded"
-        >
+        <button type="submit" className="px-4 py-2 bg-green-800 rounded">
           Save
         </button>
       </div>

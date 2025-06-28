@@ -103,6 +103,8 @@ const FeaturedCard = () => {
                 title={item.title}
                 price={item.price}
                 image={item.imgsrc}
+                image1={item.image}
+                discount={item.discount}
                 subImage={item.subImage}
               />
             </SwiperSlide>

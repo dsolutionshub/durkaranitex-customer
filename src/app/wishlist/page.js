@@ -9,10 +9,15 @@ import { loader } from "../components/loader/loaderManager";
 import CustomBreadCrumb from "../components/CustomBreadCrumb";
 
 import useCartPanelStore from "@/store/useCartPanelStore";
-import { getWishlist, modifyWishlist } from "../api/services/authService";
-import { WISHLIST_MODEL } from "../utils/constants";
+import {
+  getWishlist,
+  modifyCart,
+  modifyWishlist,
+} from "../api/services/authService";
+import { LOGIN_ERROR_MSG, WISHLIST_MODEL } from "../utils/constants";
 import { getErrorMessage } from "../utils/helperFn";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 const Wishlist = () => {
   const router = useRouter();
@@ -22,26 +27,13 @@ const Wishlist = () => {
   const fetchWishlist = async () => {
     loader(true);
     try {
-      const response = await getWishlist();
-      if (response?.WishLists) {
-        const transformed = response.WishLists.map((item) => ({
-          id: item.id,
-          title: item.product.title,
-          price: item.product.product_price,
-          oldPrice: item.product.price,
-          image: item.product.images[0]?.image || null,
-        }));
-        setWishlist(transformed);
-      }
+      const data = await getWishlist();
+      setWishlist(data?.WishLists || []);
     } catch (error) {
       getErrorMessage(error);
     } finally {
       loader(false);
     }
-  };
-
-  const handleOpenCart = () => {
-    handleGetCartDetail();
   };
 
   const removeFromWishlist = async (id) => {
@@ -50,6 +42,24 @@ const Wishlist = () => {
       const data = await modifyWishlist({ product_id: id });
       fetchWishlist();
     } catch (error) {
+      getErrorMessage(error);
+    } finally {
+      loader(false);
+    }
+  };
+
+  const addToCart = async (id) => {
+    try {
+      const data = await modifyCart({ product_id: id, quantity: 1 });
+      toast.success(data?.message);
+      handleGetCartDetail();
+    } catch (error) {
+      const status = error?.response?.status;
+      if (status === 401) {
+        sessionStorage.setItem("postLoginRedirect", "/shop");
+        router.push("/login");
+        toast.error(LOGIN_ERROR_MSG);
+      }
       getErrorMessage(error);
     } finally {
       loader(false);
@@ -71,20 +81,24 @@ const Wishlist = () => {
     <>
       <CustomBreadCrumb model={WISHLIST_MODEL} />
       <div className="container mt-3">
-        <h2 className="mb-4 text-center text-dark fs-3">My Wishlist</h2>
+        <h2 className="md:mb-4 text-center text-dark fs-3">My Wishlist</h2>
 
         <div className="row mb-5 wishlist-card">
-          {wishlist.length > 0 ? (
-            wishlist.map((item) => (
+          {wishlist?.length > 0 ? (
+            wishlist?.map((item) => (
               <div className="col-sm-6 col-md-4 col-lg-3 mb-4" key={item.id}>
                 <ProductCard
-                  title={item.title}
-                  price={item.price}
-                  oldPrice={item.oldPrice}
-                  image={item.image}
-                  type="wishlist"
-                  btn1={() => removeFromWishlist(item.id)}
-                  btn2={handleOpenCart}
+                  title={item?.product?.title}
+                  price={item?.product?.price}
+                  oldPrice={item?.product?.product_price}
+                  image={item?.product?.images[0]?.["image"]}
+                  image1={item?.product?.images[1]?.["image"]}
+                  isInWishlist={item?.product?.wishList}
+                  type="delete"
+                  btn1={() => removeFromWishlist(item?.product?.id)}
+                  btn2={() => addToCart(item?.product?.id)}
+                  discount={item?.product?.discount}
+                  className="product-page-card-mobile-wishlist"
                 />
               </div>
             ))

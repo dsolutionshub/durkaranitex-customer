@@ -36,6 +36,12 @@ const ProductCardMobile = ({ products }) => {
                 className="flex flex-col items-center relative lg:hidden"
                 onClick={navigateToProductDetail}
               >
+                {item?.discount && (
+                  <div className="absolute top-2 left-2 bg-red-600 text-white text-xs px-2 py-1 rounded-md z-10">
+                    {Math.round(discount)}% OFF
+                  </div>
+                )}
+
                 <Image
                   src={item?.imgsrc || item?.imgSrc}
                   alt={item?.title}
@@ -43,6 +49,7 @@ const ProductCardMobile = ({ products }) => {
                   width={100}
                   height={100}
                 />
+
                 <div className="flex items-center gap-2 absolute top-44">
                   <FeatureButtons
                     type={"heart"}
@@ -50,6 +57,7 @@ const ProductCardMobile = ({ products }) => {
                     btn2Func={handleOpenCart}
                   />
                 </div>
+
                 <div className="py-3 flex flex-col self-start">
                   <h6
                     className="text-black font-semibold mb-0 self-start"

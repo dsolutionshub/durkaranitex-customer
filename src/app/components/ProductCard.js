@@ -1,16 +1,15 @@
 import React from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 
 import { FiHeart, FiShoppingCart } from "react-icons/fi";
 import { RiDeleteBinLine } from "react-icons/ri";
 
 import "./productCardStyle.css";
 
-export const FeatureButtons = ({ type, btn1Func, btn2Func }) => (
+export const FeatureButtons = ({ type, btn1Func, btn2Func, isInWishlist }) => (
   <>
     <button
-      className="feature-product-btn"
+      className={`feature-product-btn ${isInWishlist ? "wishlist-active" : ""}`}
       onClick={(e) => {
         e.stopPropagation();
         btn1Func();
@@ -22,7 +21,6 @@ export const FeatureButtons = ({ type, btn1Func, btn2Func }) => (
         <RiDeleteBinLine className="font-bold" />
       )}
     </button>
-
     <button
       className="feature-product-btn"
       onClick={(e) => {
@@ -49,11 +47,29 @@ const ProductInfo = ({ title, price, oldPrice }) => (
   </div>
 );
 
-const ProductCard = ({ title, price, oldPrice, image, type, btn1, btn2 }) => {
+const ProductCard = ({
+  title,
+  discount,
+  price,
+  oldPrice,
+  isInWishlist,
+  className,
+  image,
+  image1,
+  type,
+  btn1,
+  btn2,
+}) => {
   return (
     <>
-      {/* Mobile View */}
-      <div className="flex flex-col items-center relative lg:hidden">
+      <div
+        className={`flex flex-col items-center relative lg:hidden ${className}`}
+      >
+        {discount && (
+          <div className="absolute top-2 left-2 bg-red-600 text-white text-xs px-2 py-1 rounded-md z-10">
+            {Math.round(discount)}% OFF
+          </div>
+        )}
         <Image
           src={image}
           alt={title}
@@ -62,11 +78,16 @@ const ProductCard = ({ title, price, oldPrice, image, type, btn1, btn2 }) => {
           height={100}
         />
         <div className="flex items-center gap-2 absolute top-44">
-          <FeatureButtons type={"heart"} btn1Func={btn1} btn2Func={btn2} />
+          <FeatureButtons
+            type={type}
+            btn1Func={btn1}
+            btn2Func={btn2}
+            isInWishlist={isInWishlist}
+          />
         </div>
         <div className="flex flex-col self-start">
           <h6
-            className="text-black font-semibold mb-0 self-start"
+            className="text-black font-semibold mb-0 self-start mt-2"
             title={title}
           >
             {title?.length > 18 ? `${title.slice(0, 18)}...` : title}
@@ -87,7 +108,13 @@ const ProductCard = ({ title, price, oldPrice, image, type, btn1, btn2 }) => {
 
       {/* Desktop View */}
       <div className="product-card group relative flex flex-col items-center hidden lg:block">
-        <div className="image-wrapper">
+        {discount && (
+          <div className="absolute top-2 left-2 bg-red-600 text-white text-xs px-2 py-1 rounded-md z-10">
+            {Math.round(discount)}% OFF
+          </div>
+        )}
+
+        <div className="image-wrapper relative">
           <Image
             src={image}
             alt={title}
@@ -96,7 +123,7 @@ const ProductCard = ({ title, price, oldPrice, image, type, btn1, btn2 }) => {
             height={100}
           />
           <Image
-            src={image}
+            src={image1 || image}
             alt={title}
             className="product-img hover"
             width={100}
@@ -104,7 +131,12 @@ const ProductCard = ({ title, price, oldPrice, image, type, btn1, btn2 }) => {
           />
         </div>
         <div className="icon-wrapper">
-          <FeatureButtons type={type} btn1Func={btn1} btn2Func={btn2} />
+          <FeatureButtons
+            type={type}
+            btn1Func={btn1}
+            btn2Func={btn2}
+            isInWishlist={isInWishlist}
+          />
         </div>
         <ProductInfo title={title} price={price} oldPrice={oldPrice} />
       </div>

@@ -1347,6 +1347,11 @@ input.form-control::placeholder {
   color: white;
 }
 
+.wishlist-active {
+  background-color: var(--primary-main) !important;
+  color: white !important;
+}
+
 .product-detail-search {
   width: 100%;
 }

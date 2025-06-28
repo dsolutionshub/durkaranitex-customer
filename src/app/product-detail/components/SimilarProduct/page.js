@@ -6,12 +6,12 @@ import { Navigation, Pagination } from "swiper/modules";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 import Section from "@/app/components/Section";
+import ProductCardMobile from "@/app/components/ProductCardMobile";
 import ProductCard from "@/app/components/ProductCard";
 import products from "./products.json";
 
 import "swiper/css";
 import "swiper/css/navigation";
-import ProductCardMobile from "@/app/components/ProductCardMobile";
 
 const SimilarProducts = () => {
   const router = useRouter();
@@ -49,7 +49,9 @@ const SimilarProducts = () => {
                 title={item.title}
                 price={item.price}
                 image={item.imgsrc}
+                image1={item.imgsrc}
                 subImage={item.subImage}
+                discount={item.discount}
               />
             </SwiperSlide>
           ))}

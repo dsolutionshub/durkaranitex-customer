@@ -55,12 +55,13 @@ function FilterComponent({
                     : category.name}
                 </label>
               </div>
-              <span className="text-md text-black">({category.count})</span>
+              <span className="text-md text-black">
+                ({category?.productCount})
+              </span>
             </li>
           ))}
         </ul>
       </div>
-
       <div className="border px-4 py-3 rounded mb-4">
         <h3 className="mb-3 h6 text-uppercase text-black d-block">
           Filter by Price
@@ -120,6 +121,7 @@ function FilterComponent({
 }
 
 const ProductFilter = ({
+  categoryList,
   categories = [],
   selectedCategories = [],
   filterProducts,
@@ -155,6 +157,7 @@ const ProductFilter = ({
     <>
       <div className="col-md-3 order-1 mb-5 mb-md-0 hidden xl:block">
         <FilterComponent
+          categoryList={categoryList}
           categories={categories}
           selectedCategories={selectedCategories}
           handleChange={handleChange}

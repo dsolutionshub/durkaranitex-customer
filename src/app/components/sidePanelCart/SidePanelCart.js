@@ -57,11 +57,6 @@ const SidePanelCart = () => {
     cartTotalAmount,
   } = useCartPanelStore();
 
-  const subtotal = cartProducts.reduce(
-    (acc, item) => acc + parseFloat(item.price) * (item.quantity || 0),
-    0
-  );
-
   function handleNavigate(page) {
     router.push(page);
     setCartOpen(false);
@@ -173,8 +168,10 @@ const SidePanelCart = () => {
           ) : (
             <div className="flex flex-col items-center justify-center text-center h-full px-4">
               <ShoppingCart size={66} className="text-gray-300 mb-4" />
-              <h2 className="text-xl font-semibold mb-2">Your cart is empty</h2>
-              <p className="text-gray-600 mb-4">
+              <h2 className="text-xl font-semibold mb-2 dark-color">
+                Your cart is empty
+              </h2>
+              <p className="text-gray-600 mb-4 dark-color">
                 Add some beautiful sarees to get started!
               </p>
               <button

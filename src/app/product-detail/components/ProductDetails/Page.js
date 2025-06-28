@@ -18,26 +18,6 @@ const images = [
   "/images/produce_detail_1.jpg",
 ];
 
-const sections = [
-  {
-    title: "Product Description",
-    content: `<div style='border-top: 1px solid #ddd; padding-top: 10px; font-size: 14px; color: #01279;'>
-      <p><strong>Fabric:</strong> Pure Cotton</p>
-      <p><strong>Weaving Style:</strong> Handloom weaving with tie-and-dye technique.</p>
-      <p><strong>Pattern:</strong> Printed</p>
-      <p><strong>Care Instructions:</strong> Handwash separately in cold water. Dry in shade to maintain color vibrancy.
-      Avoid harsh detergents and machine wash to preserve fabric quality.</p>
-      <p><em>Disclaimer:</em> Product color may slightly vary due to photographic lighting sources or your monitor settings.</p>
-    </div>`,
-  },
-  // { title: "Shipping", content: "Shipping details go here." },
-  {
-    title: "Replacements & Exchanges",
-    content: `Return & Replacements within 5 days of purchase for product damages only .
-(Offer product / Innerwear/ Imitation Jewellery / Discount products are not Eligible to Return/Exchange*)`,
-  },
-];
-
 const ProductDetails = () => {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
@@ -102,7 +82,7 @@ const ProductDetails = () => {
           </div>
 
           <ProductAccordion
-            sections={productInfo?.product || []}
+            sections={productInfo?.product}
             openIndex={openIndex}
             toggleAccordion={toggleAccordion}
             handleDecrease={handleDecrease}

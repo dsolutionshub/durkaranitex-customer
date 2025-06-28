@@ -1,28 +1,27 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 import CartProducts from "./components/CartProducts";
 import CustomBreadCrumb from "../components/CustomBreadCrumb";
+import { loader } from "../components/loader/loaderManager";
 
-import useCartStore from "@/store/useCartStore";
-import { CART_MODEL } from "../utils/constants";
 import {
   deleteQuantity,
   getCart,
+  handleCheckout,
   updateQuantity,
 } from "../api/services/authService";
+import { CART_MODEL } from "../utils/constants";
 import { getErrorMessage } from "../utils/helperFn";
-import { loader } from "../components/loader/loaderManager";
+import useCartPanelStore from "@/store/useCartPanelStore";
 
 const Cart = () => {
   const router = useRouter();
-  const removeFromCart = useCartStore((state) => state.removeFromCart);
+  const { setCartOpen } = useCartPanelStore();
   const [totalCost, setTotalCost] = useState(0);
-
   const [products, setProducts] = useState([]);
-
-  const items = useCartStore((state) => state.items);
 
   const fetchCart = async () => {
     loader(true);
@@ -50,23 +49,53 @@ const Cart = () => {
 
   const increaseCount = async (id, currentQuantity) => {
     const newQuantity = currentQuantity + 1;
+    loader(true);
     try {
       await updateQuantity({ product_id: id, quantity: newQuantity });
-      await fetchCart();
-    } catch (err) {
-      console.error("Failed to increase quantity:", err);
+      fetchCart();
+    } catch (error) {
+      const MSG = getErrorMessage(error);
+      toast.error(MSG);
+    } finally {
+      loader(false);
     }
   };
 
   const decreaseCount = async (id, currentQuantity) => {
     const newQuantity = currentQuantity - 1;
+    loader(true);
     try {
       await deleteQuantity({ product_id: id, quantity: newQuantity });
-      await fetchCart();
-    } catch (err) {
-      console.error("Failed to decrease quantity:", err);
+      fetchCart();
+    } catch (error) {
+      const MSG = getErrorMessage(error);
+      toast.error(MSG);
+    } finally {
+      loader(false);
     }
   };
+
+  function handleNavigate(page) {
+    router.push(page);
+    setCartOpen(false);
+  }
+
+  async function handleNavigateToCheckout() {
+    loader(true);
+    try {
+      await handleCheckout();
+      handleNavigate("/checkout");
+    } catch (error) {
+      const status = error.response.status;
+      if (status === 401) {
+        sessionStorage.setItem("postLoginRedirect", "/checkout");
+        router.push("/login");
+      }
+      getErrorMessage(error);
+    } finally {
+      loader(false);
+    }
+  }
 
   useEffect(() => {
     fetchCart();
@@ -151,15 +180,12 @@ const Cart = () => {
                   <div className="col-md-12">
                     <span className="">Shipping calculated at checkout.</span>
                   </div>
-                  {/* <div className="col-md-6 text-right">
-                                    <strong className="text-black">$2300.0</strong>
-                                </div> */}
                 </div>
                 <div className="row">
                   <div className="col-12">
                     <button
                       className="btn btn-primary btn-lg py-3 btn-block"
-                      onClick={() => router.push("/checkout")}
+                      onClick={handleNavigateToCheckout}
                     >
                       Proceed to checkout
                     </button>

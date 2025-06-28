@@ -12,6 +12,26 @@ import { loader } from "@/app/components/loader/loaderManager";
 
 import "../../style.css";
 
+const des = [
+  {
+    title: "Product Description",
+    content: `<div style='border-top: 1px solid #ddd; padding-top: 10px; font-size: 14px; color: #01279;'>
+      <p><strong>Fabric:</strong> Pure Cotton</p>
+      <p><strong>Weaving Style:</strong> Handloom weaving with tie-and-dye technique.</p>
+      <p><strong>Pattern:</strong> Printed</p>
+      <p><strong>Care Instructions:</strong> Handwash separately in cold water. Dry in shade to maintain color vibrancy.
+      Avoid harsh detergents and machine wash to preserve fabric quality.</p>
+      <p><em>Disclaimer:</em> Product color may slightly vary due to photographic lighting sources or your monitor settings.</p>
+    </div>`,
+  },
+  // { title: "Shipping", content: "Shipping details go here." },
+  {
+    title: "Replacements & Exchanges",
+    content: `Return & Replacements within 5 days of purchase for product damages only .
+(Offer product / Innerwear/ Imitation Jewellery / Discount products are not Eligible to Return/Exchange*)`,
+  },
+];
+
 export default function ProductAccordion({
   sections,
   openIndex,
@@ -98,7 +118,7 @@ export default function ProductAccordion({
       </div>
 
       <div style={{ width: "100%", maxWidth: "600px" }}>
-        {/* {sections?.map((section, index) => {
+        {des?.map((section, index) => {
           const isOpen = openIndex === index;
 
           return (
@@ -126,7 +146,7 @@ export default function ProductAccordion({
               </div>
             </div>
           );
-        })} */}
+        })}
       </div>
 
       <div className="mt-4 flex flex-col lg:flex-row items-center md:items-center space-y-4 md:space-y-0 md:space-x-4 w-full">

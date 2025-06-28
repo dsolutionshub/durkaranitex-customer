@@ -14,7 +14,6 @@ import ProductFilter from "./components/ProductFilter/page";
 import { loader } from "../components/loader/loaderManager";
 
 import useCartPanelStore from "@/store/useCartPanelStore";
-import useCartStore from "@/store/useCartStore";
 import { getErrorMessage, getFilteredProducts } from "../utils/helperFn";
 import { LOGIN_ERROR_MSG, SHOP_MODEL } from "../utils/constants";
 import {
@@ -30,9 +29,6 @@ function Shop() {
   const itemsPerPage = 8;
   const router = useRouter();
   const { handleGetCartDetail } = useCartPanelStore();
-
-  // const addToCart = useCartStore((state) => state.addToCart);
-  const wishToCart = useCartStore((state) => state.addToWishlist);
 
   const [priceRange, setPriceRange] = useState({ min: 50, max: 900 });
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -91,6 +87,7 @@ function Shop() {
   };
 
   const handleSearch = (value) => {
+    setSearchProduct(value);
     const data = sortedProducts.filter((item) =>
       (item.title ?? "").toLowerCase().includes(value.toLowerCase())
     );
@@ -247,6 +244,9 @@ function Shop() {
                         price={item?.price}
                         oldPrice={item?.product_price}
                         image={item?.images[0]?.["image"]}
+                        image1={item?.images[1]?.["image"]}
+                        discount={item.discount}
+                        isInWishlist={item.wishList}
                       />
                     </div>
                   ))
@@ -263,6 +263,7 @@ function Shop() {
             </div>
 
             <ProductFilter
+              categoryList={categoryList}
               categories={categoryList.categories}
               selectedCategories={selectedCategories}
               filterProducts={setSortedProducts}

@@ -77,104 +77,62 @@ export default function AccountPage() {
   return (
     <div className="px-4 py-10 min-h-screen">
       <div className="max-w-6xl mx-auto flex flex-col gap-6">
-        {/* Header */}
-        <h1 className="text-3xl font-bold text-black text-center">
-          My Account
-        </h1>
-        <p className="text-gray-700 text-center">
-          Hello <span className="font-semibold">{profileInfo?.name} 👋</span>
-        </p>
+        <div>
+          <p className="text-2xl text-gray-700 text-center -translate-x-[-10px]">
+            Hello{" "}
+            <span className="text-3xl font-semibold">
+              {profileInfo?.name} 👋
+            </span>
+          </p>
+          <h1 className="text-3xl font-bold text-black text-center">
+            Great to see you again!
+          </h1>
+        </div>
 
-        {/* Tabs and Content */}
         <div className="flex flex-col md:flex-row gap-6">
-          {/* Sidebar/Menu */}
-          {/* <div className="grid grid-cols-2 md:flex md:flex-col gap-3 md:w-1/4 w-full">
-            <div
-              className={`flex flex-col items-center justify-center p-3 rounded-md cursor-pointer ${
-                selectedTab === "account"
-                  ? "text-[var(--primary-main)] font-semibold"
-                  : "text-gray-600 hover:text-[var(--primary-main)]"
-              }`}
-              style={{
-                border:
-                  selectedTab === "account"
-                    ? "1px solid var(--primary-main)"
-                    : "1px solid var(-dark-color)",
-              }}
-              onClick={() => setSelectedTab("account")}
-            >
-              <User className="w-5 h-5" />
-              <span className="text-sm mt-1">Account</span>
+          {/* Side Menu */}
+          <div className="md:w-1/4 w-full">
+            <div className="bg-white/70 backdrop-blur-md rounded-2xl shadow-xl border border-white/20 p-6 h-full">
+              <div className="flex flex-wrap md:flex-col gap-3">
+                {tabs.map(({ key, label, Icon }) => {
+                  const isActive = selectedTab === key;
+                  return (
+                    <div
+                      key={key}
+                      className={`group relative flex items-center gap-2 p-4 rounded-xl cursor-pointer transition-all duration-300 transform hover:scale-105 ${
+                        isActive
+                          ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-lg shadow-blue-500/25"
+                          : "text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:text-blue-700"
+                      }`}
+                      onClick={() => setSelectedTab(key)}
+                    >
+                      <div
+                        className={`p-1 rounded-lg transition-colors ${
+                          isActive
+                            ? "bg-white/20"
+                            : "bg-gray-100 group-hover:bg-blue-100"
+                        }`}
+                      >
+                        <Icon
+                          className={`w-5 h-5 ${
+                            isActive
+                              ? "text-white"
+                              : "text-gray-600 group-hover:text-blue-600"
+                          }`}
+                        />
+                      </div>
+                      <span className="font-medium text-sm">{label}</span>
+
+                      {isActive && (
+                        <div className="absolute right-[6px]">
+                          <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
-
-            <div
-              className={`flex flex-col items-center justify-center p-3 rounded-md cursor-pointer ${
-                selectedTab === "orders"
-                  ? "text-[var(--primary-main)] font-semibold"
-                  : "text-gray-600 hover:text-[var(--primary-main)]"
-              }`}
-              style={{
-                border:
-                  selectedTab === "orders"
-                    ? "1px solid var(--primary-main)"
-                    : "1px solid var(-dark-color)",
-              }}
-              onClick={() => setSelectedTab("orders")}
-            >
-              <Package className="w-5 h-5" />
-              <span className="text-sm mt-1">Order History</span>
-            </div>
-
-            <div
-              className={`flex flex-col items-center justify-center p-3 rounded-md cursor-pointer ${
-                selectedTab === "addresses"
-                  ? "text-text-[var(--primary-main)] font-semibold"
-                  : "text-gray-600 hover:text-text-[var(--primary-main)]"
-              }`}
-              style={{
-                border:
-                  selectedTab === "addresses"
-                    ? "1px solid var(--primary-main)"
-                    : "1px solid var(-dark-color)",
-              }}
-              onClick={() => setSelectedTab("addresses")}
-            >
-              <MapPin className="w-5 h-5" />
-              <span className="text-sm mt-1">Addresses</span>
-            </div>
-
-            <a
-              // href="/logout"
-              className="flex flex-col items-center justify-center p-3 border rounded-md text-gray-600 hover:text-black"
-            >
-              <LogOut className="w-5 h-5" />
-              <span className="text-sm mt-1">Log Out</span>
-            </a>
-          </div> */}
-
-          <div className="grid grid-cols-2 md:flex md:flex-col gap-3 md:w-1/4 w-full">
-            {tabs.map(({ key, label, Icon }) => {
-              const isSelected = selectedTab === key;
-              return (
-                <div
-                  key={key}
-                  className={`flex flex-col items-center justify-center font-semibold p-3 rounded-md cursor-pointer ${
-                    isSelected
-                      ? "text-[var(--primary-main)]"
-                      : "text-[var(--dark-color)] hover:text-[var(--primary-main)]"
-                  }`}
-                  style={{
-                    border: `1px solid ${
-                      isSelected ? "var(--primary-main)" : "lightgray"
-                    }`,
-                  }}
-                  onClick={() => setSelectedTab(key)}
-                >
-                  <Icon className="w-5 h-5" />
-                  <span className="text-sm mt-1">{label}</span>
-                </div>
-              );
-            })}
           </div>
 
           {/* Main Content */}
