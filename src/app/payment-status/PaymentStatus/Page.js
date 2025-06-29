@@ -1,11 +1,12 @@
-"use client"
-import { useSearchParams } from "next/navigation";
+"use client";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function PaymentStatusComponent() {
-    const searchParams = useSearchParams();
-  const status = searchParams.get('status');
-  const payment_id = searchParams.get('payment_id');
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const status = searchParams.get("status");
+  const payment_id = searchParams.get("payment_id");
 
   const [loading, setLoading] = useState(true);
   const [isSuccess, setIsSuccess] = useState(false);

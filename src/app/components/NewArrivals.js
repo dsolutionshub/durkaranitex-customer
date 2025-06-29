@@ -106,9 +106,9 @@ const CollectionTab = ({ data }) => {
             <SwiperSlide key={i}>
               <ProductCard
                 type={"heart"}
-                title={item.title}
-                price={item.price}
-                discount={item.discount}
+                title={item?.title}
+                price={item?.price}
+                discount={item?.discount || 0}
                 oldPrice={item.product_price}
                 image={item?.images[0]?.image}
                 image1={item?.images[1]?.image}

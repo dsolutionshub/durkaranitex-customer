@@ -19,6 +19,7 @@ import {
   PRODUCT_LIST,
   PROFILE_INFO,
   REGISTER,
+  REMOVE_CART,
   REMOVE_WISH_LIST,
   UPDATE_CHECKOUT_ADDRESS,
   UPDATE_CUSTOMER_ADDRESS,
@@ -122,6 +123,11 @@ export async function deleteQuantity(payload) {
 
 export async function modifyCart(payload) {
   const response = await apiRequest(ADD_CART, "POST", payload);
+  return response;
+}
+
+export async function removeCart(payload) {
+  const response = await apiRequest(REMOVE_CART, "POST", payload);
   return response;
 }
 

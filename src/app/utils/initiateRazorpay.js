@@ -2,9 +2,9 @@ export const initiateRazorpayPayment = ({ order }) => {
   const options = {
     key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
     amount: order.amount,
-    currency: order.currency,
-    name: "Your Company Name",
-    description: "Purchase",
+    currency: order.currency || "INR",
+    name: "Dhurgarani Tex",
+    description: "Order Payment",
     order_id: order.id,
     handler: function (response) {
       window.location.href = `/payment-status?status=success&payment_id=${response.razorpay_payment_id}`;
@@ -15,9 +15,9 @@ export const initiateRazorpayPayment = ({ order }) => {
       },
     },
     prefill: {
-      name: "Customer Name",
-      email: "customer@example.com",
-      contact: "9999999999",
+      name: order.customer_name || "Customer",
+      email: order.customer_email || "example@email.com",
+      contact: order.customer_phone || "9999999999",
     },
     theme: { color: "#00C896" },
   };

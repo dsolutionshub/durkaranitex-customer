@@ -97,7 +97,7 @@ const Wishlist = () => {
                   type="delete"
                   btn1={() => removeFromWishlist(item?.product?.id)}
                   btn2={() => addToCart(item?.product?.id)}
-                  discount={item?.product?.discount}
+                  discount={item?.product?.discount || 0}
                   className="product-page-card-mobile-wishlist"
                 />
               </div>

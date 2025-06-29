@@ -11,6 +11,7 @@ import {
   deleteQuantity,
   getCart,
   handleCheckout,
+  removeCart,
   updateQuantity,
 } from "../api/services/authService";
 import { CART_MODEL } from "../utils/constants";
@@ -19,7 +20,7 @@ import useCartPanelStore from "@/store/useCartPanelStore";
 
 const Cart = () => {
   const router = useRouter();
-  const { setCartOpen } = useCartPanelStore();
+  const { setCartOpen, cardDetails } = useCartPanelStore();
   const [totalCost, setTotalCost] = useState(0);
   const [products, setProducts] = useState([]);
 
@@ -97,6 +98,23 @@ const Cart = () => {
     }
   }
 
+  const removeFromCart = async (id) => {
+    loader(true);
+    try {
+      const data = await removeCart({
+        cart_id: id,
+      });
+      fetchCart();
+      cardDetails();
+      toast.success(data?.message);
+    } catch (error) {
+      const MSG = getErrorMessage(error);
+      toast.error(MSG);
+    } finally {
+      loader(false);
+    }
+  };
+
   useEffect(() => {
     fetchCart();
   }, []);
@@ -108,12 +126,6 @@ const Cart = () => {
     }
   }, []);
 
-  // const removeProduct = (id) => {
-  //   setProducts((prevProducts) =>
-  //     prevProducts.filter((product) => product.id !== id)
-  //   );
-  // };
-
   return (
     <>
       <CustomBreadCrumb model={CART_MODEL} title={"Shopping Cart"} />
@@ -122,6 +134,7 @@ const Cart = () => {
           products={products}
           decreaseCount={decreaseCount}
           increaseCount={increaseCount}
+          removeFromCart={removeFromCart}
         />
 
         <div className="row">

@@ -50,15 +50,11 @@ export function getFilteredProducts({
 }
 
 // Price Format
-// export function formatPrice(value) {
-//   return Number(value.replace(/,/g, ""));
-// }
 export function formatPrice(value) {
-  if (value == null) return "₹0"; 
-  const stringValue = value.toString(); 
+  if (value == null) return "₹0";
+  const stringValue = value.toString();
   return "₹" + stringValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
-
 
 // Error Messsage
 export const getErrorMessage = (error) => {
@@ -72,4 +68,23 @@ export const getErrorMessage = (error) => {
     console.log("Unexpected error:", error);
     return "An unexpected error occurred.";
   }
+};
+
+// Payment
+export const loadRazorpayScript = () => {
+  return new Promise((resolve) => {
+    if (document.querySelector("#razorpay-script")) {
+      return resolve(true);
+    }
+
+    const script = document.createElement("script");
+    script.id = "razorpay-script";
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.onload = () => resolve(true);
+    script.onerror = () => {
+      toast.error("Failed to load Razorpay");
+      resolve(false);
+    };
+    document.body.appendChild(script);
+  });
 };

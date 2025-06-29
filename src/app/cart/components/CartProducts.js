@@ -31,7 +31,7 @@ const CartProducts = ({
                   <p className="mb-0 text-black">{item?.title}</p>
                   <button
                     className="text-gray-500 underline p-0 m-0"
-                    onClick={() => removeFromCart(item?.productId)}
+                    onClick={() => removeFromCart(item?.id)}
                   >
                     Remove
                   </button>
@@ -101,7 +101,7 @@ const CartProducts = ({
                       <p style={{ marginBottom: "0" }}>{product?.title}</p>
 
                       <span
-                        onClick={() => removeFromCart(product?.productId)}
+                        onClick={() => removeFromCart(product?.id)}
                         style={{
                           textDecoration: "underline",
                           cursor: "pointer",

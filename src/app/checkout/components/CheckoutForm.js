@@ -12,11 +12,13 @@ import {
 } from "@/app/api/services/authService";
 import AddressCard from "./AddressCard";
 import { loader } from "@/app/components/loader/loaderManager";
+import toast from "react-hot-toast";
 
 export default function CheckoutForm({
   checkoutData,
   selectedPayment,
   setSelectedPayment,
+  handleCheckoutList
 }) {
   const [addressList, setAddressList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -58,8 +60,10 @@ export default function CheckoutForm({
     loader(true);
     try {
       await updateCheckoutAddress(formData);
+      handleCheckoutList();
     } catch (error) {
-      getErrorMessage(error);
+      const MSG = getErrorMessage(error);
+      toast.error(MSG);
     } finally {
       loader(false);
     }
@@ -71,7 +75,8 @@ export default function CheckoutForm({
       await deleteAddress("", id);
       getAddressList();
     } catch (error) {
-      getErrorMessage(error);
+      const MSG = getErrorMessage(error);
+      toast.error(MSG);
     } finally {
       loader(false);
     }

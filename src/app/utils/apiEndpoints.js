@@ -20,7 +20,7 @@ export const REMOVE_WISH_LIST = "/api/wishlist/add-remove";
 export const GET_CART = "/api/cart/list";
 export const ADD_CART = "/api/cart/add";
 export const UPDATE_QUANTITY = "/api/cart/update-quantity";
-export const REMOVE_QUANTITY = "/api/cart/remove";
+export const REMOVE_CART = "/api/cart/remove";
 
 //Address
 export const GET_STATE_LIST = "/api/states-list";
@@ -36,4 +36,4 @@ export const PROFILE_INFO = "/api/profile/info";
 export const HANDLE_CHECKOUT = "/api/checkout/checkout";
 export const GET_CHECKOUT_LIST = "/api/checkout/list";
 export const UPDATE_CHECKOUT_ADDRESS = "/api/checkout/address";
-export const HANDLE_PAYMENT = "/api/checkout/address";
+export const HANDLE_PAYMENT = "/api/checkout/pay-now";

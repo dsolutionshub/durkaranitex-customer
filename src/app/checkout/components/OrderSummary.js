@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { RiDeleteBinLine } from "react-icons/ri";
 
-const OrderSummary = ({ checkoutData, handlePayment }) => {
+const OrderSummary = ({ checkoutData, handlePayment, removeFromCart }) => {
   return (
     <div className="space-y-6">
       <div className="bg-white p-6 rounded-xl shadow">
@@ -17,7 +17,7 @@ const OrderSummary = ({ checkoutData, handlePayment }) => {
                 <div className="h-14 w-14 flex-shrink-0 bg-neutral-light rounded-md overflow-hidden">
                   <Image
                     alt="image"
-                    src={"/images/1.jpeg"}
+                    src={item?.product?.images[0]?.image}
                     width={50}
                     height={50}
                     className="h-14 w-14 flex-shrink-0 bg-neutral-light rounded-md overflow-hidden"
@@ -38,7 +38,12 @@ const OrderSummary = ({ checkoutData, handlePayment }) => {
                   </p>
                   <div className="flex items-center gap-1 cursor-pointer">
                     <RiDeleteBinLine className="text-red-600" />
-                    <button className="text-red-600 text-sm">Remove</button>
+                    <button
+                      className="text-red-600 text-sm d-none"
+                      onClick={() => removeFromCart(item?.product_id)}
+                    >
+                      Remove
+                    </button>
                   </div>
                 </div>
               </div>

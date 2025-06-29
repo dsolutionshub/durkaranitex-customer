@@ -245,8 +245,8 @@ function Shop() {
                         oldPrice={item?.product_price}
                         image={item?.images[0]?.["image"]}
                         image1={item?.images[1]?.["image"]}
-                        discount={item.discount}
-                        isInWishlist={item.wishList}
+                        discount={item?.discount || 0}
+                        isInWishlist={item?.wishList}
                       />
                     </div>
                   ))

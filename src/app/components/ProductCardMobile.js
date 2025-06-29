@@ -36,9 +36,9 @@ const ProductCardMobile = ({ products }) => {
                 className="flex flex-col items-center relative lg:hidden"
                 onClick={navigateToProductDetail}
               >
-                {item?.discount && (
+                {Math.round(item?.discount) !== 0 && (
                   <div className="absolute top-2 left-2 bg-red-600 text-white text-xs px-2 py-1 rounded-md z-10">
-                    {Math.round(discount)}% OFF
+                    {Math.round(item?.discount)}% OFF
                   </div>
                 )}
 

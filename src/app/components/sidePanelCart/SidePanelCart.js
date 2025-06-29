@@ -1,19 +1,25 @@
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Sidebar } from "primereact/sidebar";
+import toast from "react-hot-toast";
 import { IoClose } from "react-icons/io5";
 import { ShoppingCart } from "lucide-react";
 
 import useCartPanelStore from "@/store/useCartPanelStore";
-
-import "./style.css";
 import { loader } from "../loader/loaderManager";
 import { getErrorMessage } from "@/app/utils/helperFn";
-import { handleCheckout } from "@/app/api/services/authService";
+import {
+  deleteQuantity,
+  handleCheckout,
+  removeCart,
+  updateQuantity,
+} from "@/app/api/services/authService";
+
+import "./style.css";
 
 function RenderQuantity({
-  decrementQty,
-  incrementQty,
+  decreaseCount,
+  increaseCount,
   removeFromCart,
   product,
 }) {
@@ -21,14 +27,14 @@ function RenderQuantity({
     <div className="flex items-center mt-2 gap-3">
       <div className="flex items-center border rounded dark-color">
         <button
-          onClick={() => decrementQty(product?.product_id)}
+          onClick={() => decreaseCount(product?.product_id, product?.quantity)}
           className="px-2 py-1 text-sm"
         >
           −
         </button>
         <span className="px-4">{product?.quantity || 0}</span>
         <button
-          onClick={() => incrementQty(product?.product_id)}
+          onClick={() => increaseCount(product?.product_id, product?.quantity)}
           className="px-2 py-1 text-sm"
         >
           +
@@ -37,7 +43,7 @@ function RenderQuantity({
 
       <button
         className="ml-4 text-sm underline text-gray-600 hover:text-red-600"
-        onClick={() => removeFromCart(product?.product_id)}
+        onClick={() => removeFromCart(product?.id)}
       >
         Remove
       </button>
@@ -51,16 +57,42 @@ const SidePanelCart = () => {
     isCartOpen,
     setCartOpen,
     cartProducts,
-    incrementQty,
-    decrementQty,
-    removeFromCart,
     cartTotalAmount,
+    cardDetails,
   } = useCartPanelStore();
 
   function handleNavigate(page) {
     router.push(page);
     setCartOpen(false);
   }
+
+  const increaseCount = async (id, currentQuantity) => {
+    const newQuantity = currentQuantity + 1;
+    loader(true);
+    try {
+      await updateQuantity({ product_id: id, quantity: newQuantity });
+      cardDetails();
+    } catch (error) {
+      const MSG = getErrorMessage(error);
+      toast.error(MSG);
+    } finally {
+      loader(false);
+    }
+  };
+
+  const decreaseCount = async (id, currentQuantity) => {
+    const newQuantity = currentQuantity - 1;
+    loader(true);
+    try {
+      await deleteQuantity({ product_id: id, quantity: newQuantity });
+      cardDetails();
+    } catch (error) {
+      const MSG = getErrorMessage(error);
+      toast.error(MSG);
+    } finally {
+      loader(false);
+    }
+  };
 
   async function handleNavigateToCheckout() {
     loader(true);
@@ -78,6 +110,22 @@ const SidePanelCart = () => {
       loader(false);
     }
   }
+
+  const removeFromCart = async (id) => {
+    loader(true);
+    try {
+      const data = await removeCart({
+        cart_id: id,
+      });
+      cardDetails();
+      toast.success(data?.message);
+    } catch (error) {
+      const MSG = getErrorMessage(error);
+      toast.error(MSG);
+    } finally {
+      loader(false);
+    }
+  };
 
   return (
     <Sidebar
@@ -114,9 +162,7 @@ const SidePanelCart = () => {
                         <h6
                           className="text-xlg dark-color mb-1  product-title"
                           title={product?.product?.title}
-                        >
-                          {product?.product?.title}
-                        </h6>
+                        ></h6>
 
                         <p className=" text-md dark-color mb-1">
                           <span className="text-gray-500 line-through">
@@ -126,8 +172,8 @@ const SidePanelCart = () => {
                         </p>
                         <div className="d-none d-md-block">
                           <RenderQuantity
-                            incrementQty={incrementQty}
-                            decrementQty={decrementQty}
+                            increaseCount={increaseCount}
+                            decreaseCount={decreaseCount}
                             removeFromCart={removeFromCart}
                             product={product}
                           />
@@ -136,8 +182,8 @@ const SidePanelCart = () => {
                     </div>
                     <div className="d-md-none">
                       <RenderQuantity
-                        incrementQty={incrementQty}
-                        decrementQty={decrementQty}
+                        increaseCount={increaseCount}
+                        decreaseCount={decreaseCount}
                         removeFromCart={removeFromCart}
                         product={product}
                       />

@@ -4,10 +4,15 @@ import toast from "react-hot-toast";
 
 import CheckoutForm from "./components/CheckoutForm";
 import OrderSummary from "./components/OrderSummary";
-import { getErrorMessage } from "../utils/helperFn";
-import { getCheckoutList, payment } from "../api/services/authService";
+import { getErrorMessage, loadRazorpayScript } from "../utils/helperFn";
+import {
+  getCheckoutList,
+  payment,
+  removeCart,
+} from "../api/services/authService";
 import { loader } from "../components/loader/loaderManager";
 import { useRouter } from "next/navigation";
+import { initiateRazorpayPayment } from "../utils/initiateRazorpay";
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -21,12 +26,19 @@ export default function CheckoutPage() {
       return;
     }
     loader(true);
+
     try {
       const data = await payment({
         checkout_id: checkoutData?.checkout_id,
         payment_type: selectedPayment === "payNow" ? "online" : "cod",
       });
-      console.log(data);
+      if (selectedPayment === "payNow") {
+        await loadRazorpayScript();
+        initiateRazorpayPayment({ order: data });
+      } else {
+        toast.success("Order placed successfully (Cash on Delivery)");
+        router.push("/payment-status?status=success");
+      }
     } catch (error) {
       getErrorMessage(error);
       const status = error?.response?.status;
@@ -46,6 +58,24 @@ export default function CheckoutPage() {
       setCheckoutData(data || []);
     } catch (error) {
       getErrorMessage(error);
+    } finally {
+      loader(false);
+    }
+  };
+
+  const removeFromCart = async (id) => {
+    loader(true);
+    try {
+      const data = await removeCart({
+        cart_id: id,
+      });
+      // fetchCart();
+      // cardDetails();
+      handleCheckoutList();
+      toast.success(data?.message);
+    } catch (error) {
+      const MSG = getErrorMessage(error);
+      toast.error(MSG);
     } finally {
       loader(false);
     }
@@ -73,10 +103,12 @@ export default function CheckoutPage() {
           checkoutData={checkoutData}
           selectedPayment={selectedPayment}
           setSelectedPayment={setSelectedPayment}
+          handleCheckoutList={handleCheckoutList}
         />
         <OrderSummary
           checkoutData={checkoutData}
           handlePayment={handlePayment}
+          removeFromCart={removeFromCart}
         />
       </div>
     </div>

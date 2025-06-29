@@ -46,12 +46,12 @@ const SimilarProducts = () => {
             <SwiperSlide key={i} className="h-full">
               <ProductCard
                 type={"heart"}
-                title={item.title}
-                price={item.price}
-                image={item.imgsrc}
-                image1={item.imgsrc}
-                subImage={item.subImage}
-                discount={item.discount}
+                title={item?.title}
+                price={item?.price}
+                image={item?.imgsrc}
+                image1={item?.imgsrc}
+                subImage={item?.subImage}
+                discount={item?.discount || 0}
               />
             </SwiperSlide>
           ))}

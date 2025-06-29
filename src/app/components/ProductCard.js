@@ -65,7 +65,7 @@ const ProductCard = ({
       <div
         className={`flex flex-col items-center relative lg:hidden ${className}`}
       >
-        {discount && (
+        {Math.round(discount) !== 0 && (
           <div className="absolute top-2 left-2 bg-red-600 text-white text-xs px-2 py-1 rounded-md z-10">
             {Math.round(discount)}% OFF
           </div>
@@ -108,7 +108,7 @@ const ProductCard = ({
 
       {/* Desktop View */}
       <div className="product-card group relative flex flex-col items-center hidden lg:block">
-        {discount && (
+        {Math.round(discount) !== 0 && (
           <div className="absolute top-2 left-2 bg-red-600 text-white text-xs px-2 py-1 rounded-md z-10">
             {Math.round(discount)}% OFF
           </div>
