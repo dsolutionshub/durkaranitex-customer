@@ -1,12 +1,10 @@
 "use client";
 
+import React, { useEffect, useState, useRef } from "react";
 import { Sidebar } from "primereact/sidebar";
-import React, { useEffect, useState } from "react";
-import { IoClose } from "react-icons/io5";
 import { Range } from "react-range";
+import { IoClose } from "react-icons/io5";
 
-// const MIN = 50;
-// const MAX = 900;
 const STEP = 100;
 
 function FilterComponent({
@@ -15,21 +13,18 @@ function FilterComponent({
   handleChange,
   handleCheckboxChange,
   values,
-  MIN, 
-  MAX
+  MIN,
+  MAX,
 }) {
   return (
     <>
-      <div className="border px-4 py-3 rounded mb-4 ">
+      <div className="border px-4 py-3 rounded mb-4">
         <h3 className="mb-3 h6 text-uppercase text-black d-block">
           Categories
         </h3>
         <ul
           className="list-none pl-0 mb-0 overflow-y-auto"
-          style={{
-            maxHeight: "32rem",
-            paddingLeft: "0px",
-          }}
+          style={{ maxHeight: "32rem", paddingLeft: "0px" }}
         >
           {categories?.map((category) => (
             <li
@@ -43,9 +38,7 @@ function FilterComponent({
                   checked={selectedCategories?.includes(category?.id)}
                   onChange={(e) => handleCheckboxChange(e, category?.id)}
                   className="form-checkbox h-4 w-4 cursor-pointer"
-                  style={{
-                    accentColor: "var(--bs-primary)",
-                  }}
+                  style={{ accentColor: "var(--bs-primary)" }}
                 />
                 <label
                   htmlFor={category?.id}
@@ -64,6 +57,7 @@ function FilterComponent({
           ))}
         </ul>
       </div>
+
       <div className="border px-4 py-3 rounded mb-4">
         <h3 className="mb-3 h6 text-uppercase text-black d-block">
           Filter by Price
@@ -134,29 +128,38 @@ const ProductFilter = ({
   handleOpenFilter,
 }) => {
   const [values, setValues] = useState([priceRange.min, priceRange.max]);
-  const handleChange = (values) => {
-    setValues(values);
-    onPriceChange({ min: values[0], max: values[1] });
 
-    const filteredProducts = categories.filter(
-      (item) => item.price >= values[0] && item.price <= values[1]
-    );
+  const debounceRef = useRef(null);
 
-    filterProducts(filteredProducts);
+  const handleChange = (newValues) => {
+    setValues(newValues);
+
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+
+    debounceRef.current = setTimeout(() => {
+      onPriceChange({ min: newValues[0], max: newValues[1] });
+
+      const filteredProducts = categories.filter(
+        (item) => item.price >= newValues[0] && item.price <= newValues[1]
+      );
+      filterProducts(filteredProducts);
+    }, 500);
   };
 
   const handleCheckboxChange = (event, categoryID) => {
     if (event.target.checked) {
-      console.log(event.target.checked);
       onChange([...selectedCategories, categoryID]);
     } else {
       onChange(selectedCategories?.filter((id) => id !== categoryID));
     }
   };
-  useEffect(()=>{
-      console.log(categoryList.product_amount);
-      setValues([categoryList?.product_amount?.min, categoryList?.product_amount?.max]);
-  },[categoryList])
+
+  useEffect(() => {
+    setValues([
+      parseFloat(categoryList?.product_amount?.min) || 0,
+      parseFloat(categoryList?.product_amount?.max) || 1000,
+    ]);
+  }, [categoryList]);
 
   return (
     <>
@@ -189,6 +192,7 @@ const ProductFilter = ({
             />
           </div>
           <FilterComponent
+            categoryList={categoryList}
             categories={categories}
             selectedCategories={selectedCategories}
             handleChange={handleChange}

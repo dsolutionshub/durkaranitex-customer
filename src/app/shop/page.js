@@ -22,7 +22,6 @@ import {
   modifyCart,
   modifyWishlist,
 } from "../api/services/authService";
-import { useDebounceCallback } from "../hooks/useDebounceCallback";
 
 const items = [{ label: "Shop" }];
 
@@ -41,7 +40,7 @@ function Shop() {
   const [categoryList, setCategoryList] = useState([]);
   const [openFilter, setOpenFilter] = useState(false);
   const [quantities, setQuantities] = useState({});
-  const [totalPage, setTotalPage] = useState(0)
+  const [totalPage, setTotalPage] = useState(0);
 
   const filtered = getFilteredProducts({
     products: [],
@@ -53,29 +52,24 @@ function Shop() {
 
   const startIndex = (currentPage - 1) * itemsPerPage;
 
-  const debouncedProductDetails = useDebounceCallback(() => {
-    productDetails();
-  }, 500);
-
   const handlePriceChange = (range) => {
     setPriceRange(range);
-    debouncedProductDetails();
   };
-
-  const paginatedCollections = filtered?.slice(
-    startIndex,
-    startIndex + itemsPerPage
-  );
 
   const productDetails = async (filter = null, min = 0, max = 0) => {
     loader(true);
     try {
-      let { products, total_products } = await getProductList(currentPage, filter, selectedCategories, priceRange.min !== 0 ? priceRange.min : undefined,
-        priceRange.max !== 0 ? priceRange.max : undefined);
+      let { products, total_products } = await getProductList(
+        currentPage,
+        filter,
+        selectedCategories,
+        priceRange.min !== 0 ? priceRange.min : undefined,
+        priceRange.max !== 0 ? priceRange.max : undefined
+      );
       setProductList(products || []);
       setSortedProducts(products || []);
       const totalPages = Math.ceil(total_products / itemsPerPage);
-      setTotalPage(totalPages)
+      setTotalPage(totalPages);
     } catch (error) {
       getErrorMessage(error);
     } finally {
@@ -120,30 +114,23 @@ function Shop() {
   }, [searchProduct, selectedCategories, priceRange]);
 
   useEffect(() => {
-    // let sorted = [...productList];
-
     switch (sortOption) {
       case "Name A to Z":
-        // sorted.sort((a, b) => (a.title ?? '').localeCompare(b.title ?? ''));
         productDetails("a-z");
         break;
       case "Name Z to A":
-        // sorted.sort((a, b) => (b.title ?? '').localeCompare(a.title ?? ''));
         productDetails("z-a");
         break;
       case "Price low to high":
-        // sorted.sort((a, b) => (a.price ?? '') - (b.price ?? ''));
         productDetails("min-max");
         break;
       case "Price high to low":
-        // sorted.sort((a, b) => (b.price ?? '') - (a.price ?? ''));
         productDetails("max-min");
         break;
       case "Sort by All":
         productDetails();
         break;
     }
-    // setSortedProducts(sorted);
   }, [sortOption]);
 
   const navigateToProductDetail = (product_id) => {
@@ -192,9 +179,9 @@ function Shop() {
   };
 
   const handleCheckbox = (arr) => {
-    setSelectedCategories(arr)
-    productDetails()
-  }
+    setSelectedCategories(arr);
+    productDetails();
+  };
 
   return (
     <>
