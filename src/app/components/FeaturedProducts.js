@@ -12,58 +12,9 @@ import ProductCardMobile from "./ProductCardMobile";
 import "swiper/css";
 import "swiper/css/navigation";
 
-const products = [
-  {
-    id: 1,
-    title: "Embossed Silk Set",
-    imgsrc: "/images/combo_1.jpeg",
-    subImage: "/images/combo_2.jpeg",
-    description: "Finding perfect t-shirt",
-    price: "1300.00",
-  },
-  {
-    id: 2,
-    title: "Semi Slik Combo Set",
-    imgsrc: "/images/combo_2.jpeg",
-    subImage: "/images/combo_1.jpeg",
-    description: "Finding perfect products",
-    price: "1500.00",
-  },
-  {
-    id: 3,
-    title: "Cotton blended combos",
-    imgsrc: "/images/combo_9.jpeg",
-    subImage: "/images/combo_2.jpeg",
-    description: "Finding perfect products",
-    price: "1000.00",
-  },
-  {
-    id: 4,
-    title: "Silk elegance couple set",
-    imgsrc: "/images/combo_4.jpeg",
-    subImage: "/images/combo_5.jpeg",
-    description: "Finding perfect products",
-    price: "1100.00",
-  },
-  {
-    id: 5,
-    title: "Soft cotton combo collections",
-    imgsrc: "/images/combo_5.jpeg",
-    subImage: "/images/combo_4.jpeg",
-    description: "Finding perfect products",
-    price: "2000.00",
-  },
-  {
-    id: 6,
-    title: "Classic semi silk combo",
-    imgsrc: "/images/combo_7.jpeg",
-    subImage: "/images/combo_2.jpeg",
-    description: "Finding perfect products",
-    price: "1800.00",
-  },
-];
 
-const FeaturedCard = () => {
+
+const FeaturedCard = ({products}) => {
   const router = useRouter();
 
   return (
@@ -96,16 +47,16 @@ const FeaturedCard = () => {
           }}
           className="product-card featured-swiper"
         >
-          {products.map((item, i) => (
+          {products?.map((item, i) => (
             <SwiperSlide key={i} className="h-full">
               <ProductCard
                 type={"heart"}
                 title={item.title}
                 price={item.price}
-                image={item.imgsrc}
-                image1={item.image}
+                image={item.images?.[0]?.image}
+                image1={item.images?.[1]?.image}
                 discount={item?.discount || 0}
-                subImage={item.subImage}
+                subImage={item.images?.[1]?.image}
               />
             </SwiperSlide>
           ))}
@@ -123,13 +74,13 @@ const FeaturedCard = () => {
   );
 };
 
-export default function FeaturedProducts({ collection }) {
+export default function FeaturedProducts({ products }) {
   return (
     <div className="md:px-20 feature-product-card">
       <Section
         title={"Featured Products"}
         desc={"Our hand-picked selection of the finest sarees for any occasion"}
-        section={<FeaturedCard data={collection} />}
+        section={<FeaturedCard products={products} />}
       />
     </div>
   );

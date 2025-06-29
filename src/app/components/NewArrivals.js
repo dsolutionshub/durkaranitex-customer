@@ -45,10 +45,9 @@ const CollectionTab = ({ data }) => {
   };
 
   useEffect(() => {
-    if (data?.length) {
+    if (!data?.length) return 
       setActiveTab(data[0].id);
       fetchCollectionsData(data);
-    }
   }, [data]);
 
   const filteredCollections = collectionsData[activeTab] || [];

@@ -34,11 +34,12 @@ export default function Home() {
     fetchData();
   }, []);
 
+
   return (
     <div>
       <BannerCarousel />
       <CollectionsSection />
-      <FeaturedProducts />
+      <FeaturedProducts  products={homeDetails?.featured_products} />
       <NewCollections data={homeDetails?.new_collection_categories} />
       <SaleSection />
       <CategorySection collection={homeDetails?.shop_collection} />
