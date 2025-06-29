@@ -27,11 +27,6 @@ const useCartPanelStore = create((set, get) => ({
       ),
     })),
 
-  removeFromCart: (id) =>
-    set((state) => ({
-      cartProducts: state.cartProducts.filter((item) => item.id !== id),
-    })),
-
   cardDetails: async () => {
     loader(true);
     try {
