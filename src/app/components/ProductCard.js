@@ -93,15 +93,13 @@ const ProductCard = ({
             {title?.length > 18 ? `${title.slice(0, 18)}...` : title}
           </h6>
           <div className="self-start">
+            <span className="primary-color font-semibold">Rs. {price}</span>{" "}
+            <br className="md:hidden" />
             {oldPrice && (
               <span className="text-muted text-decoration-line-through">
                 Rs. {oldPrice}
               </span>
             )}
-            <br className="md:hidden" />
-            <span className="primary-color font-semibold">
-              Rs. {price}
-            </span>{" "}
           </div>
         </div>
       </div>

@@ -1,4 +1,5 @@
 "use client";
+import { LoaderComponent } from "@/app/components/loader/loader";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -18,8 +19,7 @@ export default function PaymentStatusComponent() {
     }
   }, [status, router]);
 
-  if (loading)
-    return <div className="p-8 text-center">Checking payment status...</div>;
+  if (loading) return <LoaderComponent />;
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">

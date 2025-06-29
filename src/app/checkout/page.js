@@ -40,7 +40,8 @@ export default function CheckoutPage() {
         router.push("/payment-status?status=success");
       }
     } catch (error) {
-      getErrorMessage(error);
+      const MSG = getErrorMessage(error);
+      toast.success(MSG);
       const status = error?.response?.status;
       if (status === 401) {
         sessionStorage.setItem("postLoginRedirect", "/checkout");
@@ -69,8 +70,6 @@ export default function CheckoutPage() {
       const data = await removeCart({
         cart_id: id,
       });
-      // fetchCart();
-      // cardDetails();
       handleCheckoutList();
       toast.success(data?.message);
     } catch (error) {

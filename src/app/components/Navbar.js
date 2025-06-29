@@ -172,9 +172,9 @@ export default function Navbar() {
         }`}
       >
         <div className="flex items-center justify-between px-4 py-4 border-b">
-          <span className="text-lg font-bold">Menu</span>
+          <span className="text-lg font-bold text-bg-700">Menu</span>
           <X
-            className="text-2xl cursor-pointer"
+            className="text-2xl cursor-pointer text-bg-700"
             onClick={() => setMenuOpen(false)}
           />
         </div>
