@@ -70,17 +70,16 @@ const ProductDetails = () => {
       />
 
       <div className="container mx-auto px-4 lg:pt-3 pb-2">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-5 xl:gap-0">
-          <div className="relative flex flex-col items-center w-full max-w-lg md:max-w-xl lg:max-w-2xl ml-md-3">
-            <ImageCarousel
-              images={images || []}
-              selectedIndex={selectedIndex}
-              setSelectedIndex={setSelectedIndex}
-              handleZoomToggle={handleZoomToggle}
-              zoom={zoom}
-            />
-          </div>
-
+         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-5 xl:gap-0">
+           <div className="relative flex flex-col items-center w-full max-w-lg md:max-w-xl lg:max-w-2xl ml-md-3">
+             <ImageCarousel
+               images={productInfo?.product?.images || []}
+               selectedIndex={selectedIndex}
+               setSelectedIndex={setSelectedIndex}
+               handleZoomToggle={handleZoomToggle}
+               zoom={zoom}
+             />
+           </div>
           <ProductAccordion
             sections={productInfo?.product}
             openIndex={openIndex}
@@ -92,8 +91,8 @@ const ProductDetails = () => {
         </div>
       </div>
 
-      <SimilarProduct />
-    </div>
+     <SimilarProduct data={productInfo?.relatedProducts} />
+     </div>
   );
 };
 

@@ -1,12 +1,12 @@
 "use client";
 
 import { Sidebar } from "primereact/sidebar";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { Range } from "react-range";
 
-const MIN = 50;
-const MAX = 900;
+// const MIN = 50;
+// const MAX = 900;
 const STEP = 100;
 
 function FilterComponent({
@@ -15,6 +15,8 @@ function FilterComponent({
   handleChange,
   handleCheckboxChange,
   values,
+  MIN, 
+  MAX
 }) {
   return (
     <>
@@ -38,8 +40,8 @@ function FilterComponent({
                 <input
                   id={category?.id}
                   type="checkbox"
-                  checked={selectedCategories?.includes(category.name)}
-                  onChange={(e) => handleCheckboxChange(e, category.name)}
+                  checked={selectedCategories?.includes(category?.id)}
+                  onChange={(e) => handleCheckboxChange(e, category?.id)}
                   className="form-checkbox h-4 w-4 cursor-pointer"
                   style={{
                     accentColor: "var(--bs-primary)",
@@ -132,7 +134,6 @@ const ProductFilter = ({
   handleOpenFilter,
 }) => {
   const [values, setValues] = useState([priceRange.min, priceRange.max]);
-
   const handleChange = (values) => {
     setValues(values);
     onPriceChange({ min: values[0], max: values[1] });
@@ -144,14 +145,18 @@ const ProductFilter = ({
     filterProducts(filteredProducts);
   };
 
-  const handleCheckboxChange = (event, categoryName) => {
+  const handleCheckboxChange = (event, categoryID) => {
     if (event.target.checked) {
       console.log(event.target.checked);
-      onChange([...selectedCategories, categoryName]);
+      onChange([...selectedCategories, categoryID]);
     } else {
-      onChange(selectedCategories?.filter((name) => name !== categoryName));
+      onChange(selectedCategories?.filter((id) => id !== categoryID));
     }
   };
+  useEffect(()=>{
+      console.log(categoryList.product_amount);
+      setValues([categoryList?.product_amount?.min, categoryList?.product_amount?.max]);
+  },[categoryList])
 
   return (
     <>
@@ -163,6 +168,8 @@ const ProductFilter = ({
           handleChange={handleChange}
           handleCheckboxChange={handleCheckboxChange}
           values={values}
+          MIN={parseFloat(categoryList?.product_amount?.min)}
+          MAX={parseFloat(categoryList?.product_amount?.max)}
         />
       </div>
 
@@ -187,6 +194,8 @@ const ProductFilter = ({
             handleChange={handleChange}
             handleCheckboxChange={handleCheckboxChange}
             values={values}
+            MIN={parseFloat(categoryList?.product_amount?.min)}
+            MAX={parseFloat(categoryList?.product_amount?.max)}
           />
         </div>
       </Sidebar>

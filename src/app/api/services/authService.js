@@ -71,12 +71,14 @@ export async function getHome() {
 }
 
 // Product
-export async function getProductList(page, filter, category) {
+export async function getProductList(page, filter, category, min, max) {
   const params = new URLSearchParams();
 
   if (page) params.append("page", page);
   if (filter) params.append("filter", filter);
   if (category) params.append("category", category);
+  if (min) params.append("price[min]", min);
+  if (max) params.append("price[max]", max);
 
   const url = `${PRODUCT_LIST}?${params.toString()}`;
 

@@ -8,7 +8,7 @@ import useCartPanelStore from "@/store/useCartPanelStore";
 import "swiper/css";
 import "swiper/css/navigation";
 
-const ProductCardMobile = ({ products }) => {
+const ProductCardMobile = ({ products, wishBtn, cartBtn }) => {
   const router = useRouter();
   const { handleGetCartDetail } = useCartPanelStore();
 
@@ -16,8 +16,9 @@ const ProductCardMobile = ({ products }) => {
     router.push("/product-detail");
   };
 
-  const handleOpenCart = () => {
+  const handleOpenCart = (id) => {
     handleGetCartDetail();
+    cartBtn(id)
   };
 
   return (
@@ -43,7 +44,7 @@ const ProductCardMobile = ({ products }) => {
                 )}
 
                 <Image
-                  src={item?.imgsrc || item?.imgSrc}
+                  src={item?.images?.[0]?.image || item?.images?.[1]?.image}
                   alt={item?.title}
                   className="w-full h-60 object-cover rounded-2xl"
                   width={100}
@@ -53,8 +54,8 @@ const ProductCardMobile = ({ products }) => {
                 <div className="flex items-center gap-2 absolute top-44">
                   <FeatureButtons
                     type={"heart"}
-                    btn1Func={() => {}}
-                    btn2Func={handleOpenCart}
+                    btn1Func={() => wishBtn(item?.id)}
+                    btn2Func={() => handleOpenCart(item?.id)}
                   />
                 </div>
 

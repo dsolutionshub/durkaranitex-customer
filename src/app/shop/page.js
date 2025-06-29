@@ -22,15 +22,16 @@ import {
   modifyCart,
   modifyWishlist,
 } from "../api/services/authService";
+import { useDebounceCallback } from "../hooks/useDebounceCallback";
 
 const items = [{ label: "Shop" }];
 
 function Shop() {
-  const itemsPerPage = 8;
+  const itemsPerPage = 10;
   const router = useRouter();
   const { handleGetCartDetail } = useCartPanelStore();
 
-  const [priceRange, setPriceRange] = useState({ min: 50, max: 900 });
+  const [priceRange, setPriceRange] = useState({});
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [sortOption, setSortOption] = useState("Sort by All");
   const [sortedProducts, setSortedProducts] = useState([]);
@@ -40,6 +41,7 @@ function Shop() {
   const [categoryList, setCategoryList] = useState([]);
   const [openFilter, setOpenFilter] = useState(false);
   const [quantities, setQuantities] = useState({});
+  const [totalPage, setTotalPage] = useState(0)
 
   const filtered = getFilteredProducts({
     products: [],
@@ -51,22 +53,29 @@ function Shop() {
 
   const startIndex = (currentPage - 1) * itemsPerPage;
 
+  const debouncedProductDetails = useDebounceCallback(() => {
+    productDetails();
+  }, 500);
+
   const handlePriceChange = (range) => {
     setPriceRange(range);
+    debouncedProductDetails();
   };
 
-  const totalPages = Math.ceil(filtered.length / itemsPerPage);
   const paginatedCollections = filtered?.slice(
     startIndex,
     startIndex + itemsPerPage
   );
 
-  const productDetails = async (filter) => {
+  const productDetails = async (filter = null, min = 0, max = 0) => {
     loader(true);
     try {
-      let { products } = await getProductList(currentPage, filter);
+      let { products, total_products } = await getProductList(currentPage, filter, selectedCategories, priceRange.min !== 0 ? priceRange.min : undefined,
+        priceRange.max !== 0 ? priceRange.max : undefined);
       setProductList(products || []);
       setSortedProducts(products || []);
+      const totalPages = Math.ceil(total_products / itemsPerPage);
+      setTotalPage(totalPages)
     } catch (error) {
       getErrorMessage(error);
     } finally {
@@ -100,7 +109,7 @@ function Shop() {
 
   useEffect(() => {
     productDetails();
-  }, [currentPage]);
+  }, [currentPage, priceRange]);
 
   useEffect(() => {
     categoryDetails();
@@ -182,6 +191,11 @@ function Shop() {
     }
   };
 
+  const handleCheckbox = (arr) => {
+    setSelectedCategories(arr)
+    productDetails()
+  }
+
   return (
     <>
       <CustomBreadCrumb model={SHOP_MODEL} />
@@ -253,9 +267,9 @@ function Shop() {
                 )}
               </div>
 
-              {totalPages > 1 && (
+              {totalPage > 1 && (
                 <ProductPagination
-                  totalPages={totalPages}
+                  totalPages={totalPage}
                   currentPage={currentPage}
                   onPageChange={(page) => setCurrentPage(page)}
                 />
@@ -267,9 +281,9 @@ function Shop() {
               categories={categoryList.categories}
               selectedCategories={selectedCategories}
               filterProducts={setSortedProducts}
-              onChange={setSelectedCategories}
+              onChange={handleCheckbox}
               onPriceChange={handlePriceChange}
-              priceRange={categoryList.product_amount}
+              priceRange={categoryList?.product_amount}
               openFilter={openFilter}
               handleOpenFilter={handleOpenFilter}
             />

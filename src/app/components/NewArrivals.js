@@ -33,6 +33,9 @@ const CollectionTab = ({ data }) => {
         })
       );
 
+      console.log(results);
+      
+
       const mapped = {};
       results.forEach(({ id, products }) => {
         mapped[id] = products;
@@ -109,8 +112,8 @@ const CollectionTab = ({ data }) => {
                 price={item?.price}
                 discount={item?.discount || 0}
                 oldPrice={item.product_price}
-                image={item?.images[0]?.image}
-                image1={item?.images[1]?.image}
+                image={item?.images?.[0]?.["image"]}
+                image1={item?.images?.[1]?.["image"]}
               />
             </SwiperSlide>
           ))}
