@@ -11,15 +11,61 @@ import ProductCardMobile from "./ProductCardMobile";
 
 import "swiper/css";
 import "swiper/css/navigation";
+import { modifyCart, modifyWishlist } from "../api/services/authService";
+import { getErrorMessage } from "../utils/helperFn";
+import { loader } from "./loader/loaderManager";
+import { LOGIN_ERROR_MSG } from "../utils/constants";
+import { useState } from "react";
 
 
 
-const FeaturedCard = ({products}) => {
+const FeaturedCard = ({ products }) => {
   const router = useRouter();
+  const [quantities, setQuantities] = useState([])
+  
+    const addToWishlist = async (id) => {
+    loader(true);
+    try {
+      const data = await modifyWishlist({ product_id: id });
+      toast.success(data?.message);
+    } catch (error) {
+      const status = error?.response?.status;
+      if (status === 401) {
+        sessionStorage.setItem("postLoginRedirect", "/shop");
+        router.push("/login");
+        toast.error(LOGIN_ERROR_MSG);
+      }
+      getErrorMessage(error);
+    } finally {
+      loader(false);
+    }
+  };
+
+  const addToCart = async (id) => {
+    const currentQty = quantities[id] || 0;
+    const newQty = currentQty + 1;
+
+    setQuantities((prev) => ({ ...prev, [id]: newQty }));
+    loader(true);
+    try {
+      const data = await modifyCart({ product_id: id, quantity: newQty });
+      toast.success(data?.message);
+    } catch (error) {
+      const status = error?.response?.status;
+      if (status === 401) {
+        sessionStorage.setItem("postLoginRedirect", "/shop");
+        router.push("/login");
+        toast.error(LOGIN_ERROR_MSG);
+      }
+      getErrorMessage(error);
+    } finally {
+      loader(false);
+    }
+  };
 
   return (
     <>
-      <ProductCardMobile products={products} />
+     <ProductCardMobile products={products} wishBtn={addToWishlist} cartBtn={addToCart} />
       <div className="relative d-none d-md-block">
         <button className="custom-prev custom-prev-home">
           {<FaChevronLeft />}
@@ -56,7 +102,9 @@ const FeaturedCard = ({products}) => {
                 image={item.images?.[0]?.image}
                 image1={item.images?.[1]?.image}
                 discount={item?.discount || 0}
-                subImage={item.images?.[1]?.image}
+                isInWishlist={item?.wishList}
+                btn1={() => addToWishlist(item?.id)}
+                btn2={() => addToCart(item?.id)}
               />
             </SwiperSlide>
           ))}

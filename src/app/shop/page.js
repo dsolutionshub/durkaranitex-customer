@@ -182,6 +182,13 @@ function Shop() {
     setSelectedCategories(arr);
   };
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <>
       <CustomBreadCrumb model={SHOP_MODEL} />
@@ -257,7 +264,10 @@ function Shop() {
                 <ProductPagination
                   totalPages={totalPage}
                   currentPage={currentPage}
-                  onPageChange={(page) => setCurrentPage(page)}
+                  onPageChange={(page) => {
+                    scrollToTop()
+                    setCurrentPage(page)
+                  }}
                 />
               )}
             </div>

@@ -48,7 +48,6 @@ const SimilarProducts = ({ products }) => {
     try {
       const data = await modifyCart({ product_id: id, quantity: newQty });
       toast.success(data?.message);
-      handleGetCartDetail();
     } catch (error) {
       const status = error?.response?.status;
       if (status === 401) {
@@ -101,6 +100,7 @@ const SimilarProducts = ({ products }) => {
                 image={item?.images?.[0]?.image}
                 image1={item?.images?.[1]?.image}
                 discount={item?.discount}
+                isInWishlist={item?.wishList}
               />
             </SwiperSlide>
           ))}
