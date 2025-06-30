@@ -93,12 +93,12 @@ const SimilarProducts = ({ products }) => {
             <SwiperSlide key={i} className="h-full">
               <ProductCard
                 type={"heart"}
-                title={item.title}
-                price={item.price}
-                btn1={() => addToWishlist(item.id)}
-                btn2={() => addToCart(item.id)}
+                title={item?.title}
+                price={item?.price}
+                btn1={() => addToWishlist(item?.id)}
+                btn2={() => addToCart(item?.id)}
                 image={item?.images?.[0]?.image}
-                image1={item.images?.[1]?.image}
+                image1={item?.images?.[1]?.image}
                 discount={item?.discount}
               />
             </SwiperSlide>

@@ -103,7 +103,7 @@ function Shop() {
 
   useEffect(() => {
     productDetails();
-  }, [currentPage, priceRange]);
+  }, [currentPage, priceRange, selectedCategories]);
 
   useEffect(() => {
     categoryDetails();
@@ -180,7 +180,6 @@ function Shop() {
 
   const handleCheckbox = (arr) => {
     setSelectedCategories(arr);
-    productDetails();
   };
 
   return (
