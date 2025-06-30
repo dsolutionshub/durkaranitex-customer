@@ -95,6 +95,7 @@ const SimilarProducts = ({ products }) => {
                 type={"heart"}
                 title={item?.title}
                 price={item?.price}
+                oldPrice={item?.product_price}
                 btn1={() => addToWishlist(item?.id)}
                 btn2={() => addToCart(item?.id)}
                 image={item?.images?.[0]?.image}

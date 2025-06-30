@@ -62,19 +62,17 @@ const ProductCardMobile = ({ products, wishBtn, cartBtn }) => {
                 <div className="py-3 flex flex-col self-start">
                   <h6
                     className="text-black font-semibold mb-0 self-start"
-                    title={item.title}
+                    title={item?.title}
                   >
-                    {item?.title?.length > 10
-                      ? item?.title.slice(0, 10)
-                      : item?.title}
+                  {item?.title?.length > 18 ? `${item?.title.slice(0, 18)}...` : item?.title}
                   </h6>
                   <div className="self-start">
                     <span className="primary-color font-semibold">
                       Rs. {item?.price}
                     </span>{" "}
-                    {item?.oldPrice && (
+                    {item?.product_price && (
                       <span className="text-muted text-decoration-line-through">
-                        Rs. {item?.oldPrice}
+                        Rs. {item?.product_price}
                       </span>
                     )}
                   </div>
