@@ -1,3 +1,5 @@
+'use client';
+
 import React from "react";
 import Image from "next/image";
 
@@ -5,6 +7,7 @@ import { FiHeart, FiShoppingCart } from "react-icons/fi";
 import { RiDeleteBinLine } from "react-icons/ri";
 
 import "./productCardStyle.css";
+import { useRouter } from "next/navigation";
 
 export const FeatureButtons = ({ type, btn1Func, btn2Func, isInWishlist }) => (
   <>
@@ -48,6 +51,7 @@ const ProductInfo = ({ title, price, oldPrice }) => (
 );
 
 const ProductCard = ({
+  id, 
   title,
   discount,
   price,
@@ -60,10 +64,17 @@ const ProductCard = ({
   btn1,
   btn2,
 }) => {
+    const router = useRouter();
+  
+  const navigateToProductDetail = (product_id) => {
+    console.log('calling');
+    
+    router.push(`/product-detail?id=${product_id}`);
+  };
   return (
     <>
       <div
-        className={`flex flex-col items-center relative lg:hidden ${className}`}
+        className={`flex flex-col items-center relative lg:hidden ${className}`} onClick={() => navigateToProductDetail(id)}
       >
         {Math.round(discount) !== 0 && (
           <div className="absolute top-2 left-2 bg-red-600 text-white text-xs px-2 py-1 rounded-md z-10">
@@ -105,7 +116,7 @@ const ProductCard = ({
       </div>
 
       {/* Desktop View */}
-      <div className="product-card group relative flex flex-col items-center hidden lg:block">
+      <div className="product-card group relative flex flex-col items-center hidden lg:block" onClick={() => navigateToProductDetail(id)}>
         {Math.round(discount) !== 0 && (
           <div className="absolute top-2 left-2 bg-red-600 text-white text-xs px-2 py-1 rounded-md z-10">
             {Math.round(discount)}% OFF

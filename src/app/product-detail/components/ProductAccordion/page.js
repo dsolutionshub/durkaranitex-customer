@@ -13,26 +13,6 @@ import { loader } from "@/app/components/loader/loaderManager";
 
 import "../../style.css";
 
-const des = [
-  {
-    title: "Product Description",
-    content: `<div style='border-top: 1px solid #ddd; padding-top: 10px; font-size: 14px; color: #01279;'>
-      <p><strong>Fabric:</strong> Pure Cotton</p>
-      <p><strong>Weaving Style:</strong> Handloom weaving with tie-and-dye technique.</p>
-      <p><strong>Pattern:</strong> Printed</p>
-      <p><strong>Care Instructions:</strong> Handwash separately in cold water. Dry in shade to maintain color vibrancy.
-      Avoid harsh detergents and machine wash to preserve fabric quality.</p>
-      <p><em>Disclaimer:</em> Product color may slightly vary due to photographic lighting sources or your monitor settings.</p>
-    </div>`,
-  },
-  // { title: "Shipping", content: "Shipping details go here." },
-  {
-    title: "Replacements & Exchanges",
-    content: `Return & Replacements within 5 days of purchase for product damages only .
-(Offer product / Innerwear/ Imitation Jewellery / Discount products are not Eligible to Return/Exchange*)`,
-  },
-];
-
 export default function ProductAccordion({
   sections,
   openIndex,
@@ -45,6 +25,7 @@ export default function ProductAccordion({
   const router = useRouter();
   const { handleGetCartDetail, wishlistDetails } = useCartPanelStore();
   const [showButtons, setShowButtons] = useState(true);
+  const [description, setDescription] = useState([])
 
   async function handleLike() {
     loader(true);
@@ -66,6 +47,36 @@ export default function ProductAccordion({
     }
   }
 
+  const productDetailsFromAPI = {
+    description: [
+      { title: "Fabric:", description: "Silk blend" },
+      { title: "Texture:", description: "Smooth, soft, and lightweight" },
+      { title: "Appearance:", description: "Rich look with a subtle or moderate shine" }
+    ]
+  };
+
+  const des = [
+    {
+      title: "Product Description",
+      content: `
+      <div style='border-top: 1px solid #ddd; padding-top: 10px; font-size: 14px; color: #01279;'>
+        ${description
+          ?.map(
+            (item) =>
+              `<p><strong>${item.title}</strong> ${item.description}</p>`
+          )
+          .join("")}
+        <p><em>Disclaimer:</em> Product color may slightly vary due to photographic lighting sources or your monitor settings.</p>
+      </div>`,
+    },
+    {
+      title: "Replacements & Exchanges",
+      content: `Return & Replacements within 5 days of purchase for product damages only.
+(Offer product / Innerwear/ Imitation Jewellery / Discount products are not Eligible to Return/Exchange*)`,
+    },
+  ];
+
+
   const addToCart = async () => {
     loader(true);
     try {
@@ -85,6 +96,10 @@ export default function ProductAccordion({
     router.push("/checkout");
   };
 
+  useEffect(()=>{
+    setDescription(sections?.description)
+  },[sections])
+  
   useEffect(() => {
     const handleScroll = () => {
       const scrolledPast100vh = window.scrollY > window.innerHeight;
@@ -142,9 +157,8 @@ export default function ProductAccordion({
               </button>
 
               <div
-                className={`product-accordion-content ${
-                  isOpen ? "open" : "closed"
-                }`}
+                className={`product-accordion-content ${isOpen ? "open" : "closed"
+                  }`}
               >
                 <div dangerouslySetInnerHTML={{ __html: section.content }} />
               </div>
@@ -178,11 +192,10 @@ export default function ProductAccordion({
         <div
           className={`flex flex-col md:flex-row items-center justify-center space-y-3
         md:space-y-0 md:space-x-3 gap-3 product-detail-cart-btn
-        ${
-          showButtons
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
-        }
+        ${showButtons
+              ? "opacity-100 pointer-events-auto"
+              : "opacity-0 pointer-events-none"
+            }
         `}
         >
           <button

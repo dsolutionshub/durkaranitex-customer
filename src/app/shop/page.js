@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { FaSearch } from "react-icons/fa";
 import { BiFilterAlt } from "react-icons/bi";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import ProductCard from "../components/ProductCard";
 import SortProduct from "./components/SortProduct.js/page";
@@ -28,10 +28,12 @@ const items = [{ label: "Shop" }];
 function Shop() {
   const itemsPerPage = 10;
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
+  const [selectedCategories, setSelectedCategories] = useState(id ? [id] : []);
   const { handleGetCartDetail, wishlistDetails } = useCartPanelStore();
 
   const [priceRange, setPriceRange] = useState({});
-  const [selectedCategories, setSelectedCategories] = useState([]);
   const [sortOption, setSortOption] = useState("Sort by All");
   const [sortedProducts, setSortedProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -94,7 +96,7 @@ function Shop() {
     const data = sortedProducts.filter((item) =>
       (item.title ?? "").toLowerCase().includes(value.toLowerCase())
     );
-    setSortedProducts(data);
+    setProductList(data);
   };
 
   const handleOpenFilter = () => {
@@ -132,10 +134,6 @@ function Shop() {
         break;
     }
   }, [sortOption]);
-
-  const navigateToProductDetail = (product_id) => {
-    router.push(`/product-detail?id=${product_id}`);
-  };
 
   const addToWishlist = async (id) => {
     loader(true);
@@ -243,9 +241,9 @@ function Shop() {
                     <div
                       className="col-md-4 col-lg-3 md:mb-4 product-list-card-mobile"
                       key={item.id}
-                      onClick={() => navigateToProductDetail(item.id)}
                     >
                       <ProductCard
+                        id={item?.id}
                         type={"heart"}
                         btn1={() => addToWishlist(item.id)}
                         btn2={() => addToCart(item.id)}
@@ -267,8 +265,8 @@ function Shop() {
                   totalPages={totalPage}
                   currentPage={currentPage}
                   onPageChange={(page) => {
-                    scrollToTop()
-                    setCurrentPage(page)
+                    scrollToTop();
+                    setCurrentPage(page);
                   }}
                 />
               )}

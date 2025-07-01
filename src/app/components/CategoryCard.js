@@ -38,7 +38,7 @@ const Categorycard = ({ data }) => {
           key={index}
           className={`relative rounded-lg overflow-hidden shadow-lg category-card ${index == 0
             ? "w-full h-96 mb-3 md:mb-10"
-            : "w-full sm:w-[90%] md:w-[48%] lg:w-[31%] h-96 mb-3 md:mb-0"
+            : "w-full sm:w-[100%] md:w-[48%] lg:w-[31%] h-96 mb-3 md:mb-0"
             }`}
         >
           {/* {cat?.image && <Image
@@ -58,7 +58,7 @@ const Categorycard = ({ data }) => {
               alt={cat?.name || "Category Image"}
               width={index === 0 ? 1200 : 400}
               height={400}
-              className="object-cover w-full h-full category-card"
+              className="object-cover w-full h-full m-0 category-card"
             />
           )
           }
