@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import React, { useState } from "react";
 import { Sidebar } from "primereact/sidebar";
 import { IoShareSocialSharp } from "react-icons/io5";
@@ -48,7 +48,7 @@ const ShareProductBox = () => {
   return (
     <>
       <IoShareSocialSharp
-        className="primary-color fs-5 cursor-pointer"
+        className="primary-color fs-5 cursor-pointer d-none"
         title="Share"
         onClick={handleShare}
       />

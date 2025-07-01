@@ -28,18 +28,17 @@ const items = [{ label: "Shop" }];
 function Shop() {
   const itemsPerPage = 10;
   const router = useRouter();
-  const { handleGetCartDetail } = useCartPanelStore();
   const searchParams = useSearchParams();
-  const id = searchParams.get('id');
-  const [selectedCategories, setSelectedCategories] = useState(
-    id ? [id] : []
-  );
+  const id = searchParams.get("id");
+  const [selectedCategories, setSelectedCategories] = useState(id ? [id] : []);
+  const { handleGetCartDetail, wishlistDetails } = useCartPanelStore();
+
   const [priceRange, setPriceRange] = useState({});
   const [sortOption, setSortOption] = useState("Sort by All");
   const [sortedProducts, setSortedProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchProduct, setSearchProduct] = useState("");
-  const [productList, setProductList] = useState([]);
+  const [productList, setProductList] = useState(null);
   const [categoryList, setCategoryList] = useState([]);
   const [openFilter, setOpenFilter] = useState(false);
   const [quantities, setQuantities] = useState({});
@@ -97,7 +96,7 @@ function Shop() {
     const data = sortedProducts.filter((item) =>
       (item.title ?? "").toLowerCase().includes(value.toLowerCase())
     );
-    setProductList(data)
+    setProductList(data);
   };
 
   const handleOpenFilter = () => {
@@ -140,6 +139,8 @@ function Shop() {
     loader(true);
     try {
       const data = await modifyWishlist({ product_id: id });
+      productDetails();
+      wishlistDetails();
       toast.success(data?.message);
     } catch (error) {
       const status = error?.response?.status;
@@ -264,8 +265,8 @@ function Shop() {
                   totalPages={totalPage}
                   currentPage={currentPage}
                   onPageChange={(page) => {
-                    scrollToTop()
-                    setCurrentPage(page)
+                    scrollToTop();
+                    setCurrentPage(page);
                   }}
                 />
               )}

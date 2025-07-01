@@ -132,7 +132,7 @@ export default function AddressCard({
                       <div className="flex gap-3">
                         <Button
                           icon={<Edit className="h-4 w-4" />}
-                          className="p-button-text p-button-sm text-gray-600"
+                          className="p-button-text p-button-sm text-gray-600 d-none"
                           onClick={() => {
                             handleOpenModel("edit");
                             setSelectedAddressId(address.id);

@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 import { FaMinus, FaPlus } from "react-icons/fa6";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 
@@ -19,25 +20,28 @@ export default function ProductAccordion({
   handleDecrease,
   handleIncrease,
   quantity,
+  handleGetProductDetails,
 }) {
   const router = useRouter();
-  const { handleGetCartDetail } = useCartPanelStore();
-  const [isLiked, setIsLiked] = useState(false);
+  const { handleGetCartDetail, wishlistDetails } = useCartPanelStore();
   const [showButtons, setShowButtons] = useState(true);
   const [description, setDescription] = useState([])
 
   async function handleLike() {
-    setIsLiked((prev) => !prev);
     loader(true);
     try {
-      await modifyWishlist({ product_id: sections?.id });
+      const data = await modifyWishlist({ product_id: sections?.id });
+      wishlistDetails();
+      toast.success(data?.message);
+      handleGetProductDetails();
     } catch (error) {
-      getErrorMessage(error);
       const status = error?.response?.status;
       if (status === 401) {
-        sessionStorage.setItem("postLoginRedirect", "/checkout");
+        sessionStorage.setItem("postLoginRedirect", "/wishlist");
         router.push("/login");
+        toast.error(LOGIN_ERROR_MSG);
       }
+      getErrorMessage(error);
     } finally {
       loader(false);
     }
@@ -121,7 +125,7 @@ export default function ProductAccordion({
         </div>
         <div className="flex gap-3 items-center">
           <button onClick={handleLike} className="fs-5">
-            {isLiked ? (
+            {sections?.wishList ? (
               <FaHeart className="primary-color" />
             ) : (
               <FaRegHeart className="primary-color" />

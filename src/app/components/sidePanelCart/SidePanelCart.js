@@ -27,6 +27,7 @@ function RenderQuantity({
     <div className="flex items-center mt-2 gap-3">
       <div className="flex items-center border rounded dark-color">
         <button
+          disabled={product?.quantity === 1}
           onClick={() => decreaseCount(product?.product_id, product?.quantity)}
           className="px-2 py-1 text-sm"
         >
@@ -162,13 +163,16 @@ const SidePanelCart = () => {
                         <h6
                           className="text-xlg dark-color mb-1  product-title"
                           title={product?.product?.title}
-                        ></h6>
+                        >
+                          {product?.product?.title}
+                        </h6>
 
-                        <p className=" text-md dark-color mb-1">
-                          <span className="text-gray-500 line-through">
-                            Rs. {product?.product?.product_price || 100000.0}
+                        <p className=" text-md primary-color mb-1 fw-bold">
+                          Rs. {product?.product?.price}
+                          <br />
+                          <span className="text-gray-500 line-through fw-normal">
+                            Rs. {product?.product?.product_price}
                           </span>{" "}
-                          <br /> Rs. {product?.product?.price}
                         </p>
                         <div className="d-none d-md-block">
                           <RenderQuantity
