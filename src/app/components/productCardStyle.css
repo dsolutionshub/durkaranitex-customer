@@ -59,14 +59,24 @@
 .product-page-card-mobile-wishlist {
   @media screen and (max-width: 600px) {
     img {
-      height: 18rem;
+      max-height: 25rem;
+      width: auto;
+      height: auto;
+      display: block;
+      max-width: 100%;
+      object-fit: contain;
+    }
+
+    div:first-of-type:not(:last-of-type) {
+      left: 1.5rem;
+      top: 0.9rem;
     }
   }
 }
 
 .product-page-card-mobile-wishlist img + div.absolute.top-44 {
   @media screen and (max-width: 600px) {
-    top: 13.5rem;
+    top: 17.7rem;
   }
 }
 

@@ -12,3 +12,29 @@ export const SHIPPING_POLICY_MODEL = [{ label: "Shipping Policy" }];
 
 export const LOGIN_ERROR_MSG =
   "Please log in to add items to your Wishlist or Cart.";
+
+// toastConfig
+export const TOAST_OPTIONS = {
+  success: {
+    style: {
+      background: "#ecfdf5",
+      color: "#065f46",
+      border: "1px solid #a7f3d0",
+    },
+    iconTheme: {
+      primary: "#34d399",
+      secondary: "#ecfdf5",
+    },
+  },
+  error: {
+    style: {
+      background: "#fef2f2",
+      color: "#991b1b",
+      border: "1px solid #fecaca",
+    },
+    iconTheme: {
+      primary: "#f87171",
+      secondary: "#fef2f2",
+    },
+  },
+};

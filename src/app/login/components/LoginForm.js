@@ -103,7 +103,8 @@ const LoginForm = ({ isLogin, setIsLogin }) => {
       } else {
         sessionStorage.setItem("accessToken", data?.token);
         sessionStorage.setItem("customer", JSON.stringify(data?.customer));
-        const redirectPath = sessionStorage.getItem("postLoginRedirect") || "/";
+        const redirectPath =
+          sessionStorage.getItem("postLoginRedirect") || "/account";
         router.replace(redirectPath);
         toast.success("Welcome back! Happy shopping!");
         wishlistDetails();

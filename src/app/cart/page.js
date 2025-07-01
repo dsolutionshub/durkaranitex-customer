@@ -98,7 +98,8 @@ const Cart = () => {
     }
   }
 
-  const removeFromCart = async (id) => {
+  const removeFromCart = async (e, id) => {
+    e.stopPropagation();
     loader(true);
     try {
       const data = await removeCart({
@@ -152,7 +153,7 @@ const Cart = () => {
 
             <hr className="d-block d-md-none" />
 
-            <div className="row">
+            <div className="row d-none">
               <div className="col-md-12">
                 <label className="text-black h4">Coupon</label>
                 <p>Enter your Coupon code if you have one.</p>
@@ -176,18 +177,14 @@ const Cart = () => {
               <div className="col-md-7">
                 <div className="row">
                   <div className="col-md-12 text-right border-bottom mb-5">
-                    <h3 className="text-black h4 text-uppercase">
-                      Cart Totals
-                    </h3>
+                    <h3 className="text-black h4">Cart Totals</h3>
                   </div>
                 </div>
-                <div className="row" style={{ fontSize: "18px" }}>
-                  <div className="col-md-6">
-                    <span className="text-black ">Subtotal</span>
-                  </div>
-                  <div className="col-md-6 text-right">
-                    <strong className="text-black">Rs. {totalCost}</strong>
-                  </div>
+                <div className="flex items-center justify-between">
+                  <p className="dark-color mb-0 text-[1.2rem]">Subtotal</p>
+                  <p className="dark-color mb-0 text-[1.2rem] fw-semibold">
+                    Rs. {totalCost}
+                  </p>
                 </div>
                 <div className="row mb-3">
                   <div className="col-md-12">
@@ -197,7 +194,7 @@ const Cart = () => {
                 <div className="row">
                   <div className="col-12">
                     <button
-                      className="btn btn-primary btn-lg py-3 btn-block"
+                      className="btn-sm bg-[var(--primary-main)] text-white border border-white rounded px-4 py-2"
                       onClick={handleNavigateToCheckout}
                     >
                       Proceed to checkout

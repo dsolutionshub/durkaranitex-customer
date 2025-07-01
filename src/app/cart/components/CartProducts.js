@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const CartProducts = ({
   products,
@@ -7,6 +8,11 @@ const CartProducts = ({
   increaseCount,
   removeFromCart,
 }) => {
+  const router = useRouter();
+  const navigateToProductDetail = (product_id) => {
+    router.push(`/product-detail?id=${product_id}`);
+  };
+
   return (
     <>
       {/* Mobile */}
@@ -16,50 +22,66 @@ const CartProducts = ({
           <p className="mb-0">Price</p>
         </div>
         <hr className="m-0 pb-2" />
-        {products?.map((item) => (
-          <div key={item.id}>
-            <div className="d-flex justify-content-between align-items-center my-3">
-              <div className="d-flex gap-2">
-                <Image
-                  src={item?.imgSrc}
-                  alt={item.title}
-                  height={80}
-                  width={80}
-                  className="h-[6rem] w-[5rem]"
-                />
-                <div className="leading-snug">
-                  <p className="mb-0 text-black">{item?.title}</p>
-                  <button
-                    className="text-gray-500 underline p-0 m-0"
-                    onClick={() => removeFromCart(item?.id)}
-                  >
-                    Remove
-                  </button>
+        <div className="max-h-[60vh] overflow-y-auto">
+          {products?.map((item) => (
+            <div key={item.id}>
+              <div className="d-flex justify-content-between align-items-start my-3">
+                <div
+                  className="d-flex gap-2 max-w-[80%] sm:max-w-[100%]"
+                  onClick={() => navigateToProductDetail(item?.productId)}
+                >
+                  <Image
+                    src={item?.imgSrc}
+                    alt={item.title}
+                    height={80}
+                    width={80}
+                    className="h-[6rem] w-[5rem]"
+                  />
+                  <div className="leading-snug">
+                    <p className="mb-0 text-black">
+                      {item.title.length > 35
+                        ? `${item.title.slice(0, 35)}...`
+                        : item?.title}
+                    </p>
+                    <button
+                      className="text-gray-500 underline p-0 m-0"
+                      onClick={(e) => removeFromCart(e, item?.id)}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </div>
+                <p className="mb-0 text-black">Rs. {item?.price}</p>
+                <div className=" d-none">
+                  <p className="mb-0 text-black">
+                    Rs. {item?.price} * {item?.quantity}
+                  </p>
+                  <br />
+                  <p className="mb-0 text-black">Rs. {item?.price}</p>
                 </div>
               </div>
-              <p className="mb-0 text-black">Rs. {item?.price}</p>
-            </div>
 
-            {/* Quantity Buttons */}
-            <div className="d-flex align-items-center justify-content-evenly bg-gray-100 w-[7rem] h-[2.5rem] border">
-              <button
-                disabled={item?.quantity === 1}
-                className="text-black fs-1"
-                onClick={() => decreaseCount(item?.productId, item?.quantity)}
-              >
-                -
-              </button>
-              <p className="mb-0 text-black">{item?.quantity}</p>
-              <button
-                className="text-black"
-                onClick={() => increaseCount(item?.productId, item?.quantity)}
-              >
-                +
-              </button>
+              {/* Quantity Buttons */}
+              <div className="d-flex align-items-center justify-content-evenly bg-gray-100 w-[7rem] h-[2.5rem] border">
+                <button
+                  disabled={item?.quantity === 1}
+                  className="text-black fs-1"
+                  onClick={() => decreaseCount(item?.productId, item?.quantity)}
+                >
+                  -
+                </button>
+                <p className="mb-0 text-black">{item?.quantity}</p>
+                <button
+                  className="text-black"
+                  onClick={() => increaseCount(item?.productId, item?.quantity)}
+                >
+                  +
+                </button>
+              </div>
+              <hr />
             </div>
-            <hr />
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
       {/* Desktop */}
@@ -84,7 +106,10 @@ const CartProducts = ({
                     alignContent: "center",
                   }}
                 >
-                  <td style={{ display: "flex" }}>
+                  <td
+                    style={{ display: "flex", cursor: "pointer" }}
+                    onClick={() => navigateToProductDetail(product?.productId)}
+                  >
                     <Image
                       width={70}
                       height={50}
@@ -101,7 +126,7 @@ const CartProducts = ({
                       <p style={{ marginBottom: "0" }}>{product?.title}</p>
 
                       <span
-                        onClick={() => removeFromCart(product?.id)}
+                        onClick={(e) => removeFromCart(e, product?.id)}
                         style={{
                           textDecoration: "underline",
                           cursor: "pointer",
@@ -114,7 +139,6 @@ const CartProducts = ({
                   </td>
                   <td className="py-4">Rs. {product?.price}</td>
 
-                  {/* Desktop Quantity Buttons */}
                   <td className="p-4">
                     <div
                       className="d-flex align-items-center justify-content-evenly bg-gray-100 w-[7rem] h-[2.5rem] border"

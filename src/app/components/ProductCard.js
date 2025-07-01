@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React from "react";
 import Image from "next/image";
@@ -51,7 +51,7 @@ const ProductInfo = ({ title, price, oldPrice }) => (
 );
 
 const ProductCard = ({
-  id, 
+  id,
   title,
   discount,
   price,
@@ -63,24 +63,25 @@ const ProductCard = ({
   type,
   btn1,
   btn2,
+  onClick,
 }) => {
-    const router = useRouter();
-  
-  const navigateToProductDetail = (product_id) => {
-    console.log('calling');
-    
-    router.push(`/product-detail?id=${product_id}`);
-  };
+  const router = useRouter();
+
   return (
     <>
       <div
-        className={`flex flex-col items-center relative lg:hidden ${className}`} onClick={() => navigateToProductDetail(id)}
+        className={`flex flex-col items-center relative lg:hidden cursor-pointer ${className}`}
+        onClick={onClick}
       >
-        {Math.round(discount) !== 0 && (
-          <div className="absolute top-2 left-2 bg-red-600 text-white text-xs px-2 py-1 rounded-md z-10">
-            {Math.round(discount)}% OFF
-          </div>
-        )}
+        <div
+          className="absolute top-2 left-2 bg-red-600 text-white text-xs px-2 py-1 rounded-md z-10"
+          style={{
+            visibility: Math.round(discount) === 0 && "hidden",
+          }}
+        >
+          {Math.round(discount)}% OFF
+        </div>
+
         <Image
           src={image}
           alt={title}
@@ -116,7 +117,10 @@ const ProductCard = ({
       </div>
 
       {/* Desktop View */}
-      <div className="product-card group relative flex flex-col items-center hidden lg:block" onClick={() => navigateToProductDetail(id)}>
+      <div
+        className="product-card group relative flex flex-col items-center hidden lg:block"
+        onClick={onClick}
+      >
         {Math.round(discount) !== 0 && (
           <div className="absolute top-2 left-2 bg-red-600 text-white text-xs px-2 py-1 rounded-md z-10">
             {Math.round(discount)}% OFF

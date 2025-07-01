@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Heart } from "lucide-react";
+import toast from "react-hot-toast";
 
 import ProductCard from "../components/ProductCard";
 import { loader } from "../components/loader/loaderManager";
@@ -16,8 +18,6 @@ import {
 } from "../api/services/authService";
 import { LOGIN_ERROR_MSG, WISHLIST_MODEL } from "../utils/constants";
 import { getErrorMessage } from "../utils/helperFn";
-import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
 
 const Wishlist = () => {
   const router = useRouter();
@@ -66,6 +66,10 @@ const Wishlist = () => {
     }
   };
 
+  const navigateToProductDetail = (product_id) => {
+    router.push(`/product-detail?id=${product_id}`);
+  };
+
   useEffect(() => {
     fetchWishlist();
   }, []);
@@ -99,6 +103,7 @@ const Wishlist = () => {
                   btn2={() => addToCart(item?.product?.id)}
                   discount={item?.product?.discount || 0}
                   className="product-page-card-mobile-wishlist"
+                  onClick={() => navigateToProductDetail(item?.product_id)}
                 />
               </div>
             ))

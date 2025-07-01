@@ -3,9 +3,11 @@ import Head from "next/head";
 import Link from "next/link";
 import { Mukta } from "next/font/google";
 import { PrimeReactProvider } from "primereact/api";
+import { Toaster } from "react-hot-toast";
+
 import ClientLayout from "./ClientLayout";
 import Loader from "./components/loader/loader";
-import { Toaster } from "react-hot-toast";
+import { TOAST_OPTIONS } from "./utils/constants";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./styles/style.css";
@@ -54,7 +56,11 @@ export default function RootLayout({ children }) {
               {children}
             </div>
             <Loader />
-            <Toaster position="top-center" reverseOrder={false} />
+            <Toaster
+              position="top-center"
+              reverseOrder={false}
+              toastOptions={TOAST_OPTIONS}
+            />
           </ClientLayout>
         </PrimeReactProvider>
       </body>
