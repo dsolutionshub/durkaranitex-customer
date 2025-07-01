@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import toast from "react-hot-toast";
 
 import ImageCarousel from "../ProductDetailCarousel/page";
 import ProductAccordion from "../ProductAccordion/page";
@@ -10,13 +11,7 @@ import CustomBreadCrumb from "../../../components/CustomBreadCrumb";
 
 import { getProductDetails } from "../../../api/services/authService";
 import { getErrorMessage } from "@/app/utils/helperFn";
-
-const images = [
-  "/images/produce_detail_4.webp",
-  "/images/produce_detail_5.webp",
-  "/images/produce_detail_3.jpg",
-  "/images/produce_detail_1.jpg",
-];
+import { loader } from "@/app/components/loader/loaderManager";
 
 const ProductDetails = () => {
   const searchParams = useSearchParams();
@@ -37,8 +32,6 @@ const ProductDetails = () => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
-  const zoomIn = () => setZoom((prev) => Math.min(prev + 0.2, 2));
-  const zoomOut = () => setZoom((prev) => Math.max(prev - 0.2, 1));
   const handleIncrease = () => setQuantity(quantity + 1);
   const handleDecrease = () => setQuantity(quantity > 1 ? quantity - 1 : 1);
 
@@ -46,40 +39,44 @@ const ProductDetails = () => {
     setOpenIndex(0);
   }, []);
 
-  const getDetails = async () => {
+  const handleGetProductDetails = async () => {
+    loader(true);
     if (!id) return;
     try {
       const data = await getProductDetails(id);
       setProductInfo(data);
     } catch (error) {
-      getErrorMessage(error);
+      const MSG = getErrorMessage(error);
+      toast.error(MSG);
+    } finally {
+      loader(false);
     }
   };
 
   useEffect(() => {
-    getDetails();
+    handleGetProductDetails();
   }, []);
 
   return (
     <div>
       <CustomBreadCrumb
         model={[
-          { label: "Shop", url: "/" },
+          { label: "Shop", url: "/shop" },
           { label: productInfo?.product?.title },
         ]}
       />
 
       <div className="container mx-auto px-4 lg:pt-3 pb-2">
-         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-5 xl:gap-0">
-           <div className="relative flex flex-col items-center w-full max-w-lg md:max-w-xl lg:max-w-2xl ml-md-3">
-             <ImageCarousel
-               images={productInfo?.product?.images || []}
-               selectedIndex={selectedIndex}
-               setSelectedIndex={setSelectedIndex}
-               handleZoomToggle={handleZoomToggle}
-               zoom={zoom}
-             />
-           </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-5 xl:gap-0">
+          <div className="relative flex flex-col items-center w-full max-w-lg md:max-w-xl lg:max-w-2xl ml-md-3">
+            <ImageCarousel
+              images={productInfo?.product?.images || []}
+              selectedIndex={selectedIndex}
+              setSelectedIndex={setSelectedIndex}
+              handleZoomToggle={handleZoomToggle}
+              zoom={zoom}
+            />
+          </div>
           <ProductAccordion
             sections={productInfo?.product}
             openIndex={openIndex}
@@ -87,12 +84,13 @@ const ProductDetails = () => {
             handleDecrease={handleDecrease}
             handleIncrease={handleIncrease}
             quantity={quantity}
+            handleGetProductDetails={handleGetProductDetails}
           />
         </div>
       </div>
 
-     <SimilarProduct data={productInfo?.relatedProducts} />
-     </div>
+      <SimilarProduct data={productInfo?.relatedProducts} />
+    </div>
   );
 };
 

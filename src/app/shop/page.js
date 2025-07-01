@@ -28,7 +28,7 @@ const items = [{ label: "Shop" }];
 function Shop() {
   const itemsPerPage = 10;
   const router = useRouter();
-  const { handleGetCartDetail } = useCartPanelStore();
+  const { handleGetCartDetail, wishlistDetails } = useCartPanelStore();
 
   const [priceRange, setPriceRange] = useState({});
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -36,7 +36,7 @@ function Shop() {
   const [sortedProducts, setSortedProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchProduct, setSearchProduct] = useState("");
-  const [productList, setProductList] = useState([]);
+  const [productList, setProductList] = useState(null);
   const [categoryList, setCategoryList] = useState([]);
   const [openFilter, setOpenFilter] = useState(false);
   const [quantities, setQuantities] = useState({});
@@ -141,6 +141,8 @@ function Shop() {
     loader(true);
     try {
       const data = await modifyWishlist({ product_id: id });
+      productDetails();
+      wishlistDetails();
       toast.success(data?.message);
     } catch (error) {
       const status = error?.response?.status;

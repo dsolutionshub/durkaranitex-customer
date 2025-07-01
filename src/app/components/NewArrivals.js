@@ -3,21 +3,17 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+
+import ProductCard from "./ProductCard";
+import ProductCardMobile from "./ProductCardMobile";
+import { getProductList } from "../api/services/authService";
+import { getErrorMessage } from "../utils/helperFn";
+import Section from "./Section";
+
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import ProductCard from "./ProductCard";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import ProductCardMobile from "./ProductCardMobile";
-import Section from "./Section";
-import { getProductList } from "../api/services/authService";
-
-// const filteredCollections = collections.filter((item) => {
-//   if (activeTab === 1) return item.title.includes("Silk");
-//   if (activeTab === 2) return item.title.includes("Cotton");
-//   if (activeTab === 3) return item.title.includes("Printed");
-//   return true;
-// });
 
 const CollectionTab = ({ data }) => {
   const router = useRouter();
@@ -33,24 +29,21 @@ const CollectionTab = ({ data }) => {
         })
       );
 
-      console.log(results);
-      
-
       const mapped = {};
       results.forEach(({ id, products }) => {
         mapped[id] = products;
       });
 
       setCollectionsData(mapped);
-    } catch (err) {
-      console.error("Error fetching collections:", err);
+    } catch (error) {
+      getErrorMessage(error);
     }
   };
 
   useEffect(() => {
-    if (!data?.length) return 
-      setActiveTab(data[0].id);
-      fetchCollectionsData(data);
+    if (!data?.length) return;
+    setActiveTab(data[0].id);
+    fetchCollectionsData(data);
   }, [data]);
 
   const filteredCollections = collectionsData[activeTab] || [];

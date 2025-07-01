@@ -66,7 +66,7 @@ export default function ImageCarousel({
         {images?.map((img, index) => (
           <div
             key={index}
-            className={`border rounded-lg overflow-hidden cursor-pointer ${
+            className={`overflow-hidden cursor-pointer ${
               index === selectedIndex ? "border-blue-500" : ""
             }`}
             onClick={() => setSelectedIndex(index)}
@@ -77,7 +77,7 @@ export default function ImageCarousel({
                 alt="Thumbnail"
                 width={80}
                 height={80}
-                className="object-cover"
+                className="object-cover border rounded-lg"
               />
             ) : (
               <div

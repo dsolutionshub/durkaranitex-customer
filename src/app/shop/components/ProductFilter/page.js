@@ -31,23 +31,24 @@ function FilterComponent({
               key={category?.id}
               className="flex items-center justify-between mb-2"
             >
-              <div className="flex items-center cursor-pointer gap-2">
+              <div className="flex items-start cursor-pointer gap-2">
                 <input
                   id={category?.id}
                   type="checkbox"
                   checked={selectedCategories?.includes(category?.id)}
                   onChange={(e) => handleCheckboxChange(e, category?.id)}
                   className="form-checkbox h-4 w-4 cursor-pointer"
-                  style={{ accentColor: "var(--bs-primary)" }}
+                  style={{
+                    accentColor: "var(--bs-primary)",
+                    marginTop: ".4rem",
+                  }}
                 />
                 <label
                   htmlFor={category?.id}
                   className="text-md text-black mb-0 cursor-pointer"
                   title={category.name}
                 >
-                  {category.name.length > 24
-                    ? `${category.name.slice(0, 24)}...`
-                    : category.name}
+                  {category.name}
                 </label>
               </div>
               <span className="text-md text-black">
