@@ -107,6 +107,7 @@ const CollectionTab = ({ data }) => {
           {filteredCollections.map((item, i) => (
             <SwiperSlide key={i}>
               <ProductCard
+                id={item?.id}
                 type={"heart"}
                 title={item?.title}
                 price={item?.price}

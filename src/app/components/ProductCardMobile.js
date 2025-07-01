@@ -12,8 +12,8 @@ const ProductCardMobile = ({ products, wishBtn, cartBtn }) => {
   const router = useRouter();
   const { handleGetCartDetail } = useCartPanelStore();
 
-  const navigateToProductDetail = () => {
-    router.push("/product-detail");
+  const navigateToProductDetail = (id) => {
+    router.push(`/product-detail?id=${id}`);
   };
 
   const handleOpenCart = (id) => {
@@ -35,7 +35,7 @@ const ProductCardMobile = ({ products, wishBtn, cartBtn }) => {
             <SwiperSlide key={i} className="">
               <div
                 className="flex flex-col items-center relative lg:hidden"
-                onClick={navigateToProductDetail}
+                onClick={()=>navigateToProductDetail(item?.id)}
               >
                 {Math.round(item?.discount) !== 0 && (
                   <div className="absolute top-2 left-2 bg-red-600 text-white text-xs px-2 py-1 rounded-md z-10">

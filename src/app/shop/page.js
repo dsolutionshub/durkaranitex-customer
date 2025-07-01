@@ -136,10 +136,6 @@ function Shop() {
     }
   }, [sortOption]);
 
-  const navigateToProductDetail = (product_id) => {
-    router.push(`/product-detail?id=${product_id}`);
-  };
-
   const addToWishlist = async (id) => {
     loader(true);
     try {
@@ -182,7 +178,6 @@ function Shop() {
   };
 
   const handleCheckbox = (arr) => {
-    console.log(arr);
     setSelectedCategories(arr);
   };
 
@@ -245,9 +240,9 @@ function Shop() {
                     <div
                       className="col-md-4 col-lg-3 md:mb-4 product-list-card-mobile"
                       key={item.id}
-                      onClick={() => navigateToProductDetail(item.id)}
                     >
                       <ProductCard
+                        id={item?.id}
                         type={"heart"}
                         btn1={() => addToWishlist(item.id)}
                         btn2={() => addToCart(item.id)}
