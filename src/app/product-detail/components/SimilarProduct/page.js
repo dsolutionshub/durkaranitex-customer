@@ -79,6 +79,10 @@ const SimilarProducts = ({ products }) => {
             prevEl: ".custom-prev",
             nextEl: ".custom-next",
           }}
+          autoplay={{
+            delay: 3000,
+            disableOnInteraction: false,
+          }}
           spaceBetween={20}
           breakpoints={{
             480: { slidesPerView: 1 },
@@ -108,7 +112,7 @@ const SimilarProducts = ({ products }) => {
         <div className="text-center mt-10">
           <button
             className="px-6 py-2 bg-green-800 text-white rounded-md hover:bg-green-700 transition"
-            onClick={() => router.push("/shop")}
+            onClick={() => router.push(`/shop?id=${products?.[0]?.category_id}`)}
           >
             View More
           </button>

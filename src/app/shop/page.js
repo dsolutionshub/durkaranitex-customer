@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { FaSearch } from "react-icons/fa";
 import { BiFilterAlt } from "react-icons/bi";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import ProductCard from "../components/ProductCard";
 import SortProduct from "./components/SortProduct.js/page";
@@ -29,9 +29,12 @@ function Shop() {
   const itemsPerPage = 10;
   const router = useRouter();
   const { handleGetCartDetail } = useCartPanelStore();
-
+  const searchParams = useSearchParams();
+  const id = searchParams.get('id');
+  const [selectedCategories, setSelectedCategories] = useState(
+    id ? [id] : []
+  );
   const [priceRange, setPriceRange] = useState({});
-  const [selectedCategories, setSelectedCategories] = useState([]);
   const [sortOption, setSortOption] = useState("Sort by All");
   const [sortedProducts, setSortedProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -94,7 +97,7 @@ function Shop() {
     const data = sortedProducts.filter((item) =>
       (item.title ?? "").toLowerCase().includes(value.toLowerCase())
     );
-    setSortedProducts(data);
+    setProductList(data)
   };
 
   const handleOpenFilter = () => {
@@ -179,6 +182,7 @@ function Shop() {
   };
 
   const handleCheckbox = (arr) => {
+    console.log(arr);
     setSelectedCategories(arr);
   };
 

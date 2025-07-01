@@ -91,7 +91,7 @@ const ProductDetails = () => {
         </div>
       </div>
 
-     <SimilarProduct data={productInfo?.relatedProducts} />
+     {productInfo?.relatedProducts?.length > 0 && <SimilarProduct data={productInfo?.relatedProducts} />}
      </div>
   );
 };
