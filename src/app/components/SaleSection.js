@@ -6,7 +6,7 @@ import Link from "next/link";
 import Section from "./Section";
 
 const Offers = [
-  { id: 1, imgsrc: "/images/big_sale.png", title: "Big Sale 1", link: "/" },
+  { id: 1, imgsrc: "/images/home/aadi Sale.png", title: "Big Sale 1", link: "/" },
   { id: 2, imgsrc: "/images/big_sale.png", title: "Big Sale 2", link: "/" },
 ];
 

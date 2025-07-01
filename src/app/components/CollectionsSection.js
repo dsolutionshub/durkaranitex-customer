@@ -3,23 +3,23 @@ import { Image } from "primereact/image";
 import Section from "./Section";
 
 const collections = [
-  { id: 1, title: "Soft silk sarees", imgSrc: "/images/image.jpeg", isLarge: true },
+  { id: 1, title: "Kanjivaram Wedding Semi Silk Sarees", imgSrc: "/images/home/kanjivaram.png", isLarge: true },
   {
     id: 2,
-    title: "Semi soft silk sarees",
-    imgSrc: "/images/2.jpeg",
+    title: "Bridal Tissue Slik Sarees",
+    imgSrc: "/images/home/Bridal Tissue.png",
     isLarge: false,
   },
   {
     id: 3,
-    title: "Premium soft sarees",
-    imgSrc: "/images/3.jpeg",
+    title: "Wedding Collection",
+    imgSrc: "/images/home/Wedding Collection.png",
     isLarge: false,
   },
   {
     id: 4,
-    title: "Banarasi tissue silk Sarees",
-    imgSrc: "/images/image (1).jpeg",
+    title: "Celebrity Inspired Tissue Silk Sarees",
+    imgSrc: "/images/home/Celebrity Collection.png",
     isLarge: true,
   },
 ];
