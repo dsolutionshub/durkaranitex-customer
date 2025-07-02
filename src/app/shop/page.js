@@ -26,7 +26,7 @@ import {
 const items = [{ label: "Shop" }];
 
 function Shop() {
-  const itemsPerPage = 10;
+  const itemsPerPage = 16;
   const router = useRouter();
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
