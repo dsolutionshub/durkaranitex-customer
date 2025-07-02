@@ -3,22 +3,19 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { SwiperSlide, Swiper } from "swiper/react";
 import { FeatureButtons } from "./ProductCard";
-import useCartPanelStore from "@/store/useCartPanelStore";
 
 import "swiper/css";
 import "swiper/css/navigation";
 
 const ProductCardMobile = ({ products, wishBtn, cartBtn }) => {
   const router = useRouter();
-  const { handleGetCartDetail } = useCartPanelStore();
 
   const navigateToProductDetail = (id) => {
     router.push(`/product-detail?id=${id}`);
   };
 
   const handleOpenCart = (id) => {
-    handleGetCartDetail();
-    cartBtn(id)
+    cartBtn(id);
   };
 
   return (
@@ -35,7 +32,7 @@ const ProductCardMobile = ({ products, wishBtn, cartBtn }) => {
             <SwiperSlide key={i} className="">
               <div
                 className="flex flex-col items-center relative lg:hidden"
-                onClick={()=>navigateToProductDetail(item?.id)}
+                onClick={() => navigateToProductDetail(item?.id)}
               >
                 {Math.round(item?.discount) !== 0 && (
                   <div className="absolute top-2 left-2 bg-red-600 text-white text-xs px-2 py-1 rounded-md z-10">
@@ -64,12 +61,15 @@ const ProductCardMobile = ({ products, wishBtn, cartBtn }) => {
                     className="text-black font-semibold mb-0 self-start"
                     title={item?.title}
                   >
-                  {item?.title?.length > 18 ? `${item?.title.slice(0, 18)}...` : item?.title}
+                    {item?.title?.length > 18
+                      ? `${item?.title.slice(0, 18)}...`
+                      : item?.title}
                   </h6>
                   <div className="self-start">
                     <span className="primary-color font-semibold">
                       Rs. {item?.price}
                     </span>{" "}
+                    <br className="md:hidden" />
                     {item?.product_price && (
                       <span className="text-muted text-decoration-line-through">
                         Rs. {item?.product_price}
@@ -84,7 +84,7 @@ const ProductCardMobile = ({ products, wishBtn, cartBtn }) => {
 
         <div className="text-center">
           <button
-            className="px-6 py-2 bg-green-800 text-white rounded-md hover:bg-green-700 transition"
+            className="px-6 py-2 bg-[var(--primary-main)] text-white rounded-md hover:bg-[var(--primary-dark)] transition"
             onClick={() => router.push("/shop")}
           >
             View More

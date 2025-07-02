@@ -171,6 +171,7 @@ select option:first-child {
 
   svg {
     margin: 0 0.5rem;
+    color: var(--gray-color);
   }
   @media screen and (max-width: 600px) {
     padding: 1.6rem 0 0.4rem 0;

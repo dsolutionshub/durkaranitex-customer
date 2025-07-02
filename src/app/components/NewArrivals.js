@@ -7,7 +7,11 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 import ProductCard from "./ProductCard";
 import ProductCardMobile from "./ProductCardMobile";
-import { getProductList, modifyCart, modifyWishlist } from "../api/services/authService";
+import {
+  getProductList,
+  modifyCart,
+  modifyWishlist,
+} from "../api/services/authService";
 import { getErrorMessage } from "../utils/helperFn";
 import Section from "./Section";
 import useCartPanelStore from "@/store/useCartPanelStore";
@@ -22,7 +26,6 @@ const CollectionTab = ({ data }) => {
   const [activeTab, setActiveTab] = useState(null);
   const [collectionsData, setCollectionsData] = useState({});
   const { handleGetCartDetail, wishlistDetails } = useCartPanelStore();
-  const [quantities, setQuantities] = useState({});
 
   const fetchCollectionsData = async (tabs) => {
     try {
@@ -71,13 +74,9 @@ const CollectionTab = ({ data }) => {
   };
 
   const addToCart = async (id) => {
-    const currentQty = quantities[id] || 0;
-    const newQty = currentQty + 1;
-
-    setQuantities((prev) => ({ ...prev, [id]: newQty }));
     loader(true);
     try {
-      const data = await modifyCart({ product_id: id, quantity: newQty });
+      const data = await modifyCart({ product_id: id, quantity: 1 });
       toast.success(data?.message);
       handleGetCartDetail();
     } catch (error) {
@@ -103,10 +102,11 @@ const CollectionTab = ({ data }) => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`relative transition-all duration-200 font-medium text-sm sm:text-base whitespace-nowrap new-arrival-btn ${activeTab === tab.id
-                ? 'text-green-800 after:content-[""] after:absolute after:left-0 after:-bottom-0.5 after:h-[2px] after:w-full after:bg-green-800'
-                : "text-gray-400 hover:text-green-800"
-                } tab-button`}
+              className={`relative transition-all duration-200 font-medium text-sm sm:text-base whitespace-nowrap new-arrival-btn ${
+                activeTab === tab.id
+                  ? 'text-green-800 after:content-[""] after:absolute after:left-0 after:-bottom-0.5 after:h-[2px] after:w-full after:bg-green-800'
+                  : "text-gray-400 hover:text-green-800"
+              } tab-button`}
             >
               {tab.name}
             </button>

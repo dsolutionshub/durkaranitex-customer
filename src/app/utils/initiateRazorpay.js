@@ -5,7 +5,7 @@ export const initiateRazorpayPayment = ({ order }) => {
     currency: order.currency || "INR",
     name: "Dhurgarani Tex",
     description: "Order Payment",
-    order_id: order.id,
+    order_id: order.order_id,
     handler: function (response) {
       window.location.href = `/payment-status?status=success&payment_id=${response.razorpay_payment_id}`;
     },

@@ -14,6 +14,7 @@ export const LOGIN_ERROR_MSG =
   "Please log in to add items to your Wishlist or Cart.";
 
 export const LOGIN_MSG = "Please login to see details.";
+export const LOGGED_OUT_MSG = "Logged out successfully.";
 
 // toastConfig
 export const TOAST_OPTIONS = {

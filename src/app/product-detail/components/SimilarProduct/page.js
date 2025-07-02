@@ -40,13 +40,9 @@ const SimilarProducts = ({ products }) => {
   };
 
   const addToCart = async (id) => {
-    const currentQty = quantities[id] || 0;
-    const newQty = currentQty + 1;
-
-    setQuantities((prev) => ({ ...prev, [id]: newQty }));
     loader(true);
     try {
-      const data = await modifyCart({ product_id: id, quantity: newQty });
+      const data = await modifyCart({ product_id: id, quantity: 1 });
       toast.success(data?.message);
     } catch (error) {
       const status = error?.response?.status;
@@ -63,7 +59,11 @@ const SimilarProducts = ({ products }) => {
 
   return (
     <>
-      <ProductCardMobile products={products} wishBtn={addToWishlist} cartBtn={addToCart} />
+      <ProductCardMobile
+        products={products}
+        wishBtn={addToWishlist}
+        cartBtn={addToCart}
+      />
 
       <div className="relative d-none d-md-block">
         <button className="custom-prev custom-prev-home">
@@ -112,7 +112,9 @@ const SimilarProducts = ({ products }) => {
         <div className="text-center mt-10">
           <button
             className="px-6 py-2 bg-green-800 text-white rounded-md hover:bg-green-700 transition"
-            onClick={() => router.push(`/shop?id=${products?.[0]?.category_id}`)}
+            onClick={() =>
+              router.push(`/shop?id=${products?.[0]?.category_id}`)
+            }
           >
             View More
           </button>
@@ -125,7 +127,10 @@ const SimilarProducts = ({ products }) => {
 const SimilarProduct = ({ data }) => {
   return (
     <div className="md:px-20 feature-product-card">
-      <Section title={"Similar Products"} section={<SimilarProducts products={data} />} />
+      <Section
+        title={"Similar Products"}
+        section={<SimilarProducts products={data} />}
+      />
     </div>
   );
 };

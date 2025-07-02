@@ -9,6 +9,7 @@ import { loader } from "@/app/components/loader/loaderManager";
 import { getErrorMessage } from "@/app/utils/helperFn";
 import { login, register } from "@/app/api/services/authService";
 import useCartPanelStore from "@/store/useCartPanelStore";
+import { useAuthStore } from "@/store/useAuthStore";
 
 const loginFields = [
   {
@@ -63,6 +64,7 @@ const signupFields = [
 
 const LoginForm = ({ isLogin, setIsLogin }) => {
   const router = useRouter();
+  const { setIsLoginTrue } = useAuthStore();
   const { cardDetails, wishlistDetails } = useCartPanelStore();
   const fields = isLogin ? loginFields : signupFields;
 
@@ -109,6 +111,7 @@ const LoginForm = ({ isLogin, setIsLogin }) => {
         toast.success("Welcome back! Happy shopping!");
         wishlistDetails();
         cardDetails();
+        setIsLoginTrue();
       }
       formik.resetForm();
     } catch (error) {

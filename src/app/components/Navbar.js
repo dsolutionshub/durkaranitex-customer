@@ -20,7 +20,7 @@ import {
 import SidePanelCart from "./sidePanelCart/SidePanelCart";
 import useCartPanelStore from "@/store/useCartPanelStore";
 import { loginCheck } from "../api/services/authService";
-
+import { useAuthStore } from "@/store/useAuthStore";
 import { getErrorMessage } from "../utils/helperFn";
 
 const navItems = [
@@ -32,6 +32,7 @@ const navItems = [
 
 export default function Navbar() {
   const router = useRouter();
+  const { isLoggedIn } = useAuthStore();
   const {
     isCartOpen,
     handleGetCartDetail,
@@ -42,7 +43,6 @@ export default function Navbar() {
   } = useCartPanelStore();
 
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isLogin, setIsLogin] = useState(null);
 
   const handlePanel = useCallback(() => {
     handleGetCartDetail();
@@ -61,13 +61,6 @@ export default function Navbar() {
   };
 
   useEffect(() => {
-    const token = sessionStorage.getItem("accessToken");
-    if (token) {
-      setIsLogin(true);
-    } else {
-      setIsLogin(false);
-    }
-
     // loginChecking();
     cardDetails();
     wishlistDetails();
@@ -222,12 +215,12 @@ export default function Navbar() {
 
           <li>
             <Link
-              href={isLogin ? "/account" : "/login"}
+              href={isLoggedIn ? "/account" : "/login"}
               onClick={() => setMenuOpen(false)}
               className="flex justify-between items-center py-2 hover:text-blue-500 primary-color"
             >
               <span className="flex items-center gap-2">
-                <User /> {isLogin ? "Account" : "Login"}
+                <User /> {isLoggedIn ? "Account" : "Login"}
               </span>
               <ChevronRight className="text-xl" />
             </Link>

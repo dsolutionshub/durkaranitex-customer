@@ -9,21 +9,21 @@ import Section from "./Section";
 import ProductCard from "./ProductCard";
 import ProductCardMobile from "./ProductCardMobile";
 
-import "swiper/css";
-import "swiper/css/navigation";
+import useCartPanelStore from "@/store/useCartPanelStore";
+import { loader } from "./loader/loaderManager";
 import { modifyCart, modifyWishlist } from "../api/services/authService";
 import { getErrorMessage } from "../utils/helperFn";
-import { loader } from "./loader/loaderManager";
 import { LOGIN_ERROR_MSG } from "../utils/constants";
-import { useState } from "react";
 
-
+import "swiper/css";
+import "swiper/css/navigation";
+import toast from "react-hot-toast";
 
 const FeaturedCard = ({ products }) => {
   const router = useRouter();
-  const [quantities, setQuantities] = useState([])
-  
-    const addToWishlist = async (id) => {
+  const { handleGetCartDetail } = useCartPanelStore();
+
+  const addToWishlist = async (id) => {
     loader(true);
     try {
       const data = await modifyWishlist({ product_id: id });
@@ -42,14 +42,11 @@ const FeaturedCard = ({ products }) => {
   };
 
   const addToCart = async (id) => {
-    const currentQty = quantities[id] || 0;
-    const newQty = currentQty + 1;
-
-    setQuantities((prev) => ({ ...prev, [id]: newQty }));
     loader(true);
     try {
-      const data = await modifyCart({ product_id: id, quantity: newQty });
+      const data = await modifyCart({ product_id: id, quantity: 1 });
       toast.success(data?.message);
+      handleGetCartDetail();
     } catch (error) {
       const status = error?.response?.status;
       if (status === 401) {
@@ -63,9 +60,17 @@ const FeaturedCard = ({ products }) => {
     }
   };
 
+  const navigateToProductDetail = (product_id) => {
+    router.push(`/product-detail?id=${product_id}`);
+  };
+
   return (
     <>
-     <ProductCardMobile products={products} wishBtn={addToWishlist} cartBtn={addToCart} />
+      <ProductCardMobile
+        products={products}
+        wishBtn={addToWishlist}
+        cartBtn={addToCart}
+      />
       <div className="relative d-none d-md-block">
         <button className="custom-prev custom-prev-home">
           {<FaChevronLeft />}
@@ -106,6 +111,7 @@ const FeaturedCard = ({ products }) => {
                 isInWishlist={item?.wishList}
                 btn1={() => addToWishlist(item?.id)}
                 btn2={() => addToCart(item?.id)}
+                onClick={() => navigateToProductDetail(item?.id)}
               />
             </SwiperSlide>
           ))}
