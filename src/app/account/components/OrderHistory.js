@@ -13,10 +13,8 @@ export default function OrderHistory() {
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
-        <h2 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-green-900 dark:from-gray-200 dark:to-green-300 bg-clip-text text-transparent">
-          Order History
-        </h2>
-        <div className="text-sm text-gray-600 dark:text-gray-300 bg-blue-200 dark:bg-blue-900/20 px-3 py-1 rounded-lg font-medium">
+        <h2 className="text-3xl font-bold dark-color">Order History</h2>
+        <div className="text-sm text-gray-600  bg-blue-200 px-3 py-1 rounded-lg font-medium">
           {orders.length} Total Orders
         </div>
       </div>
@@ -26,14 +24,19 @@ export default function OrderHistory() {
           <div className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600 rounded-full mb-6">
             <Package className="w-12 h-12 text-gray-400 dark:text-gray-300" />
           </div>
-          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+          <h3
+            className="text-xl font-semibold mb-2"
+            style={{
+              color: "var(--gray-color)",
+            }}
+          >
             No Orders Yet
           </h3>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-gray-600">
             Start shopping to see your order history here!{" "}
             <Link
               href="/shop"
-              className="text-green-600 underline font-medium hover:text-green-800"
+              className="primary-color underline font-medium hover:text-[var(--primary-dark)]"
             >
               Go to Shop
             </Link>
@@ -58,10 +61,10 @@ export default function OrderHistory() {
                   </div>
 
                   <div className="space-y-2">
-                    <div className="text-lg font-bold text-gray-900 dark:text-white">
+                    <div className="text-lg font-bold text-[var(--gray-color)]">
                       {order.id}
                     </div>
-                    <div className="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-300">
+                    <div className="flex items-center gap-3 text-sm text-gray-600">
                       <div className="flex items-center gap-1">
                         <Calendar className="w-4 h-4" />
                         {order.date}

@@ -7,7 +7,7 @@ const OrderSummary = ({ checkoutData, handlePayment, removeFromCart }) => {
       <div className="bg-white p-6 rounded-xl shadow">
         <h4 className="font-semibold text-black mb-4">Order Details</h4>
         <h5 className="font-semibold text-black mb-4">Product Summary</h5>
-        <div className="space-y-3 text-sm">
+        <div className="space-y-3 text-sm max-h-[20rem] overflow-y-auto scrollbar-hide-on-idle">
           {checkoutData?.products_list?.length > 0 ? (
             checkoutData?.products_list.map((item) => (
               <div
@@ -36,10 +36,10 @@ const OrderSummary = ({ checkoutData, handlePayment, removeFromCart }) => {
                   <p className="text-black font-semibold mb-0">
                     ₹{item?.total_amount}
                   </p>
-                  <div className="flex items-center gap-1 cursor-pointer">
+                  <div className="flex items-center gap-1 cursor-pointer  d-none">
                     <RiDeleteBinLine className="text-red-600" />
                     <button
-                      className="text-red-600 text-sm d-none"
+                      className="text-red-600 text-sm"
                       onClick={() => removeFromCart(item?.product_id)}
                     >
                       Remove
@@ -49,7 +49,7 @@ const OrderSummary = ({ checkoutData, handlePayment, removeFromCart }) => {
               </div>
             ))
           ) : (
-            <p>No Product found</p>
+            <p className="dark-color">No Product found</p>
           )}
         </div>
       </div>

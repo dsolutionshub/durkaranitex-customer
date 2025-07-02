@@ -16,7 +16,7 @@ import {
   modifyCart,
   modifyWishlist,
 } from "../api/services/authService";
-import { LOGIN_ERROR_MSG, WISHLIST_MODEL } from "../utils/constants";
+import { LOGIN_ERROR_MSG, LOGIN_MSG, WISHLIST_MODEL } from "../utils/constants";
 import { getErrorMessage } from "../utils/helperFn";
 
 const Wishlist = () => {
@@ -78,6 +78,7 @@ const Wishlist = () => {
     const token = sessionStorage.getItem("accessToken");
     if (!token || token === "undefined") {
       router.replace("/login");
+      toast.error(LOGIN_MSG);
     }
   }, []);
 

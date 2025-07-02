@@ -14,7 +14,7 @@ import {
   removeCart,
   updateQuantity,
 } from "../api/services/authService";
-import { CART_MODEL } from "../utils/constants";
+import { CART_MODEL, LOGIN_MSG } from "../utils/constants";
 import { getErrorMessage } from "../utils/helperFn";
 import useCartPanelStore from "@/store/useCartPanelStore";
 
@@ -91,6 +91,7 @@ const Cart = () => {
       if (status === 401) {
         sessionStorage.setItem("postLoginRedirect", "/checkout");
         router.push("/login");
+        toast.error(LOGIN_MSG);
       }
       getErrorMessage(error);
     } finally {
@@ -124,6 +125,7 @@ const Cart = () => {
     const token = sessionStorage.getItem("accessToken");
     if (!token || token === "undefined") {
       router.replace("/login");
+      toast.error(LOGIN_MSG);
     }
   }, []);
 

@@ -13,6 +13,8 @@ export const SHIPPING_POLICY_MODEL = [{ label: "Shipping Policy" }];
 export const LOGIN_ERROR_MSG =
   "Please log in to add items to your Wishlist or Cart.";
 
+export const LOGIN_MSG = "Please login to see details.";
+
 // toastConfig
 export const TOAST_OPTIONS = {
   success: {

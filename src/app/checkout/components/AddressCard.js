@@ -19,7 +19,7 @@ export default function AddressCard({
               <Package className="h-5 w-5 sm:h-6 sm:w-6 text-[var(--primary-main)]" />
             </div>
             <div>
-              <h4 className="text-lg sm:text-xl font-bold text-gray-900 mb-0">
+              <h4 className="text-lg sm:text-xl font-bold text-gray-900 mb-0 dark-color">
                 Delivery Address
               </h4>
               <p className="text-xs sm:text-sm text-gray-600 font-normal mb-0">
@@ -49,7 +49,7 @@ export default function AddressCard({
             >
               <Home className="h-8 w-8 sm:h-10 sm:w-10 text-[var(--primary-main)]" />
             </div>
-            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
+            <h3 className="text-lg sm:text-xl font-semibold mb-2 dark-color">
               No delivery address yet
             </h3>
             <p className="text-gray-500 mb-4 sm:mb-6 max-w-md mx-auto text-sm sm:text-base">
@@ -107,7 +107,7 @@ export default function AddressCard({
                         </div>
                         <div>
                           <div className="flex gap-2 items-center mb-1">
-                            <h5 className="text-gray-900 text-base mb-0">
+                            <h5 className="text-gray-900 text-base mb-0 dark-color">
                               {address.name}
                             </h5>
                           </div>
@@ -115,10 +115,13 @@ export default function AddressCard({
                           <div className="flex items-start gap-2">
                             <MapPin className="h-4 w-4 text-gray-400 mt-[.3rem]" />
                             <div>
-                              <p className="mb-0 fw-medium">
+                              <p className="mb-0 fw-medium dark-color">
                                 {address.address}
                               </p>
-                              <p className="text-sm text-gray-600 mb-0 ">
+                              <p className="mb-0 fw-medium dark-color">
+                                {address.address1}
+                              </p>
+                              <p className="text-sm text-gray-600 mb-0">
                                 {address.city}, {address?.state?.name} -{" "}
                                 <span className="font-medium">
                                   {address.pincode}

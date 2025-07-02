@@ -13,6 +13,7 @@ import {
 import { loader } from "../components/loader/loaderManager";
 import { useRouter } from "next/navigation";
 import { initiateRazorpayPayment } from "../utils/initiateRazorpay";
+import { LOGIN_MSG } from "../utils/constants";
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -84,6 +85,7 @@ export default function CheckoutPage() {
     const token = sessionStorage.getItem("accessToken");
     if (!token || token === "undefined") {
       router.replace("/login");
+      toast.error(LOGIN_MSG);
     }
   }, []);
 
@@ -92,7 +94,7 @@ export default function CheckoutPage() {
   }, []);
 
   return (
-    <div className="min-h-screen py-10 md:mx-3">
+    <div className="min-h-screen py-10 md:mx-3 m-3 md:m-0">
       <h2 className="text-2xl text-center pb-1 md:pb-4 text-black font-semibold checkout-text">
         Checkout
       </h2>

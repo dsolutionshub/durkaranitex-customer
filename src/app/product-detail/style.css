@@ -71,6 +71,8 @@
   overflow: hidden;
   transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.3s ease;
   font-size: 14px;
+  color: var(--gray-color);
+  font-weight: 500;
   @media screen and (max-width: 600px) {
     overflow: auto;
   }

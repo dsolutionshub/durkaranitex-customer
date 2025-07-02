@@ -8,6 +8,7 @@
   --primary-dark: #032d13;
   --dark-color: #000;
   --light-gray: #9ca3af;
+  --gray-color: gray;
 }
 
 @theme inline {
@@ -136,6 +137,29 @@ select option:first-child {
   scrollbar-width: none;
 }
 
+/* Scrollbar Style */
+.scrollbar-hide-on-idle {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+.scrollbar-hide-on-idle:hover {
+  scrollbar-color: #b6b9c0 #edf2f7;
+}
+
+.scrollbar-hide-on-idle::-webkit-scrollbar {
+  width: 6px;
+}
+.scrollbar-hide-on-idle::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  border-radius: 4px;
+}
+
+.scrollbar-hide-on-idle::-webkit-scrollbar-button {
+  display: none;
+  height: 0;
+}
+
 /* .custom-breadcrumb-container */
 .custom-breadcrumb {
   padding: 2rem 0 0 0;
@@ -160,6 +184,11 @@ select option:first-child {
 }
 
 .custom-scroll::-webkit-scrollbar {
+  width: 0px;
+  transition: width 0.9s ease;
+}
+
+.custom-scroll:hover::-webkit-scrollbar {
   width: 4px;
 }
 

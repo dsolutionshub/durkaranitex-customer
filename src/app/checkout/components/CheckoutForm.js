@@ -114,7 +114,7 @@ export default function CheckoutForm({
               onChange={() => setSelectedPayment("payNow")}
               className="accent-[var(--primary-main)] mr-3 scale-115 cursor-pointer"
             />
-            <FiCreditCard className="mr-2 ml-1" size={25} />
+            <FiCreditCard className="mr-2 ml-1 text-gray-500" size={25} />
             <div>
               <p className="font-semibold m-0 text-dark h-5">Pay Now</p>
               <p className="text-gray-500 m-0">
@@ -139,7 +139,7 @@ export default function CheckoutForm({
               onChange={() => setSelectedPayment("payLater")}
               className="accent-[var(--primary-main)] mr-3 scale-115 cursor-pointer"
             />
-            <LiaRupeeSignSolid className="mr-2" size={25} />
+            <LiaRupeeSignSolid className="mr-2 text-gray-500" size={25} />
             <div>
               <p className="font-semibold m-0 text-dark h-5">
                 Pay Later (Cash on Delivery)

@@ -10,6 +10,8 @@ import { getErrorMessage } from "../utils/helperFn";
 import { loader } from "../components/loader/loaderManager";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useRouter } from "next/navigation";
+import { LOGIN_MSG } from "../utils/constants";
+import toast from "react-hot-toast";
 
 const tabs = [
   { key: "account", label: "Account", Icon: User },
@@ -71,6 +73,7 @@ export default function AccountPage() {
     const token = sessionStorage.getItem("accessToken");
     if (!token || token === "undefined") {
       router.replace("/login");
+      toast.error(LOGIN_MSG);
     }
   }, []);
 
@@ -99,7 +102,7 @@ export default function AccountPage() {
                   return (
                     <div
                       key={key}
-                      className={`group relative flex items-center gap-2 p-4 rounded-xl cursor-pointer transition-all duration-300 transform hover:scale-105 ${
+                      className={`w-full group relative flex items-center gap-2 p-4 rounded-xl cursor-pointer transition-all duration-300 transform hover:scale-105 ${
                         isActive
                           ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-lg shadow-blue-500/25"
                           : "text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:text-blue-700"

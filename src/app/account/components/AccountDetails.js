@@ -5,9 +5,7 @@ import { User, Mail, Phone, Calendar } from "lucide-react";
 export default function AccountDetails({ data }) {
   return (
     <div className="space-y-8">
-      <h2 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-blue-900 bg-clip-text text-transparent">
-        Account Details
-      </h2>
+      <h2 className="text-3xl font-bold dark-color">Account Details</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="space-y-6">
@@ -17,7 +15,7 @@ export default function AccountDetails({ data }) {
               <span className="translate-y-[1px] inline-block">Full Name</span>
             </label>
             <div className="px-4 py-3 bg-gray-200 rounded-xl text-gray-900 font-medium">
-              {data?.name}
+              {data?.name || '-'}
             </div>
           </div>
 
@@ -29,7 +27,7 @@ export default function AccountDetails({ data }) {
               </span>
             </label>
             <div className="px-4 py-3 bg-gray-200 rounded-xl text-gray-900 font-medium">
-              {data?.email}
+              {data?.email || '-'}
             </div>
           </div>
 
@@ -41,7 +39,7 @@ export default function AccountDetails({ data }) {
               </span>
             </label>
             <div className="px-4 py-3 bg-gray-200 rounded-xl text-gray-900 font-medium">
-              {data?.email}
+              {data?.mobile || "-"}
             </div>
           </div>
 
@@ -53,7 +51,7 @@ export default function AccountDetails({ data }) {
               </span>
             </label>
             <div className="px-4 py-3 bg-gray-200 rounded-xl text-gray-900 font-medium">
-              {data?.email}
+              {data?.created_date || "-"}
             </div>
           </div>
         </div>

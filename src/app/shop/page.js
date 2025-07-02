@@ -182,6 +182,10 @@ function Shop() {
     setSelectedCategories(arr);
   };
 
+  const navigateToProductDetail = (product_id) => {
+    router.push(`/product-detail?id=${product_id}`);
+  };
+
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -254,6 +258,7 @@ function Shop() {
                         image1={item?.images[1]?.["image"]}
                         discount={item?.discount || 0}
                         isInWishlist={item?.wishList}
+                        onClick={() => navigateToProductDetail(item?.id)}
                       />
                     </div>
                   ))

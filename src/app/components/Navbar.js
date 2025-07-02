@@ -42,6 +42,7 @@ export default function Navbar() {
   } = useCartPanelStore();
 
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isLogin, setIsLogin] = useState(null);
 
   const handlePanel = useCallback(() => {
     handleGetCartDetail();
@@ -60,6 +61,13 @@ export default function Navbar() {
   };
 
   useEffect(() => {
+    const token = sessionStorage.getItem("accessToken");
+    if (token) {
+      setIsLogin(true);
+    } else {
+      setIsLogin(false);
+    }
+
     // loginChecking();
     cardDetails();
     wishlistDetails();
@@ -77,9 +85,9 @@ export default function Navbar() {
       <div className="flex items-center justify-between lg:hidden relative">
         <div
           onClick={() => setMenuOpen(true)}
-          className="text-2xl cursor-pointer"
+          className="text-2xl cursor-pointer text-gray-600"
         >
-          <Menu />
+          <Menu className="text-gray-600" />
         </div>
 
         <div className="absolute left-1/2 transform -translate-x-1/2">
@@ -172,9 +180,11 @@ export default function Navbar() {
         }`}
       >
         <div className="flex items-center justify-between px-4 py-4 border-b">
-          <span className="text-lg font-bold text-bg-700">Menu</span>
+          <span className="text-lg font-bold text-bg-700 text-gray-500">
+            Menu
+          </span>
           <X
-            className="text-2xl cursor-pointer text-bg-700"
+            className="text-2xl cursor-pointer text-bg-700 text-gray-500"
             onClick={() => setMenuOpen(false)}
           />
         </div>
@@ -212,12 +222,12 @@ export default function Navbar() {
 
           <li>
             <Link
-              href="/login"
+              href={isLogin ? "/account" : "/login"}
               onClick={() => setMenuOpen(false)}
               className="flex justify-between items-center py-2 hover:text-blue-500 primary-color"
             >
               <span className="flex items-center gap-2">
-                <User /> Login
+                <User /> {isLogin ? "Account" : "Login"}
               </span>
               <ChevronRight className="text-xl" />
             </Link>

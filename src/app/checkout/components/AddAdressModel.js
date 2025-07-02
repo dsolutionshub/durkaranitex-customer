@@ -103,7 +103,7 @@ export default function AddAdressModel({
         <IoClose
           onClick={handleCloseModel}
           size={21}
-          className="cursor-pointer"
+          className="cursor-pointer dark-color"
         />
       </div>
 
@@ -115,7 +115,7 @@ export default function AddAdressModel({
           { name: "address", label: "Address" },
         ].map(({ name, label }) => (
           <div key={name}>
-            <label htmlFor={name} className="block font-medium">
+            <label htmlFor={name} className="block font-medium dark-color">
               {label} *
             </label>
             <input
@@ -125,7 +125,7 @@ export default function AddAdressModel({
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values[name]}
-              className={`w-full border rounded px-3 py-2 ${
+              className={`w-full border rounded px-3 py-2 dark-color ${
                 formik.touched[name] && formik.errors[name]
                   ? "border-red-500"
                   : "border-gray-300"
@@ -141,7 +141,7 @@ export default function AddAdressModel({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4">
           {["address1", "city"].map((name) => (
             <div key={name}>
-              <label htmlFor={name} className="block font-medium">
+              <label htmlFor={name} className="block font-medium dark-color">
                 {name === "address1" ? "Address Line 2" : "City"}{" "}
                 {name === "city" && "*"}
               </label>
@@ -152,7 +152,7 @@ export default function AddAdressModel({
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values[name]}
-                className={`w-full border rounded px-3 py-2 ${
+                className={`w-full border rounded px-3 py-2 dark-color ${
                   formik.touched[name] && formik.errors[name]
                     ? "border-red-500"
                     : "border-gray-300"
@@ -170,7 +170,7 @@ export default function AddAdressModel({
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label htmlFor="state_id" className="block font-medium">
+            <label htmlFor="state_id" className="block font-medium dark-color">
               State *
             </label>
             <select
@@ -179,7 +179,7 @@ export default function AddAdressModel({
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.state_id}
-              className={`w-full border rounded px-3 py-2 ${
+              className={`w-full border rounded px-3 py-2 dark-color ${
                 formik.touched.state_id && formik.errors.state_id
                   ? "border-red-500"
                   : "border-gray-300"
@@ -200,7 +200,7 @@ export default function AddAdressModel({
           </div>
 
           <div>
-            <label htmlFor="pincode" className="block font-medium">
+            <label htmlFor="pincode" className="block font-medium dark-color">
               PIN Code *
             </label>
             <input
@@ -211,7 +211,7 @@ export default function AddAdressModel({
               onBlur={formik.handleBlur}
               value={formik.values.pincode}
               maxLength={6}
-              className={`w-full border rounded px-3 py-2 ${
+              className={`w-full border rounded px-3 py-2 dark-color ${
                 formik.touched.pincode && formik.errors.pincode
                   ? "border-red-500"
                   : "border-gray-300"
