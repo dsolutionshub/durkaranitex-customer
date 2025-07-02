@@ -30,7 +30,7 @@ function Shop() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
-  const [selectedCategories, setSelectedCategories] = useState(id ? [id] : []);
+  const [selectedCategories, setSelectedCategories] = useState(id ? [Number(id)] : []);
   const { handleGetCartDetail, wishlistDetails } = useCartPanelStore();
 
   const [priceRange, setPriceRange] = useState({});
@@ -57,7 +57,7 @@ function Shop() {
   const handlePriceChange = (range) => {
     setPriceRange(range);
   };
-
+  
   const productDetails = async (filter = null, min = 0, max = 0) => {
     loader(true);
     try {
@@ -279,7 +279,7 @@ function Shop() {
 
             <ProductFilter
               categoryList={categoryList}
-              categories={categoryList.categories}
+              categories={categoryList?.categories}
               selectedCategories={selectedCategories}
               filterProducts={setSortedProducts}
               onChange={handleCheckbox}

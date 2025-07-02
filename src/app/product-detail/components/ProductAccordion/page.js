@@ -7,7 +7,7 @@ import { FaRegHeart, FaHeart } from "react-icons/fa";
 
 import ShareProductBox from "../ShareProductBox/page";
 import useCartPanelStore from "@/store/useCartPanelStore";
-import { modifyCart, modifyWishlist } from "@/app/api/services/authService";
+import { buyNow, modifyCart, modifyWishlist } from "@/app/api/services/authService";
 import { getErrorMessage } from "@/app/utils/helperFn";
 import { loader } from "@/app/components/loader/loaderManager";
 
@@ -47,14 +47,6 @@ export default function ProductAccordion({
     }
   }
 
-  const productDetailsFromAPI = {
-    description: [
-      { title: "Fabric:", description: "Silk blend" },
-      { title: "Texture:", description: "Smooth, soft, and lightweight" },
-      { title: "Appearance:", description: "Rich look with a subtle or moderate shine" }
-    ]
-  };
-
   const des = [
     {
       title: "Product Description",
@@ -65,8 +57,7 @@ export default function ProductAccordion({
             (item) =>
               `<p><strong>${item.title}</strong> ${item.description}</p>`
           )
-          .join("")}
-        <p><em>Disclaimer:</em> Product color may slightly vary due to photographic lighting sources or your monitor settings.</p>
+        }
       </div>`,
     },
     {
@@ -92,14 +83,26 @@ export default function ProductAccordion({
     }
   };
 
-  const handleByeNow = () => {
-    router.push("/checkout");
+  const handleByeNow = async() => {
+    loader(true);
+    try {
+      const data = await buyNow({
+        product_id: sections?.id,
+      });
+      if (data.status == "success") {
+        router.push("/checkout");
+      }
+    } catch (error) {
+      getErrorMessage(error);
+    } finally {
+      loader(false);
+    }
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     setDescription(sections?.description)
-  },[sections])
-  
+  }, [sections])
+
   useEffect(() => {
     const handleScroll = () => {
       const scrolledPast100vh = window.scrollY > window.innerHeight;

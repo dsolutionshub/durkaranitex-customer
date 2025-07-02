@@ -21,6 +21,7 @@ export const GET_CART = "/api/cart/list";
 export const ADD_CART = "/api/cart/add";
 export const UPDATE_QUANTITY = "/api/cart/update-quantity";
 export const REMOVE_CART = "/api/cart/remove";
+export const BUY_NOW = "/api/cart/buy-now"
 
 //Address
 export const GET_STATE_LIST = "/api/states-list";
@@ -37,3 +38,5 @@ export const HANDLE_CHECKOUT = "/api/checkout/checkout";
 export const GET_CHECKOUT_LIST = "/api/checkout/list";
 export const UPDATE_CHECKOUT_ADDRESS = "/api/checkout/address";
 export const HANDLE_PAYMENT = "/api/checkout/pay-now";
+
+

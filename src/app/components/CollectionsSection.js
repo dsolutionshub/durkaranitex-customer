@@ -89,7 +89,7 @@ const CollectionsBox = () => {
           <Image
             src={collections[0].imgSrc}
             alt={collections[0].title}
-            imageClassName="w-full h-full object-cover"
+            imageClassName="w-full h-150 object-cover"
           />
           <div className="absolute bottom-0 left-0 right-0 bg-black-alpha-60 p-4">
             <h3 className="text-white text-xl font-semibold">
@@ -102,7 +102,7 @@ const CollectionsBox = () => {
           <Image
             src={collections[1].imgSrc}
             alt={collections[1].title}
-            imageClassName="w-full h-full object-cover"
+            imageClassName="w-full h-120 object-cover"
           />
           <div className="absolute bottom-0 left-0 right-0 bg-black-alpha-60 p-4">
             <h3 className="text-white text-lg font-semibold">
@@ -115,7 +115,7 @@ const CollectionsBox = () => {
           <Image
             src={collections[3].imgSrc}
             alt={collections[3].title}
-            imageClassName="w-full h-full object-cover"
+            imageClassName="w-full h-150 object-cover"
           />
           <div className="absolute bottom-0 left-0 right-0 bg-black-alpha-60 p-4">
             <h3 className="text-white text-xl font-semibold">
@@ -128,7 +128,7 @@ const CollectionsBox = () => {
           <Image
             src={collections[2].imgSrc}
             alt={collections[2].title}
-            imageClassName="w-full h-full object-cover"
+            imageClassName="w-full h-120 object-cover"
           />
           <div className="absolute bottom-0 left-0 right-0 bg-black-alpha-60 p-4">
             <h3 className="text-white text-lg font-semibold">

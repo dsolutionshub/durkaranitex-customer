@@ -39,10 +39,10 @@ export default function Home() {
     <div>
       <BannerCarousel />
       <CollectionsSection />
-      <FeaturedProducts  products={homeDetails?.featured_products} />
-      <NewCollections data={homeDetails?.new_collection_categories} />
+      {homeDetails?.featured_products?.length > 0 && <FeaturedProducts  products={homeDetails?.featured_products} />}
+      {homeDetails?.new_collection_categories?.length > 0 && <NewCollections data={homeDetails?.new_collection_categories} />}
       <SaleSection />
-      <CategorySection collection={homeDetails?.shop_collection} />
+      {homeDetails?.shop_collection?.length > 0 && <CategorySection collection={homeDetails?.shop_collection} />}
     </div>
   );
 }
