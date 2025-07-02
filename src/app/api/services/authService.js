@@ -3,6 +3,7 @@ import { apiRequest } from "./apiClient";
 import {
   ADD_CART,
   ADD_CUSTOMER_ADDRESS,
+  BUY_NOW,
   CATEGORY_LIST,
   DELETE_CUSTOMER_ADDRESS,
   GET_CART,
@@ -130,6 +131,11 @@ export async function modifyCart(payload) {
 
 export async function removeCart(payload) {
   const response = await apiRequest(REMOVE_CART, "POST", payload);
+  return response;
+}
+
+export async function buyNow(payload) {
+  const response = await apiRequest(BUY_NOW, "POST", payload);
   return response;
 }
 

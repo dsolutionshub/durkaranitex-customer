@@ -4,6 +4,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { Sidebar } from "primereact/sidebar";
 import { Range } from "react-range";
 import { IoClose } from "react-icons/io5";
+import { useSearchParams } from "next/navigation";
 
 const STEP = 100;
 
@@ -16,6 +17,7 @@ function FilterComponent({
   MIN,
   MAX,
 }) {
+
   return (
     <>
       <div className="border px-4 py-3 rounded mb-4">
@@ -35,8 +37,9 @@ function FilterComponent({
                 <input
                   id={category?.id}
                   type="checkbox"
+                  value={category?.id}
                   checked={selectedCategories?.includes(category?.id)}
-                  onChange={(e) => handleCheckboxChange(e, category?.id)}
+                  onChange={(e) => handleCheckboxChange(e.target.checked, category?.id)}
                   className="form-checkbox h-4 w-4 cursor-pointer"
                   style={{
                     accentColor: "var(--bs-primary)",
@@ -130,6 +133,15 @@ const ProductFilter = ({
 }) => {
   const [values, setValues] = useState([priceRange.min, priceRange.max]);
 
+  // const searchParams = useSearchParams();
+  // const id = searchParams.get("id");
+
+// useEffect(() => {
+//   if (id) {
+//     handleCheckboxChange(true, parseInt(id));
+//   }
+// }, [id]);
+
   const debounceRef = useRef(null);
 
   const handleChange = (newValues) => {
@@ -147,8 +159,10 @@ const ProductFilter = ({
     }, 500);
   };
 
-  const handleCheckboxChange = (event, categoryID) => {
-    if (event.target.checked) {
+  const handleCheckboxChange = (isChecked, categoryID) => {
+    console.log(selectedCategories);
+    
+    if (isChecked) {
       onChange([...selectedCategories, categoryID]);
     } else {
       onChange(selectedCategories?.filter((id) => id !== categoryID));

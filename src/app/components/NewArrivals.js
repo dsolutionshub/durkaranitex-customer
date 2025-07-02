@@ -7,18 +7,22 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 import ProductCard from "./ProductCard";
 import ProductCardMobile from "./ProductCardMobile";
-import { getProductList } from "../api/services/authService";
+import { getProductList, modifyCart, modifyWishlist } from "../api/services/authService";
 import { getErrorMessage } from "../utils/helperFn";
 import Section from "./Section";
+import useCartPanelStore from "@/store/useCartPanelStore";
 
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { loader } from "./loader/loaderManager";
 
 const CollectionTab = ({ data }) => {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState(null);
   const [collectionsData, setCollectionsData] = useState({});
+  const { handleGetCartDetail, wishlistDetails } = useCartPanelStore();
+  const [quantities, setQuantities] = useState({});
 
   const fetchCollectionsData = async (tabs) => {
     try {
@@ -46,6 +50,49 @@ const CollectionTab = ({ data }) => {
     fetchCollectionsData(data);
   }, [data]);
 
+  const addToWishlist = async (id) => {
+    loader(true);
+    try {
+      const data = await modifyWishlist({ product_id: id });
+      productDetails();
+      wishlistDetails();
+      toast.success(data?.message);
+    } catch (error) {
+      const status = error?.response?.status;
+      if (status === 401) {
+        sessionStorage.setItem("postLoginRedirect", "/shop");
+        router.push("/login");
+        toast.error(LOGIN_ERROR_MSG);
+      }
+      getErrorMessage(error);
+    } finally {
+      loader(false);
+    }
+  };
+
+  const addToCart = async (id) => {
+    const currentQty = quantities[id] || 0;
+    const newQty = currentQty + 1;
+
+    setQuantities((prev) => ({ ...prev, [id]: newQty }));
+    loader(true);
+    try {
+      const data = await modifyCart({ product_id: id, quantity: newQty });
+      toast.success(data?.message);
+      handleGetCartDetail();
+    } catch (error) {
+      const status = error?.response?.status;
+      if (status === 401) {
+        sessionStorage.setItem("postLoginRedirect", "/shop");
+        router.push("/login");
+        toast.error(LOGIN_ERROR_MSG);
+      }
+      getErrorMessage(error);
+    } finally {
+      loader(false);
+    }
+  };
+
   const filteredCollections = collectionsData[activeTab] || [];
 
   return (
@@ -56,11 +103,10 @@ const CollectionTab = ({ data }) => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`relative transition-all duration-200 font-medium text-sm sm:text-base whitespace-nowrap new-arrival-btn ${
-                activeTab === tab.id
-                  ? 'text-green-800 after:content-[""] after:absolute after:left-0 after:-bottom-0.5 after:h-[2px] after:w-full after:bg-green-800'
-                  : "text-gray-400 hover:text-green-800"
-              } tab-button`}
+              className={`relative transition-all duration-200 font-medium text-sm sm:text-base whitespace-nowrap new-arrival-btn ${activeTab === tab.id
+                ? 'text-green-800 after:content-[""] after:absolute after:left-0 after:-bottom-0.5 after:h-[2px] after:w-full after:bg-green-800'
+                : "text-gray-400 hover:text-green-800"
+                } tab-button`}
             >
               {tab.name}
             </button>
@@ -104,10 +150,13 @@ const CollectionTab = ({ data }) => {
                 type={"heart"}
                 title={item?.title}
                 price={item?.price}
+                btn1={() => addToWishlist(item?.id)}
+                btn2={() => addToCart(item?.id)}
                 discount={item?.discount || 0}
                 oldPrice={item.product_price}
                 image={item?.images?.[0]?.["image"]}
                 image1={item?.images?.[1]?.["image"]}
+                isInWishlist={item?.wishList}
               />
             </SwiperSlide>
           ))}
