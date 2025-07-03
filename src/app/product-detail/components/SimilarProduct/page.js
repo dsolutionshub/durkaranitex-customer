@@ -1,5 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
@@ -15,14 +16,18 @@ import { modifyCart, modifyWishlist } from "@/app/api/services/authService";
 
 import "swiper/css";
 import "swiper/css/navigation";
+import useCartPanelStore from "@/store/useCartPanelStore";
 
-const SimilarProducts = ({ products }) => {
+const SimilarProducts = ({ products, handleGetProductDetails }) => {
   const router = useRouter();
+  const { handleGetCartDetail, wishlistDetails } = useCartPanelStore();
 
   const addToWishlist = async (id) => {
     loader(true);
     try {
       const data = await modifyWishlist({ product_id: id });
+      handleGetProductDetails();
+      wishlistDetails();
       toast.success(data?.message);
     } catch (error) {
       const status = error?.response?.status;
@@ -30,8 +35,10 @@ const SimilarProducts = ({ products }) => {
         sessionStorage.setItem("postLoginRedirect", "/shop");
         router.push("/login");
         toast.error(LOGIN_ERROR_MSG);
+        return;
       }
-      getErrorMessage(error);
+      const MSG = getErrorMessage(error);
+      toast.error(MSG);
     } finally {
       loader(false);
     }
@@ -41,6 +48,7 @@ const SimilarProducts = ({ products }) => {
     loader(true);
     try {
       const data = await modifyCart({ product_id: id, quantity: 1 });
+      handleGetCartDetail();
       toast.success(data?.message);
     } catch (error) {
       const status = error?.response?.status;
@@ -61,6 +69,7 @@ const SimilarProducts = ({ products }) => {
         products={products}
         wishBtn={addToWishlist}
         cartBtn={addToCart}
+        type={"heart"}
       />
 
       <div className="relative d-none d-md-block">
@@ -122,12 +131,17 @@ const SimilarProducts = ({ products }) => {
   );
 };
 
-const SimilarProduct = ({ data }) => {
+const SimilarProduct = ({ data, handleGetProductDetails }) => {
   return (
     <div className="md:px-20 feature-product-card">
       <Section
         title={"Similar Products"}
-        section={<SimilarProducts products={data} />}
+        section={
+          <SimilarProducts
+            products={data}
+            handleGetProductDetails={handleGetProductDetails}
+          />
+        }
       />
     </div>
   );

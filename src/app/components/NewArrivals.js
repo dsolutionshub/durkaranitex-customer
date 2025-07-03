@@ -20,6 +20,8 @@ import useCartPanelStore from "@/store/useCartPanelStore";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import toast from "react-hot-toast";
+import { LOGIN_ERROR_MSG } from "../utils/constants";
 
 const CollectionTab = ({ data }) => {
   const router = useRouter();
@@ -56,10 +58,10 @@ const CollectionTab = ({ data }) => {
   const addToWishlist = async (id) => {
     loader(true);
     try {
-      const data = await modifyWishlist({ product_id: id });
-      productDetails();
+      const response = await modifyWishlist({ product_id: id });
       wishlistDetails();
-      toast.success(data?.message);
+      fetchCollectionsData(data);
+      toast.success(response?.message);
     } catch (error) {
       const status = error?.response?.status;
       if (status === 401) {
@@ -114,7 +116,12 @@ const CollectionTab = ({ data }) => {
         </div>
       </div>
 
-      <ProductCardMobile products={filteredCollections} />
+      <ProductCardMobile
+        products={filteredCollections}
+        wishBtn={addToWishlist}
+        cartBtn={addToCart}
+        type={"heart"}
+      />
 
       <div className="relative d-none d-md-block">
         <button className="custom-prev custom-prev-home">

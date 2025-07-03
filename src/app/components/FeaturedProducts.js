@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 
@@ -17,9 +18,8 @@ import { LOGIN_ERROR_MSG } from "../utils/constants";
 
 import "swiper/css";
 import "swiper/css/navigation";
-import toast from "react-hot-toast";
 
-const FeaturedCard = ({ products }) => {
+const FeaturedCard = ({ products, fetchData }) => {
   const router = useRouter();
   const { handleGetCartDetail } = useCartPanelStore();
 
@@ -27,6 +27,7 @@ const FeaturedCard = ({ products }) => {
     loader(true);
     try {
       const data = await modifyWishlist({ product_id: id });
+      fetchData();
       toast.success(data?.message);
     } catch (error) {
       const status = error?.response?.status;
@@ -34,8 +35,10 @@ const FeaturedCard = ({ products }) => {
         sessionStorage.setItem("postLoginRedirect", "/shop");
         router.push("/login");
         toast.error(LOGIN_ERROR_MSG);
+        return;
       }
-      getErrorMessage(error);
+      const MSG = getErrorMessage(error);
+      toast.error(MSG);
     } finally {
       loader(false);
     }
@@ -53,8 +56,10 @@ const FeaturedCard = ({ products }) => {
         sessionStorage.setItem("postLoginRedirect", "/shop");
         router.push("/login");
         toast.error(LOGIN_ERROR_MSG);
+        return;
       }
-      getErrorMessage(error);
+      const MSG = getErrorMessage(error);
+      toast.error(MSG);
     } finally {
       loader(false);
     }
@@ -70,6 +75,7 @@ const FeaturedCard = ({ products }) => {
         products={products}
         wishBtn={addToWishlist}
         cartBtn={addToCart}
+        type={"heart"}
       />
       <div className="relative d-none d-md-block">
         <button className="custom-prev custom-prev-home">
@@ -129,13 +135,13 @@ const FeaturedCard = ({ products }) => {
   );
 };
 
-export default function FeaturedProducts({ products }) {
+export default function FeaturedProducts({ products, fetchData }) {
   return (
     <div className="md:px-20 feature-product-card">
       <Section
         title={"Featured Products"}
         desc={"Our hand-picked selection of the finest sarees for any occasion"}
-        section={<FeaturedCard products={products} />}
+        section={<FeaturedCard products={products} fetchData={fetchData} />}
       />
     </div>
   );

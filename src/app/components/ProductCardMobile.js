@@ -2,12 +2,15 @@ import React from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { SwiperSlide, Swiper } from "swiper/react";
-import { FeatureButtons } from "./ProductCard";
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
+import { FiHeart, FiShoppingCart } from "react-icons/fi";
+import { RiDeleteBinLine } from "react-icons/ri";
 
 import "swiper/css";
 import "swiper/css/navigation";
+import "./productCardStyle.css";
 
-const ProductCardMobile = ({ products, wishBtn, cartBtn }) => {
+const ProductCardMobile = ({ type, products, wishBtn, cartBtn }) => {
   const router = useRouter();
 
   const navigateToProductDetail = (id) => {
@@ -22,10 +25,21 @@ const ProductCardMobile = ({ products, wishBtn, cartBtn }) => {
     <div className="d-block d-md-none  mb-4">
       <div className="relative">
         <Swiper
+          modules={[Navigation, Pagination, Autoplay]}
           spaceBetween={13}
           slidesPerView={2}
           style={{
             minHeight: "20rem",
+          }}
+          autoplay={{
+            delay: 3000,
+            disableOnInteraction: false,
+          }}
+          breakpoints={{
+            480: { slidesPerView: 1 },
+            768: { slidesPerView: 2 },
+            1024: { slidesPerView: 3 },
+            1280: { slidesPerView: 4 },
           }}
         >
           {products?.map((item, i) => (
@@ -49,11 +63,30 @@ const ProductCardMobile = ({ products, wishBtn, cartBtn }) => {
                 />
 
                 <div className="flex items-center gap-2 absolute top-44">
-                  <FeatureButtons
-                    type={"heart"}
-                    btn1Func={() => wishBtn(item?.id)}
-                    btn2Func={() => handleOpenCart(item?.id)}
-                  />
+                  <button
+                    className={`feature-product-btn-mbl ${
+                      item?.wishList ? "wishlist-active-mbl" : ""
+                    }`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      wishBtn(item?.id);
+                    }}
+                  >
+                    {type === "heart" ? (
+                      <FiHeart className="font-bold" />
+                    ) : (
+                      <RiDeleteBinLine className="font-bold" />
+                    )}
+                  </button>
+                  <button
+                    className="feature-product-btn"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleOpenCart(item?.id);
+                    }}
+                  >
+                    <FiShoppingCart className="font-bold" />
+                  </button>
                 </div>
 
                 <div className="py-3 flex flex-col self-start">

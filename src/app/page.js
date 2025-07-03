@@ -34,15 +34,23 @@ export default function Home() {
     fetchData();
   }, []);
 
-
   return (
     <div>
       <BannerCarousel />
       <CollectionsSection />
-      {homeDetails?.featured_products?.length > 0 && <FeaturedProducts  products={homeDetails?.featured_products} />}
-      {homeDetails?.new_collection_categories?.length > 0 && <NewCollections data={homeDetails?.new_collection_categories} />}
+      {homeDetails?.featured_products?.length > 0 && (
+        <FeaturedProducts
+          products={homeDetails?.featured_products}
+          fetchData={fetchData}
+        />
+      )}
+      {homeDetails?.new_collection_categories?.length > 0 && (
+        <NewCollections data={homeDetails?.new_collection_categories} />
+      )}
       <SaleSection />
-      {homeDetails?.shop_collection?.length > 0 && <CategorySection collection={homeDetails?.shop_collection} />}
+      {homeDetails?.shop_collection?.length > 0 && (
+        <CategorySection collection={homeDetails?.shop_collection} />
+      )}
     </div>
   );
 }
