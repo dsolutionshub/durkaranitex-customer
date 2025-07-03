@@ -40,11 +40,11 @@ export default function AccountPage() {
   const [profileInfo, setProfileInfo] = useState([]);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
-  const handleLoggedOut = () => {
+  const handleLoggedOut = async () => {
     handleLogout();
-    router.push("/");
     cardDetails();
     wishlistDetails();
+    router.push("/");
     toast.success(LOGGED_OUT_MSG);
   };
 

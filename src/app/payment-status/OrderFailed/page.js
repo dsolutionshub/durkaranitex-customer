@@ -45,25 +45,29 @@ const OrderFailure = () => {
             </div>
           </div>
 
-          <div className="space-y-4 animate-fade-in delay-600">
+          <div className="d-flex flex-column flex-lg-row align-items-lg-center w-full lg:gap-2">
             <button
               onClick={() => router.push("/checkout")}
-              className="w-full flex items-center justify-center bg-red-600 text-white py-3 px-6 rounded-lg hover:bg-red-700 transition-all duration-200 hover:scale-105 hover:shadow-lg"
+              className="flex-grow-1 flex items-center justify-center bg-red-600 
+              text-white py-2 gap-2 rounded hover:bg-red-700 transition-all duration-200 hover:scale-105"
             >
-              <RefreshCw size={20} className="mr-2" />
-              Retry Payment
+              <RefreshCw size={20} />
+              Back to Checkout
             </button>
+
             <button
-              onClick={() => router.push("/cart")}
-              className="w-full flex items-center justify-center border border-gray-300 text-gray-700 py-3 px-6 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:scale-105"
+              onClick={() => router.push("/shop")}
+              className="flex-grow-1 py-2 border rounded hover:bg-red-100 
+              transition-all duration-200 hover:scale-105"
             >
-              Back to Cart
+              Continue Shopping
             </button>
             <button
               onClick={() => router.push("/")}
-              className="w-full flex items-center justify-center text-gray-600 py-3 px-6 rounded-lg hover:text-gray-900 transition-all duration-200 hover:scale-105"
+              className="flex-grow-1 flex items-center rounded justify-center  py-2 gap-2 
+              hover:bg-red-100 transition-all duration-200 hover:scale-105"
             >
-              <Home size={20} className="mr-2" />
+              <Home size={20} />
               Back to Home
             </button>
           </div>

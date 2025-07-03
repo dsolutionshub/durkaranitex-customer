@@ -1,23 +1,30 @@
 "use client";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 import CheckoutForm from "./components/CheckoutForm";
 import OrderSummary from "./components/OrderSummary";
-import { getErrorMessage, loadRazorpayScript } from "../utils/helperFn";
+import Loader from "../components/loader/loader";
+import { loader } from "../components/loader/loaderManager";
+
 import {
   getCheckoutList,
   payment,
   removeCart,
 } from "../api/services/authService";
-import { loader } from "../components/loader/loaderManager";
-import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/store/useAuthStore";
+import { getErrorMessage, loadRazorpayScript } from "../utils/helperFn";
 import { initiateRazorpayPayment } from "../utils/initiateRazorpay";
-import { LOGIN_MSG } from "../utils/constants";
-import Loader from "../components/loader/loader";
+import {
+  COD_SUCCESS_MSG,
+  LOGIN_MSG,
+  SELECT_ADDRESS_ERROR_MSG,
+} from "../utils/constants";
 
 export default function CheckoutPage() {
   const router = useRouter();
+  const userData = useAuthStore((state) => state.userData);
 
   const [checkoutData, setCheckoutData] = useState(null);
   const [selectedPayment, setSelectedPayment] = useState("payNow");
@@ -25,11 +32,10 @@ export default function CheckoutPage() {
 
   const handlePayment = async () => {
     if (!checkoutData?.address) {
-      toast.error("Please Select or Add Address");
+      toast.error(SELECT_ADDRESS_ERROR_MSG);
       return;
     }
     loader(true);
-
     try {
       const data = await payment({
         checkout_id: checkoutData?.checkout_id,
@@ -37,14 +43,14 @@ export default function CheckoutPage() {
       });
       if (selectedPayment === "payNow") {
         await loadRazorpayScript();
-        initiateRazorpayPayment({ order: data });
+        initiateRazorpayPayment({ order: data, customer: userData });
       } else {
-        toast.success("Order placed successfully (Cash on Delivery)");
+        toast.success(COD_SUCCESS_MSG);
         router.push("/payment-status?status=success");
       }
     } catch (error) {
       const MSG = getErrorMessage(error);
-      toast.success(MSG);
+      toast.error(MSG);
       const status = error?.response?.status;
       if (status === 401) {
         sessionStorage.setItem("postLoginRedirect", "/checkout");
