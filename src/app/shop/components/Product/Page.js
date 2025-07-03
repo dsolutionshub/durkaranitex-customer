@@ -24,7 +24,7 @@ import {
 } from "@/app/api/services/authService";
 
 function Product() {
-  const itemsPerPage = 10;
+  const itemsPerPage = 16;
   const router = useRouter();
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
