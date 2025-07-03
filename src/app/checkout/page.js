@@ -14,12 +14,14 @@ import { loader } from "../components/loader/loaderManager";
 import { useRouter } from "next/navigation";
 import { initiateRazorpayPayment } from "../utils/initiateRazorpay";
 import { LOGIN_MSG } from "../utils/constants";
+import Loader from "../components/loader/loader";
 
 export default function CheckoutPage() {
   const router = useRouter();
 
   const [checkoutData, setCheckoutData] = useState(null);
   const [selectedPayment, setSelectedPayment] = useState("payNow");
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
   const handlePayment = async () => {
     if (!checkoutData?.address) {
@@ -82,16 +84,27 @@ export default function CheckoutPage() {
   };
 
   useEffect(() => {
-    const token = sessionStorage.getItem("accessToken");
-    if (!token || token === "undefined") {
-      router.replace("/login");
-      toast.error(LOGIN_MSG);
-    }
+    handleCheckoutList();
   }, []);
 
   useEffect(() => {
-    handleCheckoutList();
+    const token = sessionStorage.getItem("accessToken");
+
+    if (!token || token === "undefined") {
+      toast.error(LOGIN_MSG);
+      router.replace("/login");
+    } else {
+      setIsCheckingAuth(false);
+    }
   }, []);
+
+  if (isCheckingAuth) {
+    return (
+      <div className="h-[60vh]">
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen py-10 md:mx-3 m-3 md:m-0">

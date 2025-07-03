@@ -113,7 +113,7 @@ export default function AddressCard({
                           </div>
 
                           <div className="flex items-start gap-2">
-                            <MapPin className="h-4 w-4 text-gray-400 mt-[.3rem]" />
+                            <MapPin className="h-4 w-4 text-gray-600 mt-[.3rem]" />
                             <div>
                               <p className="mb-0 fw-medium dark-color">
                                 {address.address}

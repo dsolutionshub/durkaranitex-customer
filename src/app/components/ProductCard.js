@@ -2,12 +2,12 @@
 
 import React from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 import { FiHeart, FiShoppingCart } from "react-icons/fi";
 import { RiDeleteBinLine } from "react-icons/ri";
 
 import "./productCardStyle.css";
-import { useRouter } from "next/navigation";
 
 
 export const FeatureButtons = ({ type, btn1Func, btn2Func, isInWishlist }) => (

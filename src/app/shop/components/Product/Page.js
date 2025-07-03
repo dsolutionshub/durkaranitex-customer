@@ -45,6 +45,7 @@ function Product() {
 
   const handlePriceChange = (range) => {
     setPriceRange(range);
+    setOpenFilter(false);
   };
 
   const productDetails = async (filter = null, min = 0, max = 0) => {

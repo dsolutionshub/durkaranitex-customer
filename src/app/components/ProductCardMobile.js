@@ -61,8 +61,8 @@ const ProductCardMobile = ({ products, wishBtn, cartBtn }) => {
                     className="text-black font-semibold mb-0 self-start"
                     title={item?.title}
                   >
-                    {item?.title?.length > 18
-                      ? `${item?.title.slice(0, 18)}...`
+                    {item?.title?.length > 16
+                      ? `${item?.title.slice(0, 16)}...`
                       : item?.title}
                   </h6>
                   <div className="self-start">

@@ -15,6 +15,7 @@ import { loader } from "../components/loader/loaderManager";
 import { useAuthStore } from "@/store/useAuthStore";
 import { LOGGED_OUT_MSG, LOGIN_MSG } from "../utils/constants";
 import useCartPanelStore from "@/store/useCartPanelStore";
+import Loader from "../components/loader/loader";
 
 const tabs = [
   { key: "account", label: "Account", Icon: User },
@@ -37,6 +38,7 @@ export default function AccountPage() {
   const { wishlistDetails, cardDetails } = useCartPanelStore();
   const [selectedTab, setSelectedTab] = useState("account");
   const [profileInfo, setProfileInfo] = useState([]);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
   const handleLoggedOut = () => {
     handleLogout();
@@ -77,11 +79,22 @@ export default function AccountPage() {
 
   useEffect(() => {
     const token = sessionStorage.getItem("accessToken");
+
     if (!token || token === "undefined") {
-      router.replace("/login");
       toast.error(LOGIN_MSG);
+      router.replace("/login");
+    } else {
+      setIsCheckingAuth(false);
     }
   }, []);
+
+  if (isCheckingAuth) {
+    return (
+      <div className="h-[60vh]">
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <div className="px-4 py-10 min-h-screen">

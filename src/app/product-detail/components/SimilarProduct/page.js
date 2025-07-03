@@ -1,5 +1,4 @@
 "use client";
-import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
@@ -8,18 +7,17 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import Section from "@/app/components/Section";
 import ProductCardMobile from "@/app/components/ProductCardMobile";
 import ProductCard from "@/app/components/ProductCard";
-import products from "./products.json";
+
+import { getErrorMessage } from "@/app/utils/helperFn";
+import { LOGIN_ERROR_MSG } from "@/app/utils/constants";
+import { loader } from "@/app/components/loader/loaderManager";
+import { modifyCart, modifyWishlist } from "@/app/api/services/authService";
 
 import "swiper/css";
 import "swiper/css/navigation";
-import { modifyCart, modifyWishlist } from "@/app/api/services/authService";
-import { loader } from "@/app/components/loader/loaderManager";
-import { getErrorMessage } from "@/app/utils/helperFn";
-import { LOGIN_ERROR_MSG } from "@/app/utils/constants";
 
 const SimilarProducts = ({ products }) => {
   const router = useRouter();
-  const [quantities, setQuantities] = useState({});
 
   const addToWishlist = async (id) => {
     loader(true);

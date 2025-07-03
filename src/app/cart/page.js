@@ -17,12 +17,14 @@ import {
 import { CART_MODEL, LOGIN_MSG } from "../utils/constants";
 import { getErrorMessage } from "../utils/helperFn";
 import useCartPanelStore from "@/store/useCartPanelStore";
+import Loader from "../components/loader/loader";
 
 const Cart = () => {
   const router = useRouter();
   const { setCartOpen, cardDetails } = useCartPanelStore();
   const [totalCost, setTotalCost] = useState(0);
   const [products, setProducts] = useState([]);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
   const fetchCart = async () => {
     loader(true);
@@ -123,12 +125,22 @@ const Cart = () => {
 
   useEffect(() => {
     const token = sessionStorage.getItem("accessToken");
+
     if (!token || token === "undefined") {
-      router.replace("/login");
       toast.error(LOGIN_MSG);
+      router.replace("/login");
+    } else {
+      setIsCheckingAuth(false);
     }
   }, []);
 
+  if (isCheckingAuth) {
+    return (
+      <div className="h-[60vh]">
+        <Loader />
+      </div>
+    );
+  }
   return (
     <>
       <CustomBreadCrumb model={CART_MODEL} title={"Shopping Cart"} />

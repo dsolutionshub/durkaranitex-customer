@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import ProductCard from "../components/ProductCard";
 import { loader } from "../components/loader/loaderManager";
 import CustomBreadCrumb from "../components/CustomBreadCrumb";
+import Loader from "../components/loader/loader";
 
 import useCartPanelStore from "@/store/useCartPanelStore";
 import {
@@ -23,6 +24,7 @@ const Wishlist = () => {
   const router = useRouter();
   const { handleGetCartDetail } = useCartPanelStore();
   const [wishlist, setWishlist] = useState([]);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
   const fetchWishlist = async () => {
     loader(true);
@@ -76,11 +78,22 @@ const Wishlist = () => {
 
   useEffect(() => {
     const token = sessionStorage.getItem("accessToken");
+
     if (!token || token === "undefined") {
-      router.replace("/login");
       toast.error(LOGIN_MSG);
+      router.replace("/login");
+    } else {
+      setIsCheckingAuth(false);
     }
   }, []);
+
+  if (isCheckingAuth) {
+    return (
+      <div className="h-[60vh]">
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <>

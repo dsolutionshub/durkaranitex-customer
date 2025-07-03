@@ -64,7 +64,7 @@ const signupFields = [
 
 const LoginForm = ({ isLogin, setIsLogin }) => {
   const router = useRouter();
-  const { setIsLoginTrue } = useAuthStore();
+  const { setIsLoginTrue, handleSaveUserData } = useAuthStore();
   const { cardDetails, wishlistDetails } = useCartPanelStore();
   const fields = isLogin ? loginFields : signupFields;
 
@@ -104,7 +104,7 @@ const LoginForm = ({ isLogin, setIsLogin }) => {
         toast.success("Account created please login");
       } else {
         sessionStorage.setItem("accessToken", data?.token);
-        sessionStorage.setItem("customer", JSON.stringify(data?.customer));
+        // handleSaveUserData(data?.customer);
         const redirectPath =
           sessionStorage.getItem("postLoginRedirect") || "/account";
         router.replace(redirectPath);

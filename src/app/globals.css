@@ -205,3 +205,27 @@ select option:first-child {
 .p-dialog-mask {
   background-color: rgba(0, 0, 0, 0.6);
 }
+
+/* product-filter-scroll */
+.product-filter-scroll {
+  height: 100%;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+.product-filter-scroll::-webkit-scrollbar {
+  width: 8px;
+  background-color: transparent;
+}
+
+.product-filter-scroll::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.product-filter-scroll:hover::-webkit-scrollbar-thumb,
+.product-filter-scroll:active::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3);
+}

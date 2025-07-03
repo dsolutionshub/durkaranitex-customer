@@ -14,12 +14,12 @@ import {
 } from "../api/services/authService";
 import { getErrorMessage } from "../utils/helperFn";
 import Section from "./Section";
+import { loader } from "./loader/loaderManager";
 import useCartPanelStore from "@/store/useCartPanelStore";
 
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { loader } from "./loader/loaderManager";
 
 const CollectionTab = ({ data }) => {
   const router = useRouter();
@@ -96,7 +96,7 @@ const CollectionTab = ({ data }) => {
 
   return (
     <div className="md:px-20 feature-product-card">
-      <div className="overflow-x-auto sm:overflow-visible">
+      <div className="overflow-x-auto sm:overflow-visible scrollbar-hide-on-idle">
         <div className="flex justify-start sm:justify-center items-center gap-4 sm:gap-x-10 mb-6 sm:mb-8 px-4 min-w-max">
           {data?.map((tab) => (
             <button
@@ -164,7 +164,8 @@ const CollectionTab = ({ data }) => {
 
         <div className="text-center mt-10">
           <button
-            className="px-6 py-2 bg-green-800 text-white rounded-md hover:bg-green-700 transition"
+            className="px-6 py-2 bg-[var(--primary-main)] text-white rounded-md 
+            hover:bg-[var(--primary-dark)] transition"
             onClick={() => router.push("/shop")}
           >
             View More
