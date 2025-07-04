@@ -1,8 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 import { loginSchema, signupSchema } from "@/app/utils/validationSchema";
 import { loader } from "@/app/components/loader/loaderManager";
@@ -67,6 +69,7 @@ const LoginForm = ({ isLogin, setIsLogin }) => {
   const { setIsLoginTrue, handleSaveUserData } = useAuthStore();
   const { cardDetails, wishlistDetails } = useCartPanelStore();
   const fields = isLogin ? loginFields : signupFields;
+  const [visibility, setVisibility] = useState({});
 
   const formik = useFormik({
     initialValues: {
@@ -135,29 +138,67 @@ const LoginForm = ({ isLogin, setIsLogin }) => {
     formik.resetForm();
   };
 
+  const toggleVisibility = (fieldName) => {
+    setVisibility((prev) => ({
+      ...prev,
+      [fieldName]: !prev[fieldName],
+    }));
+  };
+
+  const getInputType = (field) => {
+    const isPasswordField =
+      field.type === "password" ||
+      field.name.toLowerCase().includes("password");
+
+    return isPasswordField && visibility[field.name] ? "text" : field.type;
+  };
+
   return (
     <form onSubmit={formik.handleSubmit} className="space-y-2 mt-4">
-      {fields.map((field) => (
-        <div key={field.name}>
-          <label className="block text-sm font-medium text-gray-700">
-            {field.label}
-          </label>
-          <input
-            name={field.name}
-            type={field.type}
-            placeholder={field.placeholder}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values[field.name] || ""}
-            className="mt-1 w-full p-2 border rounded-md pr-10 dark-color"
-          />
-          {formik.touched[field.name] && formik.errors[field.name] && (
-            <div className="text-red-500 text-sm">
-              {formik.errors[field.name]}
+      {fields.map((field) => {
+        const isPasswordField =
+          field.type === "password" ||
+          field.name.toLowerCase().includes("password");
+
+        return (
+          <div key={field.name}>
+            <label className="block text-sm font-medium text-gray-700">
+              {field.label}
+            </label>
+
+            <div className="relative">
+              <input
+                name={field.name}
+                type={getInputType(field)}
+                placeholder={field.placeholder}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values[field.name] || ""}
+                className="mt-1 w-full p-2 border rounded-md pr-10 dark-color"
+              />
+
+              {isPasswordField && (
+                <span
+                  onClick={() => toggleVisibility(field.name)}
+                  className="absolute right-3 top-4 cursor-pointer text-gray-500"
+                >
+                  {visibility[field.name] ? (
+                    <FaEyeSlash size={20} />
+                  ) : (
+                    <FaEye size={20} />
+                  )}
+                </span>
+              )}
             </div>
-          )}
-        </div>
-      ))}
+
+            {formik.touched[field.name] && formik.errors[field.name] && (
+              <div className="text-red-500 text-sm">
+                {formik.errors[field.name]}
+              </div>
+            )}
+          </div>
+        );
+      })}
 
       <button
         type="submit"

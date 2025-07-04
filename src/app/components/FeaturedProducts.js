@@ -21,13 +21,14 @@ import "swiper/css/navigation";
 
 const FeaturedCard = ({ products, fetchData }) => {
   const router = useRouter();
-  const { handleGetCartDetail } = useCartPanelStore();
+  const { handleGetCartDetail, wishlistDetails } = useCartPanelStore();
 
   const addToWishlist = async (id) => {
     loader(true);
     try {
       const data = await modifyWishlist({ product_id: id });
       fetchData();
+      wishlistDetails();
       toast.success(data?.message);
     } catch (error) {
       const status = error?.response?.status;

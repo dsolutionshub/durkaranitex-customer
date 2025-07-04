@@ -72,15 +72,16 @@ export default function AddressCard({
               const isSelected = checkoutData?.address?.id === address.id;
               return (
                 <div key={address.id} className="flex items-start gap-3 ml-1">
-                  <RadioButton
-                    inputId={`address-${address.id}`}
+                  <input
+                    type="radio"
+                    id={`address-${address.id}`}
+                    name="address"
                     value={address.id}
                     checked={isSelected}
-                    onChange={handleSelectAddress}
-                    className="mt-3"
+                    onChange={() => handleSelectAddress(address.id)}
+                    className="mt-3 accent-[var(--primary-main)] mr-3 scale-115 cursor-pointer"
                     style={{
-                      outline: "none",
-                      transform: "scale(1.5)",
+                      transform: "scale(1.4)",
                     }}
                   />
 

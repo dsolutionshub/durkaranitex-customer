@@ -33,14 +33,11 @@ const navItems = [
 export default function Navbar() {
   const router = useRouter();
   const { isLoggedIn } = useAuthStore();
-  const {
-    isCartOpen,
-    handleGetCartDetail,
-    cartProducts,
-    cardDetails,
-    wishlistDetails,
-    wishListData,
-  } = useCartPanelStore();
+  const { isCartOpen, handleGetCartDetail, cardDetails, wishlistDetails } =
+    useCartPanelStore();
+
+  const cartCount = useCartPanelStore((state) => state.cartCount);
+  const wishListCount = useCartPanelStore((state) => state.wishListCount);
 
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -100,7 +97,7 @@ export default function Navbar() {
             className="absolute -top-1 -right-2 bg-red-500 text-white text-xs font-bold
               h-[1.2rem] w-[1.2rem] flex items-center justify-center rounded-full"
           >
-            {cartProducts?.length || 0}
+            {cartCount || 0}
           </span>
         </div>
       </div>
@@ -139,7 +136,7 @@ export default function Navbar() {
               className="absolute -top-1 -right-2 bg-red-500 text-white text-xs font-bold 
               h-[1.2rem] w-[1.2rem] flex items-center justify-center rounded-full"
             >
-              {wishListData?.length || 0}
+              {wishListCount || 0}
             </span>
           </div>
 
@@ -149,7 +146,7 @@ export default function Navbar() {
               className="absolute -top-1 -right-2 bg-red-500 text-white text-xs font-bold
               h-[1.2rem] w-[1.2rem] flex items-center justify-center rounded-full"
             >
-              {cartProducts?.length || 0}
+              {cartCount || 0}
             </span>
           </div>
 

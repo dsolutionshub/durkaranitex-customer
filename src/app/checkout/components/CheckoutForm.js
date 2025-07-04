@@ -1,8 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { FiCreditCard } from "react-icons/fi";
 import { LiaRupeeSignSolid } from "react-icons/lia";
 
+import AddressCard from "./AddressCard";
+import { loader } from "@/app/components/loader/loaderManager";
 import AddAdressModel from "./AddAdressModel";
 import { getErrorMessage } from "@/app/utils/helperFn";
 import {
@@ -10,15 +13,12 @@ import {
   getCustomerAddressList,
   updateCheckoutAddress,
 } from "@/app/api/services/authService";
-import AddressCard from "./AddressCard";
-import { loader } from "@/app/components/loader/loaderManager";
-import toast from "react-hot-toast";
 
 export default function CheckoutForm({
   checkoutData,
   selectedPayment,
   setSelectedPayment,
-  handleCheckoutList
+  handleCheckoutList,
 }) {
   const [addressList, setAddressList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -50,8 +50,9 @@ export default function CheckoutForm({
     setIsModalOpen(false);
   };
 
-  const handleSelectAddress = async (e) => {
-    const selectedAddressId = e.value;
+  const handleSelectAddress = async (value) => {
+    const selectedAddressId = value;
+
     const checkoutId = checkoutData?.checkout_id;
     const formData = new FormData();
     formData.append("checkout_id", checkoutId);

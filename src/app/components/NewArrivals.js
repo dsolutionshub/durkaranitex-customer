@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
@@ -13,6 +14,7 @@ import {
   modifyWishlist,
 } from "../api/services/authService";
 import { getErrorMessage } from "../utils/helperFn";
+import { LOGIN_ERROR_MSG } from "../utils/constants";
 import Section from "./Section";
 import { loader } from "./loader/loaderManager";
 import useCartPanelStore from "@/store/useCartPanelStore";
@@ -20,8 +22,6 @@ import useCartPanelStore from "@/store/useCartPanelStore";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import toast from "react-hot-toast";
-import { LOGIN_ERROR_MSG } from "../utils/constants";
 
 const CollectionTab = ({ data }) => {
   const router = useRouter();
@@ -98,7 +98,7 @@ const CollectionTab = ({ data }) => {
 
   return (
     <div className="md:px-20 feature-product-card">
-      <div className="overflow-x-auto sm:overflow-visible scrollbar-hide-on-idle">
+      <div className="overflow-x-auto scrollbar-hide-on-idle">
         <div className="flex justify-start sm:justify-center items-center gap-4 sm:gap-x-10 mb-6 sm:mb-8 px-4 min-w-max">
           {data?.map((tab) => (
             <button

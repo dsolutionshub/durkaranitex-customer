@@ -3,43 +3,17 @@
 import Image from "next/image";
 import Section from "./Section";
 
-const categories = [
-  {
-    title: "Wedding collection silk saree",
-    desc: "Stunning bridal collections",
-    image: "/images/banner/banner1.webp",
-    isTop: true,
-  },
-  {
-    title: "Celebrity collection",
-    desc: "Comfort with style",
-    image: "/images/banner/banner2.webp",
-    isTop: false,
-  },
-  {
-    title: "Kanjivaram collections",
-    desc: "Celebrate in elegance",
-    image: "/images/banner/banner3.webp",
-    isTop: false,
-  },
-  {
-    title: "Couple collections",
-    desc: "Elegant yet professional",
-    image: "/images/banner/banner1.webp",
-    isTop: false,
-  },
-];
-
 const Categorycard = ({ data }) => {
   return (
     <div className="flex flex-wrap justify-between">
       {data?.map((cat, index) => (
         <div
           key={index}
-          className={`relative rounded-lg overflow-hidden shadow-lg category-card ${index == 0
-            ? "w-full h-96 mb-3 md:mb-10"
-            : "w-full sm:w-[100%] md:w-[48%] lg:w-[31%] h-96 mb-3 md:mb-0"
-            }`}
+          className={`relative rounded-lg overflow-hidden shadow-lg category-card ${
+            index == 0
+              ? "w-full h-96 mb-3 md:mb-10"
+              : "w-full sm:w-[100%] md:w-[48%] lg:w-[31%] h-96 mb-3 md:mb-0"
+          }`}
         >
           {/* {cat?.image && <Image
             src={cat?.image}
@@ -60,11 +34,10 @@ const Categorycard = ({ data }) => {
               height={400}
               className="object-cover w-full h-full m-0 category-card"
             />
-          )
-          }
+          )}
           <div className="absolute inset-0 bg-gradient-to-t from-gray-800 to-transparent opacity-80 transition duration-300" />
           <div className="absolute bottom-6 left-6 text-white category-content-card">
-            <h3 className="text-2xl font-bold">{cat?.name}</h3>
+            <h3 className="text-2xl font-bold mb-0 md:mb-2">{cat?.name}</h3>
             <button className="px-5 py-2 border border-white rounded-md hover:bg-white hover:text-gray-900 transition">
               Explore Collection
             </button>

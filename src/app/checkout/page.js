@@ -55,6 +55,7 @@ export default function CheckoutPage() {
       if (status === 401) {
         sessionStorage.setItem("postLoginRedirect", "/checkout");
         router.push("/login");
+        return;
       }
     } finally {
       loader(false);
@@ -67,7 +68,8 @@ export default function CheckoutPage() {
       const data = await getCheckoutList();
       setCheckoutData(data || []);
     } catch (error) {
-      getErrorMessage(error);
+      const MSG = getErrorMessage(error);
+      toast.error(MSG);
     } finally {
       loader(false);
     }

@@ -55,7 +55,7 @@ const ProductDetails = () => {
 
   useEffect(() => {
     handleGetProductDetails();
-  }, []);
+  }, [id]);
 
   return (
     <div>

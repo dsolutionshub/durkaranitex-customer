@@ -26,7 +26,10 @@ const tabs = [
 
 const LogOutComponent = ({ handleLoggedOut }) => {
   return (
-    <button className="dark-color" onClick={handleLoggedOut}>
+    <button
+      className="dark-color bg-red-700 rounded text-white hover:bg-red-600 px-3 py-1"
+      onClick={handleLoggedOut}
+    >
       Logout
     </button>
   );
@@ -35,15 +38,15 @@ const LogOutComponent = ({ handleLoggedOut }) => {
 export default function AccountPage() {
   const router = useRouter();
   const { handleLogout } = useAuthStore();
-  const { wishlistDetails, cardDetails } = useCartPanelStore();
+  const { setWishListCount, setCartCount } = useCartPanelStore();
   const [selectedTab, setSelectedTab] = useState("account");
   const [profileInfo, setProfileInfo] = useState([]);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
   const handleLoggedOut = async () => {
     handleLogout();
-    cardDetails();
-    wishlistDetails();
+    setCartCount(0);
+    setWishListCount(0);
     router.push("/");
     toast.success(LOGGED_OUT_MSG);
   };

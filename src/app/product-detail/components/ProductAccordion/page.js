@@ -7,7 +7,11 @@ import { FaRegHeart, FaHeart } from "react-icons/fa";
 
 import ShareProductBox from "../ShareProductBox/page";
 import useCartPanelStore from "@/store/useCartPanelStore";
-import { buyNow, modifyCart, modifyWishlist } from "@/app/api/services/authService";
+import {
+  buyNow,
+  modifyCart,
+  modifyWishlist,
+} from "@/app/api/services/authService";
 import { getErrorMessage } from "@/app/utils/helperFn";
 import { loader } from "@/app/components/loader/loaderManager";
 
@@ -25,7 +29,7 @@ export default function ProductAccordion({
   const router = useRouter();
   const { handleGetCartDetail, wishlistDetails } = useCartPanelStore();
   const [showButtons, setShowButtons] = useState(true);
-  const [description, setDescription] = useState([])
+  const [description, setDescription] = useState([]);
 
   async function handleLike() {
     loader(true);
@@ -57,16 +61,16 @@ export default function ProductAccordion({
             (item) =>
               `<p><strong>${item.title}</strong> ${item.description}</p>`
           )
-        }
+          .join("")}
+          <p><strong>Disclaimer: </strong> Product color may slightly vary due to photographic lighting sources or your monitor settings</p>
       </div>`,
     },
     {
       title: "Replacements & Exchanges",
       content: `Return & Replacements within 5 days of purchase for product damages only.
-(Offer product / Innerwear/ Imitation Jewellery / Discount products are not Eligible to Return/Exchange*)`,
+      (Offer product / Innerwear/ Imitation Jewellery / Discount products are not Eligible to Return/Exchange*)`,
     },
   ];
-
 
   const addToCart = async () => {
     loader(true);
@@ -83,7 +87,7 @@ export default function ProductAccordion({
     }
   };
 
-  const handleByeNow = async() => {
+  const handleByeNow = async () => {
     loader(true);
     try {
       const data = await buyNow({
@@ -100,8 +104,8 @@ export default function ProductAccordion({
   };
 
   useEffect(() => {
-    setDescription(sections?.description)
-  }, [sections])
+    setDescription(sections?.description);
+  }, [sections]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -160,8 +164,9 @@ export default function ProductAccordion({
               </button>
 
               <div
-                className={`product-accordion-content ${isOpen ? "open" : "closed"
-                  }`}
+                className={`product-accordion-content ${
+                  isOpen ? "open" : "closed"
+                }`}
               >
                 <div dangerouslySetInnerHTML={{ __html: section.content }} />
               </div>
@@ -195,10 +200,11 @@ export default function ProductAccordion({
         <div
           className={`flex flex-col md:flex-row items-center justify-center space-y-3
         md:space-y-0 md:space-x-3 gap-3 product-detail-cart-btn
-        ${showButtons
-              ? "opacity-100 pointer-events-auto"
-              : "opacity-0 pointer-events-none"
-            }
+        ${
+          showButtons
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
+        }
         `}
         >
           <button
