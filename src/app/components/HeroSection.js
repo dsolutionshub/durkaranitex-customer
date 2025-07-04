@@ -5,9 +5,9 @@ import { Carousel } from "primereact/carousel";
 
 export function BannerCarousel() {
   const images = [
-    { id: 1, src: "/images/banner/banner1.webp" },
-    { id: 2, src: "/images/banner/banner2.webp" },
-    { id: 3, src: "/images/banner/banner3.webp" },
+    { id: 1, src: "/images/banner/Acrylic Tumblerr.png" },
+    { id: 2, src: "/images/banner/Orange Navy.png" },
+    { id: 3, src: "/images/banner/Orange Navy 3.png" },
   ];
 
   const imageTemplate = (item) => {
