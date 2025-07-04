@@ -66,7 +66,7 @@ const signupFields = [
 
 const LoginForm = ({ isLogin, setIsLogin }) => {
   const router = useRouter();
-  const { setIsLoginTrue, handleSaveUserData } = useAuthStore();
+  const { handleSaveUserData } = useAuthStore();
   const { cardDetails, wishlistDetails } = useCartPanelStore();
   const fields = isLogin ? loginFields : signupFields;
   const [visibility, setVisibility] = useState({});
@@ -114,7 +114,6 @@ const LoginForm = ({ isLogin, setIsLogin }) => {
         toast.success("Welcome back! Happy shopping!");
         wishlistDetails();
         cardDetails();
-        setIsLoginTrue();
       }
       formik.resetForm();
     } catch (error) {

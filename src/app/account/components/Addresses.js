@@ -1,51 +1,38 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import AddressForm from "../components/AddressForm";
 import { MapPin, User, Mail, Phone, Home, Edit, Trash } from "lucide-react";
 import {
-  addAddress,
   deleteAddress,
   getCustomerAddressList,
-  getStateList,
-  updateAddress,
+  getSelectAddress,
 } from "@/app/api/services/authService";
-import { GET_STATE_LIST } from "@/app/utils/apiEndpoints";
 import { getErrorMessage } from "@/app/utils/helperFn";
 import { loader } from "@/app/components/loader/loaderManager";
-import toast from "react-hot-toast";
 
 export default function AddressPage() {
   const [addresses, setAddresses] = useState([]);
-  const [states, setStates] = useState([]);
   const [showForm, setShowForm] = useState(false);
-  const [editingAddress, setEditingAddress] = useState(null);
+  const [addressDetail, setAddressDetail] = useState([]);
+  const [isEdit, setIsEdit] = useState(false);
 
   const handleEdit = async (address) => {
-    setEditingAddress(address);
-    setShowForm(true);
-  };
-
-  const handleSave = async (formData, isNew) => {
     loader(true);
     try {
-      if (isNew) {
-        await addAddress(formData);
-      } else {
-        await updateAddress(formData, formData.id);
-      }
-      await getAddressList();
-      setEditingAddress(null);
-      setShowForm(false);
+      const data = await getSelectAddress(address?.id);
+      setAddressDetail(data?.addresss);
+      setShowForm(true);
     } catch (error) {
-      getErrorMessage(error);
+      const MSG = getErrorMessage(error);
+      toast.error(MSG);
     } finally {
       loader(false);
     }
   };
 
   const handleCancel = () => {
-    setEditingAddress(null);
     setShowForm(false);
   };
 
@@ -63,10 +50,10 @@ export default function AddressPage() {
 
   const handleDelete = async (id) => {
     loader(true);
-    // setAddresses(addresses.filter((addr) => addr.id !== id));
     try {
       const data = await deleteAddress(addresses, id);
-      await getAddressList();
+      getAddressList();
+      toast.success(data?.message);
     } catch (error) {
       const MSG = getErrorMessage(error);
       toast.error(MSG);
@@ -74,18 +61,6 @@ export default function AddressPage() {
       loader(false);
     }
   };
-
-  // {
-  //   id: 1,
-  //   fullName: "Preethi",
-  //   email: "preethi@example.com",
-  //   phone: "9876543210",
-  //   street:
-  //     "6/380, Ashok Nagar, Perumagoundampatti, Salem, Tamil Nadu 637502",
-  //   city: "Chennai",
-  //   state: "Tamil Nadu",
-  //   isDefault: true,
-  // },
 
   useEffect(() => {
     getAddressList();
@@ -99,8 +74,8 @@ export default function AddressPage() {
         </h3>
         <button
           onClick={() => {
-            setEditingAddress(null);
             setShowForm(true);
+            setIsEdit(false);
           }}
           className="bg-green-800 text-white w-38 py-2 rounded hover:bg-green-700 text-sm"
         >
@@ -154,7 +129,10 @@ export default function AddressPage() {
                   {/* Icons on same line in mobile */}
                   <div className="flex gap-2 sm:hidden">
                     <button
-                      onClick={() => handleEdit(address)}
+                      onClick={() => {
+                        setIsEdit(true);
+                        handleEdit(address);
+                      }}
                       className="text-green-800 hover:text-black"
                       title="Edit"
                     >
@@ -174,7 +152,10 @@ export default function AddressPage() {
               {/* Desktop icons on right */}
               <div className="hidden sm:flex gap-2 mt-1 sm:mt-0">
                 <button
-                  onClick={() => handleEdit(address)}
+                  onClick={() => {
+                    setIsEdit(true);
+                    handleEdit(address);
+                  }}
                   className="text-green-800 hover:text-black"
                   title="Edit"
                 >
@@ -195,9 +176,12 @@ export default function AddressPage() {
 
       <AddressForm
         visible={showForm}
-        initialData={editingAddress}
-        onSave={handleSave}
         onCancel={handleCancel}
+        addressDetail={addressDetail}
+        isEdit={isEdit}
+        setShowForm={setShowForm}
+        showForm={showForm}
+        getAddressList={getAddressList}
       />
     </div>
   );

@@ -1,35 +1,34 @@
 "use client";
-import { getStateList } from "@/app/api/services/authService";
+
+import { useFormik } from "formik";
+import { useEffect, useState } from "react";
+import {
+  addAddress,
+  getStateList,
+  updateAddress,
+} from "@/app/api/services/authService";
 import { loader } from "@/app/components/loader/loaderManager";
 import { getErrorMessage } from "@/app/utils/helperFn";
-import { useState, useEffect } from "react";
+import toast from "react-hot-toast";
+import { addressValidationSchema } from "@/app/utils/validationSchema";
 
 export default function AddressForm({
   visible,
-  initialData,
-  onSave,
   onCancel,
+  addressDetail,
+  isEdit,
+  setShowForm,
+  getAddressList,
+  showForm,
 }) {
   const [states, setStates] = useState([]);
-  const [isNew, setIsNew] = useState(false);
-
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    mobile: "",
-    address: "",
-    city: "",
-    state_id: 1,
-    pincode: "",
-    isDefault: false,
-  });
 
   useEffect(() => {
     const fetchStates = async () => {
       loader(true);
       try {
         const { data } = await getStateList();
-        setStates(data.states);
+        setStates(data.states || []);
       } catch (error) {
         getErrorMessage(error);
       } finally {
@@ -37,122 +36,111 @@ export default function AddressForm({
       }
     };
 
-    if (initialData) {
-      setForm(initialData);
-      setIsNew(false);
-    } else {
-      setForm({
-        name: "",
-        email: "",
-        mobile: "",
-        address: "",
-        city: "",
-        state_id: 1,
-        pincode: "",
-        isDefault: false,
-      });
-      setIsNew(true);
-    }
-
     fetchStates();
-  }, [initialData]);
+  }, []);
+
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      email: "",
+      mobile: "",
+      address: "",
+      city: "",
+      state_id: 1,
+      pincode: "",
+      is_default: "0",
+    },
+    validationSchema: addressValidationSchema,
+    enableReinitialize: true,
+    onSubmit: async (values) => {
+      const formData = new FormData();
+      Object.entries(values).forEach(([key, value]) =>
+        formData.append(key, value)
+      );
+      loader(true);
+      try {
+        const data = isEdit
+          ? await updateAddress(formData, addressDetail?.id)
+          : await addAddress(formData);
+        toast.success(data?.message);
+        setShowForm(false);
+        getAddressList();
+      } catch (error) {
+        const msg = getErrorMessage(error);
+        toast.error(msg);
+      } finally {
+        loader(false);
+      }
+    },
+  });
+
+  useEffect(() => {
+    if (isEdit && addressDetail) {
+      formik.setValues({
+        name: addressDetail.name || "",
+        email: addressDetail.email || "",
+        mobile: addressDetail.mobile || "",
+        address: addressDetail.address || "",
+        address1: addressDetail.address1 || "",
+        city: addressDetail.city || "",
+        state_id: addressDetail.state_id || "",
+        pincode: addressDetail.pincode || "",
+        is_default: addressDetail.is_default === "1",
+      });
+    } else {
+      formik.resetForm();
+    }
+  }, [isEdit, showForm, addressDetail]);
 
   if (!visible) return null;
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setForm((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSave(form, isNew);
-  };
-
   return (
     <form
-      onSubmit={handleSubmit}
+      onSubmit={formik.handleSubmit}
       className="bg-white text-black p-6 rounded-md mt-6 shadow-inner"
     >
       <h3 className="font-semibold text-lg text-gray-800 mb-4">Address Form</h3>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium">Full Name</label>
-          <input
-            name="name"
-            value={form.name}
-            onChange={handleChange}
-            required
-            className="w-full border px-3 py-2 rounded"
-            placeholder="Your Name"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Email</label>
-          <input
-            name="email"
-            type="email"
-            value={form.email}
-            onChange={handleChange}
-            required
-            className="w-full border px-3 py-2 rounded"
-            placeholder="you@example.com"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Phone</label>
-          <input
-            name="mobile"
-            value={form.mobile}
-            onChange={handleChange}
-            required
-            className="w-full border px-3 py-2 rounded"
-            placeholder="9876543210"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Street</label>
-          <input
-            name="address"
-            value={form.address}
-            onChange={handleChange}
-            required
-            className="w-full border px-3 py-2 rounded"
-            placeholder="Street address"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">City</label>
-          <input
-            name="city"
-            value={form.city}
-            onChange={handleChange}
-            required
-            className="w-full border px-3 py-2 rounded"
-            placeholder="City"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Pincode</label>
-          <input
-            name="pincode"
-            value={form.pincode}
-            onChange={handleChange}
-            required
-            className="w-full border px-3 py-2 rounded"
-            placeholder="Pincode"
-          />
-        </div>
+        {[
+          { label: "Full Name", name: "name", placeholder: "Your Name" },
+          {
+            label: "Email",
+            name: "email",
+            placeholder: "you@example.com",
+            type: "email",
+          },
+          { label: "Phone", name: "mobile", placeholder: "Mobile Number" },
+          { label: "Street", name: "address", placeholder: "Street address" },
+          { label: "City", name: "city", placeholder: "City" },
+          { label: "Pincode", name: "pincode", placeholder: "Pincode" },
+        ].map(({ label, name, placeholder, type = "text" }) => (
+          <div key={name}>
+            <label className="block text-sm font-medium">{label}</label>
+            <input
+              name={name}
+              type={type}
+              placeholder={placeholder}
+              value={formik.values[name]}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              className="w-full border px-3 py-2 rounded"
+              required
+            />
+            {formik.touched[name] && formik.errors[name] && (
+              <p className="text-red-500 text-xs mt-1">{formik.errors[name]}</p>
+            )}
+          </div>
+        ))}
+
+        {/* State dropdown */}
         <div>
           <label className="block text-sm font-medium">State</label>
           <select
             name="state_id"
-            value={form.state_id}
-            onChange={handleChange}
+            value={formik.values.state_id}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             className="w-full border px-3 py-2 rounded"
           >
             {states.map((s) => (
@@ -161,21 +149,31 @@ export default function AddressForm({
               </option>
             ))}
           </select>
+          {formik.touched.state_id && formik.errors.state_id && (
+            <p className="text-red-500 text-xs mt-1">
+              {formik.errors.state_id}
+            </p>
+          )}
         </div>
       </div>
 
+      {/* Default address checkbox */}
       <div className="mt-4">
-        <label className="inline-flex items-center space-x-2 ">
+        <label className="inline-flex items-center space-x-2">
           <input
             type="checkbox"
-            name="isDefault"
-            checked={form.isDefault}
-            onChange={handleChange}
+            name="is_default"
+            checked={formik.values.is_default === "1"}
+            onChange={(e) => {
+              const newValue = e.target.checked ? "1" : "0";
+              formik.setFieldValue("is_default", newValue);
+            }}
           />
           <span className="pl-2">Make this my default address</span>
         </label>
       </div>
 
+      {/* Action buttons */}
       <div className="flex justify-end text-white gap-4 mt-6">
         <button
           type="button"

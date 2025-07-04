@@ -1,13 +1,12 @@
-import { Edit, Home, MapPin, Package, Plus, Trash2 } from "lucide-react";
 import { Button } from "primereact/button";
-import { RadioButton } from "primereact/radiobutton";
+import { Edit, Home, MapPin, Package, Plus, Trash2 } from "lucide-react";
 
 export default function AddressCard({
   addressList,
   handleDeleteAddress,
   handleSelectAddress,
   handleOpenModel,
-  setSelectedAddressId,
+  handleEditAddress,
   checkoutData,
 }) {
   return (
@@ -136,10 +135,9 @@ export default function AddressCard({
                       <div className="flex gap-3">
                         <Button
                           icon={<Edit className="h-4 w-4" />}
-                          className="p-button-text p-button-sm text-gray-600 d-none"
+                          className="p-button-text p-button-sm text-gray-600"
                           onClick={() => {
-                            handleOpenModel("edit");
-                            setSelectedAddressId(address.id);
+                            handleEditAddress(address.id);
                           }}
                         />
                         <Button

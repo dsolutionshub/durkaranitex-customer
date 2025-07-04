@@ -17,8 +17,8 @@ export default function AddAdressModel({
   isModalOpen,
   handleCloseModel,
   isEdit,
-  selectedAddressId,
   getAddressList,
+  addressDetail,
 }) {
   const [stateList, setStateList] = useState([]);
 
@@ -55,11 +55,10 @@ export default function AddAdressModel({
 
       loader(true);
       try {
-        if (isEdit) {
-          await updateAddress(formData, selectedAddressId);
-        } else {
-          await addAddress(formData);
-        }
+        const data = isEdit
+          ? await updateAddress(formData, addressDetail?.id)
+          : await addAddress(formData);
+        toast.success(data?.message);
         handleCloseModel();
         getAddressList();
       } catch (error) {
@@ -76,8 +75,17 @@ export default function AddAdressModel({
   }, []);
 
   useEffect(() => {
-    if (isEdit) {
-      formik.setValues(isEdit);
+    if (isEdit && addressDetail) {
+      formik.setValues({
+        name: addressDetail.name || "",
+        email: addressDetail.email || "",
+        mobile: addressDetail.mobile || "",
+        address: addressDetail.address || "",
+        address1: addressDetail.address1 || "",
+        city: addressDetail.city || "",
+        state_id: addressDetail.state_id || "",
+        pincode: addressDetail.pincode || "",
+      });
     } else {
       formik.resetForm();
     }

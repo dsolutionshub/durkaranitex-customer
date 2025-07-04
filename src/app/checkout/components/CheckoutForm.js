@@ -11,6 +11,7 @@ import { getErrorMessage } from "@/app/utils/helperFn";
 import {
   deleteAddress,
   getCustomerAddressList,
+  getSelectAddress,
   updateCheckoutAddress,
 } from "@/app/api/services/authService";
 
@@ -23,7 +24,7 @@ export default function CheckoutForm({
   const [addressList, setAddressList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
-  const [selectedAddressId, setSelectedAddressId] = useState(null);
+  const [addressDetail, setAddressDetail] = useState([]);
 
   const getAddressList = async () => {
     loader(true);
@@ -31,7 +32,8 @@ export default function CheckoutForm({
       const { data } = await getCustomerAddressList();
       setAddressList(data || []);
     } catch (error) {
-      getErrorMessage(error);
+      const MSG = getErrorMessage(error);
+      toast.error(MSG);
     } finally {
       loader(false);
     }
@@ -51,12 +53,10 @@ export default function CheckoutForm({
   };
 
   const handleSelectAddress = async (value) => {
-    const selectedAddressId = value;
-
     const checkoutId = checkoutData?.checkout_id;
     const formData = new FormData();
     formData.append("checkout_id", checkoutId);
-    formData.append("address_id", selectedAddressId);
+    formData.append("address_id", value);
 
     loader(true);
     try {
@@ -73,8 +73,23 @@ export default function CheckoutForm({
   const handleDeleteAddress = async (id) => {
     loader(true);
     try {
-      await deleteAddress("", id);
+      const data = await deleteAddress("", id);
       getAddressList();
+      toast.success(data?.message);
+    } catch (error) {
+      const MSG = getErrorMessage(error);
+      toast.error(MSG);
+    } finally {
+      loader(false);
+    }
+  };
+
+  const handleEditAddress = async (addressId) => {
+    loader(true);
+    try {
+      const data = await getSelectAddress(addressId);
+      handleOpenModel("edit");
+      setAddressDetail(data?.addresss);
     } catch (error) {
       const MSG = getErrorMessage(error);
       toast.error(MSG);
@@ -94,7 +109,7 @@ export default function CheckoutForm({
         handleDeleteAddress={handleDeleteAddress}
         handleSelectAddress={handleSelectAddress}
         handleOpenModel={handleOpenModel}
-        setSelectedAddressId={setSelectedAddressId}
+        handleEditAddress={handleEditAddress}
         checkoutData={checkoutData}
       />
       <div className="bg-white p-6 rounded-xl shadow">
@@ -170,8 +185,8 @@ export default function CheckoutForm({
         isModalOpen={isModalOpen}
         handleCloseModel={handleCloseModel}
         isEdit={isEdit}
-        selectedAddressId={selectedAddressId}
         getAddressList={getAddressList}
+        addressDetail={addressDetail}
       />{" "}
     </div>
   );
