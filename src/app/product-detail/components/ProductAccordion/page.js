@@ -14,6 +14,7 @@ import {
 } from "@/app/api/services/authService";
 import { getErrorMessage } from "@/app/utils/helperFn";
 import { loader } from "@/app/components/loader/loaderManager";
+import { LOGIN_ERROR_MSG } from "@/app/utils/constants";
 
 import "../../style.css";
 
@@ -80,8 +81,18 @@ export default function ProductAccordion({
         quantity: quantity,
       });
     } catch (error) {
-      getErrorMessage(error);
-      handleGetCartDetail();
+      const status = error?.response?.status;
+      if (status === 401) {
+        sessionStorage.setItem(
+          "postLoginRedirect",
+          `product-detail?id=${sections?.id}`
+        );
+        router.push("/login");
+        toast.error(LOGIN_ERROR_MSG);
+        return;
+      }
+      const MSG = getErrorMessage(error);
+      toast.error(MSG);
     } finally {
       loader(false);
     }
@@ -97,7 +108,18 @@ export default function ProductAccordion({
         router.push("/checkout");
       }
     } catch (error) {
-      getErrorMessage(error);
+      const status = error?.response?.status;
+      if (status === 401) {
+        sessionStorage.setItem(
+          "postLoginRedirect",
+          `product-detail?id=${sections?.id}`
+        );
+        router.push("/login");
+        toast.error(LOGIN_ERROR_MSG);
+        return;
+      }
+      const MSG = getErrorMessage(error);
+      toast.error(MSG);
     } finally {
       loader(false);
     }
@@ -114,7 +136,6 @@ export default function ProductAccordion({
     };
 
     window.addEventListener("scroll", handleScroll);
-
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };

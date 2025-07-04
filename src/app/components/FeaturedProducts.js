@@ -33,7 +33,7 @@ const FeaturedCard = ({ products, fetchData }) => {
     } catch (error) {
       const status = error?.response?.status;
       if (status === 401) {
-        sessionStorage.setItem("postLoginRedirect", "/shop");
+        sessionStorage.setItem("postLoginRedirect", "/");
         router.push("/login");
         toast.error(LOGIN_ERROR_MSG);
         return;
@@ -54,7 +54,7 @@ const FeaturedCard = ({ products, fetchData }) => {
     } catch (error) {
       const status = error?.response?.status;
       if (status === 401) {
-        sessionStorage.setItem("postLoginRedirect", "/shop");
+        sessionStorage.setItem("postLoginRedirect", "/");
         router.push("/login");
         toast.error(LOGIN_ERROR_MSG);
         return;
