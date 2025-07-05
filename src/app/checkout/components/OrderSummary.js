@@ -1,7 +1,11 @@
 import Image from "next/image";
+import { useEffect } from "react";
 import { RiDeleteBinLine } from "react-icons/ri";
 
-const OrderSummary = ({ checkoutData, handlePayment, removeFromCart }) => {
+const OrderSummary = ({ checkoutData, handlePayment, removeFromCart, selectedPayment }) => {
+  useEffect(() => {
+    console.log(selectedPayment);
+  }, [selectedPayment])
   return (
     <div className="space-y-6">
       <div className="bg-white p-6 rounded-xl shadow">
@@ -73,7 +77,7 @@ const OrderSummary = ({ checkoutData, handlePayment, removeFromCart }) => {
           </div>
           <div className="flex justify-between text-black font-medium">
             <span>Shipping Charges</span>
-            <span>₹225</span>
+            <span>₹{checkoutData?.delivery_fee?.isCodAvailable === true && selectedPayment === "payLater" ? checkoutData?.delivery_fee?.cod_fee : checkoutData?.delivery_fee?.normal_delivery}</span>
           </div>
           <hr />
           <div className="flex justify-between font-bold text-xl text-black font-semibold">
@@ -84,7 +88,7 @@ const OrderSummary = ({ checkoutData, handlePayment, removeFromCart }) => {
             className="w-full mt-3 bg-[var(--primary-dark)] text-white py-2 rounded"
             onClick={handlePayment}
           >
-            Pay Now ₹{checkoutData?.total_full_payment}
+            {selectedPayment === "payLater" ? "Pay Later " : "Pay Shipping "} ₹{checkoutData?.total_full_payment}
           </button>
         </div>
       </div>

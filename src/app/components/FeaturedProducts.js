@@ -22,11 +22,21 @@ import { useState } from "react";
 const FeaturedCard = ({ products }) => {
   const router = useRouter();
   const [quantities, setQuantities] = useState([])
-  
-    const addToWishlist = async (id) => {
+  const [wishlistMap, setWishlistMap] = useState(() =>
+    products.reduce((acc, item) => {
+      acc[item.id] = item.wishList;
+      return acc;
+    }, {})
+  );
+
+  const addToWishlist = async (id) => {
     loader(true);
     try {
       const data = await modifyWishlist({ product_id: id });
+      setWishlistMap((prev) => ({
+        ...prev,
+        [id]: data?.wishlist,
+      }));
       toast.success(data?.message);
     } catch (error) {
       const status = error?.response?.status;
@@ -65,7 +75,8 @@ const FeaturedCard = ({ products }) => {
 
   return (
     <>
-     <ProductCardMobile products={products} wishBtn={addToWishlist} cartBtn={addToCart} />
+      <ProductCardMobile products={products} wishBtn={addToWishlist} cartBtn={addToCart} wishlistMap={wishlistMap}
+      />
       <div className="relative d-none d-md-block">
         <button className="custom-prev custom-prev-home">
           {<FaChevronLeft />}
@@ -103,7 +114,7 @@ const FeaturedCard = ({ products }) => {
                 image={item.images?.[0]?.image}
                 image1={item.images?.[1]?.image}
                 discount={item?.discount || 0}
-                isInWishlist={item?.wishList}
+                isInWishlist={wishlistMap[item.id]}
                 btn1={() => addToWishlist(item?.id)}
                 btn2={() => addToCart(item?.id)}
               />

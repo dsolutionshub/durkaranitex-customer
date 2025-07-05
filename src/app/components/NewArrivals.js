@@ -23,16 +23,25 @@ const CollectionTab = ({ data }) => {
   const [collectionsData, setCollectionsData] = useState({});
   const { handleGetCartDetail, wishlistDetails } = useCartPanelStore();
   const [quantities, setQuantities] = useState({});
+  const [wishlistMap, setWishlistMap] = useState({});
 
   const fetchCollectionsData = async (tabs) => {
     try {
+      const allWishlistMap = {};
       const results = await Promise.all(
         tabs.map(async (item) => {
           const res = await getProductList(null, null, item.id);
+
+          res?.products?.forEach((product) => {
+            allWishlistMap[product.id] = product.wishList;
+          });
+
           return { id: item.id, products: res.products || [] };
         })
       );
 
+      setWishlistMap(allWishlistMap); 
+      
       const mapped = {};
       results.forEach(({ id, products }) => {
         mapped[id] = products;
@@ -48,12 +57,17 @@ const CollectionTab = ({ data }) => {
     if (!data?.length) return;
     setActiveTab(data[0].id);
     fetchCollectionsData(data);
+    console.log(data);
   }, [data]);
 
   const addToWishlist = async (id) => {
     loader(true);
     try {
       const data = await modifyWishlist({ product_id: id });
+      setWishlistMap((prev) => ({
+        ...prev,
+        [id]: data?.wishlist,
+      }));
       productDetails();
       wishlistDetails();
       toast.success(data?.message);
@@ -156,7 +170,7 @@ const CollectionTab = ({ data }) => {
                 oldPrice={item.product_price}
                 image={item?.images?.[0]?.["image"]}
                 image1={item?.images?.[1]?.["image"]}
-                isInWishlist={item?.wishList}
+                isInWishlist={wishlistMap[item.id]}
               />
             </SwiperSlide>
           ))}

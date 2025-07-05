@@ -110,6 +110,7 @@ export default function CheckoutPage() {
           checkoutData={checkoutData}
           handlePayment={handlePayment}
           removeFromCart={removeFromCart}
+          selectedPayment={selectedPayment}
         />
       </div>
     </div>

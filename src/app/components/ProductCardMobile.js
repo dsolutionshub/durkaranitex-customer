@@ -4,11 +4,12 @@ import { useRouter } from "next/navigation";
 import { SwiperSlide, Swiper } from "swiper/react";
 import { FeatureButtons } from "./ProductCard";
 import useCartPanelStore from "@/store/useCartPanelStore";
+import { Autoplay } from "swiper/modules";
 
 import "swiper/css";
 import "swiper/css/navigation";
 
-const ProductCardMobile = ({ products, wishBtn, cartBtn }) => {
+const ProductCardMobile = ({ products, wishBtn, cartBtn, wishlistMap }) => {
   const router = useRouter();
   const { handleGetCartDetail } = useCartPanelStore();
 
@@ -27,6 +28,11 @@ const ProductCardMobile = ({ products, wishBtn, cartBtn }) => {
         <Swiper
           spaceBetween={13}
           slidesPerView={2}
+          modules={[Autoplay]}
+          autoplay={{
+            delay: 2000,
+            disableOnInteraction: false,
+          }}
           style={{
             minHeight: "20rem",
           }}
@@ -35,7 +41,7 @@ const ProductCardMobile = ({ products, wishBtn, cartBtn }) => {
             <SwiperSlide key={i} className="">
               <div
                 className="flex flex-col items-center relative lg:hidden"
-                onClick={()=>navigateToProductDetail(item?.id)}
+                onClick={() => navigateToProductDetail(item?.id)}
               >
                 {Math.round(item?.discount) !== 0 && (
                   <div className="absolute top-2 left-2 bg-red-600 text-white text-xs px-2 py-1 rounded-md z-10">
@@ -56,6 +62,7 @@ const ProductCardMobile = ({ products, wishBtn, cartBtn }) => {
                     type={"heart"}
                     btn1Func={() => wishBtn(item?.id)}
                     btn2Func={() => handleOpenCart(item?.id)}
+                    // isInWishlist={wishlistMap[item?.id]}
                   />
                 </div>
 
@@ -64,7 +71,7 @@ const ProductCardMobile = ({ products, wishBtn, cartBtn }) => {
                     className="text-black font-semibold mb-0 self-start"
                     title={item?.title}
                   >
-                  {item?.title?.length > 18 ? `${item?.title.slice(0, 18)}...` : item?.title}
+                    {item?.title?.length > 18 ? `${item?.title.slice(0, 18)}...` : item?.title}
                   </h6>
                   <div className="self-start">
                     <span className="primary-color font-semibold">

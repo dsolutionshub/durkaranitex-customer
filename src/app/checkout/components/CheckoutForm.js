@@ -125,10 +125,9 @@ export default function CheckoutForm({
 
           <div
             className={`flex items-center border rounded-md px-3 py-2 cursor-pointer hover:bg-gray-100
-              ${
-                checkoutData?.delivery_fee?.isCodAvailable === false
-                  ? "bg-gray-200 pointer-events-none opacity-60"
-                  : ""
+              ${checkoutData?.delivery_fee?.isCodAvailable === false
+                ? "bg-gray-200 pointer-events-none opacity-60"
+                : ""
               }`}
             onClick={() => setSelectedPayment("payLater")}
           >
