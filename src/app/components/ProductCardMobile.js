@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { SwiperSlide, Swiper } from "swiper/react";
 import { FeatureButtons } from "./ProductCard";
 import useCartPanelStore from "@/store/useCartPanelStore";
-import { Autoplay } from "swiper/modules";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { FiHeart, FiShoppingCart } from "react-icons/fi";
 import { RiDeleteBinLine } from "react-icons/ri";
