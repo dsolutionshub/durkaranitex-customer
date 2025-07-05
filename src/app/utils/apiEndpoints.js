@@ -21,7 +21,7 @@ export const GET_CART = "/api/cart/list";
 export const ADD_CART = "/api/cart/add";
 export const UPDATE_QUANTITY = "/api/cart/update-quantity";
 export const REMOVE_CART = "/api/cart/remove";
-export const BUY_NOW = "/api/cart/buy-now"
+export const BUY_NOW = "/api/cart/buy-now";
 
 //Address
 export const GET_STATE_LIST = "/api/states-list";
@@ -29,6 +29,7 @@ export const GET_CUSTOMER_ADDRESS_LIST = "/api/customer-address/list";
 export const ADD_CUSTOMER_ADDRESS = "/api/customer-address/add";
 export const UPDATE_CUSTOMER_ADDRESS = "/api/customer-address/update";
 export const DELETE_CUSTOMER_ADDRESS = "/api/customer-address/delete";
+export const GET_SELECTED_ADDRESS = "/api/customer-address/view";
 
 //Profile
 export const PROFILE_INFO = "/api/profile/info";
@@ -38,5 +39,3 @@ export const HANDLE_CHECKOUT = "/api/checkout/checkout";
 export const GET_CHECKOUT_LIST = "/api/checkout/list";
 export const UPDATE_CHECKOUT_ADDRESS = "/api/checkout/address";
 export const HANDLE_PAYMENT = "/api/checkout/pay-now";
-
-

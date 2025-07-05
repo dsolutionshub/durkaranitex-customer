@@ -1,6 +1,6 @@
 "use client";
-import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
@@ -8,23 +8,26 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import Section from "@/app/components/Section";
 import ProductCardMobile from "@/app/components/ProductCardMobile";
 import ProductCard from "@/app/components/ProductCard";
-import products from "./products.json";
+
+import { getErrorMessage } from "@/app/utils/helperFn";
+import { LOGIN_ERROR_MSG } from "@/app/utils/constants";
+import { loader } from "@/app/components/loader/loaderManager";
+import { modifyCart, modifyWishlist } from "@/app/api/services/authService";
 
 import "swiper/css";
 import "swiper/css/navigation";
-import { modifyCart, modifyWishlist } from "@/app/api/services/authService";
-import { loader } from "@/app/components/loader/loaderManager";
-import { getErrorMessage } from "@/app/utils/helperFn";
-import { LOGIN_ERROR_MSG } from "@/app/utils/constants";
+import useCartPanelStore from "@/store/useCartPanelStore";
 
-const SimilarProducts = ({ products }) => {
+const SimilarProducts = ({ products, handleGetProductDetails }) => {
   const router = useRouter();
-  const [quantities, setQuantities] = useState({});
+  const { handleGetCartDetail, wishlistDetails } = useCartPanelStore();
 
   const addToWishlist = async (id) => {
     loader(true);
     try {
       const data = await modifyWishlist({ product_id: id });
+      handleGetProductDetails();
+      wishlistDetails();
       toast.success(data?.message);
     } catch (error) {
       const status = error?.response?.status;
@@ -32,21 +35,20 @@ const SimilarProducts = ({ products }) => {
         sessionStorage.setItem("postLoginRedirect", "/shop");
         router.push("/login");
         toast.error(LOGIN_ERROR_MSG);
+        return;
       }
-      getErrorMessage(error);
+      const MSG = getErrorMessage(error);
+      toast.error(MSG);
     } finally {
       loader(false);
     }
   };
 
   const addToCart = async (id) => {
-    const currentQty = quantities[id] || 0;
-    const newQty = currentQty + 1;
-
-    setQuantities((prev) => ({ ...prev, [id]: newQty }));
     loader(true);
     try {
-      const data = await modifyCart({ product_id: id, quantity: newQty });
+      const data = await modifyCart({ product_id: id, quantity: 1 });
+      handleGetCartDetail();
       toast.success(data?.message);
     } catch (error) {
       const status = error?.response?.status;
@@ -63,7 +65,12 @@ const SimilarProducts = ({ products }) => {
 
   return (
     <>
-      <ProductCardMobile products={products} wishBtn={addToWishlist} cartBtn={addToCart} />
+      <ProductCardMobile
+        products={products}
+        wishBtn={addToWishlist}
+        cartBtn={addToCart}
+        type={"heart"}
+      />
 
       <div className="relative d-none d-md-block">
         <button className="custom-prev custom-prev-home">
@@ -112,7 +119,9 @@ const SimilarProducts = ({ products }) => {
         <div className="text-center mt-10">
           <button
             className="px-6 py-2 bg-green-800 text-white rounded-md hover:bg-green-700 transition"
-            onClick={() => router.push(`/shop?id=${products?.[0]?.category_id}`)}
+            onClick={() =>
+              router.push(`/shop?id=${products?.[0]?.category_id}`)
+            }
           >
             View More
           </button>
@@ -122,10 +131,18 @@ const SimilarProducts = ({ products }) => {
   );
 };
 
-const SimilarProduct = ({ data }) => {
+const SimilarProduct = ({ data, handleGetProductDetails }) => {
   return (
     <div className="md:px-20 feature-product-card">
-      <Section title={"Similar Products"} section={<SimilarProducts products={data} />} />
+      <Section
+        title={"Similar Products"}
+        section={
+          <SimilarProducts
+            products={data}
+            handleGetProductDetails={handleGetProductDetails}
+          />
+        }
+      />
     </div>
   );
 };

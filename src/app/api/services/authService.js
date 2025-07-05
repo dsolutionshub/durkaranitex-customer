@@ -10,6 +10,7 @@ import {
   GET_CHECKOUT_LIST,
   GET_CUSTOMER_ADDRESS_LIST,
   GET_HOME,
+  GET_SELECTED_ADDRESS,
   GET_STATE_LIST,
   GOOGLE_LOGIN,
   HANDLE_CHECKOUT,
@@ -152,6 +153,11 @@ export async function getCustomerAddressList() {
 
 export async function addAddress(payload) {
   const response = await apiRequest(ADD_CUSTOMER_ADDRESS, "POST", payload);
+  return response;
+}
+
+export async function getSelectAddress(id) {
+  const response = await apiRequest(`${GET_SELECTED_ADDRESS}/${id}`, "GET");
   return response;
 }
 

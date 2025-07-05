@@ -1,13 +1,12 @@
-import { Edit, Home, MapPin, Package, Plus, Trash2 } from "lucide-react";
 import { Button } from "primereact/button";
-import { RadioButton } from "primereact/radiobutton";
+import { Edit, Home, MapPin, Package, Plus, Trash2 } from "lucide-react";
 
 export default function AddressCard({
   addressList,
   handleDeleteAddress,
   handleSelectAddress,
   handleOpenModel,
-  setSelectedAddressId,
+  handleEditAddress,
   checkoutData,
 }) {
   return (
@@ -72,15 +71,16 @@ export default function AddressCard({
               const isSelected = checkoutData?.address?.id === address.id;
               return (
                 <div key={address.id} className="flex items-start gap-3 ml-1">
-                  <RadioButton
-                    inputId={`address-${address.id}`}
+                  <input
+                    type="radio"
+                    id={`address-${address.id}`}
+                    name="address"
                     value={address.id}
                     checked={isSelected}
-                    onChange={handleSelectAddress}
-                    className="mt-3"
+                    onChange={() => handleSelectAddress(address.id)}
+                    className="mt-3 accent-[var(--primary-main)] mr-3 scale-115 cursor-pointer"
                     style={{
-                      outline: "none",
-                      transform: "scale(1.5)",
+                      transform: "scale(1.4)",
                     }}
                   />
 
@@ -113,7 +113,7 @@ export default function AddressCard({
                           </div>
 
                           <div className="flex items-start gap-2">
-                            <MapPin className="h-4 w-4 text-gray-400 mt-[.3rem]" />
+                            <MapPin className="h-4 w-4 text-gray-600 mt-[.3rem]" />
                             <div>
                               <p className="mb-0 fw-medium dark-color">
                                 {address.address}
@@ -135,10 +135,9 @@ export default function AddressCard({
                       <div className="flex gap-3">
                         <Button
                           icon={<Edit className="h-4 w-4" />}
-                          className="p-button-text p-button-sm text-gray-600 d-none"
+                          className="p-button-text p-button-sm text-gray-600"
                           onClick={() => {
-                            handleOpenModel("edit");
-                            setSelectedAddressId(address.id);
+                            handleEditAddress(address.id);
                           }}
                         />
                         <Button

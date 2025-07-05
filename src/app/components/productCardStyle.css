@@ -106,3 +106,19 @@
     pointer-events: auto;
   }
 }
+
+.feature-product-btn-mbl {
+  background-color: white;
+  color: var(--bs-primary);
+  height: 2.5rem;
+  width: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1.5rem;
+}
+
+.wishlist-active-mbl {
+  background-color: var(--primary-main) !important;
+  color: white !important;
+}

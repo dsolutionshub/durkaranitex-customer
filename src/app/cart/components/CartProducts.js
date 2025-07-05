@@ -1,6 +1,7 @@
-import React from "react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
+import { ShoppingBag } from "lucide-react";
 
 const CartProducts = ({
   products,
@@ -51,7 +52,9 @@ const CartProducts = ({
                     </button>
                   </div>
                 </div>
-                <p className="mb-0 text-black">Rs. {item?.price}</p>
+                <p className="mb-0 text-black min-w-[5rem] text-end">
+                  Rs. {item?.price}
+                </p>
                 <div className=" d-none">
                   <p className="mb-0 text-black">
                     Rs. {item?.price} * {item?.quantity}
@@ -86,98 +89,92 @@ const CartProducts = ({
 
       {/* Desktop */}
       <div className="d-none d-md-block row mb-5">
-        {products?.length > 0 ? (
-          <table className="table table-bordered" style={{ width: "100%" }}>
-            <thead style={{ fontSize: "20px" }}>
-              <tr style={{ textAlign: "center", verticalAlign: "middle" }}>
-                <th>Product</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              {products?.map((product) => (
-                <tr
-                  key={product?.id}
-                  style={{
-                    textAlign: "center",
-                    verticalAlign: "middle",
-                    alignContent: "center",
-                  }}
+        <table className="table table-bordered" style={{ width: "100%" }}>
+          <thead style={{ fontSize: "20px" }}>
+            <tr style={{ textAlign: "center", verticalAlign: "middle" }}>
+              <th>Product</th>
+              <th>Price</th>
+              <th>Quantity</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {products?.map((product) => (
+              <tr
+                key={product?.id}
+                style={{
+                  textAlign: "center",
+                  verticalAlign: "middle",
+                  alignContent: "center",
+                }}
+              >
+                <td
+                  style={{ display: "flex", cursor: "pointer" }}
+                  onClick={() => navigateToProductDetail(product?.productId)}
                 >
-                  <td
-                    style={{ display: "flex", cursor: "pointer" }}
-                    onClick={() => navigateToProductDetail(product?.productId)}
+                  <Image
+                    width={70}
+                    height={50}
+                    src={product?.imgSrc}
+                    alt={product?.title}
+                  />
+                  <div
+                    style={{
+                      display: "flex",
+                      marginLeft: "10px",
+                      flexDirection: "column",
+                    }}
                   >
-                    <Image
-                      width={70}
-                      height={50}
-                      src={product?.imgSrc}
-                      alt={product?.title}
-                    />
-                    <div
+                    <p style={{ marginBottom: "0" }}>{product?.title}</p>
+
+                    <span
+                      onClick={(e) => removeFromCart(e, product?.id)}
                       style={{
-                        display: "flex",
-                        marginLeft: "10px",
-                        flexDirection: "column",
+                        textDecoration: "underline",
+                        cursor: "pointer",
+                        alignSelf: "start",
                       }}
                     >
-                      <p style={{ marginBottom: "0" }}>{product?.title}</p>
+                      Remove
+                    </span>
+                  </div>
+                </td>
+                <td className="py-4">Rs. {product?.price}</td>
 
-                      <span
-                        onClick={(e) => removeFromCart(e, product?.id)}
-                        style={{
-                          textDecoration: "underline",
-                          cursor: "pointer",
-                          alignSelf: "start",
-                        }}
-                      >
-                        Remove
-                      </span>
-                    </div>
-                  </td>
-                  <td className="py-4">Rs. {product?.price}</td>
-
-                  <td className="p-4">
-                    <div
-                      className="d-flex align-items-center justify-content-evenly bg-gray-100 w-[7rem] h-[2.5rem] border"
-                      style={{ margin: "auto" }}
+                <td className="p-4">
+                  <div
+                    className="d-flex align-items-center justify-content-evenly bg-gray-100 w-[7rem] h-[2.5rem] border"
+                    style={{ margin: "auto" }}
+                  >
+                    <button
+                      className="text-black fs-1"
+                      disabled={product?.quantity === 1}
+                      onClick={() =>
+                        decreaseCount(product?.productId, product?.quantity)
+                      }
                     >
-                      <button
-                        className="text-black fs-1"
-                        disabled={product?.quantity === 1}
-                        onClick={() =>
-                          decreaseCount(product?.productId, product?.quantity)
-                        }
-                      >
-                        -
-                      </button>
-                      <p className="mb-0 text-black">{product?.quantity}</p>
-                      <button
-                        className="text-black"
-                        onClick={() =>
-                          increaseCount(product?.productId, product?.quantity)
-                        }
-                        style={{
-                          fontWeight: "600",
-                          fontSize: "1.2rem",
-                        }}
-                      >
-                        +
-                      </button>
-                    </div>
-                  </td>
-                  <td className="py-4">Rs. {product?.total}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        ) : (
-          <h4 className="flex items-center justify-center w-[100%] mt-5">
-            No Product Found
-          </h4>
-        )}
+                      -
+                    </button>
+                    <p className="mb-0 text-black">{product?.quantity}</p>
+                    <button
+                      className="text-black"
+                      onClick={() =>
+                        increaseCount(product?.productId, product?.quantity)
+                      }
+                      style={{
+                        fontWeight: "600",
+                        fontSize: "1.2rem",
+                      }}
+                    >
+                      +
+                    </button>
+                  </div>
+                </td>
+                <td className="py-4">Rs. {product?.total}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </>
   );

@@ -5,36 +5,44 @@ import { SwiperSlide, Swiper } from "swiper/react";
 import { FeatureButtons } from "./ProductCard";
 import useCartPanelStore from "@/store/useCartPanelStore";
 import { Autoplay } from "swiper/modules";
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
+import { FiHeart, FiShoppingCart } from "react-icons/fi";
+import { RiDeleteBinLine } from "react-icons/ri";
 
 import "swiper/css";
 import "swiper/css/navigation";
+import "./productCardStyle.css";
 
-const ProductCardMobile = ({ products, wishBtn, cartBtn, wishlistMap }) => {
+const ProductCardMobile = ({ type, products, wishBtn, cartBtn }) => {
   const router = useRouter();
-  const { handleGetCartDetail } = useCartPanelStore();
 
   const navigateToProductDetail = (id) => {
     router.push(`/product-detail?id=${id}`);
   };
 
   const handleOpenCart = (id) => {
-    handleGetCartDetail();
-    cartBtn(id)
+    cartBtn(id);
   };
 
   return (
     <div className="d-block d-md-none  mb-4">
       <div className="relative">
         <Swiper
+          modules={[Navigation, Pagination, Autoplay]}
           spaceBetween={13}
           slidesPerView={2}
-          modules={[Autoplay]}
-          autoplay={{
-            delay: 2000,
-            disableOnInteraction: false,
-          }}
           style={{
             minHeight: "20rem",
+          }}
+          autoplay={{
+            delay: 3000,
+            disableOnInteraction: false,
+          }}
+          breakpoints={{
+            480: { slidesPerView: 1 },
+            768: { slidesPerView: 2 },
+            1024: { slidesPerView: 3 },
+            1280: { slidesPerView: 4 },
           }}
         >
           {products?.map((item, i) => (
@@ -58,12 +66,30 @@ const ProductCardMobile = ({ products, wishBtn, cartBtn, wishlistMap }) => {
                 />
 
                 <div className="flex items-center gap-2 absolute top-44">
-                  <FeatureButtons
-                    type={"heart"}
-                    btn1Func={() => wishBtn(item?.id)}
-                    btn2Func={() => handleOpenCart(item?.id)}
-                    // isInWishlist={wishlistMap[item?.id]}
-                  />
+                  <button
+                    className={`feature-product-btn-mbl ${
+                      item?.wishList ? "wishlist-active-mbl" : ""
+                    }`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      wishBtn(item?.id);
+                    }}
+                  >
+                    {type === "heart" ? (
+                      <FiHeart className="font-bold" />
+                    ) : (
+                      <RiDeleteBinLine className="font-bold" />
+                    )}
+                  </button>
+                  <button
+                    className="feature-product-btn"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleOpenCart(item?.id);
+                    }}
+                  >
+                    <FiShoppingCart className="font-bold" />
+                  </button>
                 </div>
 
                 <div className="py-3 flex flex-col self-start">
@@ -71,12 +97,15 @@ const ProductCardMobile = ({ products, wishBtn, cartBtn, wishlistMap }) => {
                     className="text-black font-semibold mb-0 self-start"
                     title={item?.title}
                   >
-                    {item?.title?.length > 18 ? `${item?.title.slice(0, 18)}...` : item?.title}
+                    {item?.title?.length > 16
+                      ? `${item?.title.slice(0, 16)}...`
+                      : item?.title}
                   </h6>
                   <div className="self-start">
                     <span className="primary-color font-semibold">
                       Rs. {item?.price}
                     </span>{" "}
+                    <br className="md:hidden" />
                     {item?.product_price && (
                       <span className="text-muted text-decoration-line-through">
                         Rs. {item?.product_price}
@@ -91,7 +120,7 @@ const ProductCardMobile = ({ products, wishBtn, cartBtn, wishlistMap }) => {
 
         <div className="text-center">
           <button
-            className="px-6 py-2 bg-green-800 text-white rounded-md hover:bg-green-700 transition"
+            className="px-6 py-2 bg-[var(--primary-main)] text-white rounded-md hover:bg-[var(--primary-dark)] transition"
             onClick={() => router.push("/shop")}
           >
             View More

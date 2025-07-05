@@ -1,21 +1,27 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 import ProductCard from "./ProductCard";
 import ProductCardMobile from "./ProductCardMobile";
-import { getProductList, modifyCart, modifyWishlist } from "../api/services/authService";
+import {
+  getProductList,
+  modifyCart,
+  modifyWishlist,
+} from "../api/services/authService";
 import { getErrorMessage } from "../utils/helperFn";
+import { LOGIN_ERROR_MSG } from "../utils/constants";
 import Section from "./Section";
+import { loader } from "./loader/loaderManager";
 import useCartPanelStore from "@/store/useCartPanelStore";
 
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { loader } from "./loader/loaderManager";
 
 const CollectionTab = ({ data }) => {
   const router = useRouter();
@@ -70,11 +76,12 @@ const CollectionTab = ({ data }) => {
       }));
       productDetails();
       wishlistDetails();
-      toast.success(data?.message);
+      fetchCollectionsData(data);
+      toast.success(response?.message);
     } catch (error) {
       const status = error?.response?.status;
       if (status === 401) {
-        sessionStorage.setItem("postLoginRedirect", "/shop");
+        sessionStorage.setItem("postLoginRedirect", "/");
         router.push("/login");
         toast.error(LOGIN_ERROR_MSG);
       }
@@ -85,19 +92,15 @@ const CollectionTab = ({ data }) => {
   };
 
   const addToCart = async (id) => {
-    const currentQty = quantities[id] || 0;
-    const newQty = currentQty + 1;
-
-    setQuantities((prev) => ({ ...prev, [id]: newQty }));
     loader(true);
     try {
-      const data = await modifyCart({ product_id: id, quantity: newQty });
+      const data = await modifyCart({ product_id: id, quantity: 1 });
       toast.success(data?.message);
       handleGetCartDetail();
     } catch (error) {
       const status = error?.response?.status;
       if (status === 401) {
-        sessionStorage.setItem("postLoginRedirect", "/shop");
+        sessionStorage.setItem("postLoginRedirect", "/");
         router.push("/login");
         toast.error(LOGIN_ERROR_MSG);
       }
@@ -111,16 +114,17 @@ const CollectionTab = ({ data }) => {
 
   return (
     <div className="md:px-20 feature-product-card">
-      <div className="overflow-x-auto sm:overflow-visible">
+      <div className="overflow-x-auto scrollbar-hide-on-idle">
         <div className="flex justify-start sm:justify-center items-center gap-4 sm:gap-x-10 mb-6 sm:mb-8 px-4 min-w-max">
           {data?.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`relative transition-all duration-200 font-medium text-sm sm:text-base whitespace-nowrap new-arrival-btn ${activeTab === tab.id
-                ? 'text-green-800 after:content-[""] after:absolute after:left-0 after:-bottom-0.5 after:h-[2px] after:w-full after:bg-green-800'
-                : "text-gray-400 hover:text-green-800"
-                } tab-button`}
+              className={`relative transition-all duration-200 font-medium text-sm sm:text-base whitespace-nowrap new-arrival-btn ${
+                activeTab === tab.id
+                  ? 'text-green-800 after:content-[""] after:absolute after:left-0 after:-bottom-0.5 after:h-[2px] after:w-full after:bg-green-800'
+                  : "text-gray-400 hover:text-green-800"
+              } tab-button`}
             >
               {tab.name}
             </button>
@@ -128,7 +132,12 @@ const CollectionTab = ({ data }) => {
         </div>
       </div>
 
-      <ProductCardMobile products={filteredCollections} />
+      <ProductCardMobile
+        products={filteredCollections}
+        wishBtn={addToWishlist}
+        cartBtn={addToCart}
+        type={"heart"}
+      />
 
       <div className="relative d-none d-md-block">
         <button className="custom-prev custom-prev-home">
@@ -178,7 +187,8 @@ const CollectionTab = ({ data }) => {
 
         <div className="text-center mt-10">
           <button
-            className="px-6 py-2 bg-green-800 text-white rounded-md hover:bg-green-700 transition"
+            className="px-6 py-2 bg-[var(--primary-main)] text-white rounded-md 
+            hover:bg-[var(--primary-dark)] transition"
             onClick={() => router.push("/shop")}
           >
             View More

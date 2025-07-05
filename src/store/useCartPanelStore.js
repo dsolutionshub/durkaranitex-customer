@@ -8,6 +8,8 @@ const useCartPanelStore = create((set, get) => ({
   cartProducts: [],
   cartTotalAmount: 0,
   wishListData: [],
+  wishListCount: 0,
+  cartCount: 0,
 
   setCartOpen: (open) => set({ isCartOpen: open }),
 
@@ -33,6 +35,7 @@ const useCartPanelStore = create((set, get) => ({
       const data = await getCart();
       set({ cartProducts: data?.cart || [] });
       set({ cartTotalAmount: data?.total_amount });
+      set({ cartCount: data?.cart?.length || 0 });
     } catch (error) {
       getErrorMessage(error);
     } finally {
@@ -45,12 +48,16 @@ const useCartPanelStore = create((set, get) => ({
     try {
       const data = await getWishlist();
       set({ wishListData: data?.WishLists || [] });
+      set({ wishListCount: data?.WishLists?.length || 0 });
     } catch (error) {
       getErrorMessage(error);
     } finally {
       loader(false);
     }
   },
+
+  setCartCount: (count) => set({ cartCount: count }),
+  setWishListCount: (count) => set({ wishListCount: count }),
 
   handleGetCartDetail: async () => {
     const { cardDetails } = get();

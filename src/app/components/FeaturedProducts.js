@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 
@@ -9,17 +10,16 @@ import Section from "./Section";
 import ProductCard from "./ProductCard";
 import ProductCardMobile from "./ProductCardMobile";
 
-import "swiper/css";
-import "swiper/css/navigation";
+import useCartPanelStore from "@/store/useCartPanelStore";
+import { loader } from "./loader/loaderManager";
 import { modifyCart, modifyWishlist } from "../api/services/authService";
 import { getErrorMessage } from "../utils/helperFn";
-import { loader } from "./loader/loaderManager";
 import { LOGIN_ERROR_MSG } from "../utils/constants";
-import { useState } from "react";
 
+import "swiper/css";
+import "swiper/css/navigation";
 
-
-const FeaturedCard = ({ products }) => {
+const FeaturedCard = ({ products, fetchData }) => {
   const router = useRouter();
   const [quantities, setQuantities] = useState([])
   const [wishlistMap, setWishlistMap] = useState(() =>
@@ -28,6 +28,7 @@ const FeaturedCard = ({ products }) => {
       return acc;
     }, {})
   );
+  const { handleGetCartDetail, wishlistDetails } = useCartPanelStore();
 
   const addToWishlist = async (id) => {
     loader(true);
@@ -37,45 +38,56 @@ const FeaturedCard = ({ products }) => {
         ...prev,
         [id]: data?.wishlist,
       }));
+      fetchData();
+      wishlistDetails();
       toast.success(data?.message);
     } catch (error) {
       const status = error?.response?.status;
       if (status === 401) {
-        sessionStorage.setItem("postLoginRedirect", "/shop");
+        sessionStorage.setItem("postLoginRedirect", "/");
         router.push("/login");
         toast.error(LOGIN_ERROR_MSG);
+        return;
       }
-      getErrorMessage(error);
+      const MSG = getErrorMessage(error);
+      toast.error(MSG);
     } finally {
       loader(false);
     }
   };
 
   const addToCart = async (id) => {
-    const currentQty = quantities[id] || 0;
-    const newQty = currentQty + 1;
-
-    setQuantities((prev) => ({ ...prev, [id]: newQty }));
     loader(true);
     try {
-      const data = await modifyCart({ product_id: id, quantity: newQty });
+      const data = await modifyCart({ product_id: id, quantity: 1 });
       toast.success(data?.message);
+      handleGetCartDetail();
     } catch (error) {
       const status = error?.response?.status;
       if (status === 401) {
-        sessionStorage.setItem("postLoginRedirect", "/shop");
+        sessionStorage.setItem("postLoginRedirect", "/");
         router.push("/login");
         toast.error(LOGIN_ERROR_MSG);
+        return;
       }
-      getErrorMessage(error);
+      const MSG = getErrorMessage(error);
+      toast.error(MSG);
     } finally {
       loader(false);
     }
   };
 
+  const navigateToProductDetail = (product_id) => {
+    router.push(`/product-detail?id=${product_id}`);
+  };
+
   return (
     <>
-      <ProductCardMobile products={products} wishBtn={addToWishlist} cartBtn={addToCart} wishlistMap={wishlistMap}
+      <ProductCardMobile
+        products={products}
+        wishBtn={addToWishlist}
+        cartBtn={addToCart}
+        type={"heart"}
       />
       <div className="relative d-none d-md-block">
         <button className="custom-prev custom-prev-home">
@@ -117,6 +129,7 @@ const FeaturedCard = ({ products }) => {
                 isInWishlist={wishlistMap[item.id]}
                 btn1={() => addToWishlist(item?.id)}
                 btn2={() => addToCart(item?.id)}
+                onClick={() => navigateToProductDetail(item?.id)}
               />
             </SwiperSlide>
           ))}
@@ -134,13 +147,13 @@ const FeaturedCard = ({ products }) => {
   );
 };
 
-export default function FeaturedProducts({ products }) {
+export default function FeaturedProducts({ products, fetchData }) {
   return (
     <div className="md:px-20 feature-product-card">
       <Section
         title={"Featured Products"}
         desc={"Our hand-picked selection of the finest sarees for any occasion"}
-        section={<FeaturedCard products={products} />}
+        section={<FeaturedCard products={products} fetchData={fetchData} />}
       />
     </div>
   );

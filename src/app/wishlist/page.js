@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import ProductCard from "../components/ProductCard";
 import { loader } from "../components/loader/loaderManager";
 import CustomBreadCrumb from "../components/CustomBreadCrumb";
+import Loader from "../components/loader/loader";
 
 import useCartPanelStore from "@/store/useCartPanelStore";
 import {
@@ -23,6 +24,7 @@ const Wishlist = () => {
   const router = useRouter();
   const { handleGetCartDetail } = useCartPanelStore();
   const [wishlist, setWishlist] = useState([]);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
   const fetchWishlist = async () => {
     loader(true);
@@ -76,11 +78,22 @@ const Wishlist = () => {
 
   useEffect(() => {
     const token = sessionStorage.getItem("accessToken");
+
     if (!token || token === "undefined") {
-      router.replace("/login");
       toast.error(LOGIN_MSG);
+      router.replace("/login");
+    } else {
+      setIsCheckingAuth(false);
     }
   }, []);
+
+  if (isCheckingAuth) {
+    return (
+      <div className="h-[60vh]">
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -88,10 +101,13 @@ const Wishlist = () => {
       <div className="container mt-3">
         <h2 className="md:mb-4 text-center text-dark fs-3">My Wishlist</h2>
 
-        <div className="row mb-5 wishlist-card">
+        <div className="row my-5 md:p-1 product-container-mobile">
           {wishlist?.length > 0 ? (
             wishlist?.map((item) => (
-              <div className="col-sm-6 col-md-4 col-lg-3 mb-4" key={item.id}>
+              <div
+                className="col-md-4 col-lg-3 md:mb-4 product-list-card-mobile"
+                key={item.id}
+              >
                 <ProductCard
                   title={item?.product?.title}
                   price={item?.product?.price}
@@ -103,7 +119,6 @@ const Wishlist = () => {
                   btn1={() => removeFromWishlist(item?.product?.id)}
                   btn2={() => addToCart(item?.product?.id)}
                   discount={item?.product?.discount || 0}
-                  className="product-page-card-mobile-wishlist"
                   onClick={() => navigateToProductDetail(item?.product_id)}
                 />
               </div>

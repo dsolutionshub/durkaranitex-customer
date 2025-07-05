@@ -1,30 +1,25 @@
 import { create } from "zustand";
-import { signIn } from "next-auth/react";
 
-export const useAuthStore = create((set) => ({
-  navigateToLogin: (path = "/") => {
-    if (typeof window !== "undefined") {
-      window.location.href = "/login";
-    }
+export const useAuthStore = create((set, get) => ({
+  isLoggedIn: null,
+  userData: {},
+
+  setIsLoginTrue: () => {
+    set({ isLoggedIn: true });
   },
 
-  handleGoogleSignIn: () => {
-    if (typeof window !== "undefined") {
-      const redirectPath =
-        sessionStorage.getItem("postLoginRedirect") || "/checkout";
-      signIn("google", { callbackUrl: redirectPath });
-    }
+  setIsLoginFalse: () => {
+    set({ isLoggedIn: false });
   },
 
-  syncAccessToken: (session) => {
-    if (typeof window === "undefined") return;
-    if (session?.user?.accessToken) {
-      sessionStorage.setItem("accessToken", session.user.accessToken);
-    }
+  handleSaveUserData: (data) => {
+    set({ userData: data });
   },
 
-  handleLogout: (redirectPath = "/") => {
+  handleLogout: () => {
     sessionStorage.removeItem("accessToken");
     sessionStorage.clear();
+    const { setIsLoginFalse } = get();
+    setIsLoginFalse();
   },
 }));

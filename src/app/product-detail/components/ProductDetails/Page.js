@@ -89,8 +89,13 @@ const ProductDetails = () => {
         </div>
       </div>
 
-     {productInfo?.relatedProducts?.length > 0 && <SimilarProduct data={productInfo?.relatedProducts} />}
-     </div>
+      {productInfo?.relatedProducts?.length > 0 && (
+        <SimilarProduct
+          data={productInfo?.relatedProducts}
+          handleGetProductDetails={handleGetProductDetails}
+        />
+      )}
+    </div>
   );
 };
 

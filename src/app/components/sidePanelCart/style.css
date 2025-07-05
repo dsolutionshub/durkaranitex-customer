@@ -25,6 +25,7 @@
       max-height: 55vh;
     }
   }
+
   .cart-sidepanel-container::-webkit-scrollbar {
     width: 4px;
   }

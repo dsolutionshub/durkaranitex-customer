@@ -28,14 +28,18 @@ function RenderQuantity({
       <div className="flex items-center border rounded dark-color">
         <button
           disabled={product?.quantity === 1}
-          onClick={() => decreaseCount(product?.product_id, product?.quantity)}
+          onClick={(e) =>
+            decreaseCount(e, product?.product_id, product?.quantity)
+          }
           className="px-2 py-1 text-sm"
         >
           −
         </button>
         <span className="px-4">{product?.quantity || 0}</span>
         <button
-          onClick={() => increaseCount(product?.product_id, product?.quantity)}
+          onClick={(e) =>
+            increaseCount(e, product?.product_id, product?.quantity)
+          }
           className="px-2 py-1 text-sm"
         >
           +
@@ -44,7 +48,7 @@ function RenderQuantity({
 
       <button
         className="ml-4 text-sm underline text-gray-600 hover:text-red-600"
-        onClick={() => removeFromCart(product?.id)}
+        onClick={(e) => removeFromCart(e, product?.id)}
       >
         Remove
       </button>
@@ -67,7 +71,8 @@ const SidePanelCart = () => {
     setCartOpen(false);
   }
 
-  const increaseCount = async (id, currentQuantity) => {
+  const increaseCount = async (e, id, currentQuantity) => {
+    e.stopPropagation();
     const newQuantity = currentQuantity + 1;
     loader(true);
     try {
@@ -81,7 +86,8 @@ const SidePanelCart = () => {
     }
   };
 
-  const decreaseCount = async (id, currentQuantity) => {
+  const decreaseCount = async (e, id, currentQuantity) => {
+    e.stopPropagation();
     const newQuantity = currentQuantity - 1;
     loader(true);
     try {
@@ -112,7 +118,8 @@ const SidePanelCart = () => {
     }
   }
 
-  const removeFromCart = async (id) => {
+  const removeFromCart = async (e, id) => {
+    e.stopPropagation();
     loader(true);
     try {
       const data = await removeCart({
@@ -126,6 +133,11 @@ const SidePanelCart = () => {
     } finally {
       loader(false);
     }
+  };
+
+  const navigateToProductDetail = (product_id) => {
+    router.push(`/product-detail?id=${product_id}`);
+    setCartOpen(false);
   };
 
   return (
@@ -148,10 +160,14 @@ const SidePanelCart = () => {
         <div className="flex-grow overflow-y-auto mt-2">
           {cartProducts?.length > 0 ? (
             <>
-              <div className="cart-sidepanel-container">
+              <div className="cart-sidepanel-container product-filter-scroll">
                 {cartProducts.map((product) => (
-                  <div key={product?.product?.id} className="mb-4 ">
-                    <div className="flex gap-3 md:gap-4 items-start">
+                  <div
+                    key={product?.product?.id}
+                    className="mb-4"
+                    onClick={() => navigateToProductDetail(product?.product_id)}
+                  >
+                    <div className="flex gap-3 md:gap-4 items-start cursor-pointer">
                       <Image
                         height={150}
                         width={150}
@@ -229,7 +245,7 @@ const SidePanelCart = () => {
                   setCartOpen(false);
                   router.push("/shop");
                 }}
-                className="bg-green-800 text-white py-2 px-4 rounded"
+                className="bg-[var(--primary-main)] text-white py-2 px-4 rounded"
               >
                 Continue Shopping
               </button>

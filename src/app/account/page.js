@@ -1,17 +1,21 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { User, Package, MapPin, LogOut } from "lucide-react";
+
 import OrderHistory from "./components/OrderHistory";
 import AccountDetails from "./components/AccountDetails";
 import AddressForm from "./components/Addresses";
+
 import { getProfileInfo } from "../api/services/authService";
 import { getErrorMessage } from "../utils/helperFn";
 import { loader } from "../components/loader/loaderManager";
 import { useAuthStore } from "@/store/useAuthStore";
-import { useRouter } from "next/navigation";
-import { LOGIN_MSG } from "../utils/constants";
-import toast from "react-hot-toast";
+import { LOGGED_OUT_MSG, LOGIN_MSG } from "../utils/constants";
+import useCartPanelStore from "@/store/useCartPanelStore";
+import Loader from "../components/loader/loader";
 
 const tabs = [
   { key: "account", label: "Account", Icon: User },
@@ -20,14 +24,11 @@ const tabs = [
   { key: "logout", label: "Log Out", Icon: LogOut },
 ];
 
-const LogOutComponent = ({ handleLogout, router }) => {
+const LogOutComponent = ({ handleLoggedOut }) => {
   return (
     <button
-      className="dark-color"
-      onClick={() => {
-        handleLogout();
-        router.push("/");
-      }}
+      className="dark-color bg-red-700 rounded text-white hover:bg-red-600 px-3 py-1"
+      onClick={handleLoggedOut}
     >
       Logout
     </button>
@@ -37,8 +38,18 @@ const LogOutComponent = ({ handleLogout, router }) => {
 export default function AccountPage() {
   const router = useRouter();
   const { handleLogout } = useAuthStore();
+  const { setWishListCount, setCartCount } = useCartPanelStore();
   const [selectedTab, setSelectedTab] = useState("account");
   const [profileInfo, setProfileInfo] = useState([]);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+
+  const handleLoggedOut = async () => {
+    handleLogout();
+    setCartCount(0);
+    setWishListCount(0);
+    router.push("/");
+    toast.success(LOGGED_OUT_MSG);
+  };
 
   const profile_info = async () => {
     loader(true);
@@ -52,10 +63,6 @@ export default function AccountPage() {
     }
   };
 
-  useEffect(() => {
-    profile_info();
-  }, []);
-
   const renderContent = (selectedTab) => {
     switch (selectedTab) {
       case "account":
@@ -65,17 +72,32 @@ export default function AccountPage() {
       case "addresses":
         return <AddressForm />;
       default:
-        return <LogOutComponent handleLogout={handleLogout} router={router} />;
+        return <LogOutComponent handleLoggedOut={handleLoggedOut} />;
     }
   };
 
   useEffect(() => {
+    profile_info();
+  }, []);
+
+  useEffect(() => {
     const token = sessionStorage.getItem("accessToken");
+
     if (!token || token === "undefined") {
-      router.replace("/login");
       toast.error(LOGIN_MSG);
+      router.replace("/login");
+    } else {
+      setIsCheckingAuth(false);
     }
   }, []);
+
+  if (isCheckingAuth) {
+    return (
+      <div className="h-[60vh]">
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <div className="px-4 py-10 min-h-screen">
@@ -102,7 +124,7 @@ export default function AccountPage() {
                   return (
                     <div
                       key={key}
-                      className={`w-full group relative flex items-center gap-2 p-4 rounded-xl cursor-pointer transition-all duration-300 transform hover:scale-105 ${
+                      className={`group relative flex items-center gap-2 p-4 rounded-xl cursor-pointer transition-all duration-300 transform hover:scale-105 ${
                         isActive
                           ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-lg shadow-blue-500/25"
                           : "text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:text-blue-700"
