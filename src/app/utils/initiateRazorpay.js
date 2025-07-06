@@ -15,9 +15,9 @@ export const initiateRazorpayPayment = ({ order, customer }) => {
       },
     },
     prefill: {
-      name: customer.name || "Customer",
-      email: customer.email || "example@email.com",
-      contact: order.mobile || "-",
+      name: customer?.name || "Customer",
+      email: customer?.email || "example@email.com",
+      contact: customer?.mobile?.toString() || "9999999999",
     },
     theme: { color: "#00C896" },
   };
