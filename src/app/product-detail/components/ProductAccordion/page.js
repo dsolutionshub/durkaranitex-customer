@@ -185,9 +185,8 @@ export default function ProductAccordion({
               </button>
 
               <div
-                className={`product-accordion-content ${
-                  isOpen ? "open" : "closed"
-                }`}
+                className={`product-accordion-content ${isOpen ? "open" : "closed"
+                  }`}
               >
                 <div dangerouslySetInnerHTML={{ __html: section.content }} />
               </div>
@@ -195,7 +194,9 @@ export default function ProductAccordion({
           );
         })}
       </div>
-
+      {parseInt(sections?.quantity) <= 10 && <span className="inline-block bg-green-800 text-white text-xs font-semibold px-2 py-1 mt-3 rounded-full">
+        In Stock : {parseInt(sections?.quantity)}
+      </span>}
       <div className="mt-4 flex flex-col lg:flex-row items-center md:items-center space-y-4 md:space-y-0 md:space-x-4 w-full">
         <div className="mb-4 self-start md:self-center">
           <p className="product-detail-quantity-label">Quantity:</p>
@@ -221,11 +222,10 @@ export default function ProductAccordion({
         <div
           className={`flex flex-col md:flex-row items-center justify-center space-y-3
         md:space-y-0 md:space-x-3 gap-3 product-detail-cart-btn
-        ${
-          showButtons
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
-        }
+        ${showButtons
+              ? "opacity-100 pointer-events-auto"
+              : "opacity-0 pointer-events-none"
+            }
         `}
         >
           <button

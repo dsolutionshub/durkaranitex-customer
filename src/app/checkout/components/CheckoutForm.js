@@ -114,7 +114,7 @@ export default function CheckoutForm({
       />
       <div className="bg-white p-6 rounded-xl shadow">
         <h3 className="text-medium text-black font-medium mb-4">
-          Payment Method
+          Select Payment Method
         </h3>
         <div className="space-y-4">
           <div

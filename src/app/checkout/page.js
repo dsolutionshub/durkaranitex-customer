@@ -19,6 +19,7 @@ import { initiateRazorpayPayment } from "../utils/initiateRazorpay";
 import {
   COD_SUCCESS_MSG,
   LOGIN_MSG,
+  PAYMENT_METHOD,
   SELECT_ADDRESS_ERROR_MSG,
 } from "../utils/constants";
 
@@ -27,7 +28,7 @@ export default function CheckoutPage() {
   const userData = useAuthStore((state) => state.userData);
 
   const [checkoutData, setCheckoutData] = useState(null);
-  const [selectedPayment, setSelectedPayment] = useState("payNow");
+  const [selectedPayment, setSelectedPayment] = useState("");
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
   const handlePayment = async () => {
@@ -35,11 +36,15 @@ export default function CheckoutPage() {
       toast.error(SELECT_ADDRESS_ERROR_MSG);
       return;
     }
+    if (selectedPayment === "") {
+      toast.error(PAYMENT_METHOD)
+      return;
+    }
     loader(true);
     try {
       const data = await payment({
         checkout_id: checkoutData?.checkout_id,
-        payment_type: selectedPayment === "payNow" ? "online" : "cod",
+        payment_type: selectedPayment === "payLater" ? "cod" : selectedPayment === 'payNow' ? "online" : "",
       });
       if (selectedPayment === "payNow") {
         await loadRazorpayScript();
@@ -67,6 +72,11 @@ export default function CheckoutPage() {
     try {
       const data = await getCheckoutList();
       setCheckoutData(data || []);
+      if (selectedPayment === 'payLater') {
+        if (!data?.delivery_fee?.isCodAvailable) {
+          setSelectedPayment("")
+        }
+      }
     } catch (error) {
       const MSG = getErrorMessage(error);
       toast.error(MSG);

@@ -17,6 +17,7 @@ export const LOGIN_MSG = "Please login to see details.";
 export const LOGGED_OUT_MSG = "Logged out successfully.";
 export const COD_SUCCESS_MSG = "Order placed successfully (Cash on Delivery)";
 export const SELECT_ADDRESS_ERROR_MSG = "Please Select or Add Address";
+export const PAYMENT_METHOD = "Please Select payment method"
 
 // toastConfig
 export const TOAST_OPTIONS = {

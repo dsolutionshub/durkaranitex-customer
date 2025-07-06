@@ -27,13 +27,14 @@ const Cart = () => {
   const [totalCost, setTotalCost] = useState(0);
   const [products, setProducts] = useState([]);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+  const [totalQuantities, setTotalQuantities] = useState(0)
 
   const fetchCart = async () => {
     loader(true);
     try {
       const response = await getCart();
-      setTotalCost(response.total_amount);
-
+      setTotalCost(response?.total_amount);
+      setTotalQuantities(response?.total_quantity)
       const formattedProducts = response?.cart?.map((item) => ({
         id: item?.id,
         productId: item?.product_id,
@@ -53,6 +54,10 @@ const Cart = () => {
   };
 
   const increaseCount = async (id, currentQuantity) => {
+    if (currentQuantity >= totalQuantities) {
+      toast.error("You've reached the maximum quantity allowed.");
+      return;
+    }
     const newQuantity = currentQuantity + 1;
     loader(true);
     try {
@@ -68,6 +73,9 @@ const Cart = () => {
 
   const decreaseCount = async (id, currentQuantity) => {
     const newQuantity = currentQuantity - 1;
+    if (newQuantity < 1) {
+      return;
+    }
     loader(true);
     try {
       await deleteQuantity({ product_id: id, quantity: newQuantity });
