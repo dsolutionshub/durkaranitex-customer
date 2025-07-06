@@ -19,7 +19,6 @@ import { LOGIN_ERROR_MSG } from "../utils/constants";
 
 import "swiper/css";
 import "swiper/css/navigation";
-import { useState } from "react";
 
 const FeaturedCard = ({ products, fetchData }) => {
   const router = useRouter();

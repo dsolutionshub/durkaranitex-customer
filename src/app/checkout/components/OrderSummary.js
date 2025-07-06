@@ -90,7 +90,7 @@ const OrderSummary = ({ checkoutData, handlePayment, removeFromCart, selectedPay
           >
             {selectedPayment === "payLater" ? `Pay Shipping ₹ ${checkoutData?.delivery_fee?.cod_fee}` : `Pay Now ₹ ${checkoutData?.total_full_payment}`}
           </button>
-          <span className="mx-15 pt-2 h-10 block text-black">You'll pay ₹ {checkoutData?.sub_total} upon delivery</span>
+          <span className="mx-15 pt-2 h-10 block text-black">You will pay ₹ {checkoutData?.sub_total} upon delivery</span>
         </div>
       </div>
     </div>
