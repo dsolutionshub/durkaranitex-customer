@@ -19,6 +19,7 @@ export default function AddAdressModel({
   isEdit,
   getAddressList,
   addressDetail,
+  handleCheckoutList,
 }) {
   const [stateList, setStateList] = useState([]);
 
@@ -61,6 +62,7 @@ export default function AddAdressModel({
         toast.success(data?.message);
         handleCloseModel();
         getAddressList();
+        handleCheckoutList();
       } catch (error) {
         const msg = getErrorMessage(error);
         toast.error(msg);

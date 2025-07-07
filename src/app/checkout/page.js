@@ -1,7 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import toast from "react-hot-toast";
 
 import CheckoutForm from "./components/CheckoutForm";
 import OrderSummary from "./components/OrderSummary";
@@ -37,14 +38,19 @@ export default function CheckoutPage() {
       return;
     }
     if (selectedPayment === "") {
-      toast.error(PAYMENT_METHOD)
+      toast.error(PAYMENT_METHOD);
       return;
     }
     loader(true);
     try {
       const data = await payment({
         checkout_id: checkoutData?.checkout_id,
-        payment_type: selectedPayment === "payLater" ? "cod" : selectedPayment === 'payNow' ? "online" : "",
+        payment_type:
+          selectedPayment === "payLater"
+            ? "cod"
+            : selectedPayment === "payNow"
+            ? "online"
+            : "",
       });
       if (selectedPayment === "payNow") {
         await loadRazorpayScript();
@@ -72,9 +78,9 @@ export default function CheckoutPage() {
     try {
       const data = await getCheckoutList();
       setCheckoutData(data || []);
-      if (selectedPayment === 'payLater') {
+      if (selectedPayment === "payLater") {
         if (!data?.delivery_fee?.isCodAvailable) {
-          setSelectedPayment("")
+          setSelectedPayment("");
         }
       }
     } catch (error) {
@@ -101,6 +107,10 @@ export default function CheckoutPage() {
     }
   };
 
+  const handleNavigateHome = () => {
+    router.push("/");
+  };
+
   useEffect(() => {
     handleCheckoutList();
   }, []);
@@ -125,7 +135,18 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="min-h-screen py-10 md:mx-3 m-3 md:m-0">
+    <div className="min-h-screen py-1 md:mx-3 m-3 md:m-0">
+      <div className="flex items-center justify-center mb-4">
+        <Image
+          src={"/images/home/logo.svg"}
+          height={100}
+          width={400}
+          alt="logo"
+          className="h-[3.5rem] w-[12rem] cursor-pointer "
+          onClick={handleNavigateHome}
+        />
+      </div>
+
       <h2 className="text-2xl text-center pb-1 md:pb-4 text-black font-semibold checkout-text">
         Checkout
       </h2>

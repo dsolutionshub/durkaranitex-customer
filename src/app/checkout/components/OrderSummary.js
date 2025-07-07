@@ -2,10 +2,12 @@ import Image from "next/image";
 import { useEffect } from "react";
 import { RiDeleteBinLine } from "react-icons/ri";
 
-const OrderSummary = ({ checkoutData, handlePayment, removeFromCart, selectedPayment }) => {
-  useEffect(() => {
-    console.log(selectedPayment);
-  }, [selectedPayment])
+const OrderSummary = ({
+  checkoutData,
+  handlePayment,
+  removeFromCart,
+  selectedPayment,
+}) => {
   return (
     <div className="space-y-6">
       <div className="bg-white p-6 rounded-xl shadow">
@@ -77,7 +79,13 @@ const OrderSummary = ({ checkoutData, handlePayment, removeFromCart, selectedPay
           </div>
           <div className="flex justify-between text-black font-medium">
             <span>Shipping Charges</span>
-            <span>₹{checkoutData?.delivery_fee?.isCodAvailable === true && selectedPayment === "payLater" ? checkoutData?.delivery_fee?.cod_fee : checkoutData?.delivery_fee?.normal_delivery}</span>
+            <span>
+              ₹
+              {checkoutData?.delivery_fee?.isCodAvailable === true &&
+              selectedPayment === "payLater"
+                ? checkoutData?.delivery_fee?.cod_fee
+                : checkoutData?.delivery_fee?.normal_delivery}
+            </span>
           </div>
           <hr />
           <div className="flex justify-between font-bold text-xl text-black font-semibold">
@@ -88,9 +96,15 @@ const OrderSummary = ({ checkoutData, handlePayment, removeFromCart, selectedPay
             className="w-full mt-3 bg-[var(--primary-dark)] text-white py-2 rounded"
             onClick={handlePayment}
           >
-            {selectedPayment === "payLater" ? `Pay Shipping ₹ ${checkoutData?.delivery_fee?.cod_fee}` : `Pay Now ₹ ${checkoutData?.total_full_payment}`}
+            {selectedPayment === "payLater"
+              ? `Pay Shipping ₹ ${checkoutData?.delivery_fee?.cod_fee}`
+              : `Pay Now ₹ ${checkoutData?.total_full_payment || 0}`}
           </button>
-          <span className="mx-15 pt-2 h-10 block text-black">You will pay ₹ {checkoutData?.sub_total} upon delivery</span>
+          {selectedPayment === "payLater" && (
+            <span className="mx-15 pt-2 h-10 block text-black">
+              You will pay ₹ {checkoutData?.sub_total} upon delivery
+            </span>
+          )}
         </div>
       </div>
     </div>

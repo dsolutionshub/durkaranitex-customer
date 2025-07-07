@@ -158,7 +158,7 @@ export default function AddressForm({
       </div>
 
       {/* Default address checkbox */}
-      <div className="mt-4">
+      <div className="mt-4 d-none">
         <label className="inline-flex items-center space-x-2">
           <input
             type="checkbox"
