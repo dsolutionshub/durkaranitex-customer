@@ -18,7 +18,7 @@ const OrderFailure = () => {
               />
             </div>
 
-            <h1 className="text-3xl font-bold text-gray-900 mb-4 animate-fade-in">
+            <h1 className="text-3xl font-bold text-gray-900 mb-4 animate-fade-in dark-color">
               Payment Failed
             </h1>
             <p className="text-gray-600 mb-6 animate-fade-in delay-200">
@@ -57,14 +57,14 @@ const OrderFailure = () => {
 
             <button
               onClick={() => router.push("/shop")}
-              className="flex-grow-1 py-2 border rounded hover:bg-red-100 
+              className="flex-grow-1 py-2 border rounded hover:bg-red-100 dark-color
               transition-all duration-200 hover:scale-105"
             >
               Continue Shopping
             </button>
             <button
               onClick={() => router.push("/")}
-              className="flex-grow-1 flex items-center rounded justify-center  py-2 gap-2 
+              className="flex-grow-1 flex items-center rounded justify-center  py-2 gap-2 dark-color 
               hover:bg-red-100 transition-all duration-200 hover:scale-105"
             >
               <Home size={20} />
