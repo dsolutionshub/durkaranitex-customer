@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { XCircle, RefreshCw, Home } from "lucide-react";
 import "./style.css";
 
-const OrderFailure = () => {
+const OrderFailure = ({ payment_id }) => {
   const router = useRouter();
 
   return (
@@ -26,9 +26,11 @@ const OrderFailure = () => {
               details and try again.
             </p>
 
-            <div className="bg-red-50 border border-red-200 rounded-lg shadow-sm p-4 mb-6 animate-fade-in delay-400">
-              <p className="text-sm text-red-600 mb-1">Transaction ID</p>
-              <p className="text-lg font-semibold text-red-900">TXN123456789</p>
+            <div className="bg-red-50 border border-red-200 rounded-lg shadow-sm p-4 mb-6 animate-fade-in delay-400 d-none">
+              <p className="text-sm text-red-600 mb-1">Payment ID</p>
+              <p className="text-lg font-semibold text-red-900">
+                {payment_id || "-"}
+              </p>
             </div>
 
             <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-8 animate-fade-in delay-500">

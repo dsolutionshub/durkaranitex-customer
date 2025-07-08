@@ -68,10 +68,6 @@ const Wishlist = () => {
     }
   };
 
-  const navigateToProductDetail = (product_id) => {
-    router.push(`/product-detail?id=${product_id}`);
-  };
-
   useEffect(() => {
     fetchWishlist();
   }, []);
@@ -109,6 +105,7 @@ const Wishlist = () => {
                 key={item.id}
               >
                 <ProductCard
+                  id={item?.product_id}
                   title={item?.product?.title}
                   price={item?.product?.price}
                   oldPrice={item?.product?.product_price}
@@ -119,7 +116,6 @@ const Wishlist = () => {
                   btn1={() => removeFromWishlist(item?.product?.id)}
                   btn2={() => addToCart(item?.product?.id)}
                   discount={item?.product?.discount || 0}
-                  onClick={() => navigateToProductDetail(item?.product_id)}
                 />
               </div>
             ))
