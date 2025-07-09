@@ -102,6 +102,7 @@ const SimilarProducts = ({ products, handleGetProductDetails }) => {
           {products?.map((item, i) => (
             <SwiperSlide key={i} className="h-full">
               <ProductCard
+                id={item?.id}
                 type={"heart"}
                 title={item?.title}
                 price={item?.price}
