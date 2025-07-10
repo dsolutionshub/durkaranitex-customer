@@ -197,11 +197,16 @@ export default function ProductAccordion({
           );
         })}
       </div>
-      {parseInt(sections?.quantity) <= 10 && (
-        <span className="inline-block bg-green-800 text-white text-xs font-semibold px-2 py-1 mt-3 rounded-full">
-          In Stock : {parseInt(sections?.quantity)}
-        </span>
-      )}
+ {sections?.quantity && parseInt(sections.quantity) <= 10 && (
+  <div className="mt-4">
+    <div className="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-semibold rounded-full w-fit">
+      <span>Only {parseInt(sections.quantity)} left in stock!</span>
+    </div>
+  </div>
+)}
+
+
+
       <div className="mt-4 flex flex-col lg:flex-row items-center md:items-center space-y-4 md:space-y-0 md:space-x-4 w-full">
         <div className="mb-4 self-start md:self-center">
           <p className="product-detail-quantity-label">Quantity:</p>
