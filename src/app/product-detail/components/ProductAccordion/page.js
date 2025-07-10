@@ -68,8 +68,11 @@ export default function ProductAccordion({
     },
     {
       title: "Replacements & Exchanges",
-      content: `Return & Replacements within 5 days of purchase for product damages only.
-      (Offer product / Innerwear/ Imitation Jewellery / Discount products are not Eligible to Return/Exchange*)`,
+       content: `
+      <p>Replacement & Exchange within 1 Day of Delivery for Damaged Products Only.</p>
+      <p>(Saree must be in original condition with all tags and labels attached. No signs of wear or alteration will be accepted.)</p>
+      <p>Please refer to our Replacement Policy for more details.</p>
+    `,
     },
   ];
 
@@ -204,8 +207,6 @@ export default function ProductAccordion({
     </div>
   </div>
 )}
-
-
 
       <div className="mt-4 flex flex-col lg:flex-row items-center md:items-center space-y-4 md:space-y-0 md:space-x-4 w-full">
         <div className="mb-4 self-start md:self-center">
