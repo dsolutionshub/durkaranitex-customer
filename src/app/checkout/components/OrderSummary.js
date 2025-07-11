@@ -90,7 +90,12 @@ const OrderSummary = ({
           <hr />
           <div className="flex justify-between font-bold text-xl text-black font-semibold">
             <span>Total</span>
-            <span>₹{checkoutData?.total_full_payment}</span>
+            <span>
+              ₹
+              {selectedPayment === "payLater"
+                ? checkoutData?.total_cod_payment
+                : checkoutData?.total_full_payment}
+            </span>
           </div>
           <button
             className="w-full mt-3 bg-[var(--primary-dark)] text-white py-2 rounded"
@@ -100,6 +105,7 @@ const OrderSummary = ({
               ? `Pay Shipping ₹ ${checkoutData?.delivery_fee?.cod_fee}`
               : `Pay Now ₹ ${checkoutData?.total_full_payment || 0}`}
           </button>
+
           {selectedPayment === "payLater" && (
             <span className="mx-15 pt-2 h-10 block text-black">
               You will pay ₹ {checkoutData?.sub_total} upon delivery
