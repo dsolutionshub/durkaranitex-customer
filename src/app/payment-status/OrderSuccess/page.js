@@ -87,7 +87,7 @@ const OrderSuccess = ({ payment_id }) => {
                 className="mx-auto text-[var(--primary-main)] animate-checkmark sm:w-20 sm:h-20"
               />
             </div>
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 sm:mb-4 animate-fade-in">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold dark-color mb-3 sm:mb-4 animate-fade-in">
               Order Confirmed!
             </h1>
             <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 px-2 animate-fade-in">
@@ -117,7 +117,7 @@ const OrderSuccess = ({ payment_id }) => {
             </div>
 
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 sm:p-4 mb-6 sm:mb-8 animate-fade-in">
-              <h3 className="text-xs sm:text-sm font-semibold text-blue-800 mb-2">
+              <h3 className="text-xs sm:text-sm font-semibold dark-color mb-2">
                 What happens next?
               </h3>
               <ul className="text-xs text-blue-700 text-left space-y-1">
@@ -142,14 +142,14 @@ const OrderSuccess = ({ payment_id }) => {
             <button
               onClick={() => router.push("/shop")}
               className="flex-grow-1 py-2 border rounded hover:bg-[var(--primary-light)] 
-              transition-all duration-200 hover:scale-105"
+              transition-all duration-200 hover:scale-105 text-[var(--primary-main)]"
             >
               Continue Shopping
             </button>
             <button
               onClick={() => router.push("/")}
               className="flex-grow-1 flex items-center rounded justify-center  py-2 gap-2 
-              hover:bg-[var(--primary-light)] transition-all duration-200 hover:scale-105"
+              hover:bg-[var(--primary-light)] transition-all duration-200 hover:scale-105 text-[var(--primary-main)]"
             >
               <Home size={20} />
               Back to Home

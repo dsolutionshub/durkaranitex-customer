@@ -68,8 +68,11 @@ export default function ProductAccordion({
     },
     {
       title: "Replacements & Exchanges",
-      content: `Return & Replacements within 5 days of purchase for product damages only.
-      (Offer product / Innerwear/ Imitation Jewellery / Discount products are not Eligible to Return/Exchange*)`,
+       content: `
+      <p>Replacement & Exchange within 1 Day of Delivery for Damaged Products Only.</p>
+      <p>(Saree must be in original condition with all tags and labels attached. No signs of wear or alteration will be accepted.)</p>
+      <p>Please refer to our Replacement Policy for more details.</p>
+    `,
     },
   ];
 
@@ -80,6 +83,8 @@ export default function ProductAccordion({
         product_id: sections?.id,
         quantity: quantity,
       });
+      handleGetCartDetail();
+      handleGetProductDetails();
     } catch (error) {
       const status = error?.response?.status;
       if (status === 401) {
@@ -185,8 +190,9 @@ export default function ProductAccordion({
               </button>
 
               <div
-                className={`product-accordion-content ${isOpen ? "open" : "closed"
-                  }`}
+                className={`product-accordion-content ${
+                  isOpen ? "open" : "closed"
+                }`}
               >
                 <div dangerouslySetInnerHTML={{ __html: section.content }} />
               </div>
@@ -194,9 +200,14 @@ export default function ProductAccordion({
           );
         })}
       </div>
-      {parseInt(sections?.quantity) <= 10 && <span className="inline-block bg-green-800 text-white text-xs font-semibold px-2 py-1 mt-3 rounded-full">
-        In Stock : {parseInt(sections?.quantity)}
-      </span>}
+ {sections?.quantity && parseInt(sections.quantity) <= 10 && (
+  <div className="mt-4">
+    <div className="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-semibold rounded-full w-fit">
+      <span>Only {parseInt(sections.quantity)} left in stock!</span>
+    </div>
+  </div>
+)}
+
       <div className="mt-4 flex flex-col lg:flex-row items-center md:items-center space-y-4 md:space-y-0 md:space-x-4 w-full">
         <div className="mb-4 self-start md:self-center">
           <p className="product-detail-quantity-label">Quantity:</p>
@@ -223,10 +234,11 @@ export default function ProductAccordion({
         <div
           className={`flex flex-col md:flex-row items-center justify-center space-y-3
         md:space-y-0 md:space-x-3 gap-3 product-detail-cart-btn
-        ${showButtons
-              ? "opacity-100 pointer-events-auto"
-              : "opacity-0 pointer-events-none"
-            }
+        ${
+          showButtons
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
+        }
         `}
         >
           <button

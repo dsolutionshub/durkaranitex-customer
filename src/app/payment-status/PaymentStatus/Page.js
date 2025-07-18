@@ -25,7 +25,11 @@ export default function PaymentStatusComponent() {
 
   return (
     <div>
-      {isSuccess ? <OrderSuccess payment_id={payment_id} /> : <OrderFailure />}
+      {isSuccess ? (
+        <OrderSuccess payment_id={payment_id} />
+      ) : (
+        <OrderFailure payment_id={payment_id} />
+      )}
     </div>
   );
 }

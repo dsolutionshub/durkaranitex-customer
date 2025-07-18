@@ -4,7 +4,7 @@ const loader = (isVisible) => {
   if (showLoaderFn) {
     showLoaderFn(isVisible);
   } else {
-    console.warn("Loader component not mounted yet.");
+    console.log("Loader component not mounted yet.");
   }
 };
 

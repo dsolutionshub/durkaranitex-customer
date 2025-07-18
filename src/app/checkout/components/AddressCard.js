@@ -78,14 +78,11 @@ export default function AddressCard({
                     value={address.id}
                     checked={isSelected}
                     onChange={() => handleSelectAddress(address.id)}
-                    className="mt-3 accent-[var(--primary-main)] mr-3 scale-115 cursor-pointer"
-                    style={{
-                      transform: "scale(1.4)",
-                    }}
+                    className="mt-3 accent-[var(--primary-main)] mr-3 scale-135 cursor-pointer"
                   />
 
                   <div
-                    className={`flex-1 px-4 py-3 rounded-md relative transition-all duration-300 border-l-5
+                    className={`flex-1 px-2 py-2 md:px-4 md:py-3 rounded-md relative transition-all duration-300 border-l-5
                         border-b-1 border-r-1 border-t-1 border-green-800 ${
                           isSelected
                             ? "border-green-800 bg-green-50 shadow"
@@ -95,7 +92,7 @@ export default function AddressCard({
                     <div className="flex flex-col md:flex-row justify-between items-start gap-3">
                       <div className="flex flex-col md:flex-row gap-3 items-start">
                         <div
-                          className={`p-2 rounded-full ${
+                          className={`p-2 rounded-full d-none d-md-block ${
                             isSelected ? "bg-green-100" : "bg-gray-100"
                           }`}
                         >

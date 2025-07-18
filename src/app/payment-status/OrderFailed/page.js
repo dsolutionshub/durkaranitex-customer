@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { XCircle, RefreshCw, Home } from "lucide-react";
 import "./style.css";
 
-const OrderFailure = () => {
+const OrderFailure = ({ payment_id }) => {
   const router = useRouter();
 
   return (
@@ -18,7 +18,7 @@ const OrderFailure = () => {
               />
             </div>
 
-            <h1 className="text-3xl font-bold text-gray-900 mb-4 animate-fade-in">
+            <h1 className="text-3xl font-bold text-gray-900 mb-4 animate-fade-in dark-color">
               Payment Failed
             </h1>
             <p className="text-gray-600 mb-6 animate-fade-in delay-200">
@@ -26,9 +26,11 @@ const OrderFailure = () => {
               details and try again.
             </p>
 
-            <div className="bg-red-50 border border-red-200 rounded-lg shadow-sm p-4 mb-6 animate-fade-in delay-400">
-              <p className="text-sm text-red-600 mb-1">Transaction ID</p>
-              <p className="text-lg font-semibold text-red-900">TXN123456789</p>
+            <div className="bg-red-50 border border-red-200 rounded-lg shadow-sm p-4 mb-6 animate-fade-in delay-400 d-none">
+              <p className="text-sm text-red-600 mb-1">Payment ID</p>
+              <p className="text-lg font-semibold text-red-900">
+                {payment_id || "-"}
+              </p>
             </div>
 
             <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-8 animate-fade-in delay-500">
@@ -57,14 +59,14 @@ const OrderFailure = () => {
 
             <button
               onClick={() => router.push("/shop")}
-              className="flex-grow-1 py-2 border rounded hover:bg-red-100 
+              className="flex-grow-1 py-2 border rounded hover:bg-red-100 dark-color
               transition-all duration-200 hover:scale-105"
             >
               Continue Shopping
             </button>
             <button
               onClick={() => router.push("/")}
-              className="flex-grow-1 flex items-center rounded justify-center  py-2 gap-2 
+              className="flex-grow-1 flex items-center rounded justify-center  py-2 gap-2 dark-color 
               hover:bg-red-100 transition-all duration-200 hover:scale-105"
             >
               <Home size={20} />

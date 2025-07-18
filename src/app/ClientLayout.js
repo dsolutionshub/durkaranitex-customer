@@ -7,13 +7,13 @@ import Footer from "./components/Footer";
 export default function ClientLayout({ children }) {
   const pathname = usePathname();
 
-  // const showLayout = !["/login"].includes(pathname);
+  const showLayout = !["/checkout"].includes(pathname);
 
   return (
     <>
-      <Navbar />
+      {showLayout && <Navbar />}
       {children}
-      <Footer />
+      {showLayout && <Footer />}
     </>
   );
 }

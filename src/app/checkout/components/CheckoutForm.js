@@ -141,9 +141,10 @@ export default function CheckoutForm({
 
           <div
             className={`flex items-center border rounded-md px-3 py-2 cursor-pointer hover:bg-gray-100
-              ${checkoutData?.delivery_fee?.isCodAvailable === false
-                ? "bg-gray-200 pointer-events-none opacity-60"
-                : ""
+              ${
+                checkoutData?.delivery_fee?.isCodAvailable === false
+                  ? "bg-gray-200 pointer-events-none opacity-60"
+                  : ""
               }`}
             onClick={() => setSelectedPayment("payLater")}
           >
@@ -160,7 +161,7 @@ export default function CheckoutForm({
                 Pay Later (Cash on Delivery)
               </p>
               <p className="text-gray-500 m-0">
-                Pay only for products at delivery time
+                ⚠️ COD available only for orders ≤ ₹1500 (incl. shipping)
               </p>
             </div>
           </div>
@@ -172,9 +173,9 @@ export default function CheckoutForm({
               }
             >
               <p className="text-black text-sm m-0">
-                For Cash on Delivery (COD) orders, shipping charges of ₹225 must
-                be paid upfront through our payment gateway. The remaining
-                product amount will be collected in cash at the time of delivery
+                For Cash on Delivery (COD) orders, shipping charges must be paid
+                upfront through our payment gateway. The remaining product
+                amount will be collected in cash at the time of delivery
               </p>
             </div>
           )}
@@ -186,6 +187,7 @@ export default function CheckoutForm({
         isEdit={isEdit}
         getAddressList={getAddressList}
         addressDetail={addressDetail}
+        handleCheckoutList={handleCheckoutList}
       />{" "}
     </div>
   );

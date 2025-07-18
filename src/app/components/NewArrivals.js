@@ -28,7 +28,6 @@ const CollectionTab = ({ data }) => {
   const [activeTab, setActiveTab] = useState(null);
   const [collectionsData, setCollectionsData] = useState({});
   const { handleGetCartDetail, wishlistDetails } = useCartPanelStore();
-  const [quantities, setQuantities] = useState({});
   const [wishlistMap, setWishlistMap] = useState({});
 
   const fetchCollectionsData = async (tabs) => {
@@ -46,8 +45,8 @@ const CollectionTab = ({ data }) => {
         })
       );
 
-      setWishlistMap(allWishlistMap); 
-      
+      setWishlistMap(allWishlistMap);
+
       const mapped = {};
       results.forEach(({ id, products }) => {
         mapped[id] = products;
@@ -63,7 +62,6 @@ const CollectionTab = ({ data }) => {
     if (!data?.length) return;
     setActiveTab(data[0].id);
     fetchCollectionsData(data);
-    console.log(data);
   }, [data]);
 
   const addToWishlist = async (id) => {
