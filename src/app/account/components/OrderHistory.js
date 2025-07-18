@@ -1,5 +1,8 @@
 import Link from "next/link";
 import { Package, Calendar, Eye } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { getOrderList } from "@/app/api/services/authService";
 
 export default function OrderHistory() {
   const orders = [
@@ -9,13 +12,43 @@ export default function OrderHistory() {
     { id: "ORD1004", date: "2025-06-07", items: 3, total: "₹999" },
     { id: "ORD1005", date: "2025-06-06", items: 5, total: "₹3,800" },
   ];
+  const [orderCount, setOrderCount] = useState(0);
+  const [orderDetails, setOrderDetails] = useState([]);
+
+  // const date = new Date(createdAt);
+
+  const router = useRouter();
+
+  // const OrderList = async () => {
+  //   const data = await getOrderList()
+  //   console.log(data);
+  //   setOrderCount(data?.cartOrderCount)
+  //   setOrderDetails(data?.cartOrderProducts)
+  // }
+
+  const OrderList = async () => {
+  const data = await getOrderList();
+
+  setOrderCount(data?.cartOrderCount);
+
+  const formattedOrders = data?.cartOrderProducts?.map(order => ({
+    ...order,
+    formattedDate: new Date(order.created_at).toISOString().split('T')[0],
+  }));
+
+  setOrderDetails(formattedOrders);
+};
+
+  useEffect(() => {
+    OrderList()
+  }, [])
 
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
         <h2 className="text-3xl font-bold dark-color">Order History</h2>
         <div className="text-sm text-gray-600  bg-blue-200 px-3 py-1 rounded-lg font-medium">
-          {orders.length} Total Orders
+          {orderCount} Total Orders
         </div>
       </div>
 
@@ -44,11 +77,10 @@ export default function OrderHistory() {
         </div>
       ) : (
         <div
-          className={`space-y-6 ${
-            orders.length > 2 ? "max-h-[500px] overflow-y-auto pr-2" : ""
-          }`}
+          className={`space-y-6 ${orders.length > 2 ? "max-h-[500px] overflow-y-auto pr-2" : ""
+            }`}
         >
-          {orders.map((order, index) => (
+          {orderDetails?.map((order, index) => (
             <div
               key={order.id}
               className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 transform hover:scale-[1.02] animate-fade-in"
@@ -62,23 +94,24 @@ export default function OrderHistory() {
 
                   <div className="space-y-2">
                     <div className="text-lg font-bold text-[var(--gray-color)]">
-                      {order.id}
+                      {order?.order_number}
                     </div>
                     <div className="flex items-center gap-3 text-sm text-gray-600">
                       <div className="flex items-center gap-1">
                         <Calendar className="w-4 h-4" />
-                        {order.date}
+                        {order?.formattedDate}
                       </div>
-                      <span className="text-sm">• {order.items} item(s)</span>
+                      <span className="text-sm">• {order?.items} item(s)</span>
                     </div>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-6 justify-between w-full md:w-auto">
                   <div className="text-2xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
-                    {order.total}
+                  ₹{order?.final_amount}
                   </div>
-                  <button className="flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-all shadow-lg shadow-blue-500/25">
+                  <button   onClick={() => router.push(`/order-details?id=${order.id}`)}
+                   className="flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-all shadow-lg shadow-blue-500/25">
                     <Eye size={16} />
                     View
                   </button>

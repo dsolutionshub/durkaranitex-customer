@@ -201,7 +201,8 @@ export default function ProductAccordion({
         <div className="mb-4 self-start md:self-center">
           <p className="product-detail-quantity-label">Quantity:</p>
           <div className="d-flex align-items-center	justify-content-evenly bg-gray-100 w-[9rem] h-[2.5rem] border">
-            <button className="text-black " onClick={handleDecrease}>
+            <button className="text-black " disabled={quantity === 1}
+              onClick={handleDecrease}>
               <FaMinus />
             </button>
             <p
@@ -213,7 +214,7 @@ export default function ProductAccordion({
             >
               {quantity}
             </p>
-            <button className="text-black" onClick={handleIncrease}>
+            <button className="text-black" disabled={parseInt(sections?.quantity) <= quantity} onClick={handleIncrease}>
               <FaPlus />
             </button>
           </div>

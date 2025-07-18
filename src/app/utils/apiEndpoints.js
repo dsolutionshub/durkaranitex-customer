@@ -39,3 +39,7 @@ export const HANDLE_CHECKOUT = "/api/checkout/checkout";
 export const GET_CHECKOUT_LIST = "/api/checkout/list";
 export const UPDATE_CHECKOUT_ADDRESS = "/api/checkout/address";
 export const HANDLE_PAYMENT = "/api/checkout/pay-now";
+
+//Order 
+export const ORDER_DETAIL = "/api/profile/order-detail";
+export const ORDER_LIST = "/api/profile/order-list"

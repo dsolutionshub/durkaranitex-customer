@@ -17,6 +17,8 @@ import {
   HANDLE_PAYMENT,
   LOGIN,
   LOGIN_CHECK,
+  ORDER_DETAIL,
+  ORDER_LIST,
   PRODUCT_DETAIL,
   PRODUCT_LIST,
   PROFILE_INFO,
@@ -203,5 +205,17 @@ export async function updateCheckoutAddress(payload) {
 
 export async function payment(payload) {
   const response = await apiRequest(HANDLE_PAYMENT, "POST", payload);
+  return response;
+}
+
+
+//Order Details
+export async function getOrderList() {
+  const response = await apiRequest(ORDER_LIST, "GET");
+  return response;
+}
+
+export async function getOrderDetails(id) {
+  const response = await apiRequest(`${ORDER_DETAIL}/${id}`, "GET");
   return response;
 }
