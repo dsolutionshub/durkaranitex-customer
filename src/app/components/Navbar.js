@@ -143,7 +143,6 @@ export default function Navbar() {
         <div className="flex items-center gap-6 text-2xl pr-5">
           <div
             className="relative cursor-pointer"
-            // onClick={() => router.push("/wishlist")}
             onClick={() => handlePushToPath("/wishlist")}
           >
             <Heart className="primary-color" />

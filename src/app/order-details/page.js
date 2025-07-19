@@ -78,15 +78,15 @@ export default function OrderDetailsPage() {
                                     /> */}
                                     <div className="relative w-24 h-24">
                                         <Image
-                                            src={prod?.product?.image || '/images/logo.png'}
-                                            alt={prod?.product?.title || 'Product Image'}
+                                            src={prod?.product?.images[0]?.image}
+                                            alt={prod?.product?.title}
                                             fill
                                             className="object-cover rounded"
                                         />
                                     </div>
                                     <div>
                                         <p className="font-semibold text-black text-sm m-0">{prod?.product?.title}</p>
-                                        <p className="text-sm text-black m-0">Category: {prod.category}</p>
+                                        <p className="text-sm text-black m-0">Category: {prod?.product?.category?.name}</p>
                                         <p className="text-sm text-black m-0">Price: Rs. {prod?.price}</p>
                                         <p className="text-sm text-black m-0">Qty: {prod?.quantity}</p>
                                         <p className="font-semibold mt-2 text-black">Total: Rs. {prod?.total_amount}</p>
@@ -98,9 +98,9 @@ export default function OrderDetailsPage() {
                             <div className="flex justify-between">
                                 <span>Subtotal</span><span>Rs. {orderDetails?.total_amount}</span>
                             </div>
-                            <div className="flex justify-between text-red-600">
+                            {/* <div className="flex justify-between text-red-600">
                                 <span>Coupon Code (SAVE10)</span><span>- Rs. {orderDetails?.coupon_discount}</span>
-                            </div>
+                            </div> */}
                             <div className="flex justify-between">
                                 <span>Shipping</span><span>Rs. {orderDetails?.delivery_fees}</span>
                             </div>
@@ -130,9 +130,8 @@ export default function OrderDetailsPage() {
 
                     <div className="bg-white p-4 rounded border border-gray text-black">
                         <h5 className="font-bold">Shipping Address</h5>
-                        <p className='mt-3 text-sm'>{orderDetails?.address}, {order.address.line2}</p>
+                        <p className='mt-3 text-sm'>{orderDetails?.address}</p>
                         <p className='mt-1 text-sm'>{orderDetails?.city}, {order.address.state} {orderDetails?.pincode}</p>
-                        <p className='mt-1 text-sm'>{order.address.country}</p>
                         <p className='mt-1 text-sm font-bold'>Payment Method:</p>
                         <p className='mt-1 text-sm'>{orderDetails?.payment_type}</p>
                     </div>
