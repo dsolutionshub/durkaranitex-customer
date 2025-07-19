@@ -38,6 +38,7 @@ const useCartPanelStore = create((set, get) => ({
       set({ cartCount: data?.cart?.length || 0 });
     } catch (error) {
       getErrorMessage(error);
+      set({ cartProducts: [] });
     } finally {
       loader(false);
     }
@@ -51,6 +52,7 @@ const useCartPanelStore = create((set, get) => ({
       set({ wishListCount: data?.WishLists?.length || 0 });
     } catch (error) {
       getErrorMessage(error);
+      set({ wishListData: [] });
     } finally {
       loader(false);
     }
