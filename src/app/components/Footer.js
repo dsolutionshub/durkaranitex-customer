@@ -7,19 +7,21 @@ import {
   FaLinkedinIn,
   FaYoutube,
 } from "react-icons/fa";
+import { useEffect, useState } from "react";
+import { getCategoryList } from "../api/services/authService";
 
-const categoryList = [
-  { label: "Semi Soft Silk Sarees", path: "/shop" },
-  { label: "Premium Soft Silk Sarees", path: "/shop" },
-  { label: "Poonthamil Saree", path: "/shop" },
-  { label: "Banarasi Tissue Silk Sarees", path: "/shop" },
-  { label: "Wedding Collection Silk Saree", path: "/shop" },
-  { label: "Kanjivaram Wedding Semi Silk Sarees", path: "/shop" },
-  { label: "Silk Cotton Sarees", path: "/shop" },
-  { label: "Printed Cotton Sarees", path: "/shop" },
-  { label: "Printed Silk Cotton Saree", path: "/shop" },
-  { label: "Celebrity Inspired Tissue Silk Sarees", path: "/shop" },
-];
+// const categoryList = [
+//   { label: "Semi Soft Silk Sarees", path: "/shop" },
+//   { label: "Premium Soft Silk Sarees", path: "/shop" },
+//   { label: "Poonthamil Saree", path: "/shop" },
+//   { label: "Banarasi Tissue Silk Sarees", path: "/shop" },
+//   { label: "Wedding Collection Silk Saree", path: "/shop" },
+//   { label: "Kanjivaram Wedding Semi Silk Sarees", path: "/shop" },
+//   { label: "Silk Cotton Sarees", path: "/shop" },
+//   { label: "Printed Cotton Sarees", path: "/shop" },
+//   { label: "Printed Silk Cotton Saree", path: "/shop" },
+//   { label: "Celebrity Inspired Tissue Silk Sarees", path: "/shop" },
+// ];
 
 const quickLinks = [
   { label: "Home", path: "/" },
@@ -39,10 +41,9 @@ const userPolicies = [
 ];
 
 const socialLinks = [
-  { id: 1, path: "#", icon: FaFacebookF },
-  { id: 2, path: "#", icon: FaInstagram },
-  { id: 3, path: "#", icon: FaLinkedinIn },
-  { id: 4, path: "#", icon: FaYoutube },
+  { id: 1, path: "https://www.facebook.com/p/Dhurgarani-Tex-100094106706250/?_rdr", icon: FaFacebookF },
+  { id: 2, path: "https://www.instagram.com/dhurga_rani_tex?igsh=ZHN3b2o2ajRjYW5o", icon: FaInstagram },
+  { id: 3, path: "https://youtube.com/@dhurgaranitex?si=hXZOkvxf1naBMHwq", icon: FaYoutube },
 ];
 
 function FooterSection({ title, listItems }) {
@@ -74,6 +75,22 @@ function FooterSection({ title, listItems }) {
 }
 
 export default function Footer() {
+  const [categoryList, setCategoryList] = useState([])
+
+  const getTopCategories = async () => {
+    const {categories} = await getCategoryList()
+    const formattedData = categories?.map((category) => ({
+      label: category?.name, 
+      path: "/shop",       
+    }));
+    setCategoryList(formattedData);
+  }
+
+  useEffect(() => {
+    getTopCategories()
+    console.log(categoryList);
+  }, [categoryList])
+
   return (
     <footer className="bg-white border-t border-gray-100">
       <div className="container mx-auto px-4 py-5">

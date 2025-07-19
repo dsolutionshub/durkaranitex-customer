@@ -9,7 +9,7 @@ import OrderHistory from "./components/OrderHistory";
 import AccountDetails from "./components/AccountDetails";
 import AddressForm from "./components/Addresses";
 
-import { getProfileInfo } from "../api/services/authService";
+import { getProfileInfo, logout } from "../api/services/authService";
 import { getErrorMessage } from "../utils/helperFn";
 import { loader } from "../components/loader/loaderManager";
 import { useAuthStore } from "@/store/useAuthStore";
@@ -44,11 +44,12 @@ export default function AccountPage() {
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
   const handleLoggedOut = async () => {
+    const data = await logout();
     handleLogout();
     setCartCount(0);
     setWishListCount(0);
     router.push("/");
-    toast.success(LOGGED_OUT_MSG);
+    toast.success(data?.message);
   };
 
   const profile_info = async () => {
@@ -78,6 +79,11 @@ export default function AccountPage() {
 
   useEffect(() => {
     profile_info();
+    const selectionTab = sessionStorage.getItem("tab");
+    if(selectionTab){
+      setSelectedTab(selectionTab)
+      renderContent(selectionTab)
+    }
   }, []);
 
   useEffect(() => {

@@ -17,6 +17,7 @@ import {
   HANDLE_PAYMENT,
   LOGIN,
   LOGIN_CHECK,
+  LOGOUT,
   ORDER_DETAIL,
   ORDER_LIST,
   PRODUCT_DETAIL,
@@ -65,6 +66,12 @@ export async function login(payload) {
 
 export async function register(payload) {
   const response = await apiRequest(REGISTER, "POST", payload);
+  return response;
+}
+
+//Logout
+export async function logout() {
+  const response = await apiRequest(LOGOUT, "POST");
   return response;
 }
 

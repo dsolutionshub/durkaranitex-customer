@@ -18,12 +18,20 @@ const glitterColors = ["#ffd700", "#ffeb3b", "#fff59d", "#f0f4c3"];
 const OrderSuccess = ({ payment_id }) => {
   const router = useRouter();
   const [showPartyBurst, setShowPartyBurst] = useState(false);
+  const [orderId, setOrderId] = useState("")
 
   useEffect(() => {
     setShowPartyBurst(true);
+    const id = sessionStorage.getItem('order_id')
+    setOrderId(id)
     const timer = setTimeout(() => setShowPartyBurst(false), 4000);
     return () => clearTimeout(timer);
   }, []);
+
+  const handleViewOrders = ()=>{
+    sessionStorage.setItem('tab', 'orders')
+    router.push("/account")
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -102,7 +110,7 @@ const OrderSuccess = ({ payment_id }) => {
                     Order Number
                   </p>
                   <p className="text-base sm:text-lg font-semibold text-[var(--primary-main)]">
-                    #ORD-2024-001237
+                    {orderId}
                   </p>
                 </div>
                 <div className="border-t border-green-200 pt-2 sm:pt-3">
@@ -131,7 +139,7 @@ const OrderSuccess = ({ payment_id }) => {
 
           <div className="d-flex flex-column flex-lg-row align-items-lg-center w-full lg:gap-2">
             <button
-              onClick={() => router.push("/orders")}
+              onClick={handleViewOrders}
               className="flex-grow-1 flex items-center justify-center bg-[var(--primary-main)] 
               text-white py-2 gap-2 rounded hover:bg-[var(--primary-dark)] transition-all duration-200 hover:scale-105"
             >

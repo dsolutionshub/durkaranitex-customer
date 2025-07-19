@@ -3,12 +3,12 @@
 import Image from "next/image";
 import { Carousel } from "primereact/carousel";
 
-export function BannerCarousel() {
-  const images = [
-    { id: 1, src: "/images/banner/Acrylic Tumblerr.png" },
-    { id: 2, src: "/images/banner/Orange Navy.png" },
-    { id: 3, src: "/images/banner/Orange Navy 3.png" },
-  ];
+export function BannerCarousel({ images }) {
+  // const images = [
+  //   { id: 1, src: "/images/banner/Acrylic Tumblerr.png" },
+  //   { id: 2, src: "/images/banner/Orange Navy.png" },
+  //   { id: 3, src: "/images/banner/Orange Navy 3.png" },
+  // ];
 
   const imageTemplate = (item) => {
     return (
@@ -16,7 +16,7 @@ export function BannerCarousel() {
         <Image
           height={100}
           width={100}
-          src={item.src}
+          src={item?.image}
           alt="Banner"
           className="w-full object-cover md:h-[60vh] lg:h-[80vh] lg:h-[90vh]"
         />
@@ -26,7 +26,7 @@ export function BannerCarousel() {
 
   return (
     <div>
-      <Carousel
+      {images?.length > 0 && <Carousel
         value={images}
         itemTemplate={imageTemplate}
         numVisible={1}
@@ -36,7 +36,7 @@ export function BannerCarousel() {
         showIndicators={true}
         showNavigators={false}
         className="custom-carousel"
-      />
+      />}
     </div>
   );
 }

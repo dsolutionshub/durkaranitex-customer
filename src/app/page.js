@@ -36,7 +36,7 @@ export default function Home() {
 
   return (
     <div>
-      <BannerCarousel />
+      <BannerCarousel images={homeDetails?.sliders}/>
       <CollectionsSection />
       {homeDetails?.featured_products?.length > 0 && (
         <FeaturedProducts

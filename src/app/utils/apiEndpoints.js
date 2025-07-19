@@ -9,6 +9,9 @@ export const LOGIN_CHECK = "/api/login-check";
 export const LOGIN = "/api/login";
 export const REGISTER = "/api/register";
 
+//Logout
+export const LOGOUT = "/api/logout"
+
 //Home
 export const GET_HOME = "/api/home";
 

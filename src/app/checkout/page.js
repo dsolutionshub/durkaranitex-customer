@@ -54,6 +54,7 @@ export default function CheckoutPage() {
             ? "online"
             : "",
       });
+      sessionStorage.setItem('order_id', data?.order_id)
       if (selectedPayment === "payNow") {
         await loadRazorpayScript();
         initiateRazorpayPayment({ order: data, customer: userData });
