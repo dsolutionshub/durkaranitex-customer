@@ -1,25 +1,35 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
-export const useAuthStore = create((set, get) => ({
-  isLoggedIn: null,
-  userData: {},
+export const useAuthStore = create(
+  persist(
+    (set, get) => ({
+      isLoggedIn: null,
+      userData: {},
 
-  setIsLoginTrue: () => {
-    set({ isLoggedIn: true });
-  },
+      setIsLoginAuth: (value) => {
+        set({ isLoggedIn: value });
+      },
 
-  setIsLoginFalse: () => {
-    set({ isLoggedIn: false });
-  },
+      handleSaveUserData: (data) => {
+        set({ userData: data });
+      },
 
-  handleSaveUserData: (data) => {
-    set({ userData: data });
-  },
-
-  handleLogout: () => {
-    sessionStorage.removeItem("accessToken");
-    sessionStorage.clear();
-    const { setIsLoginFalse } = get();
-    setIsLoginFalse();
-  },
-}));
+      handleLogout: () => {
+        sessionStorage.removeItem("accessToken");
+        sessionStorage.clear();
+        const { setIsLoginAuth } = get();
+        setIsLoginAuth(false);
+        set({ userData: {} });
+      },
+    }),
+    {
+      name: "auth-storage",
+      getStorage: () => sessionStorage,
+      partialize: (state) => ({
+        isLoggedIn: state.isLoggedIn,
+        userData: state.userData,
+      }),
+    }
+  )
+);

@@ -21,6 +21,7 @@ import SidePanelCart from "./sidePanelCart/SidePanelCart";
 import useCartPanelStore from "@/store/useCartPanelStore";
 import { loginCheck } from "../api/services/authService";
 import { getErrorMessage } from "../utils/helperFn";
+import { useAuthStore } from "@/store/useAuthStore";
 
 const navItems = [
   { name: "Home", href: "/", icon: <Home /> },
@@ -36,9 +37,9 @@ export default function Navbar() {
 
   const cartCount = useCartPanelStore((state) => state.cartCount);
   const wishListCount = useCartPanelStore((state) => state.wishListCount);
+  const { isLoggedIn, setIsLoginAuth } = useAuthStore();
 
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handlePanel = useCallback(() => {
     handleGetCartDetail();
@@ -63,9 +64,9 @@ export default function Navbar() {
 
     const token = sessionStorage.getItem("accessToken");
     if (token && token !== "undefined") {
-      setIsLoggedIn(true);
+      setIsLoginAuth(true);
     } else {
-      setIsLoggedIn(false);
+      setIsLoginAuth(false);
     }
   }, []);
 

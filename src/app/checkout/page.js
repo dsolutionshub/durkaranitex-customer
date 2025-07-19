@@ -33,14 +33,16 @@ export default function CheckoutPage() {
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
   const handlePayment = async () => {
-    if (!checkoutData?.address) {
-      toast.error(SELECT_ADDRESS_ERROR_MSG);
-      return;
-    }
     if (selectedPayment === "") {
       toast.error(PAYMENT_METHOD);
       return;
     }
+
+    if (!checkoutData?.address) {
+      toast.error(SELECT_ADDRESS_ERROR_MSG);
+      return;
+    }
+
     loader(true);
     try {
       const data = await payment({
