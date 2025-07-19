@@ -25,8 +25,7 @@ export default function Home() {
       const data = await getHome();
       setHomeDetails(data || []);
     } catch (error) {
-      const MSG = getErrorMessage(error);
-      toast.error(MSG);
+      getErrorMessage(error);
     } finally {
       loader(false);
     }
