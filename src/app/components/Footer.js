@@ -1,27 +1,13 @@
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import toast from "react-hot-toast";
 import { MapPin, Phone, Mail } from "lucide-react";
-import {
-  FaFacebookF,
-  FaInstagram,
-  FaLinkedinIn,
-  FaYoutube,
-} from "react-icons/fa";
-import { useEffect, useState } from "react";
-import { getCategoryList } from "../api/services/authService";
+import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa";
 
-// const categoryList = [
-//   { label: "Semi Soft Silk Sarees", path: "/shop" },
-//   { label: "Premium Soft Silk Sarees", path: "/shop" },
-//   { label: "Poonthamil Saree", path: "/shop" },
-//   { label: "Banarasi Tissue Silk Sarees", path: "/shop" },
-//   { label: "Wedding Collection Silk Saree", path: "/shop" },
-//   { label: "Kanjivaram Wedding Semi Silk Sarees", path: "/shop" },
-//   { label: "Silk Cotton Sarees", path: "/shop" },
-//   { label: "Printed Cotton Sarees", path: "/shop" },
-//   { label: "Printed Silk Cotton Saree", path: "/shop" },
-//   { label: "Celebrity Inspired Tissue Silk Sarees", path: "/shop" },
-// ];
+import { loader } from "./loader/loaderManager";
+import { getCategoryList } from "../api/services/authService";
+import { getErrorMessage } from "../utils/helperFn";
 
 const quickLinks = [
   { label: "Home", path: "/" },
@@ -41,9 +27,21 @@ const userPolicies = [
 ];
 
 const socialLinks = [
-  { id: 1, path: "https://www.facebook.com/p/Dhurgarani-Tex-100094106706250/?_rdr", icon: FaFacebookF },
-  { id: 2, path: "https://www.instagram.com/dhurga_rani_tex?igsh=ZHN3b2o2ajRjYW5o", icon: FaInstagram },
-  { id: 3, path: "https://youtube.com/@dhurgaranitex?si=hXZOkvxf1naBMHwq", icon: FaYoutube },
+  {
+    id: 1,
+    path: "https://www.facebook.com/p/Dhurgarani-Tex-100094106706250/?_rdr",
+    icon: FaFacebookF,
+  },
+  {
+    id: 2,
+    path: "https://www.instagram.com/dhurga_rani_tex?igsh=ZHN3b2o2ajRjYW5o",
+    icon: FaInstagram,
+  },
+  {
+    id: 3,
+    path: "https://youtube.com/@dhurgaranitex?si=hXZOkvxf1naBMHwq",
+    icon: FaYoutube,
+  },
 ];
 
 function FooterSection({ title, listItems }) {
@@ -75,21 +73,28 @@ function FooterSection({ title, listItems }) {
 }
 
 export default function Footer() {
-  const [categoryList, setCategoryList] = useState([])
+  const [categoryList, setCategoryList] = useState([]);
 
   const getTopCategories = async () => {
-    const {categories} = await getCategoryList()
-    const formattedData = categories?.map((category) => ({
-      label: category?.name, 
-      path: "/shop",       
-    }));
-    setCategoryList(formattedData);
-  }
+    loader(true);
+    try {
+      const { categories } = await getCategoryList();
+      const formattedData = categories?.map((category) => ({
+        label: category?.name,
+        path: "/shop",
+      }));
+      setCategoryList(formattedData || []);
+    } catch (error) {
+      const MSG = getErrorMessage(error);
+      toast.error(MSG);
+    } finally {
+      loader(false);
+    }
+  };
 
   useEffect(() => {
-    getTopCategories()
-    console.log(categoryList);
-  }, [categoryList])
+    getTopCategories();
+  }, []);
 
   return (
     <footer className="bg-white border-t border-gray-100">

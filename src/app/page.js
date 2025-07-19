@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 import { BannerCarousel } from "./components/HeroSection";
 import CollectionsSection from "./components/CollectionsSection";
@@ -22,9 +23,10 @@ export default function Home() {
     loader(true);
     try {
       const data = await getHome();
-      setHomeDetails(data);
+      setHomeDetails(data || []);
     } catch (error) {
-      getErrorMessage(error);
+      const MSG = getErrorMessage(error);
+      toast.error(MSG);
     } finally {
       loader(false);
     }
@@ -36,7 +38,7 @@ export default function Home() {
 
   return (
     <div>
-      <BannerCarousel images={homeDetails?.sliders}/>
+      <BannerCarousel images={homeDetails?.sliders} />
       <CollectionsSection />
       {homeDetails?.featured_products?.length > 0 && (
         <FeaturedProducts

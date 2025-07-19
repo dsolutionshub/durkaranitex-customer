@@ -52,13 +52,14 @@ export default function AccountPage() {
     toast.success(data?.message);
   };
 
-  const profile_info = async () => {
+  const handleProfileInfo = async () => {
     loader(true);
     try {
       const { customer } = await getProfileInfo();
       setProfileInfo(customer || []);
     } catch (error) {
-      getErrorMessage(error);
+      const MSG = getErrorMessage(error);
+      toast.error(MSG);
     } finally {
       loader(false);
     }
@@ -78,11 +79,11 @@ export default function AccountPage() {
   };
 
   useEffect(() => {
-    profile_info();
+    handleProfileInfo();
     const selectionTab = sessionStorage.getItem("tab");
-    if(selectionTab){
-      setSelectedTab(selectionTab)
-      renderContent(selectionTab)
+    if (selectionTab) {
+      setSelectedTab(selectionTab);
+      renderContent(selectionTab);
     }
   }, []);
 
