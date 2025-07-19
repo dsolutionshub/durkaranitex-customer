@@ -1,11 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState , Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { getOrderDetails } from '../api/services/authService';
 import Image from 'next/image';
 
-export default function OrderDetailsPage() {
+function OrderDetailsPage() {
     const searchParams = useSearchParams();
     const id = searchParams.get('id');
     const [order, setOrder] = useState(null);
@@ -139,6 +139,14 @@ export default function OrderDetailsPage() {
             </div>
         </div>
     );
+}
+
+export default function WrappedOrderDetailsPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <OrderDetailsPage />
+    </Suspense>
+  );
 }
 
 
