@@ -47,8 +47,8 @@ const ProductDetails = () => {
     try {
       const data = await getProductDetails(id);
       setProductInfo(data);
-      setTotalQuantities(data?.quantity)
-      setQuantity(data?.product?.cart?.quantity)
+      setTotalQuantities(data?.quantity || 0)
+      setQuantity(data?.product?.cart?.quantity || 1)
     } catch (error) {
       const MSG = getErrorMessage(error);
       toast.error(MSG);
