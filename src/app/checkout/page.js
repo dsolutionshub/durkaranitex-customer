@@ -18,7 +18,6 @@ import { useAuthStore } from "@/store/useAuthStore";
 import { getErrorMessage, loadRazorpayScript } from "../utils/helperFn";
 import { initiateRazorpayPayment } from "../utils/initiateRazorpay";
 import {
-  COD_SUCCESS_MSG,
   LOGIN_MSG,
   PAYMENT_METHOD,
   SELECT_ADDRESS_ERROR_MSG,
@@ -54,14 +53,9 @@ export default function CheckoutPage() {
             ? "online"
             : "",
       });
-      sessionStorage.setItem('order_id', data?.order_id)
-      if (selectedPayment === "payNow") {
-        await loadRazorpayScript();
-        initiateRazorpayPayment({ order: data, customer: userData });
-      } else {
-        toast.success(COD_SUCCESS_MSG);
-        router.push("/payment-status?status=success");
-      }
+      sessionStorage.setItem("order_id", data?.order_id);
+      await loadRazorpayScript();
+      initiateRazorpayPayment({ order: data, customer: userData });
     } catch (error) {
       const MSG = getErrorMessage(error);
       toast.error(MSG);
