@@ -119,7 +119,7 @@ export default function CheckoutForm({
         <div className="space-y-4">
           <div
             className={
-              "flex items-center border rounded-md px-3 py-2 cursor-pointer hover:bg-gray-100 "
+              "flex items-center border rounded-md px-3 py-2 cursor-pointer hover:bg-gray-100"
             }
             onClick={() => setSelectedPayment("payNow")}
           >

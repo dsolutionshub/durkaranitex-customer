@@ -227,27 +227,30 @@ function Product() {
                     No products found.
                   </p>
                 ) : (
-                  productList?.map((item) => (
-                    <div
-                      className="col-md-4 col-lg-3 md:mb-4 product-list-card-mobile"
-                      key={item.id}
-                    >
-                      <ProductCard
-                        id={item?.id}
-                        type={"heart"}
-                        btn1={() => addToWishlist(item.id)}
-                        btn2={() => addToCart(item.id)}
-                        title={item?.title}
-                        price={item?.price}
-                        oldPrice={item?.product_price}
-                        image={item?.images[0]?.["image"]}
-                        image1={item?.images[1]?.["image"]}
-                        discount={item?.discount || 0}
-                        isInWishlist={item?.wishList}
-                        onClick={() => navigateToProductDetail(item?.id)}
-                      />
-                    </div>
-                  ))
+                  productList
+                    ?.filter(item => item?.is_published === "1")
+                    ?.map((item) => (
+                      <div
+                        className="col-md-4 col-lg-3 md:mb-4 product-list-card-mobile"
+                        key={item.id}
+                      >
+                        <ProductCard
+                          id={item?.id}
+                          type="heart"
+                          btn1={() => addToWishlist(item.id)}
+                          btn2={() => addToCart(item.id)}
+                          title={item?.title}
+                          price={item?.price}
+                          oldPrice={item?.product_price}
+                          image={item?.images?.[0]?.image}
+                          image1={item?.images?.[1]?.image}
+                          discount={item?.discount || 0}
+                          isInWishlist={item?.wishList}
+                          onClick={() => navigateToProductDetail(item?.id)}
+                        />
+                      </div>
+                    ))
+
                 )}
               </div>
 

@@ -179,9 +179,8 @@ export default function Navbar() {
       )}
 
       <div
-        className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-50 transform transition-transform duration-300 ${
-          menuOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+        className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-50 transform transition-transform duration-300 ${menuOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
       >
         <div className="flex items-center justify-between px-4 py-4 border-b">
           <span className="text-lg font-bold text-bg-700 text-gray-500">
@@ -211,16 +210,18 @@ export default function Navbar() {
           ))}
 
           <li>
-            <Link
-              href="/wishlist"
-              onClick={() => setMenuOpen(false)}
+            <div
+              onClick={() => {
+                handlePushToPath("/wishlist")
+                setMenuOpen(false)
+              }}
               className="flex justify-between items-center py-2 hover:text-blue-500 primary-color"
             >
               <span className="flex items-center gap-2">
                 <Heart /> Wishlist
               </span>
               <ChevronRight className="text-xl" />
-            </Link>
+            </div>
             <hr className="border-gray-300" />
           </li>
 

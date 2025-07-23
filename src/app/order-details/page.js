@@ -8,49 +8,16 @@ import Image from 'next/image';
 function OrderDetailsPage() {
     const searchParams = useSearchParams();
     const id = searchParams.get('id');
-    const [order, setOrder] = useState(null);
     const [orderDetails, setOrderDetails] = useState([])
     const [products, setProducts] = useState([])
 
     const OrderDetails = async () => {
-        console.log(id);
         const data = await getOrderDetails(id)
-        console.log(data);
         setOrderDetails(data?.cartOrderProduct)
         setProducts(data?.cartOrderProduct?.cart_order_products)
     }
 
     useEffect(() => {
-        const dummyData = {
-            orderId: '123457',
-            product: {
-                name: 'Product Name',
-                category: 'Clothing',
-                price: 500,
-                quantity: 2,
-            },
-            subtotal: 1000,
-            discount: 10,
-            shipping: 50,
-            total: 1040,
-            customer: {
-                name: 'Loosu Preethi',
-                email: 'MentalPreethi@gmail.com',
-                phone: '1234567890',
-            },
-            address: {
-                line1: '123 Main St',
-                line2: 'Mental Hospital',
-                city: 'Chattanooga',
-                state: 'TN',
-                zip: '37408',
-                country: 'United States',
-            },
-            payment: 'UPI',
-        };
-
-        setOrder(dummyData);
-
         OrderDetails()
     }, [id]);
 

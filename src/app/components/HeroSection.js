@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { Carousel } from "primereact/carousel";
+import { useState } from "react";
 
 export function BannerCarousel({ images }) {
   // const images = [
@@ -9,6 +10,10 @@ export function BannerCarousel({ images }) {
   //   { id: 2, src: "/images/banner/Orange Navy.png" },
   //   { id: 3, src: "/images/banner/Orange Navy 3.png" },
   // ];
+  // const [imgData,setImgData] = useState([])
+  // useEffect(()=>{
+  //   setImgData(images)
+  // },[images])
 
   const imageTemplate = (item) => {
     return (

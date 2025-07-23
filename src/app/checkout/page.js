@@ -29,7 +29,7 @@ export default function CheckoutPage() {
   const userData = useAuthStore((state) => state.userData);
 
   const [checkoutData, setCheckoutData] = useState(null);
-  const [selectedPayment, setSelectedPayment] = useState("");
+  const [selectedPayment, setSelectedPayment] = useState("payNow");
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
   const handlePayment = async () => {
