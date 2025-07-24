@@ -99,23 +99,26 @@ const SimilarProducts = ({ products, handleGetProductDetails }) => {
           }}
           className="product-card featured-swiper"
         >
-          {products?.map((item, i) => (
-            <SwiperSlide key={i} className="h-full">
-              <ProductCard
-                id={item?.id}
-                type={"heart"}
-                title={item?.title}
-                price={item?.price}
-                oldPrice={item?.product_price}
-                btn1={() => addToWishlist(item?.id)}
-                btn2={() => addToCart(item?.id)}
-                image={item?.images?.[0]?.image}
-                image1={item?.images?.[1]?.image}
-                discount={item?.discount}
-                isInWishlist={item?.wishList}
-              />
-            </SwiperSlide>
-          ))}
+          {products
+            ?.filter(item => item?.is_published === "1")
+            ?.map((item, i) => (
+              <SwiperSlide key={i} className="h-full">
+                <ProductCard
+                  id={item?.id}
+                  type="heart"
+                  title={item?.title}
+                  price={item?.price}
+                  oldPrice={item?.product_price}
+                  btn1={() => addToWishlist(item?.id)}
+                  btn2={() => addToCart(item?.id)}
+                  image={item?.images?.[0]?.image}
+                  image1={item?.images?.[1]?.image}
+                  discount={item?.discount}
+                  isInWishlist={item?.wishList}
+                />
+              </SwiperSlide>
+            ))}
+
         </Swiper>
         <div className="text-center mt-10">
           <button

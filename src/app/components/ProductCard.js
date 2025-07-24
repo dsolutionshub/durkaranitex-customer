@@ -12,9 +12,8 @@ import "./productCardStyle.css";
 export const FeatureButtons = ({ type, btn1Func, btn2Func, isInWishlist }) => (
   <>
     <button
-      className={`feature-product-btn-mbl ${
-        isInWishlist ? "wishlist-active-mbl" : ""
-      }`}
+      className={`feature-product-btn-mbl ${isInWishlist ? "wishlist-active-mbl" : ""
+        }`}
       onClick={(e) => {
         e.stopPropagation();
         btn1Func();
@@ -66,6 +65,7 @@ const ProductCard = ({
   btn1,
   btn2,
   onClick,
+  quantity = 0
 }) => {
   const router = useRouter();
 
@@ -76,7 +76,7 @@ const ProductCard = ({
   return (
     <>
       <div
-        className={`flex flex-col items-center relative lg:hidden cursor-pointer ${className}`}
+        className={`flex flex-col items-center relative lg:hidden cursor-pointer ${parseFloat(quantity) <= 0 ? 'pointer-events-none' : ''} ${className}`}
         onClick={() => navigateToProductDetail(id)}
       >
         <div
@@ -87,11 +87,17 @@ const ProductCard = ({
         >
           {Math.round(discount)}% OFF
         </div>
-
+        {parseFloat(quantity) <= 0 && (
+          <div className="absolute bg-opacity-60 h-56 inset-0 flex items-center justify-center rounded bottom-16">
+            <div className="text-white text-sm font-semibold bg-red-600 px-3 py-1 z-30 rounded shadow-md">
+              Out of Stock
+            </div>
+          </div>
+        )}
         <Image
           src={image}
           alt={title}
-          className="w-full h-60 object-cover rounded-2xl product-page-card-mobile"
+          className={`w-full h-60 object-cover rounded-2xl product-page-card-mobile ${parseFloat(quantity) <= 0 ? 'opacity-80' : ''}`}
           width={100}
           height={100}
         />
@@ -103,6 +109,7 @@ const ProductCard = ({
             isInWishlist={isInWishlist}
           />
         </div>
+
         <div className="flex flex-col self-start">
           <h6
             className="text-black font-semibold mb-0 self-start mt-2"
@@ -124,20 +131,31 @@ const ProductCard = ({
 
       {/* Desktop View */}
       <div
-        className="product-card group relative flex flex-col items-center hidden lg:block"
-        onClick={() => navigateToProductDetail(id)}
+        className={`product-card group relative flex flex-col items-center hidden lg:block 
+        ${parseFloat(quantity) <= 0 ? 'pointer-events-none ' : ''}`}
+        onClick={() => {
+          if (parseFloat(quantity) > 0) {
+            navigateToProductDetail(id);
+          }
+        }}
       >
         {Math.round(discount) !== 0 && (
           <div className="absolute top-2 left-2 bg-red-600 text-white text-xs px-2 py-1 rounded-md z-10">
             {Math.round(discount)}% OFF
           </div>
         )}
-
         <div className="image-wrapper relative">
+          {parseFloat(quantity) <= 0 && (
+            <div className="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center rounded">
+              <div className="text-white text-sm font-semibold bg-red-600 px-3 py-1 z-30 opacity-100 rounded shadow-md">
+                Out of Stock
+              </div>
+            </div>
+          )}
           <Image
             src={image}
             alt={title}
-            className="product-img main"
+            className={`product-img main ${parseFloat(quantity) <= 0 ? 'opacity-50 ' : ''}`}
             width={100}
             height={100}
           />
@@ -149,6 +167,7 @@ const ProductCard = ({
             height={100}
           />
         </div>
+
         <div className="icon-wrapper">
           <FeatureButtons
             type={type}
@@ -157,6 +176,7 @@ const ProductCard = ({
             isInWishlist={isInWishlist}
           />
         </div>
+
         <ProductInfo title={title} price={price} oldPrice={oldPrice} />
       </div>
     </>

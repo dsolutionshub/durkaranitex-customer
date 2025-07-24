@@ -234,6 +234,11 @@ function Product() {
                         className="col-md-4 col-lg-3 md:mb-4 product-list-card-mobile"
                         key={item.id}
                       >
+                        {/* {parseFloat(item.quantity) <= 0 && (
+                          <div className="absolute top-2 right-2 bg-black text-white text-xs px-2 py-1 rounded z-10">
+                            Out of Stock
+                          </div>
+                        )} */}
                         <ProductCard
                           id={item?.id}
                           type="heart"
@@ -247,10 +252,10 @@ function Product() {
                           discount={item?.discount || 0}
                           isInWishlist={item?.wishList}
                           onClick={() => navigateToProductDetail(item?.id)}
+                          quantity={item?.quantity}
                         />
                       </div>
                     ))
-
                 )}
               </div>
 

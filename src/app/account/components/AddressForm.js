@@ -111,7 +111,8 @@ export default function AddressForm({
             type: "email",
           },
           { label: "Phone", name: "mobile", placeholder: "Mobile Number" },
-          { label: "Street", name: "address", placeholder: "Street address" },
+          { label: "Address", name: "address", placeholder: "Street address" },
+          { label: "Address Line 2", name: "address", placeholder: "Street address" },
           { label: "City", name: "city", placeholder: "City" },
           { label: "Pincode", name: "pincode", placeholder: "Pincode" },
         ].map(({ label, name, placeholder, type = "text" }) => (

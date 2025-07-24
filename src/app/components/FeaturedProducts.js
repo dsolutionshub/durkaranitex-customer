@@ -117,23 +117,27 @@ const FeaturedCard = ({ products, fetchData }) => {
           }}
           className="product-card featured-swiper"
         >
-          {products?.map((item, i) => (
-            <SwiperSlide key={i} className="h-full">
-              <ProductCard
-                id={item?.id}
-                type={"heart"}
-                title={item.title}
-                price={item.price}
-                image={item.images?.[0]?.image}
-                image1={item.images?.[1]?.image}
-                discount={item?.discount || 0}
-                isInWishlist={wishlistMap[item.id]}
-                btn1={() => addToWishlist(item?.id)}
-                btn2={() => addToCart(item?.id)}
-                onClick={() => navigateToProductDetail(item?.id)}
-              />
-            </SwiperSlide>
-          ))}
+          {products
+            ?.filter(item => item?.is_published === "1")
+            ?.map((item, i) => (
+              <SwiperSlide key={i} className="h-full">
+                <ProductCard
+                  id={item?.id}
+                  type="heart"
+                  title={item.title}
+                  price={item.price}
+                  image={item.images?.[0]?.image}
+                  image1={item.images?.[1]?.image}
+                  discount={item?.discount || 0}
+                  isInWishlist={wishlistMap[item.id]}
+                  btn1={() => addToWishlist(item?.id)}
+                  btn2={() => addToCart(item?.id)}
+                  onClick={() => navigateToProductDetail(item?.id)}
+                  quantity={item?.quantity}
+                />
+              </SwiperSlide>
+            ))}
+
         </Swiper>
         <div className="text-center mt-10">
           <button

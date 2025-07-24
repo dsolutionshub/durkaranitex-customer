@@ -118,11 +118,10 @@ const CollectionTab = ({ data }) => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`relative transition-all duration-200 font-medium text-sm sm:text-base whitespace-nowrap new-arrival-btn ${
-                activeTab === tab.id
+              className={`relative transition-all duration-200 font-medium text-sm sm:text-base whitespace-nowrap new-arrival-btn ${activeTab === tab.id
                   ? 'text-green-800 after:content-[""] after:absolute after:left-0 after:-bottom-0.5 after:h-[2px] after:w-full after:bg-green-800'
                   : "text-gray-400 hover:text-green-800"
-              } tab-button`}
+                } tab-button`}
             >
               {tab.name}
             </button>
@@ -164,23 +163,27 @@ const CollectionTab = ({ data }) => {
           }}
           className="product-card"
         >
-          {filteredCollections.map((item, i) => (
-            <SwiperSlide key={i}>
-              <ProductCard
-                id={item?.id}
-                type={"heart"}
-                title={item?.title}
-                price={item?.price}
-                btn1={() => addToWishlist(item?.id)}
-                btn2={() => addToCart(item?.id)}
-                discount={item?.discount || 0}
-                oldPrice={item.product_price}
-                image={item?.images?.[0]?.["image"]}
-                image1={item?.images?.[1]?.["image"]}
-                isInWishlist={wishlistMap[item.id]}
-              />
-            </SwiperSlide>
-          ))}
+          {filteredCollections
+            ?.filter(item => item?.is_published === "1")
+            ?.map((item, i) => (
+              <SwiperSlide key={i}>
+                <ProductCard
+                  id={item?.id}
+                  type="heart"
+                  title={item?.title}
+                  price={item?.price}
+                  btn1={() => addToWishlist(item?.id)}
+                  btn2={() => addToCart(item?.id)}
+                  discount={item?.discount || 0}
+                  oldPrice={item?.product_price}
+                  image={item?.images?.[0]?.image}
+                  image1={item?.images?.[1]?.image}
+                  isInWishlist={wishlistMap[item.id]}
+                  quantity={item?.quantity}
+                />
+              </SwiperSlide>
+            ))}
+
         </Swiper>
 
         <div className="text-center mt-10">
