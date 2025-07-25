@@ -2,6 +2,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { ShoppingBag } from "lucide-react";
+import { useEffect } from "react";
 
 const CartProducts = ({
   products,
@@ -44,6 +45,11 @@ const CartProducts = ({
                         ? `${item.title.slice(0, 35)}...`
                         : item?.title}
                     </p>
+                    {parseFloat(item?.totalQuantity) <= 0 && (
+                      <span className="text-white text-xs font-semibold bg-red-600 px-2 py-1 rounded d-inline-block m-1">
+                        Out of Stock
+                      </span>
+                    )}
                     <button
                       className="text-gray-500 underline p-0 m-0"
                       onClick={(e) => removeFromCart(e, item?.id)}
@@ -65,22 +71,24 @@ const CartProducts = ({
               </div>
 
               {/* Quantity Buttons */}
-              <div className="d-flex align-items-center justify-content-evenly bg-gray-100 w-[7rem] h-[2.5rem] border">
-                <button
-                  disabled={item?.quantity === 1}
-                  className="text-black fs-1"
-                  onClick={() => decreaseCount(item?.productId, item?.quantity)}
-                >
-                  -
-                </button>
-                <p className="mb-0 text-black">{item?.quantity}</p>
-                <button
-                  className="text-black"
-                  onClick={() => increaseCount(item?.productId, item?.quantity)}
-                >
-                  +
-                </button>
-              </div>
+              {parseFloat(item?.totalQuantity) > 0 &&
+                <div className="d-flex align-items-center justify-content-evenly bg-gray-100 w-[7rem] h-[2.5rem] border">
+                  <button
+                    disabled={item?.quantity === 1 || parseFloat(item?.totalQuantity) <= 0}
+                    className="text-black fs-1"
+                    onClick={() => decreaseCount(item?.productId, item?.quantity)}
+                  >
+                    -
+                  </button>
+                  <p className="mb-0 text-black">{item?.quantity}</p>
+                  <button
+                    className="text-black"
+                    // disabled={parseInt(item?.totalQuantity) <= item?.quantity}
+                    onClick={() => increaseCount(item?.productId, item?.quantity, item?.totalQuantity)}
+                  >
+                    +
+                  </button>
+                </div>}
               <hr />
             </div>
           ))}
@@ -126,7 +134,11 @@ const CartProducts = ({
                     }}
                   >
                     <p style={{ marginBottom: "0" }}>{product?.title}</p>
-
+                    {parseFloat(product?.totalQuantity) <= 0 && (
+                      <span className="text-white text-xs font-semibold bg-red-600 px-2 py-1 rounded d-inline-block m-1">
+                        Out of Stock
+                      </span>
+                    )}
                     <span
                       onClick={(e) => removeFromCart(e, product?.id)}
                       style={{
@@ -142,7 +154,7 @@ const CartProducts = ({
                 <td className="py-4">Rs. {product?.price}</td>
 
                 <td className="p-4">
-                  <div
+                  {parseFloat(product?.totalQuantity) > 0 && <div
                     className="d-flex align-items-center justify-content-evenly bg-gray-100 w-[7rem] h-[2.5rem] border"
                     style={{ margin: "auto" }}
                   >
@@ -158,8 +170,9 @@ const CartProducts = ({
                     <p className="mb-0 text-black">{product?.quantity}</p>
                     <button
                       className="text-black"
+                      // disabled={parseInt(product?.totalQuantity) <= product?.quantity}
                       onClick={() =>
-                        increaseCount(product?.productId, product?.quantity)
+                        increaseCount(product?.productId, product?.quantity, product?.totalQuantity)
                       }
                       style={{
                         fontWeight: "600",
@@ -168,7 +181,7 @@ const CartProducts = ({
                     >
                       +
                     </button>
-                  </div>
+                  </div>}
                 </td>
                 <td className="py-4">Rs. {product?.total}</td>
               </tr>

@@ -116,6 +116,7 @@ const Wishlist = () => {
                   btn1={() => removeFromWishlist(item?.product?.id)}
                   btn2={() => addToCart(item?.product?.id)}
                   discount={item?.product?.discount || 0}
+                  quantity={item?.product?.quantity}
                 />
               </div>
             ))

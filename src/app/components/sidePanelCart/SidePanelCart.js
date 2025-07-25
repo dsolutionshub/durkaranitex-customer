@@ -25,7 +25,7 @@ function RenderQuantity({
 }) {
   return (
     <div className="flex items-center mt-2 gap-3">
-      <div className="flex items-center border rounded dark-color">
+      {parseFloat(product?.product?.quantity) > 0 && <div className="flex items-center border rounded dark-color">
         <button
           disabled={product?.quantity === 1}
           onClick={(e) =>
@@ -38,13 +38,13 @@ function RenderQuantity({
         <span className="px-4">{product?.quantity || 0}</span>
         <button
           onClick={(e) =>
-            increaseCount(e, product?.product_id, product?.quantity)
+            increaseCount(e, product?.product_id, product?.quantity, product?.product?.quantity)
           }
           className="px-2 py-1 text-sm"
         >
           +
         </button>
-      </div>
+      </div>}
 
       <button
         className="ml-4 text-sm underline text-gray-600 hover:text-red-600"
@@ -71,8 +71,12 @@ const SidePanelCart = () => {
     setCartOpen(false);
   }
 
-  const increaseCount = async (e, id, currentQuantity) => {
+  const increaseCount = async (e, id, currentQuantity, totalQuantities) => {
     e.stopPropagation();
+    if (currentQuantity >= totalQuantities) {
+      toast.error("You've reached the maximum quantity allowed.");
+      return;
+    }
     const newQuantity = currentQuantity + 1;
     loader(true);
     try {
@@ -190,6 +194,11 @@ const SidePanelCart = () => {
                             Rs. {product?.product?.product_price}
                           </span>{" "}
                         </p>
+                        {parseFloat(product?.product?.quantity) <= 0 && (
+                          <div className="text-white text-xs font-semibold bg-red-600 px-2 py-1 w-fit rounded shadow-md">
+                            Out of Stock
+                          </div>
+                        )}
                         <div className="d-none d-md-block">
                           <RenderQuantity
                             increaseCount={increaseCount}

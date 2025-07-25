@@ -43,6 +43,7 @@ const Cart = () => {
         title: item?.product?.title,
         price: parseFloat(item?.product?.price),
         imgSrc: item?.product?.images?.[0]?.image || "",
+        totalQuantity : item?.product?.quantity
       }));
 
       setProducts(formattedProducts);
@@ -53,7 +54,7 @@ const Cart = () => {
     }
   };
 
-  const increaseCount = async (id, currentQuantity) => {
+  const increaseCount = async (id, currentQuantity, totalQuantities) => {
     if (currentQuantity >= totalQuantities) {
       toast.error("You've reached the maximum quantity allowed.");
       return;
