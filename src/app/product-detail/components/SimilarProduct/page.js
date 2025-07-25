@@ -115,6 +115,7 @@ const SimilarProducts = ({ products, handleGetProductDetails }) => {
                   image1={item?.images?.[1]?.image}
                   discount={item?.discount}
                   isInWishlist={item?.wishList}
+                  quantity={item?.quantity}
                 />
               </SwiperSlide>
             ))}
