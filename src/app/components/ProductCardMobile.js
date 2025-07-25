@@ -47,7 +47,7 @@ const ProductCardMobile = ({ type, products, wishBtn, cartBtn }) => {
             ?.map((item, i) => (
               <SwiperSlide key={i} className="">
                 <div
-                  className="flex flex-col items-center relative lg:hidden"
+                  className={`flex flex-col items-center relative lg:hidden1 ${parseFloat(item?.quantity) <= 0 ? 'pointer-events-none' : ''}`}
                   onClick={() => navigateToProductDetail(item?.id)}
                 >
                   {Math.round(item?.discount) !== 0 && (
@@ -72,7 +72,7 @@ const ProductCardMobile = ({ type, products, wishBtn, cartBtn }) => {
                     height={100}
                   />
 
-                  <div className="flex items-center gap-2 absolute top-44">
+                  {parseFloat(item?.quantity) > 0 && <div className="flex items-center gap-2 absolute top-44">
                     <button
                       className={`feature-product-btn-mbl ${item?.wishList ? "wishlist-active-mbl" : ""
                         }`}
@@ -96,7 +96,7 @@ const ProductCardMobile = ({ type, products, wishBtn, cartBtn }) => {
                     >
                       <FiShoppingCart className="font-bold" />
                     </button>
-                  </div>
+                  </div>}
 
                   <div className="py-3 flex flex-col self-start">
                     <h6

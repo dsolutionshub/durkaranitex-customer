@@ -22,7 +22,7 @@ const ProductDetails = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [zoom, setZoom] = useState(1);
   const [totalQuantities, setTotalQuantities] = useState(0)
-  
+
 
   const [openIndex, setOpenIndex] = useState(null);
 
@@ -127,13 +127,14 @@ const ProductDetails = () => {
           />
         </div>
       </div>
-
-      {productInfo?.relatedProducts?.length > 0 && (
-        <SimilarProduct
-          data={productInfo?.relatedProducts}
-          handleGetProductDetails={handleGetProductDetails}
-        />
-      )}
+      {productInfo?.relatedProducts?.length > 0 &&
+        !(productInfo?.relatedProducts?.length === 1 &&
+          productInfo?.relatedProducts[0]?.is_published === "0") && (
+          <SimilarProduct
+            data={productInfo?.relatedProducts}
+            handleGetProductDetails={handleGetProductDetails}
+          />
+        )}
     </div>
   );
 };
