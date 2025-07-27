@@ -110,7 +110,7 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     handleCheckoutList();
-  }, []);
+  }, [handleCheckoutList]);
 
   useEffect(() => {
     const token = sessionStorage.getItem("accessToken");
@@ -121,7 +121,7 @@ export default function CheckoutPage() {
     } else {
       setIsCheckingAuth(false);
     }
-  }, []);
+  }, [router]);
 
   if (isCheckingAuth) {
     return (

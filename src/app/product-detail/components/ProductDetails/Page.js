@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
 
@@ -9,7 +9,11 @@ import ProductAccordion from "../ProductAccordion/page";
 import SimilarProduct from "../SimilarProduct/page";
 import CustomBreadCrumb from "../../../components/CustomBreadCrumb";
 
-import { deleteQuantity, getProductDetails, updateQuantity } from "../../../api/services/authService";
+import {
+  deleteQuantity,
+  getProductDetails,
+  updateQuantity,
+} from "../../../api/services/authService";
 import { getErrorMessage } from "@/app/utils/helperFn";
 import { loader } from "@/app/components/loader/loaderManager";
 
@@ -21,9 +25,7 @@ const ProductDetails = () => {
   const [quantity, setQuantity] = useState(1);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [zoom, setZoom] = useState(1);
-  const [totalQuantities, setTotalQuantities] = useState(0)
-
-
+  const [totalQuantities, setTotalQuantities] = useState(0);
   const [openIndex, setOpenIndex] = useState(null);
 
   const handleZoomToggle = (index) => {
@@ -41,25 +43,25 @@ const ProductDetails = () => {
     setOpenIndex(0);
   }, []);
 
-  const handleGetProductDetails = async () => {
+  const handleGetProductDetails = useCallback(async () => {
     loader(true);
     if (!id) return;
     try {
       const data = await getProductDetails(id);
       setProductInfo(data);
-      setTotalQuantities(data?.quantity || 0)
-      setQuantity(data?.product?.cart?.quantity || 1)
+      setTotalQuantities(data?.quantity || 0);
+      setQuantity(data?.product?.cart?.quantity || 1);
     } catch (error) {
       const MSG = getErrorMessage(error);
       toast.error(MSG);
     } finally {
       loader(false);
     }
-  };
+  }, [id]);
 
   useEffect(() => {
     handleGetProductDetails();
-  }, [id]);
+  }, [handleGetProductDetails]);
 
   const increaseCount = async (id, currentQuantity) => {
     if (currentQuantity >= totalQuantities) {

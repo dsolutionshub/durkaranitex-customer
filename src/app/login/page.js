@@ -14,7 +14,7 @@ export default function LoginPage() {
     if (token && token !== "undefined") {
       router.replace("/");
     }
-  }, []);
+  }, [router]);
 
   useEffect(() => {
     window.scrollTo(0, 0);

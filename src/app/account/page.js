@@ -74,7 +74,7 @@ export default function AccountPage() {
       case "addresses":
         return <AddressForm />;
       default:
-        return 
+        return <></>
     }
   };
 

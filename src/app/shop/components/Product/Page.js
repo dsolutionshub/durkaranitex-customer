@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import toast from "react-hot-toast";
 import { FaSearch } from "react-icons/fa";
 import { BiFilterAlt } from "react-icons/bi";
@@ -49,7 +49,28 @@ function Product() {
     setOpenFilter(false);
   };
 
-  const productDetails = async (filter = null, min = 0, max = 0) => {
+  // const productDetails = async (filter = null, min = 0, max = 0) => {
+  //   loader(true);
+  //   try {
+  //     let { products, total_products } = await getProductList(
+  //       currentPage,
+  //       filter,
+  //       selectedCategories,
+  //       priceRange.min !== 0 ? priceRange.min : undefined,
+  //       priceRange.max !== 0 ? priceRange.max : undefined
+  //     );
+  //     setProductList(products || []);
+  //     setSortedProducts(products || []);
+  //     const totalPages = Math.ceil(total_products / itemsPerPage);
+  //     setTotalPage(totalPages);
+  //   } catch (error) {
+  //     getErrorMessage(error);
+  //   } finally {
+  //     loader(false);
+  //   }
+  // };
+
+  const productDetails = useCallback(async (filter = null, min = 0, max = 0) => {
     loader(true);
     try {
       let { products, total_products } = await getProductList(
@@ -68,7 +89,7 @@ function Product() {
     } finally {
       loader(false);
     }
-  };
+  }, [currentPage, selectedCategories, priceRange]);
 
   const categoryDetails = async () => {
     loader(true);
@@ -94,9 +115,40 @@ function Product() {
     setOpenFilter((prev) => !prev);
   };
 
+  // useEffect(() => {
+  //   productDetails();
+  // }, [currentPage, priceRange, selectedCategories]);
+
+  // useEffect(() => {
+  //   categoryDetails();
+  // }, []);
+
+  // useEffect(() => {
+  //   setCurrentPage(1);
+  // }, [searchProduct, selectedCategories, priceRange]);
+
+  // useEffect(() => {
+  //   switch (sortOption) {
+  //     case "Name A to Z":
+  //       productDetails("a-z");
+  //       break;
+  //     case "Name Z to A":
+  //       productDetails("z-a");
+  //       break;
+  //     case "Price low to high":
+  //       productDetails("min-max");
+  //       break;
+  //     case "Price high to low":
+  //       productDetails("max-min");
+  //       break;
+  //     case "Sort by All":
+  //       productDetails();
+  //       break;
+  //   }
+  // }, [sortOption]);
   useEffect(() => {
     productDetails();
-  }, [currentPage, priceRange, selectedCategories]);
+  }, [productDetails]);
 
   useEffect(() => {
     categoryDetails();
@@ -124,7 +176,8 @@ function Product() {
         productDetails();
         break;
     }
-  }, [sortOption]);
+  }, [sortOption, productDetails]);
+
 
   const getCurrentQuantityInCart = (productId) => {
     const item = cartItems.find((item) => item.productId === productId);

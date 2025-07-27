@@ -143,7 +143,7 @@ const Cart = () => {
     } else {
       setIsCheckingAuth(false);
     }
-  }, []);
+  }, [router]);
 
   if (isCheckingAuth) {
     return (

@@ -43,7 +43,7 @@ export default function Navbar() {
 
   const handlePanel = useCallback(() => {
     handleGetCartDetail();
-  }, [isCartOpen]);
+  }, [isCartOpen, handleGetCartDetail]);
 
   const handleNavigateHome = () => {
     router.push("/");
@@ -75,7 +75,7 @@ export default function Navbar() {
     } else {
       setIsLoginAuth(false);
     }
-  }, []);
+  }, [cardDetails, wishlistDetails, setIsLoginAuth]);
 
   return (
     <nav

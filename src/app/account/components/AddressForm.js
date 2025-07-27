@@ -90,7 +90,7 @@ export default function AddressForm({
     } else {
       formik.resetForm();
     }
-  }, [isEdit, showForm, addressDetail]);
+  }, [isEdit, showForm, addressDetail, formik]);
 
   if (!visible) return null;
 

@@ -7,20 +7,31 @@ import Image from "next/image";
 import Loader from "../components/loader/loader";
 
 function OrderDetailsPage() {
-    const searchParams = useSearchParams();
-    const id = searchParams.get('id');
-    const [orderDetails, setOrderDetails] = useState([])
-    const [products, setProducts] = useState([])
+  const searchParams = useSearchParams();
+  const id = searchParams.get('id');
+  const [orderDetails, setOrderDetails] = useState([])
+  const [products, setProducts] = useState([])
 
-    const OrderDetails = async () => {
-        const data = await getOrderDetails(id)
-        setOrderDetails(data?.cartOrderProduct)
-        setProducts(data?.cartOrderProduct?.cart_order_products)
-    }
+  // const OrderDetails = async () => {
+  //     const data = await getOrderDetails(id)
+  //     setOrderDetails(data?.cartOrderProduct)
+  //     setProducts(data?.cartOrderProduct?.cart_order_products)
+  // }
 
-    useEffect(() => {
-        OrderDetails()
-    }, [id]);
+  // useEffect(() => {
+  //     OrderDetails()
+  // }, [id]);
+
+  useEffect(() => {
+    const fetchOrderDetails = async () => {
+      const data = await getOrderDetails(id);
+      setOrderDetails(data?.cartOrderProduct);
+      setProducts(data?.cartOrderProduct?.cart_order_products);
+    };
+
+    fetchOrderDetails();
+  }, [id]); 
+
 
   if (!orderDetails) return <div className="p-6">Loading...</div>;
 

@@ -81,7 +81,7 @@ const Wishlist = () => {
     } else {
       setIsCheckingAuth(false);
     }
-  }, []);
+  }, [router]);
 
   if (isCheckingAuth) {
     return (

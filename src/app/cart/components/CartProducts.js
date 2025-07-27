@@ -135,7 +135,7 @@ const CartProducts = ({
                   >
                     <p style={{ marginBottom: "0" }}>{product?.title}</p>
                     {parseFloat(product?.totalQuantity) <= 0 && (
-                      <span className="text-white text-xs font-semibold bg-red-600 px-2 py-1 rounded d-inline-block m-1">
+                      <span className="text-white text-xs font-semibold w-fit bg-red-600 px-2 py-1 rounded d-inline-block m-1">
                         Out of Stock
                       </span>
                     )}

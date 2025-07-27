@@ -91,7 +91,7 @@ export default function AddAdressModel({
     } else {
       formik.resetForm();
     }
-  }, [isEdit, isModalOpen]);
+  }, [isEdit, isModalOpen, addressDetail, formik]);
 
   return (
     <Dialog
