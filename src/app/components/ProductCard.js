@@ -101,14 +101,14 @@ const ProductCard = ({
           width={100}
           height={100}
         />
-        <div className="flex items-center gap-2 absolute top-44">
+        {parseFloat(quantity) > 0 && <div className="flex items-center gap-2 absolute top-44">
           <FeatureButtons
             type={type}
             btn1Func={btn1}
             btn2Func={btn2}
             isInWishlist={isInWishlist}
           />
-        </div>
+        </div>}
 
         <div className="flex flex-col self-start">
           <h6

@@ -42,6 +42,7 @@ function Product() {
   const [categoryList, setCategoryList] = useState([]);
   const [openFilter, setOpenFilter] = useState(false);
   const [totalPage, setTotalPage] = useState(0);
+  const [cartItems, setCartItems] = useState([]);
 
   const handlePriceChange = (range) => {
     setPriceRange(range);
@@ -125,6 +126,11 @@ function Product() {
     }
   }, [sortOption]);
 
+  const getCurrentQuantityInCart = (productId) => {
+    const item = cartItems.find((item) => item.productId === productId);
+    return item ? item.quantity : 0;
+  };
+
   const addToWishlist = async (id) => {
     loader(true);
     try {
@@ -145,7 +151,30 @@ function Product() {
     }
   };
 
-  const addToCart = async (id) => {
+  const addToCart = async (id, total_quantity) => {
+    const currentQty = getCurrentQuantityInCart(id);
+
+    console.log(currentQty);
+    console.log("Cart Items:", cartItems);
+
+    if (currentQty >= parseFloat(total_quantity)) {
+      console.log("Max quantity reached");
+      return;
+    }
+
+    const updatedCart = cartItems.map((item) => {
+      if (item.productId === id) {
+        return { ...item, quantity: item.quantity + 1 };
+      }
+      return item;
+    });
+
+    if (!cartItems.find(item => item.productId === id)) {
+      updatedCart.push({ productId: id, quantity: 1 });
+    }
+
+    setCartItems(updatedCart);
+    toast.success("Added to cart");
     loader(true);
     try {
       const data = await modifyCart({ product_id: id, quantity: 1 });
@@ -243,7 +272,7 @@ function Product() {
                           id={item?.id}
                           type="heart"
                           btn1={() => addToWishlist(item.id)}
-                          btn2={() => addToCart(item.id)}
+                          btn2={() => addToCart(item.id, item?.quantity)}
                           title={item?.title}
                           price={item?.price}
                           oldPrice={item?.product_price}

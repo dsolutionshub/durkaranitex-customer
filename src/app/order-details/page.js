@@ -22,7 +22,7 @@ function OrderDetailsPage() {
         OrderDetails()
     }, [id]);
 
-  if (!order) return <div className="p-6">Loading...</div>;
+  if (!orderDetails) return <div className="p-6">Loading...</div>;
 
   return (
     <div className="max-w-6xl mx-auto p-6 min-h-screen">
@@ -116,7 +116,7 @@ function OrderDetailsPage() {
             <h5 className="font-bold">Shipping Address</h5>
             <p className="mt-3 text-sm">{orderDetails?.address}</p>
             <p className="mt-1 text-sm">
-              {orderDetails?.city}, {order.address.state}{" "}
+              {orderDetails?.city}, {" "}
               {orderDetails?.pincode}
             </p>
             <p className="mt-1 text-sm font-bold">Payment Method:</p>
