@@ -66,68 +66,60 @@ function FilterComponent({
           Filter by Price
         </h3>
         <div className="max-w-xl mx-auto px-1">
-          {MIN < MAX ? (
-            <>
-              <div className="flex justify-between text-sm font-medium text-gray-700 mb-2">
-                <span>Rs. {values[0]}</span>
-                <span>Rs. {values[1]}</span>
-              </div>
-              <Range
-                values={values}
-                step={STEP}
-                min={MIN}
-                max={MAX}
-                onChange={handleChange}
-                renderTrack={({ props, children }) => {
-                  const percentage1 = ((values[0] - MIN) / (MAX - MIN)) * 100;
-                  const percentage2 = ((values[1] - MIN) / (MAX - MIN)) * 100;
+          <div className="flex justify-between text-sm font-medium text-gray-700 mb-2">
+            <span>Rs. {values[0]}</span>
+            <span>Rs. {values[1]}</span>
+          </div>
+          <Range
+            values={values}
+            step={STEP}
+            min={MIN}
+            max={MAX}
+            onChange={handleChange}
+            renderTrack={({ props, children }) => {
+              const percentage1 = ((values[0] - MIN) / (MAX - MIN)) * 100;
+              const percentage2 = ((values[1] - MIN) / (MAX - MIN)) * 100;
 
-                  return (
-                    <div
-                      {...props}
-                      style={{
-                        ...props.style,
-                        height: ".2rem",
-                        width: "100%",
-                        borderRadius: "4px",
-                        background: `linear-gradient(to right, 
+              return (
+                <div
+                  {...props}
+                  style={{
+                    ...props.style,
+                    height: ".2rem",
+                    width: "100%",
+                    borderRadius: "4px",
+                    background: `linear-gradient(to right, 
   gray 0%, 
   gray ${percentage1}%, 
   black ${percentage1}%, 
   black ${percentage2}%, 
   gray ${percentage2}%, 
   gray 100%)`,
-                      }}
-                    >
-                      {children}
-                    </div>
-                  );
-                }}
-                renderThumb={({ props }) => {
-                  const { key, ...rest } = props;
-                  return (
-                    <div
-                      key={key}
-                      {...rest}
-                      style={{
-                        ...rest.style,
-                        height: "20px",
-                        width: "20px",
-                        borderRadius: "50%",
-                        backgroundColor: "#000",
-                        border: "2px solid white",
-                        boxShadow: "0 0 3px rgba(0,0,0,0.3)",
-                      }}
-                    />
-                  );
-                }}
-              />
-            </>
-          ) : (
-            <p className="text-gray-500 text-sm">
-              Only one price available: Rs. {MIN}
-            </p>
-          )}
+                  }}
+                >
+                  {children}
+                </div>
+              );
+            }}
+            renderThumb={({ props }) => {
+              const { key, ...rest } = props;
+              return (
+                <div
+                  key={key}
+                  {...rest}
+                  style={{
+                    ...rest.style,
+                    height: "20px",
+                    width: "20px",
+                    borderRadius: "50%",
+                    backgroundColor: "#000",
+                    border: "2px solid white",
+                    boxShadow: "0 0 3px rgba(0,0,0,0.3)",
+                  }}
+                />
+              );
+            }}
+          />
         </div>
         <div className="mt-4 text-sm text-gray-700">
           Price:{" "}

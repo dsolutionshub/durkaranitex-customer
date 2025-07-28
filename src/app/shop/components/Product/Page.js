@@ -78,8 +78,8 @@ function Product() {
           currentPage,
           filter,
           selectedCategories,
-          priceRange.min !== 0 ? priceRange.min : undefined,
-          priceRange.max !== 0 ? priceRange.max : undefined
+          priceRange.min !== 0 ? priceRange.min : null,
+          priceRange.max !== 0 ? priceRange.max : null
         );
         setProductList(products || []);
         setSortedProducts(products || []);
@@ -118,37 +118,6 @@ function Product() {
     setOpenFilter((prev) => !prev);
   };
 
-  // useEffect(() => {
-  //   productDetails();
-  // }, [currentPage, priceRange, selectedCategories]);
-
-  // useEffect(() => {
-  //   categoryDetails();
-  // }, []);
-
-  // useEffect(() => {
-  //   setCurrentPage(1);
-  // }, [searchProduct, selectedCategories, priceRange]);
-
-  // useEffect(() => {
-  //   switch (sortOption) {
-  //     case "Name A to Z":
-  //       productDetails("a-z");
-  //       break;
-  //     case "Name Z to A":
-  //       productDetails("z-a");
-  //       break;
-  //     case "Price low to high":
-  //       productDetails("min-max");
-  //       break;
-  //     case "Price high to low":
-  //       productDetails("max-min");
-  //       break;
-  //     case "Sort by All":
-  //       productDetails();
-  //       break;
-  //   }
-  // }, [sortOption]);
   useEffect(() => {
     productDetails();
   }, [productDetails]);
@@ -283,10 +252,16 @@ function Product() {
                       </span>
                     </div>
 
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 ">
                       <button
-                        className="px-4 py-2 flex items-center gap-2 bg-green-900 text-light fs-6 xl:hidden"
+                        className={`px-4 py-2 flex items-center gap-2 bg-green-900 text-light fs-6 xl:hidden ${
+                          productList?.length <= 1 ? "opacity-70" : ""
+                        }`}
                         onClick={handleOpenFilter}
+                        disabled={productList?.length <= 1}
+                        title={
+                          productList?.length <= 1 ? "Filter is disabled" : ""
+                        }
                       >
                         <BiFilterAlt />
                         Filter

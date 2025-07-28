@@ -24,11 +24,15 @@ export default function ForgotPasswordModal({ onClose }) {
         {submitted ? (
           <>
             <div className="bg-[#d7e6fd] rounded-t-md p-4 mb-2">
-              <h5 className="text-lg font-semibold text-[#333] dark:text-white">Reset Password</h5>
+              <h5 className="text-lg font-semibold text-[#333] dark:text-white">
+                Reset Password
+              </h5>
             </div>
 
             <div className="bg-green-100 text-green-800 text-sm p-4 rounded text-center mb-4">
-              If you had correctly entered an email associated with a Dhurgarani Tex account, you will receive an email shortly. Please check your email inbox to continue.
+              If you had correctly entered an email associated with a Dhurgarani
+              Tex account, you will receive an email shortly. Please check your
+              email inbox to continue.
             </div>
 
             <button
@@ -41,9 +45,11 @@ export default function ForgotPasswordModal({ onClose }) {
           </>
         ) : (
           <>
-            <h2 className="text-xl font-bold mb-2 text-center">Forgot Password?</h2>
+            <h2 className="text-xl font-bold mb-2 text-center">
+              Forgot Password?
+            </h2>
             <p className="text-sm text-gray-600 dark:text-gray-800 text-center mb-4">
-              No worries, we'll send you reset instructions.
+              No worries, we&apos;ll send you reset instructions.
             </p>
 
             <form onSubmit={handleSubmit}>
