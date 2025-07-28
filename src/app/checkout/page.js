@@ -110,7 +110,7 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     handleCheckoutList();
-  }, [handleCheckoutList]);
+  }, []);
 
   useEffect(() => {
     const token = sessionStorage.getItem("accessToken");

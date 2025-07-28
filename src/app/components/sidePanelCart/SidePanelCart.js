@@ -25,26 +25,33 @@ function RenderQuantity({
 }) {
   return (
     <div className="flex items-center mt-2 gap-3">
-      {parseFloat(product?.product?.quantity) > 0 && <div className="flex items-center border rounded dark-color">
-        <button
-          disabled={product?.quantity === 1}
-          onClick={(e) =>
-            decreaseCount(e, product?.product_id, product?.quantity)
-          }
-          className="px-2 py-1 text-sm"
-        >
-          −
-        </button>
-        <span className="px-4">{product?.quantity || 0}</span>
-        <button
-          onClick={(e) =>
-            increaseCount(e, product?.product_id, product?.quantity, product?.product?.quantity)
-          }
-          className="px-2 py-1 text-sm"
-        >
-          +
-        </button>
-      </div>}
+      {parseFloat(product?.product?.quantity) > 0 && (
+        <div className="flex items-center border rounded dark-color">
+          <button
+            disabled={product?.quantity === 1}
+            onClick={(e) =>
+              decreaseCount(e, product?.product_id, product?.quantity)
+            }
+            className="px-2 py-1 text-sm"
+          >
+            −
+          </button>
+          <span className="px-4">{product?.quantity || 0}</span>
+          <button
+            onClick={(e) =>
+              increaseCount(
+                e,
+                product?.product_id,
+                product?.quantity,
+                product?.product?.quantity
+              )
+            }
+            className="px-2 py-1 text-sm"
+          >
+            +
+          </button>
+        </div>
+      )}
 
       <button
         className="ml-4 text-sm underline text-gray-600 hover:text-red-600"
@@ -116,7 +123,8 @@ const SidePanelCart = () => {
         sessionStorage.setItem("postLoginRedirect", "/checkout");
         router.push("/login");
       }
-      getErrorMessage(error);
+      const MSG = getErrorMessage(error);
+      toast.error(MSG);
     } finally {
       loader(false);
     }
