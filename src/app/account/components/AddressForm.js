@@ -45,6 +45,7 @@ export default function AddressForm({
       email: "",
       mobile: "",
       address: "",
+      address1: "",
       city: "",
       state_id: 1,
       pincode: "",
@@ -90,7 +91,7 @@ export default function AddressForm({
     } else {
       formik.resetForm();
     }
-  }, [isEdit, showForm, addressDetail, formik]);
+  }, [isEdit, showForm, addressDetail]);
 
   if (!visible) return null;
 
@@ -112,7 +113,7 @@ export default function AddressForm({
           },
           { label: "Phone", name: "mobile", placeholder: "Mobile Number" },
           { label: "Address", name: "address", placeholder: "Street address" },
-          { label: "Address Line 2", name: "address", placeholder: "Street address" },
+          { label: "Address Line 2", name: "address1", placeholder: "Street address" },
           { label: "City", name: "city", placeholder: "City" },
           { label: "Pincode", name: "pincode", placeholder: "Pincode" },
         ].map(({ label, name, placeholder, type = "text" }) => (

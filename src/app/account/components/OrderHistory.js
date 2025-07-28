@@ -3,41 +3,34 @@ import { Package, Calendar, Eye } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getOrderList } from "@/app/api/services/authService";
+import { loader } from "@/app/components/loader/loaderManager";
+import { getErrorMessage } from "@/app/utils/helperFn";
+import toast from "react-hot-toast";
 
 export default function OrderHistory() {
-  const orders = [
-    { id: "ORD1001", date: "2025-06-10", items: 2, total: "₹2,500" },
-    { id: "ORD1002", date: "2025-06-09", items: 1, total: "₹1,200" },
-    { id: "ORD1003", date: "2025-06-08", items: 4, total: "₹4,050" },
-    { id: "ORD1004", date: "2025-06-07", items: 3, total: "₹999" },
-    { id: "ORD1005", date: "2025-06-06", items: 5, total: "₹3,800" },
-  ];
   const [orderCount, setOrderCount] = useState(0);
   const [orderDetails, setOrderDetails] = useState([]);
 
-  // const date = new Date(createdAt);
-
   const router = useRouter();
 
-  // const OrderList = async () => {
-  //   const data = await getOrderList()
-  //   console.log(data);
-  //   setOrderCount(data?.cartOrderCount)
-  //   setOrderDetails(data?.cartOrderProducts)
-  // }
+ const OrderList = async () => {
+    loader(true);
+    try {
+      const data = await getOrderList();
+      setOrderCount(data?.cartOrderCount);
+      const formattedOrders = data?.cartOrderProducts?.map((order) => ({
+        ...order,
+        formattedDate: new Date(order.created_at).toISOString().split("T")[0],
+      }));
+      setOrderDetails(formattedOrders);
+    } catch (error) {
+      const MSG = getErrorMessage(error);
+      toast.error(MSG);
+    } finally {
+      loader(false);
+    }
+  };
 
-  const OrderList = async () => {
-  const data = await getOrderList();
-
-  setOrderCount(data?.cartOrderCount);
-
-  const formattedOrders = data?.cartOrderProducts?.map(order => ({
-    ...order,
-    formattedDate: new Date(order.created_at).toISOString().split('T')[0],
-  }));
-
-  setOrderDetails(formattedOrders);
-};
 
   useEffect(() => {
     OrderList()
@@ -52,7 +45,7 @@ export default function OrderHistory() {
         </div>
       </div>
 
-      {orders.length === 0 ? (
+      {orderDetails.length === 0 ? (
         <div className="text-center py-16">
           <div className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600 rounded-full mb-6">
             <Package className="w-12 h-12 text-gray-400 dark:text-gray-300" />
