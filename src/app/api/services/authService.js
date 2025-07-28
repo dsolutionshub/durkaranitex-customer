@@ -26,6 +26,7 @@ import {
   REGISTER,
   REMOVE_CART,
   REMOVE_WISH_LIST,
+  RESET_LINK,
   UPDATE_CHECKOUT_ADDRESS,
   UPDATE_CUSTOMER_ADDRESS,
   UPDATE_QUANTITY,
@@ -66,6 +67,11 @@ export async function login(payload) {
 
 export async function register(payload) {
   const response = await apiRequest(REGISTER, "POST", payload);
+  return response;
+}
+
+export async function reset(payload) {
+  const response = await apiRequest(RESET_LINK, "POST", payload);
   return response;
 }
 

@@ -8,6 +8,7 @@ export const GOOGLE_LOGIN = "/api/google-signin";
 export const LOGIN_CHECK = "/api/login-check";
 export const LOGIN = "/api/login";
 export const REGISTER = "/api/register";
+export const RESET_LINK = "/api/reset-password-link"
 
 //Logout
 export const LOGOUT = "/api/logout"
