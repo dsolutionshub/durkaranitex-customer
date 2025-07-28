@@ -1,8 +1,5 @@
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import Link from "next/link";
-import { ShoppingBag } from "lucide-react";
-import { useEffect } from "react";
 
 const CartProducts = ({
   products,
@@ -29,27 +26,41 @@ const CartProducts = ({
             <div key={item.id}>
               <div className="d-flex justify-content-between align-items-start my-3">
                 <div
-                  className="d-flex gap-2 max-w-[80%] sm:max-w-[100%]"
+                  className="d-flex gap-2 max-w-[80%] sm:max-w-[100%] relative "
                   onClick={() => navigateToProductDetail(item?.productId)}
                 >
-                  <Image
-                    src={item?.imgSrc}
-                    alt={item.title}
-                    height={80}
-                    width={80}
-                    className="h-[6rem] w-[5rem]"
-                  />
+                  <div className="relative w-[5rem] h-[6rem] flex-shrink-0">
+                    <Image
+                      src={item?.imgSrc}
+                      alt={item.title}
+                      height={80}
+                      width={80}
+                      className={`w-full h-full object-cover ${
+                        parseFloat(item?.totalQuantity) <= 0
+                          ? "opacity-40 md:opacity-70 pointer-events-none"
+                          : ""
+                      }`}
+                    />
+                    {parseFloat(item?.totalQuantity) <= 0 && (
+                      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-red-600 text-white text-[.7rem] font-semibold px-2 py-1 rounded shadow-md z-10 whitespace-nowrap pointer-events-none">
+                        Out of Stock
+                      </div>
+                    )}
+                  </div>
+
                   <div className="leading-snug">
-                    <p className="mb-0 text-black">
+                    <p
+                      className={`mb-0 text-black ${
+                        parseFloat(item?.totalQuantity) <= 0
+                          ? "opacity-40 md:opacity-70 pointer-events-none"
+                          : ""
+                      }`}
+                    >
                       {item.title.length > 35
                         ? `${item.title.slice(0, 35)}...`
                         : item?.title}
                     </p>
-                    {parseFloat(item?.totalQuantity) <= 0 && (
-                      <span className="text-white text-xs font-semibold bg-red-600 px-2 py-1 rounded d-inline-block m-1">
-                        Out of Stock
-                      </span>
-                    )}
+
                     <button
                       className="text-gray-500 underline p-0 m-0"
                       onClick={(e) => removeFromCart(e, item?.id)}
@@ -58,7 +69,12 @@ const CartProducts = ({
                     </button>
                   </div>
                 </div>
-                <p className="mb-0 text-black min-w-[5rem] text-end">
+
+                <p
+                  className={`mb-0 text-black min-w-[5rem] text-end ${
+                    parseFloat(item?.totalQuantity) <= 0 ? "opacity-40" : ""
+                  }`}
+                >
                   Rs. {item?.price}
                 </p>
                 <div className=" d-none">
@@ -71,24 +87,37 @@ const CartProducts = ({
               </div>
 
               {/* Quantity Buttons */}
-              {parseFloat(item?.totalQuantity) > 0 &&
-                <div className="d-flex align-items-center justify-content-evenly bg-gray-100 w-[7rem] h-[2.5rem] border">
-                  <button
-                    disabled={item?.quantity === 1 || parseFloat(item?.totalQuantity) <= 0}
-                    className="text-black fs-1"
-                    onClick={() => decreaseCount(item?.productId, item?.quantity)}
-                  >
-                    -
-                  </button>
-                  <p className="mb-0 text-black">{item?.quantity}</p>
-                  <button
-                    className="text-black"
-                    // disabled={parseInt(item?.totalQuantity) <= item?.quantity}
-                    onClick={() => increaseCount(item?.productId, item?.quantity, item?.totalQuantity)}
-                  >
-                    +
-                  </button>
-                </div>}
+              <div
+                className={`d-flex align-items-center justify-content-evenly bg-gray-100 w-[7rem] h-[2.5rem] border${
+                  parseFloat(item?.totalQuantity) <= 0
+                    ? "opacity-40 pointer-events-none text-gray-400"
+                    : "text-black"
+                }`}
+              >
+                <button
+                  disabled={
+                    item?.quantity === 1 || parseFloat(item?.totalQuantity) <= 0
+                  }
+                  className="fs-1"
+                  onClick={() => decreaseCount(item?.productId, item?.quantity)}
+                >
+                  -
+                </button>
+                <p className="mb-0 k">{item?.quantity}</p>
+                <button
+                  className=""
+                  // disabled={parseInt(item?.totalQuantity) <= item?.quantity}
+                  onClick={() =>
+                    increaseCount(
+                      item?.productId,
+                      item?.quantity,
+                      item?.totalQuantity
+                    )
+                  }
+                >
+                  +
+                </button>
+              </div>
               <hr />
             </div>
           ))}
@@ -120,12 +149,24 @@ const CartProducts = ({
                   style={{ display: "flex", cursor: "pointer" }}
                   onClick={() => navigateToProductDetail(product?.productId)}
                 >
-                  <Image
-                    width={70}
-                    height={50}
-                    src={product?.imgSrc}
-                    alt={product?.title}
-                  />
+                  <div className="relative w-[5rem] h-[6rem] flex-shrink-0">
+                    <Image
+                      src={product?.imgSrc}
+                      alt={product.title}
+                      height={80}
+                      width={80}
+                      className={`w-full h-full object-cover ${
+                        parseFloat(product?.totalQuantity) <= 0
+                          ? "opacity-40"
+                          : ""
+                      }`}
+                    />
+                    {parseFloat(product?.totalQuantity) <= 0 && (
+                      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-red-600 text-white text-[.7rem] font-semibold px-2 py-1 rounded shadow-md z-10 whitespace-nowrap pointer-events-none">
+                        Out of Stock
+                      </div>
+                    )}
+                  </div>
                   <div
                     style={{
                       display: "flex",
@@ -133,12 +174,16 @@ const CartProducts = ({
                       flexDirection: "column",
                     }}
                   >
-                    <p style={{ marginBottom: "0" }}>{product?.title}</p>
-                    {parseFloat(product?.totalQuantity) <= 0 && (
-                      <span className="text-white text-xs font-semibold w-fit bg-red-600 px-2 py-1 rounded d-inline-block m-1">
-                        Out of Stock
-                      </span>
-                    )}
+                    <p
+                      style={{ marginBottom: "0" }}
+                      className={`${
+                        parseFloat(product?.totalQuantity) <= 0
+                          ? "opacity-40"
+                          : ""
+                      }`}
+                    >
+                      {product?.title}
+                    </p>
                     <span
                       onClick={(e) => removeFromCart(e, product?.id)}
                       style={{
@@ -151,15 +196,27 @@ const CartProducts = ({
                     </span>
                   </div>
                 </td>
-                <td className="py-4">Rs. {product?.price}</td>
+                <td
+                  className={`py-4 ${
+                    parseFloat(product?.totalQuantity) <= 0 ? "opacity-40" : ""
+                  }`}
+                >
+                  Rs. {product?.price}
+                </td>
 
                 <td className="p-4">
-                  {parseFloat(product?.totalQuantity) > 0 && <div
-                    className="d-flex align-items-center justify-content-evenly bg-gray-100 w-[7rem] h-[2.5rem] border"
+                  <div
+                    className={`d-flex align-items-center justify-content-evenly bg-gray-100 w-[7rem] h-[2.5rem] border
+                      ${
+                        parseFloat(product?.totalQuantity) <= 0
+                          ? "opacity-40 pointer-events-none"
+                          : "text-black "
+                      }
+                      `}
                     style={{ margin: "auto" }}
                   >
                     <button
-                      className="text-black fs-1"
+                      className="fs-1"
                       disabled={product?.quantity === 1}
                       onClick={() =>
                         decreaseCount(product?.productId, product?.quantity)
@@ -167,12 +224,16 @@ const CartProducts = ({
                     >
                       -
                     </button>
-                    <p className="mb-0 text-black">{product?.quantity}</p>
+                    <p className="mb-0 ">{product?.quantity}</p>
                     <button
-                      className="text-black"
+                      className=""
                       // disabled={parseInt(product?.totalQuantity) <= product?.quantity}
                       onClick={() =>
-                        increaseCount(product?.productId, product?.quantity, product?.totalQuantity)
+                        increaseCount(
+                          product?.productId,
+                          product?.quantity,
+                          product?.totalQuantity
+                        )
                       }
                       style={{
                         fontWeight: "600",
@@ -181,9 +242,17 @@ const CartProducts = ({
                     >
                       +
                     </button>
-                  </div>}
+                  </div>
                 </td>
-                <td className="py-4">Rs. {product?.total}</td>
+                <td
+                  className={`py-4 ${
+                    parseFloat(product?.totalQuantity) <= 0
+                      ? "opacity-40 pointer-events-none"
+                      : "text-black"
+                  }`}
+                >
+                  Rs. {product?.total}
+                </td>
               </tr>
             ))}
           </tbody>

@@ -24,34 +24,38 @@ function RenderQuantity({
   product,
 }) {
   return (
-    <div className="flex items-center mt-2 gap-3">
-      {parseFloat(product?.product?.quantity) > 0 && (
-        <div className="flex items-center border rounded dark-color">
-          <button
-            disabled={product?.quantity === 1}
-            onClick={(e) =>
-              decreaseCount(e, product?.product_id, product?.quantity)
-            }
-            className="px-2 py-1 text-sm"
-          >
-            −
-          </button>
-          <span className="px-4">{product?.quantity || 0}</span>
-          <button
-            onClick={(e) =>
-              increaseCount(
-                e,
-                product?.product_id,
-                product?.quantity,
-                product?.product?.quantity
-              )
-            }
-            className="px-2 py-1 text-sm"
-          >
-            +
-          </button>
-        </div>
-      )}
+    <div className={`flex items-center mt-2 gap-3`}>
+      <div
+        className={`flex items-center border rounded dark-color  ${
+          parseFloat(product?.product?.quantity) <= 0
+            ? "opacity-40 md:opacity-70 pointer-events-none"
+            : ""
+        }`}
+      >
+        <button
+          disabled={product?.quantity === 1}
+          onClick={(e) =>
+            decreaseCount(e, product?.product_id, product?.quantity)
+          }
+          className="px-2 py-1 text-sm"
+        >
+          −
+        </button>
+        <span className="px-4">{product?.quantity || 0}</span>
+        <button
+          onClick={(e) =>
+            increaseCount(
+              e,
+              product?.product_id,
+              product?.quantity,
+              product?.product?.quantity
+            )
+          }
+          className="px-2 py-1 text-sm"
+        >
+          +
+        </button>
+      </div>
 
       <button
         className="ml-4 text-sm underline text-gray-600 hover:text-red-600"
@@ -180,33 +184,53 @@ const SidePanelCart = () => {
                     onClick={() => navigateToProductDetail(product?.product_id)}
                   >
                     <div className="flex gap-3 md:gap-4 items-start cursor-pointer">
-                      <Image
-                        height={150}
-                        width={150}
-                        src={product?.product?.images[0]?.image}
-                        alt={product?.product?.title}
-                        className="h-24 w-24 md:w-30 md:h-30 object-cover rounded-md"
-                      />
-                      <div className="flex-1 ">
-                        <h6
-                          className="text-xlg dark-color mb-1  product-title"
-                          title={product?.product?.title}
-                        >
-                          {product?.product?.title}
-                        </h6>
+                      <div className="relative">
+                        <Image
+                          height={150}
+                          width={150}
+                          src={product?.product?.images[0]?.image}
+                          alt={product?.product?.title}
+                          className={`h-24 w-24 md:w-30 md:h-30 object-cover rounded-md ${
+                            parseFloat(product?.product?.quantity) <= 0
+                              ? "opacity-40"
+                              : ""
+                          }`}
+                        />
 
-                        <p className=" text-md primary-color mb-1 fw-bold">
-                          Rs. {product?.product?.price}
-                          <br />
-                          <span className="text-gray-500 line-through fw-normal">
-                            Rs. {product?.product?.product_price}
-                          </span>{" "}
-                        </p>
                         {parseFloat(product?.product?.quantity) <= 0 && (
-                          <div className="text-white text-xs font-semibold bg-red-600 px-2 py-1 w-fit rounded shadow-md">
+                          <div
+                            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-red-600 text-white 
+    text-xs font-semibold px-2 py-1 rounded shadow-md z-10 whitespace-nowrap pointer-events-none"
+                          >
                             Out of Stock
                           </div>
                         )}
+                      </div>
+
+                      <div className="flex-1">
+                        <div
+                          className={`${
+                            parseFloat(product?.product?.quantity) <= 0
+                              ? "opacity-40"
+                              : ""
+                          }`}
+                        >
+                          <h6
+                            className="text-xlg dark-color mb-1 product-title"
+                            title={product?.product?.title}
+                          >
+                            {product?.product?.title}
+                          </h6>
+
+                          <p className="text-md primary-color mb-1 fw-bold">
+                            Rs. {product?.product?.price}
+                            <br />
+                            <span className="text-gray-500 line-through fw-normal">
+                              Rs. {product?.product?.product_price}
+                            </span>
+                          </p>
+                        </div>
+
                         <div className="d-none d-md-block">
                           <RenderQuantity
                             increaseCount={increaseCount}

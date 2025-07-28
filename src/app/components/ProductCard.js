@@ -2,18 +2,26 @@
 
 import React from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 import { FiHeart, FiShoppingCart } from "react-icons/fi";
 import { RiDeleteBinLine } from "react-icons/ri";
 
 import "./productCardStyle.css";
 
-export const FeatureButtons = ({ type, btn1Func, btn2Func, isInWishlist }) => (
+export const FeatureButtons = ({
+  type,
+  btn1Func,
+  btn2Func,
+  isInWishlist,
+  path,
+  quantity,
+}) => (
   <>
     <button
-      className={`feature-product-btn-mbl ${isInWishlist ? "wishlist-active-mbl" : ""
-        }`}
+      className={`feature-product-btn-mbl ${
+        isInWishlist ? "wishlist-active-mbl" : ""
+      }`}
       onClick={(e) => {
         e.stopPropagation();
         btn1Func();
@@ -26,7 +34,12 @@ export const FeatureButtons = ({ type, btn1Func, btn2Func, isInWishlist }) => (
       )}
     </button>
     <button
-      className="feature-product-btn"
+      disabled={parseFloat(quantity) <= 0 && path === "/wishlist"}
+      className={`feature-product-btn ${
+        parseFloat(quantity) <= 0 && path === "/wishlist"
+          ? "disable-cart-icon"
+          : ""
+      }`}
       onClick={(e) => {
         e.stopPropagation();
         btn2Func();
@@ -65,9 +78,10 @@ const ProductCard = ({
   btn1,
   btn2,
   onClick,
-  quantity = 0
+  quantity = 0,
 }) => {
   const router = useRouter();
+  const path = usePathname();
 
   const navigateToProductDetail = (id) => {
     router.push(`/product-detail?id=${id}`);
@@ -76,7 +90,11 @@ const ProductCard = ({
   return (
     <>
       <div
-        className={`flex flex-col items-center relative lg:hidden cursor-pointer ${parseFloat(quantity) <= 0 ? 'pointer-events-none' : ''} ${className}`}
+        className={`flex flex-col items-center relative lg:hidden cursor-pointer ${
+          parseFloat(quantity) <= 0 && path !== "/wishlist"
+            ? "pointer-events-none "
+            : ""
+        } ${className}`}
         onClick={() => navigateToProductDetail(id)}
       >
         <div
@@ -97,18 +115,24 @@ const ProductCard = ({
         <Image
           src={image}
           alt={title}
-          className={`w-full h-60 object-cover rounded-2xl product-page-card-mobile ${parseFloat(quantity) <= 0 ? 'opacity-80' : ''}`}
+          className={`w-full h-60 object-cover rounded-2xl product-page-card-mobile ${
+            parseFloat(quantity) <= 0 ? "opacity-80" : ""
+          }`}
           width={100}
           height={100}
         />
-        {parseFloat(quantity) > 0 && <div className="flex items-center gap-2 absolute top-44">
-          <FeatureButtons
-            type={type}
-            btn1Func={btn1}
-            btn2Func={btn2}
-            isInWishlist={isInWishlist}
-          />
-        </div>}
+        {parseFloat(quantity) > 0 && (
+          <div className="flex items-center gap-2 absolute top-44">
+            <FeatureButtons
+              type={type}
+              btn1Func={btn1}
+              btn2Func={btn2}
+              isInWishlist={isInWishlist}
+              path={path}
+              quantity={quantity}
+            />
+          </div>
+        )}
 
         <div className="flex flex-col self-start">
           <h6
@@ -132,7 +156,11 @@ const ProductCard = ({
       {/* Desktop View */}
       <div
         className={`product-card group relative flex flex-col items-center hidden lg:block 
-        ${parseFloat(quantity) <= 0 ? 'pointer-events-none ' : ''}`}
+        ${
+          parseFloat(quantity) <= 0 && path !== "/wishlist"
+            ? "pointer-events-none "
+            : ""
+        }`}
         onClick={() => {
           if (parseFloat(quantity) > 0) {
             navigateToProductDetail(id);
@@ -155,7 +183,9 @@ const ProductCard = ({
           <Image
             src={image}
             alt={title}
-            className={`product-img main ${parseFloat(quantity) <= 0 ? 'opacity-50 ' : ''}`}
+            className={`product-img main ${
+              parseFloat(quantity) <= 0 ? "opacity-50 " : ""
+            }`}
             width={100}
             height={100}
           />
@@ -174,6 +204,8 @@ const ProductCard = ({
             btn1Func={btn1}
             btn2Func={btn2}
             isInWishlist={isInWishlist}
+            path={path}
+            quantity={quantity}
           />
         </div>
 

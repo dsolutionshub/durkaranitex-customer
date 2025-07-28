@@ -60,7 +60,9 @@ export default function ProductAccordion({
         ${description
           ?.map(
             (item) =>
-              `<p><strong>${item.title}</strong> ${item.description}</p>`
+              `<p><strong>${item?.title || ""}</strong> ${
+                item?.description || ""
+              }</p>`
           )
           .join("")}
           <p><strong>Disclaimer: </strong> Product color may slightly vary due to photographic lighting sources or your monitor settings</p>
@@ -68,7 +70,7 @@ export default function ProductAccordion({
     },
     {
       title: "Replacements & Exchanges",
-       content: `
+      content: `
       <p>Replacement & Exchange within 1 Day of Delivery for Damaged Products Only.</p>
       <p>(Saree must be in original condition with all tags and labels attached. No signs of wear or alteration will be accepted.)</p>
       <p>Please refer to our Replacement Policy for more details.</p>
@@ -131,7 +133,7 @@ export default function ProductAccordion({
   };
 
   useEffect(() => {
-    setDescription(sections?.description);
+    setDescription(sections?.description || []);
   }, [sections]);
 
   useEffect(() => {
@@ -200,20 +202,23 @@ export default function ProductAccordion({
           );
         })}
       </div>
- {sections?.quantity && parseInt(sections.quantity) <= 10 && (
-  <div className="mt-4">
-    <div className="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-semibold rounded-full w-fit">
-      <span>Only {parseInt(sections.quantity)} left in stock!</span>
-    </div>
-  </div>
-)}
+      {sections?.quantity && parseInt(sections.quantity) <= 10 && (
+        <div className="mt-4">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-semibold rounded-full w-fit">
+            <span>Only {parseInt(sections.quantity)} left in stock!</span>
+          </div>
+        </div>
+      )}
 
       <div className="mt-4 flex flex-col lg:flex-row items-center md:items-center space-y-4 md:space-y-0 md:space-x-4 w-full">
         <div className="mb-4 self-start md:self-center">
           <p className="product-detail-quantity-label">Quantity:</p>
           <div className="d-flex align-items-center	justify-content-evenly bg-gray-100 w-[9rem] h-[2.5rem] border">
-            <button className="text-black " disabled={quantity === 1}
-              onClick={handleDecrease}>
+            <button
+              className="text-black "
+              disabled={quantity === 1}
+              onClick={handleDecrease}
+            >
               <FaMinus />
             </button>
             <p
@@ -225,7 +230,11 @@ export default function ProductAccordion({
             >
               {quantity}
             </p>
-            <button className="text-black" disabled={parseInt(sections?.quantity) <= quantity} onClick={handleIncrease}>
+            <button
+              className="text-black"
+              disabled={parseInt(sections?.quantity) <= quantity}
+              onClick={handleIncrease}
+            >
               <FaPlus />
             </button>
           </div>

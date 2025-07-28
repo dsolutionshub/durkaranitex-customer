@@ -3,7 +3,16 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import AddressForm from "../components/AddressForm";
-import { MapPin, User, Mail, Phone, Home, Edit, Trash, Plus } from "lucide-react";
+import {
+  MapPin,
+  User,
+  Mail,
+  Phone,
+  Home,
+  Edit,
+  Trash,
+  Plus,
+} from "lucide-react";
 import {
   deleteAddress,
   getCustomerAddressList,
