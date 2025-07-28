@@ -70,7 +70,7 @@ export default function OrderHistory() {
         </div>
       ) : (
         <div
-          className={`space-y-6 ${orders.length > 2 ? "max-h-[500px] overflow-y-auto pr-2" : ""
+          className={`space-y-6 ${orderDetails.length > 2 ? "max-h-[500px] overflow-y-auto pr-2" : ""
             }`}
         >
           {orderDetails?.map((order, index) => (

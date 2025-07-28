@@ -70,26 +70,29 @@ function Product() {
   //   }
   // };
 
-  const productDetails = useCallback(async (filter = null, min = 0, max = 0) => {
-    loader(true);
-    try {
-      let { products, total_products } = await getProductList(
-        currentPage,
-        filter,
-        selectedCategories,
-        priceRange.min !== 0 ? priceRange.min : undefined,
-        priceRange.max !== 0 ? priceRange.max : undefined
-      );
-      setProductList(products || []);
-      setSortedProducts(products || []);
-      const totalPages = Math.ceil(total_products / itemsPerPage);
-      setTotalPage(totalPages);
-    } catch (error) {
-      getErrorMessage(error);
-    } finally {
-      loader(false);
-    }
-  }, [currentPage, selectedCategories, priceRange]);
+  const productDetails = useCallback(
+    async (filter = null, min = 0, max = 0) => {
+      loader(true);
+      try {
+        let { products, total_products } = await getProductList(
+          currentPage,
+          filter,
+          selectedCategories,
+          priceRange.min !== 0 ? priceRange.min : undefined,
+          priceRange.max !== 0 ? priceRange.max : undefined
+        );
+        setProductList(products || []);
+        setSortedProducts(products || []);
+        const totalPages = Math.ceil(total_products / itemsPerPage);
+        setTotalPage(totalPages);
+      } catch (error) {
+        getErrorMessage(error);
+      } finally {
+        loader(false);
+      }
+    },
+    [currentPage, selectedCategories, priceRange]
+  );
 
   const categoryDetails = async () => {
     loader(true);
@@ -178,7 +181,6 @@ function Product() {
     }
   }, [sortOption, productDetails]);
 
-
   const getCurrentQuantityInCart = (productId) => {
     const item = cartItems.find((item) => item.productId === productId);
     return item ? item.quantity : 0;
@@ -207,11 +209,8 @@ function Product() {
   const addToCart = async (id, total_quantity) => {
     const currentQty = getCurrentQuantityInCart(id);
 
-    console.log(currentQty);
-    console.log("Cart Items:", cartItems);
-
     if (currentQty >= parseFloat(total_quantity)) {
-      console.log("Max quantity reached");
+      toast.error("Max quantity reached");
       return;
     }
 
@@ -222,16 +221,15 @@ function Product() {
       return item;
     });
 
-    if (!cartItems.find(item => item.productId === id)) {
+    if (!cartItems.find((item) => item.productId === id)) {
       updatedCart.push({ productId: id, quantity: 1 });
     }
 
     setCartItems(updatedCart);
-    toast.success("Added to cart");
     loader(true);
     try {
-      const data = await modifyCart({ product_id: id, quantity: 1 });
-      toast.success(data?.message);
+      await modifyCart({ product_id: id, quantity: 1 });
+      toast.success("Added to cart");
       handleGetCartDetail();
     } catch (error) {
       const status = error?.response?.status;
@@ -310,7 +308,7 @@ function Product() {
                   </p>
                 ) : (
                   productList
-                    ?.filter(item => item?.is_published === "1")
+                    ?.filter((item) => item?.is_published === "1")
                     ?.map((item) => (
                       <div
                         className="col-md-4 col-lg-3 md:mb-4 product-list-card-mobile"
