@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import AddressForm from "../components/AddressForm";
-import { MapPin, User, Mail, Phone, Home, Edit, Trash } from "lucide-react";
+import { MapPin, User, Mail, Phone, Home, Edit, Trash, Plus } from "lucide-react";
 import {
   deleteAddress,
   getCustomerAddressList,
@@ -68,25 +68,35 @@ export default function AddressPage() {
 
   return (
     <div className="mx-auto">
-      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 mb-4">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 mb-2 sm:mb-2">
         <h3 className="text-xl sm:text-2xl font-semibold text-black">
           My Addresses
         </h3>
-        <button
-          onClick={() => {
-            setShowForm(true);
-            setIsEdit(false);
-          }}
-          className="bg-green-800 text-white w-38 py-2 rounded hover:bg-green-700 text-sm"
-        >
-          Add New Address
-        </button>
       </div>
 
+      {/* Display "No Address" UI if address list is empty */}
       {addresses.length === 0 ? (
         <div className="text-center py-10 text-lg text-gray-700">
-          <MapPin className="mx-auto text-4xl mb-2 text-green-800" />
-          Your address list is empty.
+          <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-[var(--primary-light)] to-[var(--primary-light)] rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+            <Home className="h-8 w-8 sm:h-10 sm:w-10 text-[var(--primary-main)]" />
+          </div>
+          <h3 className="text-lg sm:text-xl font-semibold mb-2 dark-color">
+            No delivery address yet
+          </h3>
+          <p className="text-gray-500 mb-4 sm:mb-6 max-w-md mx-auto text-sm sm:text-base">
+            Add your first delivery address to continue with your order.
+            We&apos;ll save it for future purchases too!
+          </p>
+          <button
+            onClick={() => {
+              setShowForm(true);
+              setIsEdit(false);
+            }}
+            className="bg-gradient-to-r from-[var(--primary-main)] to-[var(--primary-main)] hover:from-[var(--primary-dark)] hover:to-[var(--primary-dark)] text-white px-6 sm:px-8 py-2 sm:py-3 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm sm:text-base flex items-center justify-center mx-auto"
+          >
+            <Plus className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
+            Add New Address
+          </button>
         </div>
       ) : (
         <div className="space-y-4">
