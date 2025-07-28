@@ -14,7 +14,7 @@ export default function ForgotPasswordModal({ onClose }) {
       toast.success(data?.message || "Recovery link sent");
       setSubmitted(true);
     } catch (error) {
-      toast.error("Failed to send recovery link, check your email address");
+      toast.error("Failed to send link. Check email.");
     }
   };
 
@@ -24,7 +24,7 @@ export default function ForgotPasswordModal({ onClose }) {
         {submitted ? (
           <>
             <div className="bg-[#d7e6fd] rounded-t-md p-4 mb-2">
-              <h2 className="text-lg font-semibold text-[#333] dark:text-white">Reset Password</h2>
+              <h5 className="text-lg font-semibold text-[#333] dark:text-white">Reset Password</h5>
             </div>
 
             <div className="bg-green-100 text-green-800 text-sm p-4 rounded text-center mb-4">

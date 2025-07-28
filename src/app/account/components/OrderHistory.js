@@ -51,7 +51,7 @@ export default function OrderHistory() {
             <Package className="w-12 h-12 text-gray-400 dark:text-gray-300" />
           </div>
           <h3
-            className="text-xl font-semibold mb-2"
+            className="text-xl font-semibold mb-1"
             style={{
               color: "var(--gray-color)",
             }}
@@ -60,12 +60,12 @@ export default function OrderHistory() {
           </h3>
           <p className="text-gray-600">
             Start shopping to see your order history here!{" "}
-            <Link
-              href="/shop"
-              className="primary-color underline font-medium hover:text-[var(--primary-dark)]"
-            >
-              Go to Shop
-            </Link>
+            
+            <Link href="/shop" className="">
+                <button className="bg-[var(--primary-main)] text-white py-2 px-3 rounded mt-3">
+                  Explore Sarees
+                </button>
+              </Link>
           </p>
         </div>
       ) : (
