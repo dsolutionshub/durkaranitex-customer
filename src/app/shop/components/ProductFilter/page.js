@@ -15,7 +15,6 @@ function FilterComponent({
   values,
   MIN,
   MAX,
-  showPriceFilter = false,
 }) {
   return (
     <>
@@ -71,60 +70,56 @@ function FilterComponent({
             <span>Rs. {values[0]}</span>
             <span>Rs. {values[1]}</span>
           </div>
-          {showPriceFilter ? (
-            <Range
-              values={values}
-              step={STEP}
-              min={MIN}
-              max={MAX}
-              onChange={handleChange}
-              renderTrack={({ props, children }) => {
-                const percentage1 = ((values[0] - MIN) / (MAX - MIN)) * 100;
-                const percentage2 = ((values[1] - MIN) / (MAX - MIN)) * 100;
+          <Range
+            values={values}
+            step={STEP}
+            min={MIN}
+            max={MAX}
+            onChange={handleChange}
+            renderTrack={({ props, children }) => {
+              const percentage1 = ((values[0] - MIN) / (MAX - MIN)) * 100;
+              const percentage2 = ((values[1] - MIN) / (MAX - MIN)) * 100;
 
-                return (
-                  <div
-                    {...props}
-                    style={{
-                      ...props.style,
-                      height: ".2rem",
-                      width: "100%",
-                      borderRadius: "4px",
-                      background: `linear-gradient(to right, 
+              return (
+                <div
+                  {...props}
+                  style={{
+                    ...props.style,
+                    height: ".2rem",
+                    width: "100%",
+                    borderRadius: "4px",
+                    background: `linear-gradient(to right, 
   gray 0%, 
   gray ${percentage1}%, 
   black ${percentage1}%, 
   black ${percentage2}%, 
   gray ${percentage2}%, 
   gray 100%)`,
-                    }}
-                  >
-                    {children}
-                  </div>
-                );
-              }}
-              renderThumb={({ props }) => {
-                const { key, ...rest } = props;
-                return (
-                  <div
-                    key={key}
-                    {...rest}
-                    style={{
-                      ...rest.style,
-                      height: "20px",
-                      width: "20px",
-                      borderRadius: "50%",
-                      backgroundColor: "#000",
-                      border: "2px solid white",
-                      boxShadow: "0 0 3px rgba(0,0,0,0.3)",
-                    }}
-                  />
-                );
-              }}
-            />
-          ) : (
-            <p className="text-black">Only one product is available.</p>
-          )}
+                  }}
+                >
+                  {children}
+                </div>
+              );
+            }}
+            renderThumb={({ props }) => {
+              const { key, ...rest } = props;
+              return (
+                <div
+                  key={key}
+                  {...rest}
+                  style={{
+                    ...rest.style,
+                    height: "20px",
+                    width: "20px",
+                    borderRadius: "50%",
+                    backgroundColor: "#000",
+                    border: "2px solid white",
+                    boxShadow: "0 0 3px rgba(0,0,0,0.3)",
+                  }}
+                />
+              );
+            }}
+          />
         </div>
         <div className="mt-4 text-sm text-gray-700">
           Price:{" "}
@@ -147,7 +142,6 @@ const ProductFilter = ({
   priceRange = { min: 50, max: 900 },
   openFilter,
   handleOpenFilter,
-  showPriceFilter,
 }) => {
   const [values, setValues] = useState([priceRange.min, priceRange.max]);
 
@@ -222,7 +216,6 @@ const ProductFilter = ({
             values={values}
             MIN={parseFloat(categoryList?.product_amount?.min)}
             MAX={parseFloat(categoryList?.product_amount?.max)}
-            showPriceFilter={showPriceFilter}
           />
         </div>
       </Sidebar>

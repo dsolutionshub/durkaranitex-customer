@@ -327,9 +327,7 @@ function Product() {
               priceRange={categoryList?.product_amount}
               openFilter={openFilter}
               handleOpenFilter={handleOpenFilter}
-              showPriceFilter={productList?.length > 1}
             />
-            {/* {console.log(productList?.length > 1 , 'iewuyi')} */}
           </div>
         </div>
       </div>
