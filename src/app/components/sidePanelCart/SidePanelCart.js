@@ -16,6 +16,7 @@ import {
 } from "@/app/api/services/authService";
 
 import "./style.css";
+import { LOGIN_ERROR_MSG } from "@/app/utils/constants";
 
 function RenderQuantity({
   decreaseCount,
@@ -126,6 +127,8 @@ const SidePanelCart = () => {
       if (status === 401) {
         sessionStorage.setItem("postLoginRedirect", "/checkout");
         router.push("/login");
+        toast.error(LOGIN_ERROR_MSG);
+        return;
       }
       const MSG = getErrorMessage(error);
       toast.error(MSG);

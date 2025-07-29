@@ -56,6 +56,7 @@ const SimilarProducts = ({ products, handleGetProductDetails }) => {
         sessionStorage.setItem("postLoginRedirect", "/shop");
         router.push("/login");
         toast.error(LOGIN_ERROR_MSG);
+        return;
       }
       getErrorMessage(error);
     } finally {
@@ -100,7 +101,7 @@ const SimilarProducts = ({ products, handleGetProductDetails }) => {
           className="product-card featured-swiper"
         >
           {products
-            ?.filter(item => item?.is_published === "1")
+            ?.filter((item) => item?.is_published === "1")
             ?.map((item, i) => (
               <SwiperSlide key={i} className="h-full">
                 <ProductCard
@@ -119,7 +120,6 @@ const SimilarProducts = ({ products, handleGetProductDetails }) => {
                 />
               </SwiperSlide>
             ))}
-
         </Swiper>
         <div className="text-center mt-10">
           <button
@@ -137,6 +137,12 @@ const SimilarProducts = ({ products, handleGetProductDetails }) => {
 };
 
 const SimilarProduct = ({ data, handleGetProductDetails }) => {
+  const isAnyProductPublished = data?.some(
+    (product) => product?.is_published === "1"
+  );
+
+  if (!isAnyProductPublished) return;
+
   return (
     <div className="md:px-20 feature-product-card">
       <Section

@@ -27,14 +27,14 @@ const Cart = () => {
   const [totalCost, setTotalCost] = useState(0);
   const [products, setProducts] = useState([]);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
-  const [totalQuantities, setTotalQuantities] = useState(0)
+  const [totalQuantities, setTotalQuantities] = useState(0);
 
   const fetchCart = async () => {
     loader(true);
     try {
       const response = await getCart();
       setTotalCost(response?.total_amount);
-      setTotalQuantities(response?.total_quantity)
+      setTotalQuantities(response?.total_quantity);
       const formattedProducts = response?.cart?.map((item) => ({
         id: item?.id,
         productId: item?.product_id,
@@ -43,7 +43,7 @@ const Cart = () => {
         title: item?.product?.title,
         price: parseFloat(item?.product?.price),
         imgSrc: item?.product?.images?.[0]?.image || "",
-        totalQuantity : item?.product?.quantity
+        totalQuantity: item?.product?.quantity,
       }));
 
       setProducts(formattedProducts);
@@ -100,13 +100,15 @@ const Cart = () => {
       await handleCheckout();
       handleNavigate("/checkout");
     } catch (error) {
+      const MSG = getErrorMessage(error);
       const status = error.response.status;
       if (status === 401) {
         sessionStorage.setItem("postLoginRedirect", "/checkout");
         router.push("/login");
         toast.error(LOGIN_MSG);
+        return;
       }
-      getErrorMessage(error);
+      toast.error(MSG);
     } finally {
       loader(false);
     }

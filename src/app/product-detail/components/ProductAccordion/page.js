@@ -26,6 +26,7 @@ export default function ProductAccordion({
   handleIncrease,
   quantity,
   handleGetProductDetails,
+  decreaseCount,
 }) {
   const router = useRouter();
   const { handleGetCartDetail, wishlistDetails } = useCartPanelStore();
@@ -45,6 +46,7 @@ export default function ProductAccordion({
         sessionStorage.setItem("postLoginRedirect", "/wishlist");
         router.push("/login");
         toast.error(LOGIN_ERROR_MSG);
+        return;
       }
       getErrorMessage(error);
     } finally {
@@ -217,7 +219,8 @@ export default function ProductAccordion({
             <button
               className="text-black "
               disabled={quantity === 1}
-              onClick={handleDecrease}
+              // onClick={handleDecrease}
+              onClick={decreaseCount}
             >
               <FaMinus />
             </button>
@@ -228,7 +231,7 @@ export default function ProductAccordion({
                 fontWeight: "500",
               }}
             >
-              {quantity}
+              {parseInt(sections?.quantity || 0)}
             </p>
             <button
               className="text-black"

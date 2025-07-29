@@ -2,17 +2,7 @@
 
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import AddressForm from "../components/AddressForm";
-import {
-  MapPin,
-  User,
-  Mail,
-  Phone,
-  Home,
-  Edit,
-  Trash,
-  Plus,
-} from "lucide-react";
+import { User, Mail, Phone, Home, Edit, Trash, Plus } from "lucide-react";
 import {
   deleteAddress,
   getCustomerAddressList,
@@ -20,19 +10,34 @@ import {
 } from "@/app/api/services/authService";
 import { getErrorMessage } from "@/app/utils/helperFn";
 import { loader } from "@/app/components/loader/loaderManager";
+import AddAdressModel from "@/app/checkout/components/AddAdressModel";
 
 export default function AddressPage() {
   const [addresses, setAddresses] = useState([]);
-  const [showForm, setShowForm] = useState(false);
   const [addressDetail, setAddressDetail] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
 
-  const handleEdit = async (address) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleCloseModel = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleOpenModel = (value) => {
+    if (value === "edit") {
+      setIsEdit(true);
+    } else {
+      setIsEdit(false);
+    }
+    setIsModalOpen(true);
+  };
+
+  const handleDeleteAddress = async (id) => {
     loader(true);
     try {
-      const data = await getSelectAddress(address?.id);
-      setAddressDetail(data?.addresss);
-      setShowForm(true);
+      const data = await deleteAddress("", id);
+      getAddressList();
+      toast.success(data?.message);
     } catch (error) {
       const MSG = getErrorMessage(error);
       toast.error(MSG);
@@ -41,8 +46,18 @@ export default function AddressPage() {
     }
   };
 
-  const handleCancel = () => {
-    setShowForm(false);
+  const handleEditAddress = async (addressId) => {
+    loader(true);
+    try {
+      const data = await getSelectAddress(addressId);
+      handleOpenModel("edit");
+      setAddressDetail(data?.addresss);
+    } catch (error) {
+      const MSG = getErrorMessage(error);
+      toast.error(MSG);
+    } finally {
+      loader(false);
+    }
   };
 
   const getAddressList = async () => {
@@ -57,34 +72,31 @@ export default function AddressPage() {
     }
   };
 
-  const handleDelete = async (id) => {
-    loader(true);
-    try {
-      const data = await deleteAddress(addresses, id);
-      getAddressList();
-      toast.success(data?.message);
-    } catch (error) {
-      const MSG = getErrorMessage(error);
-      toast.error(MSG);
-    } finally {
-      loader(false);
-    }
-  };
-
   useEffect(() => {
     getAddressList();
   }, []);
 
   return (
     <div className="mx-auto">
-      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 mb-2 sm:mb-2">
-        <h3 className="text-xl sm:text-2xl font-semibold text-black">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 mb-3">
+        <h3
+          className="text-xl sm:text-2xl font-semibold text-black"
+          onClick={() => handleOpenModel("add")}
+        >
           My Addresses
         </h3>
-      </div>
 
-      {/* Display "No Address" UI if address list is empty */}
-      {addresses.length === 0 ? (
+        <button
+          onClick={() => handleOpenModel("add")}
+          className="bg-gradient-to-r from-[var(--primary-main)] to-[var(--primary-main)] 
+          hover:from-[var(--primary-dark)] hover:to-[var(--primary-dark)] text-white px-6 sm:px-8 py-2 sm:py-3 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 
+          text-sm sm:text-base flex items-center justify-center"
+        >
+          <Plus className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
+          Add New Address
+        </button>
+      </div>
+      {addresses?.length === 0 ? (
         <div className="text-center py-10 text-lg text-gray-700">
           <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-[var(--primary-light)] to-[var(--primary-light)] rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
             <Home className="h-8 w-8 sm:h-10 sm:w-10 text-[var(--primary-main)]" />
@@ -97,10 +109,7 @@ export default function AddressPage() {
             We&apos;ll save it for future purchases too!
           </p>
           <button
-            onClick={() => {
-              setShowForm(true);
-              setIsEdit(false);
-            }}
+            onClick={() => handleOpenModel("add")}
             className="bg-gradient-to-r from-[var(--primary-main)] to-[var(--primary-main)] hover:from-[var(--primary-dark)] hover:to-[var(--primary-dark)] text-white px-6 sm:px-8 py-2 sm:py-3 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm sm:text-base flex items-center justify-center mx-auto"
           >
             <Plus className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
@@ -149,8 +158,7 @@ export default function AddressPage() {
                   <div className="flex gap-2 sm:hidden">
                     <button
                       onClick={() => {
-                        setIsEdit(true);
-                        handleEdit(address);
+                        handleEditAddress(address.id);
                       }}
                       className="text-green-800 hover:text-black"
                       title="Edit"
@@ -158,7 +166,7 @@ export default function AddressPage() {
                       <Edit className="w-5 h-5" />
                     </button>
                     <button
-                      onClick={() => handleDelete(address.id)}
+                      onClick={() => handleDeleteAddress(address.id)}
                       className="text-red-800 hover:text-black"
                       title="Delete"
                     >
@@ -172,8 +180,7 @@ export default function AddressPage() {
               <div className="hidden sm:flex gap-2 mt-1 sm:mt-0">
                 <button
                   onClick={() => {
-                    setIsEdit(true);
-                    handleEdit(address);
+                    handleEditAddress(address.id);
                   }}
                   className="text-green-800 hover:text-black"
                   title="Edit"
@@ -181,7 +188,7 @@ export default function AddressPage() {
                   <Edit className="w-5 h-5" />
                 </button>
                 <button
-                  onClick={() => handleDelete(address.id)}
+                  onClick={() => handleDeleteAddress(address.id)}
                   className="text-green-800 hover:text-black"
                   title="Delete"
                 >
@@ -192,16 +199,13 @@ export default function AddressPage() {
           ))}
         </div>
       )}
-
-      <AddressForm
-        visible={showForm}
-        onCancel={handleCancel}
-        addressDetail={addressDetail}
+      <AddAdressModel
+        isModalOpen={isModalOpen}
+        handleCloseModel={handleCloseModel}
         isEdit={isEdit}
-        setShowForm={setShowForm}
-        showForm={showForm}
         getAddressList={getAddressList}
-      />
+        addressDetail={addressDetail}
+      />{" "}
     </div>
   );
 }

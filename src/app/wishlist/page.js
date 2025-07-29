@@ -61,6 +61,7 @@ const Wishlist = () => {
         sessionStorage.setItem("postLoginRedirect", "/shop");
         router.push("/login");
         toast.error(LOGIN_ERROR_MSG);
+        return;
       }
       getErrorMessage(error);
     } finally {

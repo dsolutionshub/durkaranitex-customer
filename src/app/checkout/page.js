@@ -58,13 +58,13 @@ export default function CheckoutPage() {
       initiateRazorpayPayment({ order: data, customer: userData });
     } catch (error) {
       const MSG = getErrorMessage(error);
-      toast.error(MSG);
       const status = error?.response?.status;
       if (status === 401) {
         sessionStorage.setItem("postLoginRedirect", "/checkout");
         router.push("/login");
         return;
       }
+      toast.error(MSG);
     } finally {
       loader(false);
     }

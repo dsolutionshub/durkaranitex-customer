@@ -19,7 +19,7 @@ export default function AddAdressModel({
   isEdit,
   getAddressList,
   addressDetail,
-  handleCheckoutList,
+  handleCheckoutList = () => {},
 }) {
   const [stateList, setStateList] = useState([]);
 

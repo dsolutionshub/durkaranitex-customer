@@ -59,6 +59,10 @@ export default function AccountPage() {
       setProfileInfo(customer || []);
     } catch (error) {
       const MSG = getErrorMessage(error);
+      const status = error.response.status;
+      if (status === 401) {
+        return;
+      }
       toast.error(MSG);
     } finally {
       loader(false);
@@ -74,7 +78,7 @@ export default function AccountPage() {
       case "addresses":
         return <AddressForm />;
       default:
-        return <></>
+        return <></>;
     }
   };
 
@@ -82,8 +86,8 @@ export default function AccountPage() {
     handleProfileInfo();
     const selectionTab = sessionStorage.getItem("tab");
     if (selectionTab) {
-      setSelectedTab(selectionTab)
-      renderContent(selectionTab)
+      setSelectedTab(selectionTab);
+      renderContent(selectionTab);
     }
   }, []);
 
@@ -131,28 +135,31 @@ export default function AccountPage() {
                   return (
                     <div
                       key={key}
-                      className={`group relative flex items-center gap-2 p-4 rounded-xl cursor-pointer transition-all duration-300 transform hover:scale-105 ${isActive
+                      className={`group relative flex items-center gap-2 p-4 rounded-xl cursor-pointer transition-all duration-300 transform hover:scale-105 ${
+                        isActive
                           ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-lg shadow-blue-500/25"
                           : "text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:text-blue-700"
-                        }`}
+                      }`}
                       onClick={() => {
-                        setSelectedTab(key)
-                        if (key === 'logout') {
-                          handleLoggedOut()
+                        setSelectedTab(key);
+                        if (key === "logout") {
+                          handleLoggedOut();
                         }
                       }}
                     >
                       <div
-                        className={`p-1 rounded-lg transition-colors ${isActive
+                        className={`p-1 rounded-lg transition-colors ${
+                          isActive
                             ? "bg-white/20"
                             : "bg-gray-100 group-hover:bg-blue-100"
-                          }`}
+                        }`}
                       >
                         <Icon
-                          className={`w-5 h-5 ${isActive
+                          className={`w-5 h-5 ${
+                            isActive
                               ? "text-white"
                               : "text-gray-600 group-hover:text-blue-600"
-                            }`}
+                          }`}
                         />
                       </div>
                       <span className="font-medium text-sm">{label}</span>

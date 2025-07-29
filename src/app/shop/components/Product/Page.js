@@ -168,6 +168,7 @@ function Product() {
         sessionStorage.setItem("postLoginRedirect", "/shop");
         router.push("/login");
         toast.error(LOGIN_ERROR_MSG);
+        return;
       }
       getErrorMessage(error);
     } finally {
@@ -206,6 +207,7 @@ function Product() {
         sessionStorage.setItem("postLoginRedirect", "/shop");
         router.push("/login");
         toast.error(LOGIN_ERROR_MSG);
+        return;
       }
       getErrorMessage(error);
     } finally {
@@ -254,14 +256,8 @@ function Product() {
 
                     <div className="flex items-center gap-3 ">
                       <button
-                        className={`px-4 py-2 flex items-center gap-2 bg-green-900 text-light fs-6 xl:hidden ${
-                          productList?.length <= 1 ? "opacity-70" : ""
-                        }`}
+                        className={`px-4 py-2 flex items-center gap-2 bg-green-900 text-light fs-6 xl:hidden `}
                         onClick={handleOpenFilter}
-                        disabled={productList?.length <= 1}
-                        title={
-                          productList?.length <= 1 ? "Filter is disabled" : ""
-                        }
                       >
                         <BiFilterAlt />
                         Filter
@@ -289,11 +285,6 @@ function Product() {
                         className="col-md-4 col-lg-3 md:mb-4 product-list-card-mobile"
                         key={item.id}
                       >
-                        {/* {parseFloat(item.quantity) <= 0 && (
-                          <div className="absolute top-2 right-2 bg-black text-white text-xs px-2 py-1 rounded z-10">
-                            Out of Stock
-                          </div>
-                        )} */}
                         <ProductCard
                           id={item?.id}
                           type="heart"
@@ -336,7 +327,9 @@ function Product() {
               priceRange={categoryList?.product_amount}
               openFilter={openFilter}
               handleOpenFilter={handleOpenFilter}
+              showPriceFilter={productList?.length > 1}
             />
+            {/* {console.log(productList?.length > 1 , 'iewuyi')} */}
           </div>
         </div>
       </div>
