@@ -142,7 +142,7 @@ export default function AddressPage() {
                 <div className="flex items-start gap-2">
                   <Home className="w-5 h-5 mt-0.5 shrink-0" />
                   <span className="leading-snug">
-                    {address.address}, {address.pincode}, {address.city} ,{" "}
+                    {address.address}, {address.address1} {address.pincode}, {address.city} ,{" "}
                     {address.state.name}
                   </span>
                 </div>

@@ -121,7 +121,13 @@ const ProductCard = ({
           width={100}
           height={100}
         />
-        <div className="flex items-center gap-2 absolute top-44">
+        <div
+          className={`flex items-center gap-2 absolute top-44 ${
+            (path === "/shop" || path === "/") && parseFloat(quantity) <= 0
+              ? "d-none"
+              : ""
+          }`}
+        >
           <FeatureButtons
             type={type}
             btn1Func={btn1}

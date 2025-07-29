@@ -8,9 +8,9 @@ import Loader from "../components/loader/loader";
 
 function OrderDetailsPage() {
   const searchParams = useSearchParams();
-  const id = searchParams.get('id');
-  const [orderDetails, setOrderDetails] = useState([])
-  const [products, setProducts] = useState([])
+  const id = searchParams.get("id");
+  const [orderDetails, setOrderDetails] = useState([]);
+  const [products, setProducts] = useState([]);
 
   // const OrderDetails = async () => {
   //     const data = await getOrderDetails(id)
@@ -30,8 +30,7 @@ function OrderDetailsPage() {
     };
 
     fetchOrderDetails();
-  }, [id]); 
-
+  }, [id]);
 
   if (!orderDetails) return <div className="p-6">Loading...</div>;
 
@@ -125,10 +124,11 @@ function OrderDetailsPage() {
 
           <div className="bg-white p-4 rounded border border-gray text-black">
             <h5 className="font-bold">Shipping Address</h5>
-            <p className="mt-3 text-sm">{orderDetails?.address}</p>
+            <p className="mt-3 text-sm">
+              {orderDetails?.address}, {orderDetails?.address1 || ''}
+            </p>
             <p className="mt-1 text-sm">
-              {orderDetails?.city}, {" "}
-              {orderDetails?.pincode}
+              {orderDetails?.city}, {orderDetails?.pincode}
             </p>
             <p className="mt-1 text-sm font-bold">Payment Method:</p>
             <p className="mt-1 text-sm">{orderDetails?.payment_type}</p>
