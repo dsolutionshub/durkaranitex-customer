@@ -49,27 +49,6 @@ function Product() {
     setOpenFilter(false);
   };
 
-  // const productDetails = async (filter = null, min = 0, max = 0) => {
-  //   loader(true);
-  //   try {
-  //     let { products, total_products } = await getProductList(
-  //       currentPage,
-  //       filter,
-  //       selectedCategories,
-  //       priceRange.min !== 0 ? priceRange.min : undefined,
-  //       priceRange.max !== 0 ? priceRange.max : undefined
-  //     );
-  //     setProductList(products || []);
-  //     setSortedProducts(products || []);
-  //     const totalPages = Math.ceil(total_products / itemsPerPage);
-  //     setTotalPage(totalPages);
-  //   } catch (error) {
-  //     getErrorMessage(error);
-  //   } finally {
-  //     loader(false);
-  //   }
-  // };
-
   const productDetails = useCallback(
     async (filter = null, min = 0, max = 0) => {
       loader(true);

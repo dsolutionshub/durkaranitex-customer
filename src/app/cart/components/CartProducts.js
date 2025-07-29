@@ -88,10 +88,10 @@ const CartProducts = ({
 
               {/* Quantity Buttons */}
               <div
-                className={`d-flex align-items-center justify-content-evenly bg-gray-100 w-[7rem] h-[2.5rem] border${
+                className={`d-flex align-items-center justify-content-evenly  w-[7rem] h-[2.5rem] border ${
                   parseFloat(item?.totalQuantity) <= 0
-                    ? "opacity-40 pointer-events-none text-gray-400"
-                    : "text-black"
+                    ? "bg-gray-50 pointer-events-none text-gray-400"
+                    : "bg-gray-200 text-black"
                 }`}
               >
                 <button
