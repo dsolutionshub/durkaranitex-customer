@@ -123,7 +123,7 @@ function FilterComponent({
               }}
             />
           ) : (
-            <p>All products have the same price.</p>
+            <p className="text-black">All products have the same price.</p>
           )}
         </div>
         <div className="mt-4 text-sm text-gray-700">
