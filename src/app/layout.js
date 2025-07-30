@@ -24,6 +24,8 @@ export const metadata = {
   icons: {
     icon: "/dhurgaraniFavicon.png",
   },
+  description: 'Shop a wide range of Silk Sarees, Cottonn Sarees with different type of varieties which made in Elampillai Salem, Also provided in best prices both Wholesale and Retail',
+  keywords: ['salem sarees', 'perumagoundampatti, Salem', 'elampillai sarees'],
 };
 
 export default function RootLayout({ children }) {
