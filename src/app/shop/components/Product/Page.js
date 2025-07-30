@@ -23,6 +23,20 @@ import {
   modifyWishlist,
 } from "@/app/api/services/authService";
 
+function useDebounce(value, delay = 1000) {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => clearTimeout(handler);
+  }, [value, delay]);
+
+  return debouncedValue;
+}
+
 function Product() {
   const itemsPerPage = 16;
   const router = useRouter();
@@ -37,12 +51,14 @@ function Product() {
   const [sortOption, setSortOption] = useState("Sort by All");
   const [sortedProducts, setSortedProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchProduct, setSearchProduct] = useState("");
   const [productList, setProductList] = useState(null);
   const [categoryList, setCategoryList] = useState([]);
   const [openFilter, setOpenFilter] = useState(false);
   const [totalPage, setTotalPage] = useState(0);
   const [cartItems, setCartItems] = useState([]);
+  const [search, setSearch] = useState("");
+
+  const debouncedSearch = useDebounce(search, 1000);
 
   const handlePriceChange = (range) => {
     setPriceRange(range);
@@ -58,7 +74,8 @@ function Product() {
           filter,
           selectedCategories,
           priceRange.min !== 0 ? priceRange.min : null,
-          priceRange.max !== 0 ? priceRange.max : null
+          priceRange.max !== 0 ? priceRange.max : null,
+          debouncedSearch
         );
         setProductList(products || []);
         setSortedProducts(products || []);
@@ -70,7 +87,7 @@ function Product() {
         loader(false);
       }
     },
-    [currentPage, selectedCategories, priceRange]
+    [currentPage, selectedCategories, priceRange, debouncedSearch]
   );
 
   const categoryDetails = async () => {
@@ -85,21 +102,13 @@ function Product() {
     }
   };
 
-  const handleSearch = (value) => {
-    setSearchProduct(value);
-    const data = sortedProducts.filter((item) =>
-      (item.title ?? "").toLowerCase().includes(value.toLowerCase())
-    );
-    setProductList(data);
-  };
-
   const handleOpenFilter = () => {
     setOpenFilter((prev) => !prev);
   };
 
   useEffect(() => {
     productDetails();
-  }, [productDetails]);
+  }, [debouncedSearch, productDetails]);
 
   useEffect(() => {
     categoryDetails();
@@ -107,7 +116,7 @@ function Product() {
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchProduct, selectedCategories, priceRange]);
+  }, [selectedCategories, priceRange]);
 
   useEffect(() => {
     switch (sortOption) {
@@ -225,8 +234,8 @@ function Product() {
                         type="text"
                         className="form-control"
                         placeholder="Search"
-                        value={searchProduct}
-                        onChange={(e) => handleSearch(e.target.value)}
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
                       />
                       <span className="input-group-text">
                         <FaSearch />

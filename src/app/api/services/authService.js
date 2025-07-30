@@ -88,7 +88,7 @@ export async function getHome() {
 }
 
 // Product
-export async function getProductList(page, filter, category, min, max) {
+export async function getProductList(page, filter, category, min, max, search) {
   const params = new URLSearchParams();
 
   if (page) params.append("page", page);
@@ -96,6 +96,7 @@ export async function getProductList(page, filter, category, min, max) {
   if (category) params.append("category", category);
   if (min) params.append("price[min]", min);
   if (max) params.append("price[max]", max);
+  if (search) params.append("search", search);
 
   const url = `${PRODUCT_LIST}?${params.toString()}`;
 
@@ -220,7 +221,6 @@ export async function payment(payload) {
   const response = await apiRequest(HANDLE_PAYMENT, "POST", payload);
   return response;
 }
-
 
 //Order Details
 export async function getOrderList() {

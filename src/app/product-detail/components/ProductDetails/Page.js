@@ -62,7 +62,7 @@ const ProductDetails = () => {
 
   useEffect(() => {
     handleGetProductDetails();
-  }, []);
+  }, [id]);
 
   const increaseCount = async (id, currentQuantity) => {
     if (currentQuantity >= totalQuantities) {
