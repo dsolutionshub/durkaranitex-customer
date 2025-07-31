@@ -22,7 +22,6 @@ import "swiper/css/navigation";
 
 const FeaturedCard = ({ products, fetchData }) => {
   const router = useRouter();
-  const [quantities, setQuantities] = useState([])
   const [wishlistMap, setWishlistMap] = useState(() =>
     products.reduce((acc, item) => {
       acc[item.id] = item.wishList;
@@ -60,7 +59,11 @@ const FeaturedCard = ({ products, fetchData }) => {
   const addToCart = async (id) => {
     loader(true);
     try {
-      const data = await modifyCart({ product_id: id, quantity: 1 });
+      const data = await modifyCart({
+        product_id: id,
+        quantity: 1,
+        type: "list",
+      });
       toast.success(data?.message);
       handleGetCartDetail();
     } catch (error) {
@@ -72,7 +75,11 @@ const FeaturedCard = ({ products, fetchData }) => {
         return;
       }
       const MSG = getErrorMessage(error);
-      toast.error(MSG);
+      if (MSG.startsWith("Only")) {
+        toast.error(`Max quantity reached. ${MSG}`);
+      } else {
+        toast.error(MSG);
+      }
     } finally {
       loader(false);
     }
@@ -118,7 +125,7 @@ const FeaturedCard = ({ products, fetchData }) => {
           className="product-card featured-swiper"
         >
           {products
-            ?.filter(item => item?.is_published === "1")
+            ?.filter((item) => item?.is_published === "1")
             ?.map((item, i) => (
               <SwiperSlide key={i} className="h-full">
                 <ProductCard
@@ -137,7 +144,6 @@ const FeaturedCard = ({ products, fetchData }) => {
                 />
               </SwiperSlide>
             ))}
-
         </Swiper>
         <div className="text-center mt-10">
           <button

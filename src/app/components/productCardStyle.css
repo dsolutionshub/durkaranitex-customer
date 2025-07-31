@@ -118,6 +118,11 @@
   border-radius: 1.5rem;
 }
 
+.feature-product-btn-mbl:hover {
+  background-color: var(--bs-primary);
+  color: white;
+}
+
 .wishlist-active-mbl {
   background-color: var(--primary-main) !important;
   color: white !important;

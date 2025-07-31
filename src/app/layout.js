@@ -20,12 +20,18 @@ const mukta = Mukta({
 });
 
 export const metadata = {
-  title: "Dhurgarani Tex",
-  icons: {
-    icon: "/dhurgaraniFavicon.png",
+  title: {
+    default: "Dhurgarani Tex",
+    template: "%s | Dhurgarani Tex",
   },
-  description: "Shop a wide range of Silk Sarees, Cottonn Sarees with different type of varieties which made in Elampillai Salem, Also provided in best prices both Wholesale and Retail",
-  keywords: ["SALEM SAREES", "Perumagkoundampatty sarees", "salem sarees", "ELAMPILLAI Sarees"]
+  description:
+    "Shop a wide range of Silk Sarees, Cottonn Sarees with different type of varieties which made in Elampillai Salem, Also provided in best prices both Wholesale and Retail",
+  keywords: [
+    "SALEM SAREES",
+    "Perumagkoundampatty sarees",
+    "salem sarees",
+    "ELAMPILLAI Sarees",
+  ],
 };
 
 export default function RootLayout({ children }) {

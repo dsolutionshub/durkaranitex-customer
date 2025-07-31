@@ -23,12 +23,13 @@ import {
   modifyWishlist,
 } from "@/app/api/services/authService";
 
-function useDebounce(value, delay = 1000) {
+function useDebounce(value, delay = 1000, setCurrentPage) {
   const [debouncedValue, setDebouncedValue] = useState(value);
 
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedValue(value);
+      setCurrentPage(1);
     }, delay);
 
     return () => clearTimeout(handler);
@@ -55,10 +56,9 @@ function Product() {
   const [categoryList, setCategoryList] = useState([]);
   const [openFilter, setOpenFilter] = useState(false);
   const [totalPage, setTotalPage] = useState(0);
-  const [cartItems, setCartItems] = useState([]);
   const [search, setSearch] = useState("");
 
-  const debouncedSearch = useDebounce(search, 1000);
+  const debouncedSearch = useDebounce(search, 1000, setCurrentPage);
 
   const handlePriceChange = (range) => {
     setPriceRange(range);
@@ -108,7 +108,7 @@ function Product() {
 
   useEffect(() => {
     productDetails();
-  }, [debouncedSearch, productDetails]);
+  }, [productDetails]);
 
   useEffect(() => {
     categoryDetails();
@@ -138,11 +138,6 @@ function Product() {
     }
   }, [sortOption, productDetails]);
 
-  const getCurrentQuantityInCart = (productId) => {
-    const item = cartItems.find((item) => item.productId === productId);
-    return item ? item.quantity : 0;
-  };
-
   const addToWishlist = async (id) => {
     loader(true);
     try {
@@ -164,29 +159,10 @@ function Product() {
     }
   };
 
-  const addToCart = async (id, total_quantity) => {
-    const currentQty = getCurrentQuantityInCart(id);
-
-    if (currentQty >= parseFloat(total_quantity)) {
-      toast.error("Max quantity reached");
-      return;
-    }
-
-    const updatedCart = cartItems.map((item) => {
-      if (item.productId === id) {
-        return { ...item, quantity: item.quantity + 1 };
-      }
-      return item;
-    });
-
-    if (!cartItems.find((item) => item.productId === id)) {
-      updatedCart.push({ productId: id, quantity: 1 });
-    }
-
-    setCartItems(updatedCart);
+  const addToCart = async (id) => {
     loader(true);
     try {
-      await modifyCart({ product_id: id, quantity: 1 });
+      await modifyCart({ product_id: id, quantity: 1, type: "list" });
       toast.success("Added to cart");
       handleGetCartDetail();
     } catch (error) {
@@ -197,7 +173,13 @@ function Product() {
         toast.error(LOGIN_ERROR_MSG);
         return;
       }
-      getErrorMessage(error);
+
+      const MSG = getErrorMessage(error);
+      if (MSG.startsWith("Only")) {
+        toast.error(`Max quantity reached. ${MSG}`);
+      } else {
+        toast.error(MSG);
+      }
     } finally {
       loader(false);
     }
@@ -277,7 +259,7 @@ function Product() {
                           id={item?.id}
                           type="heart"
                           btn1={() => addToWishlist(item.id)}
-                          btn2={() => addToCart(item.id, item?.quantity)}
+                          btn2={() => addToCart(item.id)}
                           title={item?.title}
                           price={item?.price}
                           oldPrice={item?.product_price}

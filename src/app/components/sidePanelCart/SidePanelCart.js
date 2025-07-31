@@ -11,6 +11,7 @@ import { getErrorMessage } from "@/app/utils/helperFn";
 import {
   deleteQuantity,
   handleCheckout,
+  modifyCart,
   removeCart,
   updateQuantity,
 } from "@/app/api/services/authService";
@@ -89,10 +90,14 @@ const SidePanelCart = () => {
       toast.error("You've reached the maximum quantity allowed.");
       return;
     }
-    const newQuantity = currentQuantity + 1;
     loader(true);
     try {
-      await updateQuantity({ product_id: id, quantity: newQuantity });
+      // await updateQuantity({ product_id: id, quantity: currentQuantity + 1 });
+      await modifyCart({
+        product_id: id,
+        quantity: currentQuantity + 1,
+        type: "cart",
+      });
       cardDetails();
     } catch (error) {
       const MSG = getErrorMessage(error);
@@ -104,10 +109,14 @@ const SidePanelCart = () => {
 
   const decreaseCount = async (e, id, currentQuantity) => {
     e.stopPropagation();
-    const newQuantity = currentQuantity - 1;
     loader(true);
     try {
-      await deleteQuantity({ product_id: id, quantity: newQuantity });
+      // await deleteQuantity({ product_id: id, quantity: currentQuantity - 1 });
+      await modifyCart({
+        product_id: id,
+        quantity: currentQuantity - 1,
+        type: "cart",
+      });
       cardDetails();
     } catch (error) {
       const MSG = getErrorMessage(error);

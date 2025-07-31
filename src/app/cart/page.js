@@ -10,11 +10,10 @@ import CustomBreadCrumb from "../components/CustomBreadCrumb";
 import { loader } from "../components/loader/loaderManager";
 
 import {
-  deleteQuantity,
   getCart,
   handleCheckout,
+  modifyCart,
   removeCart,
-  updateQuantity,
 } from "../api/services/authService";
 import { CART_MODEL, LOGIN_MSG } from "../utils/constants";
 import { getErrorMessage } from "../utils/helperFn";
@@ -59,10 +58,13 @@ const Cart = () => {
       toast.error("You've reached the maximum quantity allowed.");
       return;
     }
-    const newQuantity = currentQuantity + 1;
     loader(true);
     try {
-      await updateQuantity({ product_id: id, quantity: newQuantity });
+      await modifyCart({
+        product_id: id,
+        quantity: currentQuantity + 1,
+        type: "cart",
+      });
       fetchCart();
     } catch (error) {
       const MSG = getErrorMessage(error);
@@ -79,7 +81,11 @@ const Cart = () => {
     }
     loader(true);
     try {
-      await deleteQuantity({ product_id: id, quantity: newQuantity });
+      await modifyCart({
+        product_id: id,
+        quantity: currentQuantity - 1,
+        type: "cart",
+      });
       fetchCart();
     } catch (error) {
       const MSG = getErrorMessage(error);

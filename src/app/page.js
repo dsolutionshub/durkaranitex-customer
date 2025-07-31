@@ -36,7 +36,15 @@ export default function Home() {
   }, []);
 
   return (
-    <div>
+    <main>
+      <div className="visually-hidden">
+        <h1>Welcome to Dhurgarani Tex</h1>
+        <p>
+          We offer a premium selection of <strong>Ilampillai sarees</strong>{" "}
+          from Salem, Tamil Nadu. Explore our semi-silk, handloom, and
+          traditional sarees — shipped across India.
+        </p>
+      </div>
       <BannerCarousel images={homeDetails?.sliders} />
       <CollectionsSection />
       {homeDetails?.featured_products?.length > 0 && (
@@ -52,6 +60,6 @@ export default function Home() {
       {homeDetails?.shop_collection?.length > 0 && (
         <CategorySection collection={homeDetails?.shop_collection} />
       )}
-    </div>
+    </main>
   );
 }
