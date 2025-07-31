@@ -52,8 +52,12 @@ const Wishlist = () => {
 
   const addToCart = async (id) => {
     try {
-      const data = await modifyCart({ product_id: id, quantity: 1 });
-      toast.success(data?.message);
+      const data = await modifyCart({
+        product_id: id,
+        quantity: 1,
+        type: "list",
+      });
+      toast.success("Added to cart");
       handleGetCartDetail();
     } catch (error) {
       const status = error?.response?.status;
@@ -63,7 +67,12 @@ const Wishlist = () => {
         toast.error(LOGIN_ERROR_MSG);
         return;
       }
-      getErrorMessage(error);
+      const MSG = getErrorMessage(error);
+      if (MSG.startsWith("Only")) {
+        toast.error(`Max quantity reached. ${MSG}`);
+      } else {
+        toast.error(MSG);
+      }
     } finally {
       loader(false);
     }

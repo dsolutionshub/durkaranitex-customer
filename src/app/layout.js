@@ -32,6 +32,9 @@ export const metadata = {
     "salem sarees",
     "ELAMPILLAI Sarees",
   ],
+  icons: {
+    icon: "/dhurgaraniFavicon.png",
+  },
 };
 
 export default function RootLayout({ children }) {

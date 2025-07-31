@@ -47,9 +47,13 @@ const SimilarProducts = ({ products, handleGetProductDetails }) => {
   const addToCart = async (id) => {
     loader(true);
     try {
-      const data = await modifyCart({ product_id: id, quantity: 1 });
+      await modifyCart({
+        product_id: id,
+        quantity: 1,
+        type: "list",
+      });
+      toast.success("Added to cart");
       handleGetCartDetail();
-      toast.success(data?.message);
     } catch (error) {
       const status = error?.response?.status;
       if (status === 401) {
@@ -58,7 +62,12 @@ const SimilarProducts = ({ products, handleGetProductDetails }) => {
         toast.error(LOGIN_ERROR_MSG);
         return;
       }
-      getErrorMessage(error);
+      const MSG = getErrorMessage(error);
+      if (MSG.startsWith("Only")) {
+        toast.error(`Max quantity reached. ${MSG}`);
+      } else {
+        toast.error(MSG);
+      }
     } finally {
       loader(false);
     }
