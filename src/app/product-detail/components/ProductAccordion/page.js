@@ -22,14 +22,14 @@ export default function ProductAccordion({
   sections,
   openIndex,
   toggleAccordion,
-  handleDecrease,
-  handleIncrease,
   quantity,
   handleGetProductDetails,
   decreaseCount,
+  increaseCount,
 }) {
   const router = useRouter();
-  const { handleGetCartDetail, wishlistDetails } = useCartPanelStore();
+  const { handleGetCartDetail, wishlistDetails, isCartOpen } =
+    useCartPanelStore();
   const [showButtons, setShowButtons] = useState(true);
   const [description, setDescription] = useState([]);
 
@@ -85,7 +85,9 @@ export default function ProductAccordion({
     try {
       await modifyCart({
         product_id: sections?.id,
+        // quantity: sections?.cart?.quantity + 1 || 1,
         quantity: quantity,
+        type: "cart",
       });
       handleGetCartDetail();
       handleGetProductDetails();
@@ -97,7 +99,7 @@ export default function ProductAccordion({
           `product-detail?id=${sections?.id}`
         );
         router.push("/login");
-        toast.error(LOGIN_ERROR_MSG);
+        toast.error("Please log in to add this product to your cart.");
         return;
       }
       const MSG = getErrorMessage(error);
@@ -112,6 +114,7 @@ export default function ProductAccordion({
     try {
       const data = await buyNow({
         product_id: sections?.id,
+        quantity: quantity,
       });
       if (data.status == "success") {
         router.push("/checkout");
@@ -124,7 +127,7 @@ export default function ProductAccordion({
           `product-detail?id=${sections?.id}`
         );
         router.push("/login");
-        toast.error(LOGIN_ERROR_MSG);
+        toast.error("Please log in to purchase this product.");
         return;
       }
       const MSG = getErrorMessage(error);
@@ -149,6 +152,12 @@ export default function ProductAccordion({
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  // useEffect(() => {
+  //   if (!isCartOpen) {
+  //     handleGetProductDetails();
+  //   }
+  // }, [isCartOpen]);
 
   return (
     <div>
@@ -219,7 +228,6 @@ export default function ProductAccordion({
             <button
               className="text-black "
               disabled={quantity === 1}
-              // onClick={handleDecrease}
               onClick={decreaseCount}
             >
               <FaMinus />
@@ -231,12 +239,12 @@ export default function ProductAccordion({
                 fontWeight: "500",
               }}
             >
-              {parseInt(sections?.quantity || 0)}
+              {/* {parseInt(sections?.quantity || 0)} */}
+              {quantity || 1}
             </p>
             <button
               className="text-black"
-              disabled={parseInt(sections?.quantity) <= quantity}
-              onClick={handleIncrease}
+              onClick={() => increaseCount(quantity)}
             >
               <FaPlus />
             </button>

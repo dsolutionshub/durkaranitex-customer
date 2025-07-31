@@ -37,9 +37,6 @@ const ProductDetails = () => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
-  const handleIncrease = () => setQuantity(quantity + 1);
-  const handleDecrease = () => setQuantity(quantity > 1 ? quantity - 1 : 1);
-
   useEffect(() => {
     setOpenIndex(0);
   }, []);
@@ -51,7 +48,7 @@ const ProductDetails = () => {
       const data = await getProductDetails(id);
       setProductInfo(data);
       setTotalQuantities(data?.quantity || 0);
-      setQuantity(data?.product?.cart?.quantity || 1);
+      // setQuantity(data?.product?.cart?.quantity || 1);
     } catch (error) {
       const MSG = getErrorMessage(error);
       toast.error(MSG);
@@ -64,66 +61,16 @@ const ProductDetails = () => {
     handleGetProductDetails();
   }, [id]);
 
-  const increaseCount = async (id, currentQuantity) => {
-    if (currentQuantity >= totalQuantities) {
+  const increaseCount = async (currentQuantity) => {
+    if (currentQuantity === parseInt(productInfo?.product?.quantity)) {
       toast.error("You've reached the maximum quantity allowed.");
       return;
     }
-    // const newQuantity = currentQuantity + 1;
-    loader(true);
-    try {
-      await updateQuantity({
-        product_id: productInfo?.product?.id,
-        quantity: 1,
-      });
-      handleGetProductDetails();
-    } catch (error) {
-      const MSG = getErrorMessage(error);
-      const status = error.response.status;
-      if (status === 401) {
-        sessionStorage.setItem(
-          "postLoginRedirect",
-          `/product-detail?id=${productInfo?.product?.id}`
-        );
-        router.push("/login");
-        toast.error("Login required to change the quantity.");
-        return;
-      }
-      toast.error(MSG);
-    } finally {
-      loader(false);
-    }
+    setQuantity(quantity + 1);
   };
 
-  const decreaseCount = async (id, currentQuantity) => {
-    // const newQuantity = currentQuantity - 1;
-    // if (newQuantity < 1) {
-    //   return;
-    // }
-    loader(true);
-    try {
-      await deleteQuantity({
-        product_id: productInfo?.product?.id,
-        quantity: 1,
-      });
-      handleGetProductDetails();
-    } catch (error) {
-      const MSG = getErrorMessage(error);
-      const status = error.response.status;
-      if (status === 401) {
-        sessionStorage.setItem(
-          "postLoginRedirect",
-          `/product-detail?id=${productInfo?.product?.id}`
-        );
-
-        router.push("/login");
-        toast.error("Login required to change the quantity.");
-        return;
-      }
-      toast.error(MSG);
-    } finally {
-      loader(false);
-    }
+  const decreaseCount = async () => {
+    setQuantity(quantity > 1 ? quantity - 1 : 1);
   };
 
   return (
@@ -150,12 +97,10 @@ const ProductDetails = () => {
             sections={productInfo?.product}
             openIndex={openIndex}
             toggleAccordion={toggleAccordion}
-            handleDecrease={handleDecrease}
-            // handleIncrease={handleIncrease}
-            handleIncrease={increaseCount}
+            increaseCount={increaseCount}
+            decreaseCount={decreaseCount}
             quantity={quantity}
             handleGetProductDetails={handleGetProductDetails}
-            decreaseCount={decreaseCount}
           />
         </div>
       </div>
