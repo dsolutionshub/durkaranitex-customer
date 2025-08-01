@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
 
 import { BannerCarousel } from "./components/HeroSection";
 import CollectionsSection from "./components/CollectionsSection";

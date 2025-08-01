@@ -7,7 +7,7 @@ import Footer from "./components/Footer";
 export default function ClientLayout({ children }) {
   const pathname = usePathname();
 
-  const showLayout = !["/checkout"].includes(pathname);
+  const showLayout = !["/checkout", "/reset-password"].includes(pathname);
 
   return (
     <>

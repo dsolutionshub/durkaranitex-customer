@@ -1,7 +1,8 @@
 "use client";
-import { reset } from "@/app/api/services/authService";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { reset } from "@/app/api/services/authService";
+import { getErrorMessage } from "@/app/utils/helperFn";
 
 export default function ForgotPasswordModal({ onClose }) {
   const [email, setEmail] = useState("");
@@ -14,7 +15,8 @@ export default function ForgotPasswordModal({ onClose }) {
       toast.success(data?.message || "Recovery link sent");
       setSubmitted(true);
     } catch (error) {
-      toast.error("Failed to send link. Check email.");
+      const MSG = getErrorMessage(error);
+      toast.error(MSG);
     }
   };
 
