@@ -78,17 +78,17 @@ const OrderFailure = ({ payment_id }) => {
             <p className="text-sm text-blue-800">
               Need help? Contact our support team at{" "}
               <a
-                href="tel:+1234567890"
-                className="font-semibold underline hover:text-blue-900"
+                href="tel:9489607841"
+                className="font-semibold underline hover:text-amber-900 break-all"
               >
-                +91-1234567890
+                +91 9489607841
               </a>{" "}
               or{" "}
               <a
-                href="mailto:support@yoursareeshop.com"
+                href="mailto:dhuragaraniTex@gmail.com"
                 className="font-semibold underline hover:text-blue-900"
               >
-                support@yoursareeshop.com
+                dhuragaraniTex@gmail.com
               </a>
             </p>
           </div>

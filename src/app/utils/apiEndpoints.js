@@ -8,10 +8,10 @@ export const GOOGLE_LOGIN = "/api/google-signin";
 export const LOGIN_CHECK = "/api/login-check";
 export const LOGIN = "/api/login";
 export const REGISTER = "/api/register";
-export const RESET_LINK = "/api/reset-password-link"
+export const RESET_LINK = "/api/reset-password-link";
 
 //Logout
-export const LOGOUT = "/api/logout"
+export const LOGOUT = "/api/logout";
 
 //Home
 export const GET_HOME = "/api/home";
@@ -44,6 +44,9 @@ export const GET_CHECKOUT_LIST = "/api/checkout/list";
 export const UPDATE_CHECKOUT_ADDRESS = "/api/checkout/address";
 export const HANDLE_PAYMENT = "/api/checkout/pay-now";
 
-//Order 
+//Order
 export const ORDER_DETAIL = "/api/profile/order-detail";
-export const ORDER_LIST = "/api/profile/order-list"
+export const ORDER_LIST = "/api/profile/order-list";
+
+//Reset Password
+export const RESET_PASSWORD = "/api/reset-password";

@@ -18,20 +18,20 @@ const glitterColors = ["#ffd700", "#ffeb3b", "#fff59d", "#f0f4c3"];
 const OrderSuccess = ({ payment_id }) => {
   const router = useRouter();
   const [showPartyBurst, setShowPartyBurst] = useState(false);
-  const [orderId, setOrderId] = useState("")
+  const [orderId, setOrderId] = useState("");
 
   useEffect(() => {
     setShowPartyBurst(true);
-    const id = sessionStorage.getItem('order_id')
-    setOrderId(id)
+    const id = sessionStorage.getItem("order_id");
+    setOrderId(id);
     const timer = setTimeout(() => setShowPartyBurst(false), 4000);
     return () => clearTimeout(timer);
   }, []);
 
-  const handleViewOrders = ()=>{
-    sessionStorage.setItem('tab', 'orders')
-    router.push("/account")
-  }
+  const handleViewOrders = () => {
+    sessionStorage.setItem("tab", "orders");
+    router.push("/account");
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -168,17 +168,17 @@ const OrderSuccess = ({ payment_id }) => {
             <p className="text-xs sm:text-sm text-amber-800">
               Need help with your order? Contact us at{" "}
               <a
-                href="tel:+1234567890"
+                href="tel:9489607841"
                 className="font-semibold underline hover:text-amber-900 break-all"
               >
-                +91-1234567890
+                +91 9489607841
               </a>{" "}
               or{" "}
               <a
-                href="mailto:support@yoursareeshop.com"
+                href="dhuragaraniTex@gmail.com"
                 className="font-semibold underline hover:text-amber-900 break-all"
               >
-                support@yoursareeshop.com
+                dhuragaraniTex@gmail.com
               </a>
             </p>
           </div>

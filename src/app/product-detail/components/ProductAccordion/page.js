@@ -85,9 +85,8 @@ export default function ProductAccordion({
     try {
       await modifyCart({
         product_id: sections?.id,
-        // quantity: sections?.cart?.quantity + 1 || 1,
         quantity: quantity,
-        type: "cart",
+        type: "list",
       });
       handleGetCartDetail();
       handleGetProductDetails();
@@ -152,12 +151,6 @@ export default function ProductAccordion({
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-
-  // useEffect(() => {
-  //   if (!isCartOpen) {
-  //     handleGetProductDetails();
-  //   }
-  // }, [isCartOpen]);
 
   return (
     <div>

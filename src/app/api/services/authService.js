@@ -27,6 +27,7 @@ import {
   REMOVE_CART,
   REMOVE_WISH_LIST,
   RESET_LINK,
+  RESET_PASSWORD,
   UPDATE_CHECKOUT_ADDRESS,
   UPDATE_CUSTOMER_ADDRESS,
   UPDATE_QUANTITY,
@@ -230,5 +231,12 @@ export async function getOrderList() {
 
 export async function getOrderDetails(id) {
   const response = await apiRequest(`${ORDER_DETAIL}/${id}`, "GET");
+  return response;
+}
+
+//Reset Password
+
+export async function resetPassword(payload) {
+  const response = await apiRequest(RESET_PASSWORD, "POST", payload);
   return response;
 }
