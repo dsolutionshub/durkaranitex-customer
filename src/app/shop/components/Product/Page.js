@@ -46,8 +46,8 @@ function Product() {
   const [selectedCategories, setSelectedCategories] = useState(
     id ? [Number(id)] : []
   );
-  const { handleGetCartDetail, wishlistDetails } = useCartPanelStore();
 
+  const { handleGetCartDetail, wishlistDetails } = useCartPanelStore();
   const [priceRange, setPriceRange] = useState({});
   const [sortOption, setSortOption] = useState("Sort by All");
   const [sortedProducts, setSortedProducts] = useState([]);
@@ -57,6 +57,7 @@ function Product() {
   const [openFilter, setOpenFilter] = useState(false);
   const [totalPage, setTotalPage] = useState(0);
   const [search, setSearch] = useState("");
+  const [selectedCat, setSelectedCat] = useState("");
 
   const debouncedSearch = useDebounce(search, 1000, setCurrentPage);
 
@@ -200,17 +201,35 @@ function Product() {
     });
   };
 
+  useEffect(() => {
+    const fallbackTitle = "Our Saree Collection";
+    if (
+      Array.isArray(categoryList?.categories) &&
+      selectedCategories?.length === 1 &&
+      Boolean(id)
+    ) {
+      const matchedCategory = categoryList.categories.find(
+        (cat) => String(cat.id).trim() === String(selectedCategories[0]).trim()
+      );
+
+      setSelectedCat(`${matchedCategory?.name} Collection`);
+    } else {
+      setSelectedCat(fallbackTitle);
+    }
+  }, [categoryList, selectedCategories]);
+
   return (
     <>
       <CustomBreadCrumb model={SHOP_MODEL} />
       <div className="py-0 md:py-4 pt-1">
         <div className="container-fluid">
           <div className="row">
-            <div className="col-xl-9 order-2">
+            {/* <div className="col-xl-9 order-2"> */}
+            <div className="col-12 col-xxl-9 order-2">
               <div className="row p-1">
                 <div className="col-xl-12">
                   <div className="d-flex flex-column flex-xl-row justify-content-between align-items-center">
-                    <h2 className="text-black h5">Our Saree Collection</h2>
+                    <h2 className="text-black h5">{selectedCat}</h2>
                     <div className="input-group mb-3 mb-xl-0 product-detail-search">
                       <input
                         type="text"

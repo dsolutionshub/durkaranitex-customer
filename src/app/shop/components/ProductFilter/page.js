@@ -44,7 +44,7 @@ function FilterComponent({
                   className="form-checkbox h-4 w-4 cursor-pointer"
                   style={{
                     accentColor: "var(--bs-primary)",
-                    marginTop: ".4rem",
+                    marginTop: ".35rem",
                   }}
                 />
                 <label

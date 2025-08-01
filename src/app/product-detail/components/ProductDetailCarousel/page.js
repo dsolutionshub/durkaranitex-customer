@@ -62,34 +62,36 @@ export default function ImageCarousel({
         </Carousel>
       </div>
 
-      <div className="flex md:flex-row md:gap-2 lg:gap-12 mt-4 space-x-2 md:space-x-0 md:space-y-2 mb-3 md:mb-0">
-        {images?.map((img, index) => (
-          <div
-            key={index}
-            className={`overflow-hidden cursor-pointer ${
-              index === selectedIndex ? "border-blue-500" : ""
-            }`}
-            onClick={() => setSelectedIndex(index)}
-          >
-            {img.image ? (
-              <Image
-                src={img.image}
-                alt="Thumbnail"
-                width={80}
-                height={80}
-                className="object-cover border rounded-lg"
-              />
-            ) : (
-              <div
-                className="h-[70px] w-[70px] md:h-[80px] md:w-[80px] flex items-center 
+      {images?.length > 1 && (
+        <div className="flex md:flex-row md:gap-2 lg:gap-12 mt-4 space-x-2 md:space-x-0 md:space-y-2 mb-3 md:mb-0">
+          {images?.map((img, index) => (
+            <div
+              key={index}
+              className={`overflow-hidden cursor-pointer ${
+                index === selectedIndex ? "border-blue-500" : ""
+              }`}
+              onClick={() => setSelectedIndex(index)}
+            >
+              {img.image ? (
+                <Image
+                  src={img.image}
+                  alt="Thumbnail"
+                  width={80}
+                  height={80}
+                  className="object-cover border rounded-lg"
+                />
+              ) : (
+                <div
+                  className="h-[70px] w-[70px] md:h-[80px] md:w-[80px] flex items-center 
               justify-center dark-color text-sx bg-gray-200"
-              >
-                No Image
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
+                >
+                  No Image
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
     </>
   );
 }

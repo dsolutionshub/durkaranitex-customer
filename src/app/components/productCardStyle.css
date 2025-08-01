@@ -10,6 +10,9 @@
   overflow: hidden;
   border-radius: 1rem;
   z-index: 0;
+  @media screen and (min-width: 1900px) {
+    height: 33rem;
+  }
 }
 
 .product-img {

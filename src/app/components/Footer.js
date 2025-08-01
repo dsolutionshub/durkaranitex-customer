@@ -15,7 +15,7 @@ const quickLinks = [
   { label: "Contacts", path: "/contact" },
   { label: "Wishlist", path: "/wishlist" },
   { label: "About Us", path: "/about" },
-  { label: "Checkout", path: "/checkout" },
+  // { label: "Checkout", path: "/checkout" },
   { label: "My Cart", path: "/cart" },
 ];
 
@@ -81,7 +81,7 @@ export default function Footer() {
       const { categories } = await getCategoryList();
       const formattedData = categories?.map((category) => ({
         label: category?.name,
-        path: "/shop",
+        path: `/shop?id=${category.id}`,
       }));
       setCategoryList(formattedData || []);
     } catch (error) {
@@ -169,7 +169,9 @@ export default function Footer() {
                   <Link
                     key={id}
                     href={path}
-                    className="w-11 h-11 bg-gradient-to-br from-green-100 to-green-50 rounded-xl flex items-center justify-center hover:from-[var(--primary-main)] hover:to-green-500 group transition-all duration-300 hover:scale-110 shadow-md"
+                    className="w-11 h-11 bg-gradient-to-br from-green-100 to-green-50 rounded-xl flex 
+                    items-center justify-center hover:from-[var(--primary-main)] hover:to-green-500 group transition-all 
+                    duration-300 hover:scale-110 shadow-md"
                   >
                     <Icon className="w-5 h-5 primary-color group-hover:text-white" />
                   </Link>

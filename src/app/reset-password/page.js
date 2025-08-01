@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { loader } from "../components/loader/loaderManager";
 import { resetPassword } from "../api/services/authService";
@@ -7,8 +7,10 @@ import { getErrorMessage } from "../utils/helperFn";
 import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Image from "next/image";
+import Loader from "../components/loader/loader";
+import NotFound from "../not-found";
 
-export default function ChangePassword() {
+function ChangePassword() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -60,6 +62,10 @@ export default function ChangePassword() {
       [fieldName]: !prev[fieldName],
     }));
   };
+
+  if (!token) {
+    return <NotFound />;
+  }
 
   return (
     <div className="flex items-center justify-center dark:bg-gray-50 p-4 min-h-screen">
@@ -179,5 +185,13 @@ export default function ChangePassword() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ResetPassword() {
+  return (
+    <Suspense fallback={<Loader />}>
+      <ChangePassword />
+    </Suspense>
   );
 }

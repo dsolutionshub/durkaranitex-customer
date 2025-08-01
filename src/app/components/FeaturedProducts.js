@@ -132,6 +132,7 @@ const FeaturedCard = ({ products, fetchData }) => {
                   id={item?.id}
                   type="heart"
                   title={item.title}
+                  oldPrice={item?.product_price}
                   price={item.price}
                   image={item.images?.[0]?.image}
                   image1={item.images?.[1]?.image}
