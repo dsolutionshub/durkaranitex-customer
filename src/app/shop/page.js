@@ -3,11 +3,11 @@ import Loader from "../components/loader/loader";
 import Product from "./components/Product/Page";
 
 export const metadata = {
-  title: "Shop | Ilampillai sarees",
+  title: "Shop | Ellampillai sarees",
   description:
-    "Premium Ilampillai sarees from Salem, Tamil Nadu. Shop semi-silk, handloom, and traditional sarees online.",
+    "Premium Ellampillai sarees from Salem, Tamil Nadu. Shop semi-silk, handloom, and traditional sarees online.",
   keywords: [
-    "ilampillai sarees",
+    "Ellampillai sarees",
     "salem sarees",
     "semi silk sarees",
     "dhurgarani tex",

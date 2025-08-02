@@ -248,3 +248,10 @@ input[type="checkbox"]:focus {
   outline: none;
   box-shadow: none;
 }
+
+.pagination-btn {
+  padding: 0.5rem 1rem;
+  @media screen and (max-width: 500px) {
+    padding: 0.5rem .3rem;
+  }
+}
