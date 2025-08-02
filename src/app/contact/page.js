@@ -31,7 +31,7 @@ const Contact = () => {
                 <Mail className="w-6 h-6 text-green-600 mr-4 mt-1" />
                 <div>
                   <h3 className="font-semibold text-black mb-1">Email Us</h3>
-                  <p className="text-black text-sm">dhuragaraniTex@gmail.com</p>
+                  <p className="text-black text-sm">dhuragaranitex@gmail.com</p>
                 </div>
               </div>
 
@@ -39,7 +39,7 @@ const Contact = () => {
                 <Phone className="w-6 h-6 text-green-600 mr-4 mt-1" />
                 <div>
                   <h3 className="font-semibold text-black mb-1">Call Us</h3>
-                  <p className="text-black text-sm">+91 9489607841</p>
+                  <p className="text-black text-sm">+91 8838137113</p>
                 </div>
               </div>
 
@@ -97,7 +97,7 @@ const Contact = () => {
                     className="w-full px-4 py-3 border border-gray-300 rounded-md 
              text-black 
              focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                    placeholder="+91 9489607841"
+                    placeholder="+91 8838137113"
                   />
                 </div>
               </div>
@@ -166,7 +166,7 @@ const Contact = () => {
               Order assistance & product queries
             </p>
             <p className="text-green-600 font-medium text-sm">
-              dhuragaraniTex@gmail.com
+              dhuragaranitex@gmail.com
             </p>
           </div>
 
@@ -178,7 +178,7 @@ const Contact = () => {
             <p className="text-black text-sm mb-2">
               Personalized styling advice
             </p>
-            <p className="text-green-600 font-medium text-sm">+91 9489607841</p>
+            <p className="text-green-600 font-medium text-sm">+91 8838137113</p>
           </div>
 
           <div className="text-center p-6 bg-white rounded-lg border shadow-sm">
@@ -188,7 +188,7 @@ const Contact = () => {
               Corporate & wedding inquiries
             </p>
             <p className="text-green-600 font-medium text-sm">
-              dhuragaraniTex@gmail.com
+              dhuragaranitex@gmail.com
             </p>
           </div>
         </div>
