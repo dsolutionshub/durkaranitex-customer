@@ -139,7 +139,7 @@ export default function Footer() {
                   <Phone className="w-5 h-5 primary-color" />
                 </div>
                 <span className="font-medium text-gray-800 ml-3">
-                  9489607841
+                  8838137113
                 </span>
               </div>
 
@@ -148,7 +148,7 @@ export default function Footer() {
                   <Mail className="w-5 h-5 primary-color" />
                 </div>
                 <span className="font-medium text-gray-800 ml-3">
-                  dhuragaraniTex@gmail.com
+                  dhuragaranitex@gmail.com
                 </span>
               </div>
             </div>
