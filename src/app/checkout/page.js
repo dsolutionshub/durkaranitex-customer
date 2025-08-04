@@ -10,6 +10,7 @@ import Loader from "../components/loader/loader";
 import { loader } from "../components/loader/loaderManager";
 
 import {
+  applyCoupon,
   getCheckoutList,
   payment,
   removeCart,
@@ -30,6 +31,8 @@ export default function CheckoutPage() {
   const [checkoutData, setCheckoutData] = useState(null);
   const [selectedPayment, setSelectedPayment] = useState("payNow");
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+  const [couponCode, setCouponCode] = useState("");
+  const [isCouponApplied, setIsCouponApplied] = useState(false);
 
   const handlePayment = async () => {
     if (selectedPayment === "") {
@@ -80,6 +83,9 @@ export default function CheckoutPage() {
           setSelectedPayment("");
         }
       }
+      if (data?.coupon_info?.code) {
+        setIsCouponApplied(true);
+      }
     } catch (error) {
       const MSG = getErrorMessage(error);
       toast.error(MSG);
@@ -108,12 +114,40 @@ export default function CheckoutPage() {
     router.push("/");
   };
 
+  const handleApplyCoupon = async () => {
+    loader(true);
+    try {
+      const data = await applyCoupon({
+        checkout_id: checkoutData?.checkout_id,
+        coupon_code: couponCode,
+      });
+      if (couponCode === "") {
+        setIsCouponApplied(false);
+      } else {
+        toast.success(data.message);
+        setIsCouponApplied(true);
+        setCouponCode("");
+      }
+      handleCheckoutList();
+    } catch (error) {
+      if (error?.status === 422 && error?.response?.data) {
+        toast.error(error?.response?.data?.error?.[0]?.message);
+        return;
+      }
+      const MSG = getErrorMessage(error);
+      toast.error(MSG);
+      setIsCouponApplied(false);
+    } finally {
+      loader(false);
+    }
+  };
+
   useEffect(() => {
     handleCheckoutList();
   }, []);
 
   useEffect(() => {
-    const token = sessionStorage.getItem("accessToken");
+    const token = localStorage.getItem("accessToken");
 
     if (!token || token === "undefined") {
       toast.error(LOGIN_MSG);
@@ -160,6 +194,10 @@ export default function CheckoutPage() {
           handlePayment={handlePayment}
           removeFromCart={removeFromCart}
           selectedPayment={selectedPayment}
+          handleApplyCoupon={handleApplyCoupon}
+          setCouponCode={setCouponCode}
+          couponCode={couponCode}
+          isCouponApplied={isCouponApplied}
         />
       </div>
     </div>

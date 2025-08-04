@@ -9,18 +9,16 @@ import ProductAccordion from "../ProductAccordion/page";
 import SimilarProduct from "../SimilarProduct/page";
 import CustomBreadCrumb from "../../../components/CustomBreadCrumb";
 
-import {
-  deleteQuantity,
-  getProductDetails,
-  updateQuantity,
-} from "../../../api/services/authService";
+import { getProductDetails } from "../../../api/services/authService";
 import { getErrorMessage } from "@/app/utils/helperFn";
 import { loader } from "@/app/components/loader/loaderManager";
+import { useAuthStore } from "@/store/useAuthStore";
 
 const ProductDetails = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const id = searchParams.get("id");
+  const { isLoggedIn } = useAuthStore();
 
   const [productInfo, setProductInfo] = useState([]);
   const [quantity, setQuantity] = useState(1);
@@ -62,6 +60,16 @@ const ProductDetails = () => {
   }, [id]);
 
   const increaseCount = async (currentQuantity) => {
+    if (!isLoggedIn) {
+      toast.error("Please login to change quantity.");
+      sessionStorage.setItem(
+        "postLoginRedirect",
+        `product-detail?id=${productInfo?.product?.id}`
+      );
+      router.push("/login");
+      return;
+    }
+
     if (currentQuantity === parseInt(productInfo?.product?.quantity)) {
       toast.error("You've reached the maximum quantity allowed.");
       return;

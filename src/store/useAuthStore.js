@@ -16,7 +16,7 @@ export const useAuthStore = create(
       },
 
       handleLogout: () => {
-        sessionStorage.removeItem("accessToken");
+        localStorage.removeItem("accessToken");
         sessionStorage.clear();
         const { setIsLoginAuth } = get();
         setIsLoginAuth(false);

@@ -69,7 +69,7 @@ export default function Navbar() {
     cardDetails();
     wishlistDetails();
 
-    const token = sessionStorage.getItem("accessToken");
+    const token = localStorage.getItem("accessToken");
     if (token && token !== "undefined") {
       setIsLoginAuth(true);
     } else {

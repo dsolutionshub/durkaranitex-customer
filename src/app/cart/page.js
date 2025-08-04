@@ -143,7 +143,7 @@ const Cart = () => {
   }, []);
 
   useEffect(() => {
-    const token = sessionStorage.getItem("accessToken");
+    const token = localStorage.getItem("accessToken");
 
     if (!token || token === "undefined") {
       toast.error(LOGIN_MSG);

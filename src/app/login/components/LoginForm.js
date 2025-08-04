@@ -106,7 +106,7 @@ const LoginForm = ({ isLogin, setIsLogin }) => {
         setIsLogin(true);
         toast.success("Account created please login");
       } else {
-        sessionStorage.setItem("accessToken", data?.token);
+        localStorage.setItem("accessToken", data?.token);
         handleSaveUserData(data?.customer || {});
         const redirectPath =
           sessionStorage.getItem("postLoginRedirect") || "/account";

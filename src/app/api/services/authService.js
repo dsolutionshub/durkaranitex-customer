@@ -3,6 +3,7 @@ import { apiRequest } from "./apiClient";
 import {
   ADD_CART,
   ADD_CUSTOMER_ADDRESS,
+  APPLY_COUPON,
   BUY_NOW,
   CATEGORY_LIST,
   DELETE_CUSTOMER_ADDRESS,
@@ -235,8 +236,13 @@ export async function getOrderDetails(id) {
 }
 
 //Reset Password
-
 export async function resetPassword(payload) {
   const response = await apiRequest(RESET_PASSWORD, "POST", payload);
+  return response;
+}
+
+//Coupon
+export async function applyCoupon(payload) {
+  const response = await apiRequest(APPLY_COUPON, "POST", payload);
   return response;
 }

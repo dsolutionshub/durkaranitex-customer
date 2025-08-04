@@ -1,5 +1,6 @@
+import { CircleCheckBig, Tag } from "lucide-react";
 import Image from "next/image";
-import { useEffect } from "react";
+import { IoClose } from "react-icons/io5";
 import { RiDeleteBinLine } from "react-icons/ri";
 
 const OrderSummary = ({
@@ -7,6 +8,10 @@ const OrderSummary = ({
   handlePayment,
   removeFromCart,
   selectedPayment,
+  handleApplyCoupon,
+  setCouponCode,
+  couponCode,
+  isCouponApplied,
 }) => {
   return (
     <div className="space-y-6">
@@ -67,16 +72,57 @@ const OrderSummary = ({
             <span>Subtotal ({checkoutData?.total_products} items)</span>
             <span>₹{checkoutData?.sub_total}</span>
           </div>
-          <div className="flex items-center space-x-2 gap-2">
-            <input
-              type="text"
-              className="flex-grow border rounded-md p-2 bg-white"
-              placeholder="Enter coupon code"
-            />
-            <button className="bg-[var(--primary-dark)] text-white py-2 px-3 rounded ">
-              Apply
-            </button>
-          </div>
+          {isCouponApplied ? (
+            <div className="bg-green-50 border border-green-50 px-3 pt-3 rounded-md">
+              <div className="flex items-start justify-between">
+                <div className="flex items-center gap-2">
+                  <CircleCheckBig size={17} />
+                  <p className="mb-0 primary-color font-bold">
+                    Coupon Applied!
+                    <br />
+                    <span className="font-medium text-green-600">
+                      Code: {couponCode || checkoutData?.coupon_info?.code}
+                    </span>
+                  </p>
+                </div>
+
+                <IoClose
+                  size={20}
+                  className="cursor-pointer"
+                  onClick={handleApplyCoupon}
+                />
+              </div>
+
+              <p className="my-3 bg-green-100 p-2 text-center font-bold">
+                You saved ₹{parseInt(checkoutData?.coupon_discount)}!
+              </p>
+            </div>
+          ) : (
+            <>
+              <p className="flex items-center gap-1 text-black my-2 font-semibold">
+                <Tag size={16} className="text-gray-500" />
+                Have a coupon code?
+              </p>
+
+              <div className="flex items-center space-x-2 gap-2">
+                <input
+                  type="text"
+                  className="flex-grow border rounded-md p-2 bg-white"
+                  placeholder="Enter coupon code"
+                  onChange={(e) => setCouponCode(e.target.value)}
+                />
+                <button
+                  disabled={couponCode === ""}
+                  className={`bg-[var(--primary-dark)] text-white py-2 px-3 rounded ${
+                    couponCode === "" && "opacity-70"
+                  }`}
+                  onClick={handleApplyCoupon}
+                >
+                  Apply
+                </button>
+              </div>
+            </>
+          )}
           <div className="flex justify-between text-black font-medium">
             <span>Shipping Charges</span>
             <span>
@@ -87,6 +133,19 @@ const OrderSummary = ({
                 : checkoutData?.delivery_fee?.normal_delivery}
             </span>
           </div>
+
+          {isCouponApplied && (
+            <div className="flex items-center justify-between mt-3 bg-green-50 p-2">
+              <p className="flex items-center gap-1 text-green-600 mb-0">
+                <Tag size={16} />
+                Coupon Discount
+              </p>
+              <p className="mb-0 primary-color font-bold">
+                - ₹{parseInt(checkoutData?.coupon_discount)}
+              </p>
+            </div>
+          )}
+
           <hr />
           <div className="flex justify-between font-bold text-xl text-black font-semibold">
             <span>Total</span>

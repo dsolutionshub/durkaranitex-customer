@@ -50,3 +50,6 @@ export const ORDER_LIST = "/api/profile/order-list";
 
 //Reset Password
 export const RESET_PASSWORD = "/api/reset-password";
+
+//Coupon
+export const APPLY_COUPON = "/api/checkout/coupon";

@@ -12,7 +12,7 @@ export default function LoginPage() {
   const [showForgotModal, setShowForgotModal] = useState(false);
 
   useEffect(() => {
-    const token = sessionStorage.getItem("accessToken");
+    const token = localStorage.getItem("accessToken");
     if (token && token !== "undefined") {
       router.replace("/");
     }
