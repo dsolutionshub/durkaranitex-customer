@@ -55,7 +55,9 @@ export default function Home() {
       {homeDetails?.new_collection_categories?.length > 0 && (
         <NewCollections data={homeDetails?.new_collection_categories} />
       )}
-      <SaleSection />
+      {homeDetails?.coupons?.length > 0 && (
+        <SaleSection data={homeDetails?.coupons} />
+      )}
       {homeDetails?.shop_collection?.length > 0 && (
         <CategorySection collection={homeDetails?.shop_collection} />
       )}

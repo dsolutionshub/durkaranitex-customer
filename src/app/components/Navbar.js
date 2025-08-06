@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -32,6 +32,7 @@ const navItems = [
 
 export default function Navbar() {
   const router = useRouter();
+  const path = usePathname();
   const { isCartOpen, handleGetCartDetail, cardDetails, wishlistDetails } =
     useCartPanelStore();
 
@@ -42,8 +43,12 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handlePanel = useCallback(() => {
+    if (path === "/cart") {
+      return;
+    }
+
     handleGetCartDetail();
-  }, [isCartOpen, handleGetCartDetail]);
+  }, [isCartOpen, handleGetCartDetail, path]);
 
   const handleNavigateHome = () => {
     router.push("/");
@@ -179,8 +184,9 @@ export default function Navbar() {
       )}
 
       <div
-        className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-50 transform transition-transform duration-300 ${menuOpen ? "translate-x-0" : "-translate-x-full"
-          }`}
+        className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-50 transform transition-transform duration-300 ${
+          menuOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
       >
         <div className="flex items-center justify-between px-4 py-4 border-b">
           <span className="text-lg font-bold text-bg-700 text-gray-500">
@@ -212,8 +218,8 @@ export default function Navbar() {
           <li>
             <div
               onClick={() => {
-                handlePushToPath("/wishlist")
-                setMenuOpen(false)
+                handlePushToPath("/wishlist");
+                setMenuOpen(false);
               }}
               className="flex justify-between items-center py-2 hover:text-blue-500 primary-color"
             >

@@ -2,93 +2,132 @@
 
 import Image from "next/image";
 import toast from "react-hot-toast";
-import { Clock2, Tag } from "lucide-react";
+import { Check, CircleCheckBig, Clock2, Copy, Tag } from "lucide-react";
 import Section from "./Section";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
-const Offers = [
-  {
-    id: 1,
-    imgsrc: "/images/home/aadi Sale.png",
-    title: "Big Sale 1",
-    link: "/",
-  },
-  { id: 2, imgsrc: "/images/big_sale.png", title: "Big Sale 2", link: "/" },
-];
+const convertToLocalDateString = (dateStr) => {
+  const localDate = new Date(dateStr);
 
-const OfferCard = () => {
+  return localDate.toLocaleDateString("en-US", {
+    month: "short",
+    day: "2-digit",
+    year: "numeric",
+  });
+};
+
+const OfferCard = ({ data }) => {
+  const router = useRouter();
+  const [copiedCode, setCopiedCode] = useState(null);
+
+  const handleCopy = (code) => {
+    navigator.clipboard.writeText(code);
+    setCopiedCode(code);
+    toast.success("Code Copied");
+
+    setTimeout(() => {
+      setCopiedCode(null);
+    }, 2000);
+  };
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sale-section-card min-h-50">
-      {Offers.map((offer) => (
-        <section className="py-16 relative overflow-hidden" key={offer.id}>
-          <div className="max-w-3xl mx-auto px-4 relative">
-            <div className="mb-12">
-              <div className="flex flex-row flex-nowrap rounded-xl overflow-hidden shadow">
-                <div className="w-1/2 relative">
-                  <Image
-                    src={offer.imgsrc}
-                    alt={offer.title}
-                    fill
-                    className="object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                </div>
-
-                <div className="w-1/2 p-6 flex flex-col justify-center gap-4">
-                  <h3 className="text-xl font-bold text-black text-left">
-                    Diwali 25
-                  </h3>
-                  <div className="bg-gray-50 p-3 border border-gray-200 rounded-lg flex justify-between items-center">
-                    <div className="flex items-center gap-2 text-gray-500">
-                      <Tag size={20} />
-                      <span>Use code:</span>
-                      <span className="font-mono font-bold text-lg text-gray-900">
-                        FLASH70
-                      </span>
-                    </div>
-                    <button
-                      onClick={() => {
-                        navigator.clipboard.writeText("FLASH70");
-                        toast.success("Code Copied");
-                      }}
-                      className="primary-color font-semibold hover:bg-green-100 p-1 px-2 rounded hover:shadow-md"
-                    >
-                      Copy
-                    </button>
-                  </div>
-
-                  <p className="text-gray-600 text-base mb-0 text-left">
-                    Minimum order: ₹999
-                  </p>
-                  <p
-                    className="text-sm text-orange-600 bg-orange-100 w-32 py-2 font-bold rounded-full 
-                  flex items-center justify-center gap-1"
-                  >
-                    <Clock2 size={20} />
-                    12/25/2024
-                  </p>
-
-                  <button
-                    //  onClick={}
-                    className="bg-[var(--primary-main)] text-white  rounded
-                     px-5 py-2 rounded-md text-center shadow-md"
-                  >
-                    Shop Now →
-                  </button>
-                </div>
-              </div>
-            </div>
+    <div className="flex flex-col md:flex-row items-center justify-center gap-5 mb-5">
+      {data?.map((offer) => (
+        <div
+          key={offer.name}
+          className="flex flex-col rounded-xl overflow-hidden shadow min-w-80 lg:min-w-99"
+        >
+          <div className="w-full relative h-55">
+            <Image
+              src={offer?.image}
+              alt={offer?.name}
+              fill
+              className="object-cover transition-transform duration-300 group-hover:scale-105"
+            />
           </div>
-        </section>
+
+          <div className="w-full p-4 flex flex-col justify-center gap-2">
+            <div className="flex items-center justify-between mb-0">
+              <h4
+                className="text-xl font-bold text-black mb-0"
+                style={{
+                  fontWeight: "600",
+                }}
+              >
+                {offer?.name}
+              </h4>
+              <p className="mb-0 px-3 py-1 bg-green-100 primary-color rounded-full text-sm font-normal">
+                {offer?.type === "fixed"
+                  ? `₹${parseInt(offer.value)}`
+                  : `${parseInt(offer.value)}%`}{" "}
+                Off
+              </p>
+            </div>
+
+            <p className="text-left text-gray-600 text-md font-normal mb-0">
+              Get{" "}
+              {offer?.type === "fixed"
+                ? `₹${parseInt(offer.value)}`
+                : `${parseInt(offer.value)}%`}{" "}
+              Off for {offer?.name}
+            </p>
+
+            <p className="text-left text-gray-600 text-md font-normal flex  gap-1 mb-0">
+              <Clock2 size={20} className="mt-1" />
+              Expires {convertToLocalDateString(offer?.expires_at)}
+            </p>
+
+            <p className="text-left text-gray-600 text-md font-normal flex  gap-1 mb-0">
+              <Tag size={20} className="mt-1" />
+              Min. order ₹{parseInt(offer?.min_amount)}
+            </p>
+
+            <p className="text-left text-gray-600 text-md font-normal flex  gap-1 mb-0">
+              <CircleCheckBig size={20} className="mt-1" /> Applicable for all
+              products
+            </p>
+
+            <div className=" flex items-center font-normal mb-3 border bg-gray-50 rounded p-3 justify-between">
+              <p className="text-black mb-0">Code </p>
+              <span className="bg-gray-100 px-2 py-1 mx-2 text-black">
+                {offer?.code}
+              </span>
+
+              <button
+                onClick={() => handleCopy(offer?.code)}
+                className="text-md font-normal text-black flex items-center gap-1 w-6"
+              >
+                {copiedCode === offer?.code ? (
+                  <Check
+                    className="primary-color bg-green-100 p-1 rounded-md"
+                    size={27}
+                  />
+                ) : (
+                  <Copy size={18} />
+                )}
+              </button>
+            </div>
+
+            <button
+              className="bg-[var(--primary-main)] text-white px-5 py-2 rounded-md text-center shadow-md"
+              onClick={() => router.push("/shop")}
+            >
+              Shop Now
+            </button>
+          </div>
+        </div>
       ))}
     </div>
   );
 };
 
-const SaleSection = () => {
+const SaleSection = ({ data }) => {
   return (
     <Section
       title={"Special Offers"}
       desc={"Exclusive deals and discounts for our valued customers"}
-      section={<OfferCard />}
+      section={<OfferCard data={data} />}
     />
   );
 };

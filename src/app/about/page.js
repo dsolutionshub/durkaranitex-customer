@@ -111,7 +111,7 @@ const About = () => {
             <div>
               <p className="text-black leading-relaxed mb-4">
                 Founded in 1998 by textile enthusiast Sathish Kumar, our saree
-                collection began as a small boutique in Mumbai&apos;s bustling
+                collection began as a small boutique in Salem&apos;s bustling
                 textile district. What started as a passion for preserving
                 traditional Indian weaving techniques has grown into one of
                 India&apos;s most trusted saree destinations.

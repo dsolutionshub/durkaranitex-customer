@@ -347,7 +347,7 @@ const TermsAndConditions = () => {
                 These terms shall be governed by and construed in accordance
                 with the laws of India. Any disputes arising under these terms
                 shall be subject to the exclusive jurisdiction of the courts in
-                Mumbai, Maharashtra.
+                Salem, Tamil Nadu.
               </p>
             </div>
           </section>
@@ -364,11 +364,11 @@ const TermsAndConditions = () => {
               <div className="grid md:grid-cols-2 gap-1">
                 <div>
                   <p className="font-semibold text-gray-800">Email:</p>
-                  <p className="text-pink-600">legal@sareestore.com</p>
+                  <p className="text-pink-600">dhuragaranitex@gmail.com</p>
                 </div>
                 <div>
                   <p className="font-semibold text-gray-800">Phone:</p>
-                  <p className="text-pink-600">+91 98765 43210</p>
+                  <p className="text-pink-600">+91 8838137113</p>
                 </div>
               </div>
             </div>

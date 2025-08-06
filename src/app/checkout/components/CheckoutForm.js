@@ -161,7 +161,7 @@ export default function CheckoutForm({
                 Pay Later (Cash on Delivery)
               </p>
               <p className="text-gray-500 m-0">
-                ⚠️ COD available only for orders ≤ ₹1500 (incl. shipping)
+                ⚠️ COD available only for orders ≤ 5000 (incl. shipping)
               </p>
             </div>
           </div>

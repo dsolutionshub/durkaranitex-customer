@@ -76,7 +76,7 @@ const OrderSummary = ({
             <div className="bg-green-50 border border-green-50 px-3 pt-3 rounded-md">
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-2">
-                  <CircleCheckBig size={17} />
+                  <CircleCheckBig size={17} className="primary-color" />
                   <p className="mb-0 primary-color font-bold">
                     Coupon Applied!
                     <br />
@@ -88,12 +88,12 @@ const OrderSummary = ({
 
                 <IoClose
                   size={20}
-                  className="cursor-pointer"
+                  className="cursor-pointer text-gray-500"
                   onClick={handleApplyCoupon}
                 />
               </div>
 
-              <p className="my-3 bg-green-100 p-2 text-center font-bold">
+              <p className="my-3 bg-green-100 p-2 text-center font-bold primary-color">
                 You saved ₹{parseInt(checkoutData?.coupon_discount)}!
               </p>
             </div>
@@ -107,7 +107,7 @@ const OrderSummary = ({
               <div className="flex items-center space-x-2 gap-2">
                 <input
                   type="text"
-                  className="flex-grow border rounded-md p-2 bg-white"
+                  className="flex-grow border rounded-md p-2 bg-white text-black"
                   placeholder="Enter coupon code"
                   onChange={(e) => setCouponCode(e.target.value)}
                 />

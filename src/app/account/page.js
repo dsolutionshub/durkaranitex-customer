@@ -127,8 +127,8 @@ export default function AccountPage() {
 
         <div className="flex flex-col md:flex-row gap-6">
           {/* Side Menu */}
-          <div className="md:w-1/4 w-full">
-            <div className="bg-white/70 backdrop-blur-md rounded-2xl shadow-xl border border-white/20 p-6 h-full">
+          <div className="md:w-1/4 w-full d-none d-md-block">
+            <div className="bg-white/70 backdrop-blur-md rounded-2xl shadow-xl border border-white/20 p-6 account-tab h-full">
               <div className="flex flex-wrap md:flex-col gap-3">
                 {tabs.map(({ key, label, Icon }) => {
                   const isActive = selectedTab === key;
@@ -155,7 +155,7 @@ export default function AccountPage() {
                         }`}
                       >
                         <Icon
-                          className={`w-5 h-5 ${
+                          className={`w-4 h-4 sm:w-5 sm:h-5 ${
                             isActive
                               ? "text-white"
                               : "text-gray-600 group-hover:text-blue-600"
@@ -167,6 +167,61 @@ export default function AccountPage() {
                       {isActive && (
                         <div className="absolute right-[6px]">
                           <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          <div className="md:w-1/4 w-full d-md-none">
+            <div className="bg-white/70 backdrop-blur-md rounded-2xl shadow-xl border border-white/20 p-6 max-[640px]:p-3 h-full">
+              <div className="flex flex-wrap md:flex-col gap-3 max-[640px]:gap-1.5">
+                {tabs.map(({ key, label, Icon }) => {
+                  const isActive = selectedTab === key;
+                  return (
+                    <div
+                      key={key}
+                      className={`group relative flex items-center gap-2 max-[640px]:gap-1 
+              tab-item 
+              rounded-xl max-[640px]:rounded-md 
+              cursor-pointer transition-all duration-300 transform hover:scale-105 
+              ${
+                isActive
+                  ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-lg shadow-blue-500/25"
+                  : "text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:text-blue-700"
+              }`}
+                      onClick={() => {
+                        setSelectedTab(key);
+                        if (key === "logout") {
+                          handleLoggedOut();
+                        }
+                      }}
+                    >
+                      <div
+                        className={`p-1 max-[640px]:p-0.5 rounded-lg transition-colors ${
+                          isActive
+                            ? "bg-white/20"
+                            : "bg-gray-100 group-hover:bg-blue-100"
+                        }`}
+                      >
+                        <Icon
+                          className={`w-5 h-5 max-[640px]:w-4 max-[640px]:h-4 ${
+                            isActive
+                              ? "text-white"
+                              : "text-gray-600 group-hover:text-blue-600"
+                          }`}
+                        />
+                      </div>
+                      <span className="font-medium text-sm">
+                        {label}
+                      </span>
+
+                      {isActive && (
+                        <div className="absolute right-[6px] max-[640px]:right-[4px]">
+                          <div className="w-2 h-2 max-[640px]:w-1.5 max-[640px]:h-1.5 bg-white rounded-full animate-pulse"></div>
                         </div>
                       )}
                     </div>

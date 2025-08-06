@@ -255,3 +255,15 @@ input[type="checkbox"]:focus {
     padding: 0.5rem 0.3rem;
   }
 }
+
+@media (max-width: 376px) {
+  .tab-item {
+    padding: 1rem 1.4rem 1rem 1rem;
+  }
+}
+
+@media (min-width: 377px) and (max-width: 765px) {
+  .tab-item {
+    padding: 1rem 2rem 1rem 1rem;
+  }
+}

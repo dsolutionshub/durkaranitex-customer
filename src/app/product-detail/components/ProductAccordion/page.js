@@ -142,7 +142,7 @@ export default function ProductAccordion({
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrolledPast100vh = window.scrollY > window.innerHeight;
+      const scrolledPast100vh = window.scrollY > window.innerHeight *2;
       setShowButtons(!scrolledPast100vh);
     };
 
@@ -232,7 +232,6 @@ export default function ProductAccordion({
                 fontWeight: "500",
               }}
             >
-              {/* {parseInt(sections?.quantity || 0)} */}
               {quantity || 1}
             </p>
             <button
