@@ -59,8 +59,9 @@ const CollectionsBox = () => {
       </div>
 
       {/* Tablet and desktop view */}
+
       <div
-        className="hidden lg:grid grid-cols-3 grid-rows-2 gap-4"
+        className="hidden lg:grid grid-cols-3 grid-rows-2 gap-4 max-w-screen-2xl mx-auto"
         style={{ height: "75vh" }}
       >
         <div
@@ -70,25 +71,25 @@ const CollectionsBox = () => {
           <Image
             src={collections[0].imgSrc}
             alt={collections[0].title}
-            imageClassName="w-full h-150 object-cover"
+            imageClassName="w-full h-full object-cover"
           />
-          <div className="absolute bottom-0 left-0 right-0 bg-black-alpha-60 p-4">
-            <h3 className="text-white text-xl font-semibold">
+          <div className="absolute bottom-0 left-0 right-0 p-4">
+            <h3 className="text-white text-lg font-semibold">
               {collections[0].title}
             </h3>
           </div>
         </div>
 
         <div
-          className="relative overflow-hidden rounded-lg shadow-2 "
-          // onClick={() => router.push(`/shop?id=${collections[1].id}`)}
+          className="relative overflow-hidden rounded-lg shadow-2 cursor-pointer"
+          onClick={() => router.push(`/shop`)}
         >
           <Image
             src={collections[1].imgSrc}
             alt={collections[1].title}
-            imageClassName="w-full h-120 object-cover"
+            imageClassName="w-full aspect-[5/6] object-cover"
           />
-          <div className="absolute bottom-0 left-0 right-0 bg-black-alpha-60 p-4">
+          <div className="absolute bottom-0 left-0 right-0 p-4">
             <h3 className="text-white text-lg font-semibold">
               {collections[1].title}
             </h3>
@@ -102,12 +103,9 @@ const CollectionsBox = () => {
           <Image
             src={collections[3].imgSrc}
             alt={collections[3].title}
-            imageClassName="w-full h-150 object-cover"
+            imageClassName="w-full h-full object-cover"
           />
-          <div
-            className="absolute bottom-0 left-0 right-0 bg-black-alpha-60 p-4"
-            onClick={() => router.push(`/shop?id=${collections[3].id}`)}
-          >
+          <div className="absolute bottom-0 left-0 right-0 p-4">
             <h3 className="text-white text-xl font-semibold">
               {collections[3].title}
             </h3>
@@ -115,15 +113,15 @@ const CollectionsBox = () => {
         </div>
 
         <div
-          className="relative overflow-hidden rounded-lg shadow-2 "
-          // onClick={() => router.push(`/shop?id=${collections[0].id}`)}
+          className="relative overflow-hidden rounded-lg shadow-2 cursor-pointer"
+          onClick={() => router.push(`/shop`)}
         >
           <Image
             src={collections[2].imgSrc}
             alt={collections[2].title}
-            imageClassName="w-full h-120 object-cover"
+            imageClassName="w-full aspect-[5/6] object-cover"
           />
-          <div className="absolute bottom-0 left-0 right-0 bg-black-alpha-60 p-4">
+          <div className="absolute bottom-0 left-0 right-0 p-4">
             <h3 className="text-white text-lg font-semibold">
               {collections[2].title}
             </h3>

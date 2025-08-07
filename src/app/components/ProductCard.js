@@ -52,7 +52,7 @@ export const FeatureButtons = ({
 
 const ProductInfo = ({ title, price, oldPrice }) => (
   <div className="py-3 flex flex-col self-start">
-    <h5 className="text-black font-semibold mb-0 self-start">{title}</h5>
+    <h5 className="text-black font-semibold mb-0 self-start text-left">{title}</h5>
     <div className="self-start">
       <span className="primary-color fw-bold">Rs. {price}</span>{" "}
       {oldPrice && (

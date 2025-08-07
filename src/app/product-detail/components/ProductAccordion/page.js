@@ -142,7 +142,7 @@ export default function ProductAccordion({
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrolledPast100vh = window.scrollY > window.innerHeight *2;
+      const scrolledPast100vh = window.scrollY > window.innerHeight * 2;
       setShowButtons(!scrolledPast100vh);
     };
 
@@ -155,8 +155,13 @@ export default function ProductAccordion({
   return (
     <div>
       <h2 className="text-2xl font-bold text-black">{sections?.title}</h2>
+      {sections?.sku && (
+        <p className="mb-1 text-black text-sm font-semibold">
+          SKU: {sections?.sku}
+        </p>
+      )}
       <div className="flex justify-between items-center">
-        <div className="text-lg primary-color font-semibold mt-2">
+        <div className="text-lg primary-color font-semibold">
           Rs. {sections?.price}{" "}
           <span className="text-gray-500 line-through text-sm">
             Rs. {sections?.product_price}

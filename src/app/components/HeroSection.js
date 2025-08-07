@@ -8,13 +8,14 @@ export function BannerCarousel({ images }) {
   const router = useRouter();
   const imageTemplate = (item) => {
     return (
-      <div className="w-full" onClick={() => router.push(`/shop?id=${1}`)}>
+      <div className="w-full md:h-110" onClick={() => router.push(`/shop?id=${1}`)}>
         <Image
           height={100}
           width={100}
           src={item?.image}
           alt="Banner"
-          className="w-full object-cover md:h-[60vh] lg:h-[80vh] lg:h-[90vh] cursor-pointer"
+          // className="w-full object-cover md:h-[60vh] lg:h-[80vh] lg:h-[90vh] cursor-pointer"
+          className="w-full object h-full  cursor-pointer"
         />
       </div>
     );

@@ -43,7 +43,7 @@ const OfferCard = ({ data }) => {
               src={offer?.image}
               alt={offer?.name}
               fill
-              className="object-cover transition-transform duration-300 group-hover:scale-105"
+              className="transition-transform duration-300 group-hover:scale-105 w-full h-full"
             />
           </div>
 
