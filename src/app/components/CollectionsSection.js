@@ -59,7 +59,6 @@ const CollectionsBox = () => {
       </div>
 
       {/* Tablet and desktop view */}
-
       <div
         className="hidden lg:grid grid-cols-3 grid-rows-2 gap-4 max-w-screen-2xl mx-auto"
         style={{ height: "75vh" }}

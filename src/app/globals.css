@@ -267,3 +267,9 @@ input[type="checkbox"]:focus {
     padding: 1rem 2rem 1rem 1rem;
   }
 }
+
+.banner-image-card {
+  @media (min-width: 1900px) {
+    height: 70vh;
+  }
+}

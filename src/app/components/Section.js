@@ -1,6 +1,6 @@
 export default function Section({ title, desc, section }) {
   return (
-    <div className="h-full md:p-10">
+    <div className="h-full md:p-9">
       <div className="text-center">
         <h2 className="text-4xl font-bold text-black">{title}</h2>
         {desc && <p className="mx-2 md:mx-0 text-lg text-black mt-2">{desc}</p>}
