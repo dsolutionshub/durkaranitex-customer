@@ -39,12 +39,14 @@ const CollectionsBox = () => {
         {collections.map((item) => (
           <div
             key={item.id}
-            className={`relative overflow-hidden rounded-lg shadow-2 ${
-              item.id === 10 || item.id === 11
-                ? "pointer-events-none"
-                : "cursor-pointer"
-            } `}
-            onClick={() => router.push(`/shop?id=${item.id}`)}
+            className={`relative overflow-hidden rounded-lg shadow-2  `}
+            onClick={() =>
+              router.push(
+                item.id === 10 || item.id === 11
+                  ? "/shop"
+                  : `/shop?id=${item.id}`
+              )
+            }
           >
             <Image
               src={item.imgSrc}

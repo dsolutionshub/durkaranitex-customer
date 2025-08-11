@@ -12,20 +12,10 @@ function OrderDetailsPage() {
   const [orderDetails, setOrderDetails] = useState([]);
   const [products, setProducts] = useState([]);
 
-  // const OrderDetails = async () => {
-  //     const data = await getOrderDetails(id)
-  //     setOrderDetails(data?.cartOrderProduct)
-  //     setProducts(data?.cartOrderProduct?.cart_order_products)
-  // }
-
-  // useEffect(() => {
-  //     OrderDetails()
-  // }, [id]);
-
   useEffect(() => {
     const fetchOrderDetails = async () => {
       const data = await getOrderDetails(id);
-      setOrderDetails(data?.cartOrderProduct);
+      setOrderDetails(data?.cartOrderProduct || []);
       setProducts(data?.cartOrderProduct?.cart_order_products);
     };
 
@@ -39,9 +29,18 @@ function OrderDetailsPage() {
       <h3 className="text-xl text-black font-bold mb-4">Order Details</h3>
 
       <div className="bg-white p-4 rounded border border-gray mb-6">
-        <p className="text-sm text-black font-bold m-0">
+        <p className="text-sm text-black font-bold m-0 mb-2">
           Order ID:{" "}
           <span className="font-light"># {orderDetails?.order_number}</span>
+          <span
+            className="ml-3 text-sm px-3 py-[.1rem] font-semibold rounded-full text-capitalize mb-0"
+            style={{
+              color: "#0b615b",
+              backgroundColor: "#d1f6f3",
+            }}
+          >
+            {orderDetails?.status}
+          </span>
         </p>
       </div>
 
@@ -90,9 +89,12 @@ function OrderDetailsPage() {
                 <span>Subtotal</span>
                 <span>Rs. {orderDetails?.total_amount}</span>
               </div>
-              {/* <div className="flex justify-between text-red-600">
-                                <span>Coupon Code (SAVE10)</span><span>- Rs. {orderDetails?.coupon_discount}</span>
-                            </div> */}
+              <div className="flex justify-between text-red-600">
+                <span>Coupon Code </span>
+                <span>
+                  - Rs. {parseInt(orderDetails?.coupon_discount) || 0}
+                </span>
+              </div>
               <div className="flex justify-between">
                 <span>Shipping</span>
                 <span>Rs. {orderDetails?.delivery_fees}</span>
@@ -125,7 +127,7 @@ function OrderDetailsPage() {
           <div className="bg-white p-4 rounded border border-gray text-black">
             <h5 className="font-bold">Shipping Address</h5>
             <p className="mt-3 text-sm">
-              {orderDetails?.address}, {orderDetails?.address1 || ''}
+              {orderDetails?.address}, {orderDetails?.address1 || ""}
             </p>
             <p className="mt-1 text-sm">
               {orderDetails?.city}, {orderDetails?.pincode}

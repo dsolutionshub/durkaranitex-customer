@@ -57,6 +57,7 @@ export default function CheckoutPage() {
             : selectedPayment === "payNow"
             ? "online"
             : "",
+        coupon_code: checkoutData?.coupon_info?.code || "",
       });
       sessionStorage.setItem("order_id", data?.order_id);
       await loadRazorpayScript();

@@ -157,7 +157,7 @@ export default function ProductAccordion({
     <div>
       <h2 className="text-2xl font-bold text-black">{sections?.title}</h2>
       {sections?.sku && (
-        <p className="mb-1 text-black text-sm font-semibold">
+        <p className="mb-1 text-gray-500 text-sm font-semibold">
           SKU: {sections?.sku}
         </p>
       )}

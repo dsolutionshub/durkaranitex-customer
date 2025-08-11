@@ -6,6 +6,7 @@ import { PrimeReactProvider } from "primereact/api";
 import { Toaster } from "react-hot-toast";
 
 import ClientLayout from "./ClientLayout";
+import { ReactQueryProvider } from "./QueryClientProvider ";
 import Loader from "./components/loader/loader";
 import { TOAST_OPTIONS } from "./utils/constants";
 
@@ -50,22 +51,26 @@ export default function RootLayout({ children }) {
       <body className={mukta.className}>
         <PrimeReactProvider>
           <ClientLayout>
-            <div className="site-wrap">
-              <Link
-                href="https://api.whatsapp.com/send?phone=918838137113&text=Hi%2C%20I'm%20interested%20in%20your%20products"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Image
-                  src={"/images/whatsappImg.png"}
-                  height={100}
-                  width={100}
-                  alt="whatsapp image"
-                  className="whatsapp-image"
-                />
-              </Link>
-              {children}
-            </div>
+            <ReactQueryProvider>
+              {" "}
+              {/* Wrap children with ReactQueryProvider */}
+              <div className="site-wrap">
+                <Link
+                  href="https://api.whatsapp.com/send?phone=918838137113&text=Hi%2C%20I'm%20interested%20in%20your%20products"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Image
+                    src={"/images/whatsappImg.png"}
+                    height={100}
+                    width={100}
+                    alt="whatsapp image"
+                    className="whatsapp-image"
+                  />
+                </Link>
+                {children}
+              </div>
+            </ReactQueryProvider>
             <Loader />
             <Toaster
               position="top-center"
