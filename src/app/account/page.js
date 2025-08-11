@@ -215,9 +215,7 @@ export default function AccountPage() {
                           }`}
                         />
                       </div>
-                      <span className="font-medium text-sm">
-                        {label}
-                      </span>
+                      <span className="font-medium text-sm">{label}</span>
 
                       {isActive && (
                         <div className="absolute right-[6px] max-[640px]:right-[4px]">

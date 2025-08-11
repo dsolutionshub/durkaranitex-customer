@@ -25,7 +25,7 @@ const Cart = () => {
   const { setCartOpen, cardDetails } = useCartPanelStore();
   const [totalCost, setTotalCost] = useState(0);
   const [products, setProducts] = useState([]);
-  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+  // const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const [totalQuantities, setTotalQuantities] = useState(0);
 
   const fetchCart = async () => {
@@ -149,17 +149,18 @@ const Cart = () => {
       toast.error(LOGIN_MSG);
       router.replace("/login");
     } else {
-      setIsCheckingAuth(false);
+      // setIsCheckingAuth(false);
     }
   }, [router]);
 
-  if (isCheckingAuth) {
-    return (
-      <div className="h-[60vh]">
-        <Loader />
-      </div>
-    );
-  }
+  // if (isCheckingAuth === true) {
+  //   return (
+  //     <div className="h-[60vh]">
+  //       <Loader />
+  //     </div>
+  //   );
+  // }
+
   return (
     <>
       <CustomBreadCrumb model={CART_MODEL} title={"Shopping Cart"} />

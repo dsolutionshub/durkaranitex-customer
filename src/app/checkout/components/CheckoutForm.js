@@ -14,17 +14,20 @@ import {
   getSelectAddress,
   updateCheckoutAddress,
 } from "@/app/api/services/authService";
+import CodItemCard from "./CodItemCard";
 
 export default function CheckoutForm({
   checkoutData,
   selectedPayment,
   setSelectedPayment,
   handleCheckoutList,
+  isAnyProductNotCodAvailable,
 }) {
   const [addressList, setAddressList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [addressDetail, setAddressDetail] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
 
   const getAddressList = async () => {
     loader(true);
@@ -139,32 +142,69 @@ export default function CheckoutForm({
             </div>
           </div>
 
-          <div
-            className={`flex items-center border rounded-md px-3 py-2 cursor-pointer hover:bg-gray-100
+          {isAnyProductNotCodAvailable ? (
+            <div
+              className={`flex items-center border rounded-md px-3 py-2 hover:bg-gray-100
+              ${isAnyProductNotCodAvailable ? "bg-gray-100" : ""}`}
+            >
+              <input
+                checked={false}
+                type="radio"
+                name="payment"
+                className={`accent-[var(--primary-main)] mr-3 scale-115 pointer-events-none  ${
+                  isAnyProductNotCodAvailable ? "" : ""
+                }`}
+              />
+              <LiaRupeeSignSolid className="mr-2 text-gray-500" size={25} />
+              <div>
+                <p
+                  className={`font-semibold m-0 text-dark h-5  ${
+                    isAnyProductNotCodAvailable ? " opacity-60" : ""
+                  }`}
+                >
+                  Pay Later (Cash on Delivery)
+                </p>
+                <p
+                  className={`text-blue-500 font-semibold m-0 cursor-pointer text-blue-500 opacity-100  ${
+                    isAnyProductNotCodAvailable ? "" : ""
+                  }`}
+                >
+                  <span className="text-gray-500 font-normal cursor-default">
+                    {" "}
+                    Not available for a few or all items.
+                  </span>
+                  <span onClick={() => setIsOpen(true)}> View items</span>
+                </p>
+              </div>
+            </div>
+          ) : (
+            <div
+              className={`flex items-center border rounded-md px-3 py-2 cursor-pointer hover:bg-gray-100
               ${
                 checkoutData?.delivery_fee?.isCodAvailable === false
                   ? "bg-gray-200 pointer-events-none opacity-60"
                   : ""
               }`}
-            onClick={() => setSelectedPayment("payLater")}
-          >
-            <input
-              type="radio"
-              name="payment"
-              checked={selectedPayment === "payLater"}
-              onChange={() => setSelectedPayment("payLater")}
-              className="accent-[var(--primary-main)] mr-3 scale-115 cursor-pointer"
-            />
-            <LiaRupeeSignSolid className="mr-2 text-gray-500" size={25} />
-            <div>
-              <p className="font-semibold m-0 text-dark h-5">
-                Pay Later (Cash on Delivery)
-              </p>
-              <p className="text-gray-500 m-0">
-                ⚠️ COD available only for orders ≤ 5000 (incl. shipping)
-              </p>
+              onClick={() => setSelectedPayment("payLater")}
+            >
+              <input
+                type="radio"
+                name="payment"
+                checked={selectedPayment === "payLater"}
+                onChange={() => setSelectedPayment("payLater")}
+                className="accent-[var(--primary-main)] mr-3 scale-115 cursor-pointer"
+              />
+              <LiaRupeeSignSolid className="mr-2 text-gray-500" size={25} />
+              <div>
+                <p className="font-semibold m-0 text-dark h-5">
+                  Pay Later (Cash on Delivery)
+                </p>
+                <p className="text-gray-500 m-0">
+                  ⚠️ COD available only for orders ≤ 5000 (incl. shipping)
+                </p>
+              </div>
             </div>
-          </div>
+          )}
 
           {selectedPayment === "payLater" && (
             <div
@@ -189,6 +229,11 @@ export default function CheckoutForm({
         addressDetail={addressDetail}
         handleCheckoutList={handleCheckoutList}
       />{" "}
+      <CodItemCard
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        checkoutData={checkoutData}
+      />
     </div>
   );
 }

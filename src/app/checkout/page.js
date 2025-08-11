@@ -33,6 +33,8 @@ export default function CheckoutPage() {
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const [couponCode, setCouponCode] = useState("");
   const [isCouponApplied, setIsCouponApplied] = useState(false);
+  const [isAnyProductNotCodAvailable, setIsAnyProductNotCodAvailable] =
+    useState(false);
 
   const handlePayment = async () => {
     if (selectedPayment === "") {
@@ -78,6 +80,13 @@ export default function CheckoutPage() {
     try {
       const data = await getCheckoutList();
       setCheckoutData(data || []);
+
+      const products = data?.products_list || [];
+      const hasNonCodProduct = products.some(
+        (item) => item?.product?.is_cod_available === "0"
+      );
+      setIsAnyProductNotCodAvailable(hasNonCodProduct);
+
       if (selectedPayment === "payLater") {
         if (!data?.delivery_fee?.isCodAvailable) {
           setSelectedPayment("");
@@ -188,6 +197,7 @@ export default function CheckoutPage() {
           selectedPayment={selectedPayment}
           setSelectedPayment={setSelectedPayment}
           handleCheckoutList={handleCheckoutList}
+          isAnyProductNotCodAvailable={isAnyProductNotCodAvailable}
         />
         <OrderSummary
           checkoutData={checkoutData}

@@ -12,7 +12,7 @@ const collections = [
   },
   {
     id: 11,
-    title: "Bridal Tissue Slik Sarees",
+    title: "Bridal Tissue Silk Sarees",
     imgSrc: "/images/home/Bridal Tissue.png",
     isLarge: false,
   },

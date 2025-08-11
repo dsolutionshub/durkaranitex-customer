@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { Ban } from "lucide-react";
 import { FaMinus, FaPlus } from "react-icons/fa6";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 
@@ -167,6 +168,7 @@ export default function ProductAccordion({
             Rs. {sections?.product_price}
           </span>
         </div>
+
         <div className="flex gap-3 items-center">
           <button onClick={handleLike} className="fs-5">
             {sections?.wishList ? (
@@ -272,6 +274,13 @@ export default function ProductAccordion({
           </button>
         </div>
       </div>
+      {sections?.is_cod_available === "0" && (
+        <div className=" px-4 py-2 bg-yellow-100 text-yellow-800 text-sm 
+        font-semibold rounded-md w-fit flex items-center gap-2">
+          <Ban size={16} className="text-yellow-800" />
+          <span>Cash on Delivery is not available for this product.</span>
+        </div>
+      )}
     </div>
   );
 }
