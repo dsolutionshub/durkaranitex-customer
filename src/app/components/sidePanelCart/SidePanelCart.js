@@ -7,17 +7,16 @@ import { ShoppingCart } from "lucide-react";
 
 import useCartPanelStore from "@/store/useCartPanelStore";
 import { loader } from "../loader/loaderManager";
-import { getErrorMessage } from "@/app/utils/helperFn";
+import { toastCom } from "../toast/ToastManager";
 import {
-  deleteQuantity,
   handleCheckout,
   modifyCart,
   removeCart,
-  updateQuantity,
 } from "@/app/api/services/authService";
+import { getErrorMessage } from "@/app/utils/helperFn";
+import { LOGIN_ERROR_MSG } from "@/app/utils/constants";
 
 import "./style.css";
-import { LOGIN_ERROR_MSG } from "@/app/utils/constants";
 
 function RenderQuantity({
   decreaseCount,
@@ -87,7 +86,13 @@ const SidePanelCart = () => {
   const increaseCount = async (e, id, currentQuantity, totalQuantities) => {
     e.stopPropagation();
     if (currentQuantity >= totalQuantities) {
-      toast.error("You've reached the maximum quantity allowed.");
+      // toast.error("You've reached the maximum quantity allowed.");
+      toastCom(
+        "You've reached the maximum quantity allowed.",
+        true,
+        "error",
+        2000
+      );
       return;
     }
     loader(true);

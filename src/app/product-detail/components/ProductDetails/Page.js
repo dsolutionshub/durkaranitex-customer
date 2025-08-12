@@ -13,6 +13,7 @@ import { getProductDetails } from "../../../api/services/authService";
 import { getErrorMessage } from "@/app/utils/helperFn";
 import { loader } from "@/app/components/loader/loaderManager";
 import { useAuthStore } from "@/store/useAuthStore";
+import { toastCom } from "@/app/components/toast/ToastManager";
 
 const ProductDetails = () => {
   const searchParams = useSearchParams();
@@ -70,7 +71,13 @@ const ProductDetails = () => {
     }
 
     if (currentQuantity === parseInt(productInfo?.product?.quantity)) {
-      toast.error("You've reached the maximum quantity allowed.");
+      toastCom(
+        "You've reached the maximum quantity allowed.",
+        true,
+        "error",
+        2000
+      );
+
       return;
     }
     setQuantity(quantity + 1);

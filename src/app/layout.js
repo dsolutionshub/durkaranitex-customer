@@ -7,6 +7,7 @@ import { Toaster } from "react-hot-toast";
 
 import ClientLayout from "./ClientLayout";
 import { ReactQueryProvider } from "./QueryClientProvider ";
+import ToastManager from "./components/toast/ToastManager";
 import Loader from "./components/loader/loader";
 import { TOAST_OPTIONS } from "./utils/constants";
 
@@ -52,8 +53,6 @@ export default function RootLayout({ children }) {
         <PrimeReactProvider>
           <ClientLayout>
             <ReactQueryProvider>
-              {" "}
-              {/* Wrap children with ReactQueryProvider */}
               <div className="site-wrap">
                 <Link
                   href="https://api.whatsapp.com/send?phone=918838137113&text=Hi%2C%20I'm%20interested%20in%20your%20products"
@@ -76,7 +75,10 @@ export default function RootLayout({ children }) {
               position="top-center"
               reverseOrder={false}
               toastOptions={TOAST_OPTIONS}
+              pauseOnHover={false}
+              pauseOnFocusLoss={false}
             />
+            <ToastManager />
           </ClientLayout>
         </PrimeReactProvider>
       </body>

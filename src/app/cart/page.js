@@ -8,6 +8,8 @@ import { ShoppingBag } from "lucide-react";
 import CartProducts from "./components/CartProducts";
 import CustomBreadCrumb from "../components/CustomBreadCrumb";
 import { loader } from "../components/loader/loaderManager";
+import Loader from "../components/loader/loader";
+import { toastCom } from "../components/toast/ToastManager";
 
 import {
   getCart,
@@ -18,7 +20,6 @@ import {
 import { CART_MODEL, LOGIN_MSG } from "../utils/constants";
 import { getErrorMessage } from "../utils/helperFn";
 import useCartPanelStore from "@/store/useCartPanelStore";
-import Loader from "../components/loader/loader";
 
 const Cart = () => {
   const router = useRouter();
@@ -55,7 +56,12 @@ const Cart = () => {
 
   const increaseCount = async (id, currentQuantity, totalQuantities) => {
     if (currentQuantity >= totalQuantities) {
-      toast.error("You've reached the maximum quantity allowed.");
+      toastCom(
+        "You've reached the maximum quantity allowed.",
+        true,
+        "error",
+        2000
+      );
       return;
     }
     loader(true);
