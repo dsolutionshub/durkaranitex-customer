@@ -167,7 +167,7 @@ const OrderSummary = ({
 
           {selectedPayment === "payLater" && (
             <span className="mx-15 pt-2 h-10 block text-black">
-              You will pay ₹ {checkoutData?.sub_total} upon delivery
+              You will pay ₹{ isCouponApplied ? checkoutData?.total_full_payment : checkoutData?.sub_total} upon delivery
             </span>
           )}
         </div>

@@ -42,7 +42,7 @@ const CollectionsBox = () => {
             className={`relative overflow-hidden rounded-lg shadow-2  `}
             onClick={() =>
               router.push(
-                item.id === 10 || item.id === 11
+                item.id === 10 || item.id === 11 || item.id === 4
                   ? "/shop"
                   : `/shop?id=${item.id}`
               )
@@ -99,7 +99,7 @@ const CollectionsBox = () => {
 
         <div
           className="row-span-2 relative overflow-hidden rounded-lg shadow-2 cursor-pointer"
-          onClick={() => router.push(`/shop?id=${collections[3].id}`)}
+          onClick={() => router.push(`/shop`)}
         >
           <Image
             src={collections[3].imgSrc}
