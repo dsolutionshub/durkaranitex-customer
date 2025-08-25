@@ -10,7 +10,13 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "./productCardStyle.css";
 
-const ProductCardMobile = ({ type, products, wishBtn, cartBtn }) => {
+const ProductCardMobile = ({
+  type,
+  products,
+  wishBtn,
+  cartBtn,
+  iscategoryAvailable,
+}) => {
   const router = useRouter();
 
   const navigateToProductDetail = (id) => {
@@ -43,11 +49,13 @@ const ProductCardMobile = ({ type, products, wishBtn, cartBtn }) => {
           }}
         >
           {products
-            ?.filter(item => item?.is_published === "1")
+            ?.filter((item) => item?.is_published === "1")
             ?.map((item, i) => (
               <SwiperSlide key={i} className="">
                 <div
-                  className={`flex flex-col items-center relative lg:hidden1 ${parseFloat(item?.quantity) <= 0 ? 'pointer-events-none' : ''}`}
+                  className={`flex flex-col items-center relative lg:hidden1 ${
+                    parseFloat(item?.quantity) <= 0 ? "pointer-events-none" : ""
+                  }`}
                   onClick={() => navigateToProductDetail(item?.id)}
                 >
                   {Math.round(item?.discount) !== 0 && (
@@ -67,36 +75,41 @@ const ProductCardMobile = ({ type, products, wishBtn, cartBtn }) => {
                   <Image
                     src={item?.images?.[0]?.image || item?.images?.[1]?.image}
                     alt={item?.title}
-                    className={`w-full h-60 object-cover rounded-2xl ${parseFloat(item?.quantity) <= 0 ? 'opacity-80' : ''}`}
+                    className={`w-full h-60 object-cover rounded-2xl ${
+                      parseFloat(item?.quantity) <= 0 ? "opacity-80" : ""
+                    }`}
                     width={100}
                     height={100}
                   />
 
-                  {parseFloat(item?.quantity) > 0 && <div className="flex items-center gap-2 absolute top-44">
-                    <button
-                      className={`feature-product-btn-mbl ${item?.wishList ? "wishlist-active-mbl" : ""
+                  {parseFloat(item?.quantity) > 0 && (
+                    <div className="flex items-center gap-2 absolute top-44">
+                      <button
+                        className={`feature-product-btn-mbl ${
+                          item?.wishList ? "wishlist-active-mbl" : ""
                         }`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        wishBtn(item?.id);
-                      }}
-                    >
-                      {type === "heart" ? (
-                        <FiHeart className="font-bold" />
-                      ) : (
-                        <RiDeleteBinLine className="font-bold" />
-                      )}
-                    </button>
-                    <button
-                      className="feature-product-btn"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleOpenCart(item?.id);
-                      }}
-                    >
-                      <FiShoppingCart className="font-bold" />
-                    </button>
-                  </div>}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          wishBtn(item?.id);
+                        }}
+                      >
+                        {type === "heart" ? (
+                          <FiHeart className="font-bold" />
+                        ) : (
+                          <RiDeleteBinLine className="font-bold" />
+                        )}
+                      </button>
+                      <button
+                        className="feature-product-btn"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleOpenCart(item?.id);
+                        }}
+                      >
+                        <FiShoppingCart className="font-bold" />
+                      </button>
+                    </div>
+                  )}
 
                   <div className="py-3 flex flex-col self-start">
                     <h6
@@ -122,13 +135,18 @@ const ProductCardMobile = ({ type, products, wishBtn, cartBtn }) => {
                 </div>
               </SwiperSlide>
             ))}
-
         </Swiper>
 
         <div className="text-center">
           <button
             className="px-6 py-2 bg-[var(--primary-main)] text-white rounded-md hover:bg-[var(--primary-dark)] transition"
-            onClick={() => router.push("/shop")}
+            onClick={() =>
+              router.push(
+                iscategoryAvailable
+                  ? `/shop?id=${products?.[0]?.category_id}`
+                  : "/shop"
+              )
+            }
           >
             View More
           </button>

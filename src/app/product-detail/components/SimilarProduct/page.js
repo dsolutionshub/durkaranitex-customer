@@ -80,6 +80,7 @@ const SimilarProducts = ({ products, handleGetProductDetails }) => {
         wishBtn={addToWishlist}
         cartBtn={addToCart}
         type={"heart"}
+        iscategoryAvailable
       />
 
       <div className="relative d-none d-md-block">
