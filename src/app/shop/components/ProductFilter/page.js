@@ -147,6 +147,7 @@ const ProductFilter = ({
   priceRange = { min: 50, max: 900 },
   openFilter,
   handleOpenFilter,
+  priceObj,
 }) => {
   const [values, setValues] = useState([priceRange.min, priceRange.max]);
   const [showPriceFilter, setShowPriceFilter] = useState(false);
@@ -177,10 +178,14 @@ const ProductFilter = ({
   };
 
   useEffect(() => {
-    setValues([
-      parseFloat(categoryList?.product_amount?.min) || 0,
-      parseFloat(categoryList?.product_amount?.max) || 1000,
-    ]);
+    if (Object.keys(priceObj).length > 0) {
+      setValues([priceObj.min || 0, priceObj.max || 1000]);
+    } else {
+      setValues([
+        parseFloat(categoryList?.product_amount?.min) || 0,
+        parseFloat(categoryList?.product_amount?.max) || 1000,
+      ]);
+    }
   }, [categoryList]);
 
   useEffect(() => {

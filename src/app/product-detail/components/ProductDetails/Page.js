@@ -27,6 +27,9 @@ const ProductDetails = () => {
   const [zoom, setZoom] = useState(1);
   const [totalQuantities, setTotalQuantities] = useState(0);
   const [openIndex, setOpenIndex] = useState(null);
+  const [queryString, setQueryString] = useState("");
+
+  const [loading, setLoading] = useState(false);
 
   const handleZoomToggle = (index) => {
     setZoom(zoom === index ? null : index);
@@ -36,22 +39,20 @@ const ProductDetails = () => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
-  useEffect(() => {
-    setOpenIndex(0);
-  }, []);
-
   const handleGetProductDetails = useCallback(async () => {
     loader(true);
+    setLoading(true);
     if (!id) return;
     try {
       const data = await getProductDetails(id);
-      setProductInfo(data);
+      setProductInfo(data || []);
       setTotalQuantities(data?.quantity || 0);
     } catch (error) {
       const MSG = getErrorMessage(error);
       toast.error(MSG);
     } finally {
       loader(false);
+      setLoading(false);
     }
   }, [id]);
 
@@ -87,14 +88,31 @@ const ProductDetails = () => {
     setQuantity(quantity > 1 ? quantity - 1 : 1);
   };
 
+  useEffect(() => {
+    setOpenIndex(0);
+  }, []);
+
+  useEffect(() => {
+    const storedQuery = sessionStorage.getItem("shopQueryParams");
+    const qs = storedQuery ? `?${storedQuery}` : "";
+    setQueryString(qs);
+  }, []);
+
   return (
     <div>
       <CustomBreadCrumb
         model={[
-          { label: "Shop", url: "/shop" },
+          { label: "Shop", url: `/shop${queryString || ""}` },
           { label: productInfo?.product?.title },
         ]}
       />
+
+      {/* <CustomBreadCrumb
+        model={[
+          { label: "Shop", url: `/shop` },
+          { label: productInfo?.product?.title },
+        ]}
+      /> */}
 
       <div className="container mx-auto px-4 lg:pt-3 pb-2">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-5 xl:gap-0">
@@ -105,6 +123,7 @@ const ProductDetails = () => {
               setSelectedIndex={setSelectedIndex}
               handleZoomToggle={handleZoomToggle}
               zoom={zoom}
+              loading={loading}
             />
           </div>
           <ProductAccordion

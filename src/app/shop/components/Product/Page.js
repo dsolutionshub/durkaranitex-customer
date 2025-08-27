@@ -60,10 +60,16 @@ function Product() {
   const [selectedCat, setSelectedCat] = useState("");
 
   const debouncedSearch = useDebounce(search, 1000, setCurrentPage);
+  const [filtersInitialized, setFiltersInitialized] = useState(false);
 
   const handlePriceChange = (range) => {
     setPriceRange(range);
     setOpenFilter(false);
+
+    const params = new URLSearchParams(window.location.search);
+    params.set("priceMin", range.min || 0);
+    params.set("priceMax", range.max || 0);
+    router.push(`?${params.toString()}`);
   };
 
   const productDetails = useCallback(
@@ -108,10 +114,6 @@ function Product() {
   };
 
   useEffect(() => {
-    productDetails();
-  }, [productDetails]);
-
-  useEffect(() => {
     categoryDetails();
   }, []);
 
@@ -120,6 +122,8 @@ function Product() {
   }, [selectedCategories, priceRange]);
 
   useEffect(() => {
+    if (!filtersInitialized) return;
+
     switch (sortOption) {
       case "Name A to Z":
         productDetails("a-z");
@@ -137,7 +141,7 @@ function Product() {
         productDetails();
         break;
     }
-  }, [sortOption, productDetails]);
+  }, [sortOption, productDetails, filtersInitialized]);
 
   const addToWishlist = async (id) => {
     loader(true);
@@ -188,6 +192,10 @@ function Product() {
 
   const handleCheckbox = (arr) => {
     setSelectedCategories(arr);
+
+    const params = new URLSearchParams(window.location.search);
+    params.set("categories", arr.join(","));
+    router.push(`?${params.toString()}`);
   };
 
   const navigateToProductDetail = (product_id) => {
@@ -202,6 +210,30 @@ function Product() {
   };
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+
+    const categories = params.get("categories");
+    if (categories) {
+      setSelectedCategories(categories.split(",").map(Number));
+    }
+
+    const min = parseInt(params.get("priceMin")) || 0;
+    const max = parseInt(params.get("priceMax")) || 0;
+    if (min || max) {
+      setPriceRange({ min, max });
+    }
+
+    setFiltersInitialized(true);
+  }, []);
+
+  useEffect(() => {
+    const queryString = searchParams.toString();
+    if (queryString) {
+      sessionStorage.setItem("shopQueryParams", queryString);
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
     const fallbackTitle = "Our Saree Collection";
     if (
       Array.isArray(categoryList?.categories) &&
@@ -212,7 +244,11 @@ function Product() {
         (cat) => String(cat.id).trim() === String(selectedCategories[0]).trim()
       );
 
-      setSelectedCat(`${matchedCategory?.name} Collection`);
+      setSelectedCat(
+        `${
+          matchedCategory?.name ? matchedCategory?.name : "Our Saree"
+        } Collection`
+      );
     } else {
       setSelectedCat(fallbackTitle);
     }
@@ -220,11 +256,10 @@ function Product() {
 
   return (
     <>
-      <CustomBreadCrumb model={SHOP_MODEL} />
+      <CustomBreadCrumb model={SHOP_MODEL} useBackNavigation={true} />
       <div className="py-0 md:py-4 pt-1">
         <div className="container-fluid">
           <div className="row">
-            {/* <div className="col-xl-9 order-2"> */}
             <div className="col-12 col-xxl-9 order-2">
               <div className="row p-1">
                 <div className="col-xl-12">
@@ -314,6 +349,7 @@ function Product() {
               onChange={handleCheckbox}
               onPriceChange={handlePriceChange}
               priceRange={categoryList?.product_amount}
+              priceObj={priceRange}
               openFilter={openFilter}
               handleOpenFilter={handleOpenFilter}
             />

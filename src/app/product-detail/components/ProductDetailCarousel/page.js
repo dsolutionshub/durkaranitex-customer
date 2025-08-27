@@ -11,58 +11,68 @@ export default function ImageCarousel({
   setSelectedIndex,
   handleZoomToggle,
   zoom,
+  loading,
 }) {
   return (
     <>
-      <div className="carousel-wrapper">
-        <Carousel
-          activeIndex={selectedIndex}
-          onSelect={(selected) => setSelectedIndex(selected)}
-          interval={null}
-          slide={false}
-          className="carousel"
-        >
-          {images?.map((img, index) =>
-            img?.image ? (
-              <Carousel.Item key={index}>
-                <div
-                  className="image-container"
-                  onDoubleClick={() => handleZoomToggle(index)}
-                >
-                  <Image
-                    src={img?.image}
-                    alt={`Image ${img.id}`}
-                    width={500}
-                    height={500}
-                    className={`carousel-image ${
-                      zoom === index ? "zoomed" : ""
-                    }`}
-                  />
-
-                  <div className="zoom-icon-wrapper">
-                    {zoom === index ? (
-                      <FaSearchMinus className="zoom-icon" />
-                    ) : (
-                      <FaSearchPlus className="zoom-icon" />
-                    )}
-                  </div>
-                </div>
-              </Carousel.Item>
-            ) : (
-              <Carousel.Item key={index}>
-                <div
-                  className="h-[300px] w-[300px] xl:h-[500px] xl:w-[500px] 
+      {loading ? (
+        <div
+          className="carousel-wrapper animate-pulse image-container bg-gray-200 h-[300px] w-[300px] xl:h-[500px] xl:w-[500px] 
                 bg-gray-200 flex items-center justify-center"
-                >
-                  No Image
-                </div>
-              </Carousel.Item>
-            )
-          )}
-        </Carousel>
-      </div>
+        >
+          <span className="d-none">yeiwuy</span>
+        </div>
+      ) : (
+        <div className="carousel-wrapper">
+          <Carousel
+            activeIndex={selectedIndex}
+            onSelect={(selected) => setSelectedIndex(selected)}
+            interval={null}
+            slide={false}
+            className="carousel"
+          >
+            {images?.map((img, index) =>
+              img?.image ? (
+                <Carousel.Item key={index}>
+                  <div
+                    className="image-container"
+                    onDoubleClick={() => handleZoomToggle(index)}
+                  >
+                    <Image
+                      src={img?.image}
+                      alt={`Image ${img.id}`}
+                      width={500}
+                      height={500}
+                      className={`carousel-image ${
+                        zoom === index ? "zoomed" : ""
+                      }`}
+                    />
 
-      {images?.length > 1 && (
+                    <div className="zoom-icon-wrapper">
+                      {zoom === index ? (
+                        <FaSearchMinus className="zoom-icon" />
+                      ) : (
+                        <FaSearchPlus className="zoom-icon" />
+                      )}
+                    </div>
+                  </div>
+                </Carousel.Item>
+              ) : (
+                <Carousel.Item key={index}>
+                  <div
+                    className="h-[300px] w-[300px] xl:h-[500px] xl:w-[500px] 
+                bg-gray-200 flex items-center justify-center"
+                  >
+                    No Image
+                  </div>
+                </Carousel.Item>
+              )
+            )}
+          </Carousel>
+        </div>
+      )}
+
+      {images?.length > 1 && !loading && (
         <div className="flex md:flex-row md:gap-2 lg:gap-12 mt-4 space-x-2 md:space-x-0 md:space-y-2 mb-3 md:mb-0">
           {images?.map((img, index) => (
             <div
