@@ -55,7 +55,7 @@ export default function RootLayout({ children }) {
             <ReactQueryProvider>
               <div className="site-wrap">
                 <Link
-                  href="https://api.whatsapp.com/send?phone=918838137113&text=Hi%2C%20I'm%20interested%20in%20your%20products"
+                  href="https://api.whatsapp.com/send?phone=919952252964&text=Hi%2C%20I'm%20interested%20in%20your%20products"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

@@ -78,10 +78,10 @@ const OrderFailure = ({ payment_id }) => {
             <p className="text-sm text-blue-800">
               Need help? Contact our support team at{" "}
               <a
-                href="tel:8838137113"
+                href="tel:9952252964"
                 className="font-semibold underline hover:text-amber-900 break-all"
               >
-                +91 8838137113
+                +91 9952252964
               </a>{" "}
               or{" "}
               <a

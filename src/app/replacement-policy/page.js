@@ -233,7 +233,7 @@ const ReturnPolicy = () => {
                 </div>
                 <div className="flex items-center">
                   <span className="font-semibold text-gray-800">Phone:</span>
-                  <span className="ml-2 text-pink-600">+91 8838137113</span>
+                  <span className="ml-2 text-pink-600">+91 9952252964</span>
                 </div>
               </div>
             </div>

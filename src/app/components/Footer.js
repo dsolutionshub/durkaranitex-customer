@@ -139,7 +139,7 @@ export default function Footer() {
                   <Phone className="w-5 h-5 primary-color" />
                 </div>
                 <span className="font-medium text-gray-800 ml-3">
-                  8838137113
+                  9952252964
                 </span>
               </div>
 

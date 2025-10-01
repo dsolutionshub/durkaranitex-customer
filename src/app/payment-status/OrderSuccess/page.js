@@ -168,10 +168,10 @@ const OrderSuccess = ({ payment_id }) => {
             <p className="text-xs sm:text-sm text-amber-800">
               Need help with your order? Contact us at{" "}
               <a
-                href="tel:8838137113"
+                href="tel:9952252964"
                 className="font-semibold underline hover:text-amber-900 break-all"
               >
-                +91 8838137113
+                +91 9952252964
               </a>{" "}
               or{" "}
               <a
