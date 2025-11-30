@@ -10,7 +10,7 @@ export function BannerCarousel({ images }) {
     return (
       <div
         className="w-full md:h-110 banner-image-card"
-        onClick={() => router.push(`/shop?id=${1}`)}
+        onClick={() => router.push(item?.button_link)}
       >
         <Image
           height={100}

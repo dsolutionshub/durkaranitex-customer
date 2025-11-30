@@ -123,7 +123,7 @@ export default function Home() {
         </p>
       </div>
 
-      <BannerCarousel images={homeDetails.sliders} />
+      <BannerCarousel images={homeDetails.banners} />
       <CollectionsSection />
 
       {homeDetails.featured_products?.length > 0 && (
