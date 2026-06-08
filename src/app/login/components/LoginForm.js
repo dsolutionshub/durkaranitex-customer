@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
+import { signIn, useSession } from "next-auth/react";
 import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
@@ -68,6 +69,7 @@ const LoginForm = ({ isLogin, setIsLogin }) => {
   const router = useRouter();
   const { handleSaveUserData, setIsLoginAuth } = useAuthStore();
   const { cardDetails, wishlistDetails } = useCartPanelStore();
+  const { data: session, status } = useSession();
   const fields = isLogin ? loginFields : signupFields;
   const [visibility, setVisibility] = useState({});
 
@@ -138,6 +140,27 @@ const LoginForm = ({ isLogin, setIsLogin }) => {
     formik.resetForm();
   };
 
+  const handleGoogleLogin = () => {
+    signIn("google", { callbackUrl: "/login" });
+  };
+
+  useEffect(() => {
+    if (status === "authenticated" && session?.user?.accessToken) {
+      localStorage.setItem("accessToken", session.user.accessToken);
+      handleSaveUserData({
+        name: session.user.name || "",
+        email: session.user.email || "",
+        id: session.user.id || "",
+      });
+      const redirectPath =
+        sessionStorage.getItem("postLoginRedirect") || "/account";
+      wishlistDetails();
+      cardDetails();
+      setIsLoginAuth(true);
+      router.replace(redirectPath);
+    }
+  }, [status, session, router, handleSaveUserData, wishlistDetails, cardDetails, setIsLoginAuth]);
+
   const toggleVisibility = (fieldName) => {
     setVisibility((prev) => ({
       ...prev,
@@ -207,6 +230,23 @@ const LoginForm = ({ isLogin, setIsLogin }) => {
       >
         {isLogin ? "Login" : "Sign Up"}
       </button>
+
+      {isLogin && (
+        <div className="mt-4">
+          <div className="flex items-center gap-2 text-sm text-gray-500 mb-3">
+            <span className="flex-1 border-t border-gray-300" />
+            <span>Or</span>
+            <span className="flex-1 border-t border-gray-300" />
+          </div>
+          <button
+            type="button"
+            onClick={handleGoogleLogin}
+            className="w-full bg-white border border-gray-300 text-gray-700 font-medium rounded h-12 hover:bg-gray-100"
+          >
+            Continue with Google
+          </button>
+        </div>
+      )}
 
       <div className="text-center text-sm mt-2">
         {!isLogin ? "Already have an account?" : "New customer?"}{" "}

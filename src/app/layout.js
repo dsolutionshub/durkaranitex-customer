@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Head from "next/head";
 import Link from "next/link";
+// SessionProvider moved into ClientLayout (client component)
 import { Mukta } from "next/font/google";
 import { PrimeReactProvider } from "primereact/api";
 import { Toaster } from "react-hot-toast";
@@ -70,16 +71,16 @@ export default function RootLayout({ children }) {
                 {children}
               </div>
             </ReactQueryProvider>
-            <Loader />
-            <Toaster
-              position="top-center"
-              reverseOrder={false}
-              toastOptions={TOAST_OPTIONS}
-              pauseOnHover={false}
-              pauseOnFocusLoss={false}
-            />
-            <ToastManager />
           </ClientLayout>
+          <Loader />
+          <Toaster
+            position="top-center"
+            reverseOrder={false}
+            toastOptions={TOAST_OPTIONS}
+            pauseOnHover={false}
+            pauseOnFocusLoss={false}
+          />
+          <ToastManager />
         </PrimeReactProvider>
       </body>
     </html>
