@@ -7,6 +7,16 @@ import LoginForm from "./components/LoginForm";
 import Link from "next/link";
 import ForgotPasswordModal from "./components/forgotpasswordmodal";
 
+const deriveNameFromEmail = (email) => {
+  if (!email) return "";
+  const [localPart] = email.split("@");
+  const parts = localPart.split(/[._-]/).filter(Boolean);
+  const nameParts = parts.slice(0, 2).map((part) =>
+    part.charAt(0).toUpperCase() + part.slice(1).toLowerCase()
+  );
+  return nameParts.join(" ") || localPart;
+};
+
 export default function LoginPage() {
   const router = useRouter();
   const sessionData = useSession();
@@ -17,7 +27,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
-    if (token && token !== "undefined" && status !== "authenticated") {
+    if (token && token !== "undefined" && status === "authenticated") {
       router.replace("/");
     }
   }, [status, router]);
@@ -50,7 +60,7 @@ export default function LoginPage() {
         {status === "authenticated" ? (
           <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-4 text-left">
             <p className="text-sm text-green-800">
-              Logged in as <strong>{session.user.name || session.user.email}</strong>
+              Logged in as <strong>{session.user.name ? session.user.name : deriveNameFromEmail(session.user.email)}</strong>
             </p>
             <p className="text-xs text-gray-600 mt-1">
               Email: {session.user.email}

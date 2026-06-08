@@ -3,7 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { useSession, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
+
 import { User, Package, MapPin, LogOut } from "lucide-react";
 
 import OrderHistory from "./components/OrderHistory";
@@ -40,16 +41,13 @@ export default function AccountPage() {
   const router = useRouter();
   const { handleLogout } = useAuthStore();
   const { setWishListCount, setCartCount } = useCartPanelStore();
+  const { data: session, status } = useSession();
   const [selectedTab, setSelectedTab] = useState("account");
   const [profileInfo, setProfileInfo] = useState([]);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
-  const { data: session, status } = useSession();
 
   const handleLoggedOut = async () => {
-    if (status === "authenticated") {
-      await signOut({ redirect: false });
-    }
 
     const data = await logout();
     handleLogout();
@@ -101,13 +99,25 @@ export default function AccountPage() {
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
 
+    if (status === "loading") {
+      return;
+    }
+
+    if (status === "authenticated" && session?.user?.accessToken) {
+      if (token !== session.user.accessToken) {
+        localStorage.setItem("accessToken", session.user.accessToken);
+      }
+      setIsCheckingAuth(false);
+      return;
+    }
+
     if (!token || token === "undefined") {
       toast.error(LOGIN_MSG);
       router.replace("/login");
     } else {
       setIsCheckingAuth(false);
     }
-  }, []);
+  }, [status, session, router]);
 
   if (isCheckingAuth) {
     return (
