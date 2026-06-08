@@ -1,19 +1,44 @@
-export const dynamic = "force-dynamic";
-
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { googleSignIn } from "../../services/authService";
 import { getErrorMessage } from "@/app/utils/helperFn";
 
+const NEXTAUTH_URL = process.env.NEXTAUTH_URL || "http://localhost:3000";
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
+
+if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET) {
+  console.warn("NextAuth Google provider missing client ID or secret.");
+}
+
+if (!process.env.NEXTAUTH_SECRET) {
+  console.warn("NextAuth secret is not set. Set NEXTAUTH_SECRET in .env.local or production environment.");
+}
+
 const handler = NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
+  debug: process.env.NODE_ENV !== "production",
+  logger: {
+    error(code, metadata) {
+      console.error("NextAuth error", code, metadata);
+    },
+    warn(code) {
+      console.warn("NextAuth warn", code);
+    },
+    debug(code, metadata) {
+      console.debug("NextAuth debug", code, metadata);
+    },
+  },
+  pages: {
+    signIn: "/login",
+  },
   session: {
     strategy: "jwt",
   },
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      clientId: GOOGLE_CLIENT_ID,
+      clientSecret: GOOGLE_CLIENT_SECRET,
     }),
   ],
   callbacks: {
@@ -26,7 +51,7 @@ const handler = NextAuth({
             googleId: profile.sub,
           });
 
-          if (response.status === "success" && response.data) {
+          if (response?.status === "success" && response?.data) {
             token.accessToken = response.data.token;
             token.userId = response.data.customer.id;
             token.username = response.data.customer.name;
@@ -39,6 +64,7 @@ const handler = NextAuth({
     },
 
     async session({ session, token }) {
+      session.user = session.user || {};
       session.user.accessToken = token.accessToken;
       session.user.id = token.userId || token.sub;
       session.user.name = token.username || session.user.name;

@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
-import { signIn, useSession } from "next-auth/react";
 import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { AiOutlineGoogle } from "react-icons/ai";
+import { signIn } from "next-auth/react";
 
 import { loginSchema, signupSchema } from "@/app/utils/validationSchema";
 import { loader } from "@/app/components/loader/loaderManager";
@@ -69,7 +70,6 @@ const LoginForm = ({ isLogin, setIsLogin }) => {
   const router = useRouter();
   const { handleSaveUserData, setIsLoginAuth } = useAuthStore();
   const { cardDetails, wishlistDetails } = useCartPanelStore();
-  const { data: session, status } = useSession();
   const fields = isLogin ? loginFields : signupFields;
   const [visibility, setVisibility] = useState({});
 
@@ -139,27 +139,6 @@ const LoginForm = ({ isLogin, setIsLogin }) => {
     setIsLogin((prev) => !prev);
     formik.resetForm();
   };
-
-  const handleGoogleLogin = () => {
-    signIn("google", { callbackUrl: "/login" });
-  };
-
-  useEffect(() => {
-    if (status === "authenticated" && session?.user?.accessToken) {
-      localStorage.setItem("accessToken", session.user.accessToken);
-      handleSaveUserData({
-        name: session.user.name || "",
-        email: session.user.email || "",
-        id: session.user.id || "",
-      });
-      const redirectPath =
-        sessionStorage.getItem("postLoginRedirect") || "/account";
-      wishlistDetails();
-      cardDetails();
-      setIsLoginAuth(true);
-      router.replace(redirectPath);
-    }
-  }, [status, session, router, handleSaveUserData, wishlistDetails, cardDetails, setIsLoginAuth]);
 
   const toggleVisibility = (fieldName) => {
     setVisibility((prev) => ({
@@ -231,23 +210,6 @@ const LoginForm = ({ isLogin, setIsLogin }) => {
         {isLogin ? "Login" : "Sign Up"}
       </button>
 
-      {isLogin && (
-        <div className="mt-4">
-          <div className="flex items-center gap-2 text-sm text-gray-500 mb-3">
-            <span className="flex-1 border-t border-gray-300" />
-            <span>Or</span>
-            <span className="flex-1 border-t border-gray-300" />
-          </div>
-          <button
-            type="button"
-            onClick={handleGoogleLogin}
-            className="w-full bg-white border border-gray-300 text-gray-700 font-medium rounded h-12 hover:bg-gray-100"
-          >
-            Continue with Google
-          </button>
-        </div>
-      )}
-
       <div className="text-center text-sm mt-2">
         {!isLogin ? "Already have an account?" : "New customer?"}{" "}
         <button
@@ -258,6 +220,30 @@ const LoginForm = ({ isLogin, setIsLogin }) => {
           {!isLogin ? "Login" : " Sign Up"}
         </button>
       </div>
+
+      {isLogin && (
+        <>
+          <div className="flex items-center my-3">
+            <span className="flex-grow border-t border-gray-200" />
+            <span className="mx-3 text-sm text-gray-500">or</span>
+            <span className="flex-grow border-t border-gray-200" />
+          </div>
+
+          <button
+            type="button"
+            onClick={() =>
+              signIn("google", {
+                callbackUrl: `${window.location.origin}/account`,
+              })
+            }
+            className="w-full bg-white text-black border border-gray-300 rounded h-12 flex items-center justify-center gap-2 hover:bg-gray-100"
+            aria-label="Continue with Google"
+          >
+            <AiOutlineGoogle size={20} />
+            <span>Continue with Google</span>
+          </button>
+        </>
+      )}
     </form>
   );
 };
