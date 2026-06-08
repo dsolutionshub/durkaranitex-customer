@@ -9,7 +9,9 @@ import ForgotPasswordModal from "./components/forgotpasswordmodal";
 
 export default function LoginPage() {
   const router = useRouter();
-  const { data: session, status } = useSession();
+  const sessionData = useSession();
+  const session = sessionData?.data;
+  const status = sessionData?.status;
   const [isLogin, setIsLogin] = useState(true);
   const [showForgotModal, setShowForgotModal] = useState(false);
 
