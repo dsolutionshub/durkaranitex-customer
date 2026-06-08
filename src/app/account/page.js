@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { useSession, signOut } from "next-auth/react";
 import { User, Package, MapPin, LogOut } from "lucide-react";
 
 import OrderHistory from "./components/OrderHistory";
@@ -43,7 +44,13 @@ export default function AccountPage() {
   const [profileInfo, setProfileInfo] = useState([]);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
+  const { data: session, status } = useSession();
+
   const handleLoggedOut = async () => {
+    if (status === "authenticated") {
+      await signOut({ redirect: false });
+    }
+
     const data = await logout();
     handleLogout();
     setCartCount(0);
