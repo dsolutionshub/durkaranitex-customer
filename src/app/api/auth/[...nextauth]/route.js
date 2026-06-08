@@ -3,7 +3,15 @@ import GoogleProvider from "next-auth/providers/google";
 import { googleSignIn } from "../../services/authService";
 import { getErrorMessage } from "@/app/utils/helperFn";
 
-const NEXTAUTH_URL = process.env.NEXTAUTH_URL || "http://localhost:3000";
+const NEXTAUTH_URL = process.env.NEXTAUTH_URL ?? (process.env.NODE_ENV === "production" ? undefined : "http://localhost:3000");
+
+if (!NEXTAUTH_URL) {
+  throw new Error(
+    "NEXTAUTH_URL is required in production. Set it to your app origin, e.g. https://durkaranitex-customer.vercel.app"
+  );
+}
+
+process.env.NEXTAUTH_URL = NEXTAUTH_URL;
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 
