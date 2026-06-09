@@ -46,15 +46,11 @@ export default function AccountPage() {
   const [profileInfo, setProfileInfo] = useState([]);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
-  // For Google sign-in users the backend may return a different user's profile.
-  // Override name/email with the verified Google session values.
+  // For Google sign-in users the backend always returns the admin user's profile.
+  // Ignore backend profileInfo entirely and use only the verified Google session data.
   const isGoogleSession = !!session?.user?.email;
   const displayProfile = isGoogleSession
-    ? {
-        ...profileInfo,
-        name: session.user.name || profileInfo?.name,
-        email: session.user.email || profileInfo?.email,
-      }
+    ? { name: session.user.name, email: session.user.email }
     : profileInfo;
 
 
@@ -71,6 +67,10 @@ export default function AccountPage() {
   };
 
   const handleProfileInfo = async () => {
+    // Skip the API call for Google sign-in users — the backend returns the
+    // wrong user's profile (admin) for all Google accounts. Display is
+    // built from the verified Google session data instead.
+    if (isGoogleSession) return;
     loader(true);
     try {
       const { customer } = await getProfileInfo();
@@ -109,9 +109,9 @@ export default function AccountPage() {
     }
   }, []);
 
-  // Re-fetch profile when SessionSync delivers the token late (Google sign-in async path).
+  // Re-fetch profile for email/password users when token arrives late.
   useEffect(() => {
-    if (isLoggedIn === true && !profileInfo?.name) {
+    if (isLoggedIn === true && !isGoogleSession && !profileInfo?.name) {
       handleProfileInfo();
     }
   }, [isLoggedIn]);
