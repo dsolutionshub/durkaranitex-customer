@@ -93,18 +93,10 @@ function SessionSync() {
             name: customer?.name || displayName,
             email: session.user.email,
           });
-        } else {
-          console.error(
-            "[SessionSync] Client-side googleSignIn returned no token:",
-            response
-          );
         }
       })
-      .catch((err) => {
-        console.error(
-          "[SessionSync] Client-side googleSignIn failed:",
-          err?.message
-        );
+      .catch(() => {
+        // client-side fallback failed — login page will handle token acquisition
       });
   }, [status, session, handleSaveUserData, setIsLoginAuth, cardDetails, wishlistDetails]);
 

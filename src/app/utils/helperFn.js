@@ -63,13 +63,10 @@ export const getErrorMessage = (error) => {
     error?.response.data &&
     error?.response?.data?.message
   ) {
-    console.log("API log:", error?.response?.data?.message);
     return error?.response?.data?.message;
   } else if (error?.message) {
-    console.log("Error:", error?.message);
     return error?.message;
   } else {
-    console.log("Unexpected error:", error);
     return "An unexpected error occurred.";
   }
 };

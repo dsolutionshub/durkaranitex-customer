@@ -42,8 +42,6 @@ export const authOptions = {
             googleId: profile.sub,
           });
 
-          console.log("[GoogleSignIn] Raw backend response:", JSON.stringify(response));
-
           if (response?.data?.token) {
             token.accessToken = response.data.token;
             token.userId = response.data.customer?.id;
@@ -52,11 +50,9 @@ export const authOptions = {
             token.accessToken = response.token;
             token.userId = response.customer?.id;
             token.username = response.customer?.name;
-          } else {
-            console.error("[GoogleSignIn] Could not extract token. Response:", JSON.stringify(response));
           }
-        } catch (error) {
-          console.error("[GoogleSignIn] Backend call failed:", error?.message);
+        } catch {
+          // backend call failed — token will be absent from session
         }
       }
       return token;

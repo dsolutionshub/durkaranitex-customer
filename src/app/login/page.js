@@ -61,7 +61,6 @@ export default function LoginPage() {
 
     googleSignIn({ email: session.user.email, name: displayName, googleId: session.user.id })
       .then((response) => {
-        console.log("[LoginPage] googleSignIn response:", JSON.stringify(response));
         const token = response?.data?.token || response?.token;
         if (token) {
           localStorage.setItem("accessToken", token);
@@ -76,8 +75,7 @@ export default function LoginPage() {
           sessionStorage.removeItem("postLoginRedirect");
           router.replace(redirectPath);
         } else {
-          console.error("[LoginPage] Backend returned no token. Full response:", JSON.stringify(response));
-          setTokenError(`No token in response: ${JSON.stringify(response)}`);
+          setTokenError("Unable to complete sign-in. Please sign out and try again.");
           setIsAcquiringToken(false);
         }
       })
@@ -87,7 +85,6 @@ export default function LoginPage() {
           (err?.response?.status ? `HTTP ${err.response.status}` : null) ||
           err?.message ||
           "Unknown error";
-        console.error("[LoginPage] googleSignIn failed:", err?.response?.data || err?.message);
         setTokenError(`Sign-in failed: ${detail}`);
         setIsAcquiringToken(false);
       });

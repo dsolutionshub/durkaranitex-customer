@@ -28,8 +28,8 @@ const ShareProductBox = () => {
           text: "Check this out!",
           url: window.location.href,
         });
-      } catch (err) {
-        console.error("Share failed:", err);
+      } catch {
+        // share cancelled or not supported — fall through to manual share UI
       }
     } else {
       setVisibleBottom(true);

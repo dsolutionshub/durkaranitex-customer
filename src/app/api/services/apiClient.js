@@ -35,8 +35,6 @@ axiosInstance.interceptors.response.use(
     const errorMessage =
       error.response?.data?.message || defaultMessages[status] || error.message;
 
-    console.log(`API Error [${status}]:`, errorMessage);
-
     error.customMessage = errorMessage;
 
     return Promise.reject(error);
