@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 import { User, Package, MapPin, LogOut } from "lucide-react";
 
@@ -39,7 +39,7 @@ const LogOutComponent = ({ handleLoggedOut }) => {
 
 export default function AccountPage() {
   const router = useRouter();
-  const { handleLogout } = useAuthStore();
+  const { handleLogout, isLoggedIn } = useAuthStore();
   const { setWishListCount, setCartCount } = useCartPanelStore();
   const { data: session, status } = useSession();
   const [selectedTab, setSelectedTab] = useState("account");
@@ -48,13 +48,16 @@ export default function AccountPage() {
 
 
   const handleLoggedOut = async () => {
-
-    const data = await logout();
+    try {
+      const data = await logout();
+      toast.success(data?.message);
+    } catch {
+      // ignore backend logout errors — proceed with client-side cleanup
+    }
     handleLogout();
     setCartCount(0);
     setWishListCount(0);
-    router.push("/");
-    toast.success(data?.message);
+    await signOut({ callbackUrl: "/login" });
   };
 
   const handleProfileInfo = async () => {
@@ -96,28 +99,42 @@ export default function AccountPage() {
     }
   }, []);
 
+  // Re-fetch profile when SessionSync delivers the token late (Google sign-in async path).
   useEffect(() => {
+    if (isLoggedIn === true && !profileInfo?.name) {
+      handleProfileInfo();
+    }
+  }, [isLoggedIn]);
+
+  useEffect(() => {
+    if (status === "loading") return;
+
     const token = localStorage.getItem("accessToken");
+    const sessionToken = session?.user?.accessToken;
 
-    if (status === "loading") {
-      return;
-    }
-
-    if (status === "authenticated" && session?.user?.accessToken) {
-      if (token !== session.user.accessToken) {
-        localStorage.setItem("accessToken", session.user.accessToken);
-      }
+    if (sessionToken) {
+      if (token !== sessionToken) localStorage.setItem("accessToken", sessionToken);
       setIsCheckingAuth(false);
       return;
     }
 
-    if (!token || token === "undefined") {
-      toast.error(LOGIN_MSG);
-      router.replace("/login");
-    } else {
+    if (token && token !== "undefined") {
       setIsCheckingAuth(false);
+      return;
     }
-  }, [status, session, router]);
+
+    if (isLoggedIn === true) {
+      setIsCheckingAuth(false);
+      return;
+    }
+
+    // Authenticated via Google, token acquisition in progress (isLoggedIn is null, not false).
+    // Don't redirect — SessionSync will set the token and isLoggedIn will become true.
+    if (status === "authenticated" && isLoggedIn !== false) return;
+
+    toast.error(LOGIN_MSG);
+    router.replace("/login");
+  }, [status, session, router, isLoggedIn]);
 
   if (isCheckingAuth) {
     return (

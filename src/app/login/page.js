@@ -1,11 +1,14 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import LoginForm from "./components/LoginForm";
 import Link from "next/link";
 import ForgotPasswordModal from "./components/forgotpasswordmodal";
+import toast from "react-hot-toast";
+import { googleSignIn } from "@/app/api/services/authService";
+import { useAuthStore } from "@/store/useAuthStore";
 
 const deriveNameFromEmail = (email) => {
   if (!email) return "";
@@ -19,18 +22,85 @@ const deriveNameFromEmail = (email) => {
 
 export default function LoginPage() {
   const router = useRouter();
-  const sessionData = useSession();
-  const session = sessionData?.data;
-  const status = sessionData?.status;
+  const { data: session, status } = useSession();
+  const { handleSaveUserData, setIsLoginAuth, isLoggedIn } = useAuthStore();
   const [isLogin, setIsLogin] = useState(true);
   const [showForgotModal, setShowForgotModal] = useState(false);
+  const [isAcquiringToken, setIsAcquiringToken] = useState(false);
+  const [tokenError, setTokenError] = useState(null);
+  const acquireAttempted = useRef(false);
 
+  // Redirect whenever a valid token is confirmed — covers both the
+  // immediate case (already have a token) and the late case (SessionSync
+  // or our own fetch sets isLoggedIn after the first render).
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    if (token && token !== "undefined" && status === "authenticated") {
-      router.replace("/");
+    if (status === "loading") return;
+    if (status !== "authenticated") return;
+
+    const localToken = localStorage.getItem("accessToken");
+    const sessionToken = session?.user?.accessToken;
+
+    if ((localToken && localToken !== "undefined") || sessionToken) {
+      if (sessionToken && (!localToken || localToken === "undefined")) {
+        localStorage.setItem("accessToken", sessionToken);
+        setIsLoginAuth(true);
+      }
+      const redirectPath = sessionStorage.getItem("postLoginRedirect") || "/account";
+      sessionStorage.removeItem("postLoginRedirect");
+      router.replace(redirectPath);
+      return;
     }
-  }, [status, router]);
+
+    // Google session active but no backend token yet — acquire it here.
+    if (!session?.user?.email || acquireAttempted.current) return;
+    acquireAttempted.current = true;
+    toast.dismiss(); // Clear any stale "please login" toasts from the previous page
+    setIsAcquiringToken(true);
+
+    const displayName = session.user.name || deriveNameFromEmail(session.user.email);
+
+    googleSignIn({ email: session.user.email, name: displayName, googleId: session.user.id })
+      .then((response) => {
+        console.log("[LoginPage] googleSignIn response:", JSON.stringify(response));
+        const token = response?.data?.token || response?.token;
+        if (token) {
+          localStorage.setItem("accessToken", token);
+          setIsLoginAuth(true);
+          const customer = response?.data?.customer || response?.customer;
+          handleSaveUserData({
+            id: customer?.id || session.user.id,
+            name: customer?.name || displayName,
+            email: session.user.email,
+          });
+          const redirectPath = sessionStorage.getItem("postLoginRedirect") || "/account";
+          sessionStorage.removeItem("postLoginRedirect");
+          router.replace(redirectPath);
+        } else {
+          console.error("[LoginPage] Backend returned no token. Full response:", JSON.stringify(response));
+          setTokenError(`No token in response: ${JSON.stringify(response)}`);
+          setIsAcquiringToken(false);
+        }
+      })
+      .catch((err) => {
+        const detail =
+          err?.response?.data?.message ||
+          (err?.response?.status ? `HTTP ${err.response.status}` : null) ||
+          err?.message ||
+          "Unknown error";
+        console.error("[LoginPage] googleSignIn failed:", err?.response?.data || err?.message);
+        setTokenError(`Sign-in failed: ${detail}`);
+        setIsAcquiringToken(false);
+      });
+  }, [status, session, router, setIsLoginAuth, handleSaveUserData]);
+
+  // Also redirect when SessionSync sets the token after an async delay.
+  useEffect(() => {
+    if (isLoggedIn === true) {
+      const redirectPath = sessionStorage.getItem("postLoginRedirect") || "/account";
+      sessionStorage.removeItem("postLoginRedirect");
+      router.replace(redirectPath);
+    }
+  }, [isLoggedIn, router]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -57,7 +127,23 @@ export default function LoginPage() {
           </p>
         </div>
 
-        {status === "authenticated" ? (
+        {status === "authenticated" && isAcquiringToken ? (
+          <div className="text-center py-6">
+            <div className="inline-block w-8 h-8 border-4 border-green-500 border-t-transparent rounded-full animate-spin mb-3" />
+            <p className="text-gray-600 text-sm">Setting up your account...</p>
+          </div>
+        ) : status === "authenticated" && tokenError ? (
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4 text-left">
+            <p className="text-sm text-red-700 mb-3">{tokenError}</p>
+            <button
+              type="button"
+              onClick={() => signOut({ callbackUrl: "/login" })}
+              className="inline-flex items-center justify-center px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 text-sm"
+            >
+              Sign out and try again
+            </button>
+          </div>
+        ) : status === "authenticated" ? (
           <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-4 text-left">
             <p className="text-sm text-green-800">
               Logged in as <strong>{session.user.name ? session.user.name : deriveNameFromEmail(session.user.email)}</strong>

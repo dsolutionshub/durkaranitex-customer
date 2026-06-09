@@ -96,7 +96,7 @@ export default function ProductAccordion({
       if (status === 401) {
         sessionStorage.setItem(
           "postLoginRedirect",
-          `product-detail?id=${sections?.id}`
+          `/product-detail?id=${sections?.id}`
         );
         router.push("/login");
         toast.error("Please log in to add this product to your cart.");
@@ -124,7 +124,7 @@ export default function ProductAccordion({
       if (status === 401) {
         sessionStorage.setItem(
           "postLoginRedirect",
-          `product-detail?id=${sections?.id}`
+          `/product-detail?id=${sections?.id}`
         );
         router.push("/login");
         toast.error("Please log in to purchase this product.");

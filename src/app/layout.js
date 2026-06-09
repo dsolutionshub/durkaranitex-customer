@@ -4,8 +4,10 @@ import Link from "next/link";
 import { Mukta } from "next/font/google";
 import { PrimeReactProvider } from "primereact/api";
 import { Toaster } from "react-hot-toast";
+import { getServerSession } from "next-auth/next";
 
 import ClientLayout from "./ClientLayout";
+import { authOptions } from "./api/auth/[...nextauth]/route";
 import { ReactQueryProvider } from "./QueryClientProvider ";
 import ToastManager from "./components/toast/ToastManager";
 import Loader from "./components/loader/loader";
@@ -39,7 +41,9 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const session = await getServerSession(authOptions);
+
   return (
     <html lang="en">
       <Head>
@@ -51,7 +55,7 @@ export default function RootLayout({ children }) {
       </Head>
       <body className={mukta.className}>
         <PrimeReactProvider>
-          <ClientLayout>
+          <ClientLayout session={session}>
             <ReactQueryProvider>
               <div className="site-wrap">
                 <Link

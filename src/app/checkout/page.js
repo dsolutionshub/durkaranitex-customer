@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import toast from "react-hot-toast";
+import { useSession } from "next-auth/react";
 
 import CheckoutForm from "./components/CheckoutForm";
 import OrderSummary from "./components/OrderSummary";
@@ -26,6 +27,7 @@ import {
 
 export default function CheckoutPage() {
   const router = useRouter();
+  const { data: session, status } = useSession();
   const userData = useAuthStore((state) => state.userData);
 
   const [checkoutData, setCheckoutData] = useState(null);
@@ -157,15 +159,17 @@ export default function CheckoutPage() {
   }, []);
 
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
+    if (status === "loading") return;
 
-    if (!token || token === "undefined") {
+    const token = localStorage.getItem("accessToken");
+    const sessionToken = session?.user?.accessToken;
+    if ((!token || token === "undefined") && !sessionToken) {
       toast.error(LOGIN_MSG);
       router.replace("/login");
     } else {
       setIsCheckingAuth(false);
     }
-  }, [router]);
+  }, [router, status, session]);
 
   if (isCheckingAuth) {
     return (

@@ -39,21 +39,16 @@ import { getErrorMessage } from "@/app/utils/helperFn";
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export async function googleSignIn(payload) {
-  try {
-    const response = await axios.post(
-      `${API_BASE_URL}${GOOGLE_LOGIN}`,
-      payload,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    return response.data;
-  } catch (error) {
-    getErrorMessage(error);
-  }
+  const response = await axios.post(
+    `${API_BASE_URL}${GOOGLE_LOGIN}`,
+    payload,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  return response.data;
 }
 
 // Login

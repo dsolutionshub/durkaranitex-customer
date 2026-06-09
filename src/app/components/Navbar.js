@@ -70,16 +70,15 @@ export default function Navbar() {
   };
 
   useEffect(() => {
-    // loginChecking();
-    cardDetails();
-    wishlistDetails();
-
     const token = localStorage.getItem("accessToken");
     if (token && token !== "undefined") {
       setIsLoginAuth(true);
-    } else {
-      setIsLoginAuth(false);
+      cardDetails();
+      wishlistDetails();
     }
+    // Don't call setIsLoginAuth(false) here — that breaks Google sign-in where
+    // the token arrives async via SessionSync after this effect runs.
+    // Logout flow in useAuthStore handles setting isLoggedIn to false.
   }, [cardDetails, wishlistDetails, setIsLoginAuth]);
 
   return (

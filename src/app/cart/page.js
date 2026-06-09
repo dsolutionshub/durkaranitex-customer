@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { useSession } from "next-auth/react";
 import { ShoppingBag } from "lucide-react";
 
 import CartProducts from "./components/CartProducts";
@@ -23,6 +24,7 @@ import useCartPanelStore from "@/store/useCartPanelStore";
 
 const Cart = () => {
   const router = useRouter();
+  const { data: session, status } = useSession();
   const { setCartOpen, cardDetails } = useCartPanelStore();
   const [totalCost, setTotalCost] = useState(0);
   const [products, setProducts] = useState([]);
@@ -149,15 +151,15 @@ const Cart = () => {
   }, []);
 
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
+    if (status === "loading") return;
 
-    if (!token || token === "undefined") {
+    const token = localStorage.getItem("accessToken");
+    const sessionToken = session?.user?.accessToken;
+    if ((!token || token === "undefined") && !sessionToken) {
       toast.error(LOGIN_MSG);
       router.replace("/login");
-    } else {
-      // setIsCheckingAuth(false);
     }
-  }, [router]);
+  }, [router, status, session]);
 
   // if (isCheckingAuth === true) {
   //   return (

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Heart } from "lucide-react";
 import toast from "react-hot-toast";
+import { useSession } from "next-auth/react";
 
 import ProductCard from "../components/ProductCard";
 import { loader } from "../components/loader/loaderManager";
@@ -22,6 +23,7 @@ import { getErrorMessage } from "../utils/helperFn";
 
 const Wishlist = () => {
   const router = useRouter();
+  const { data: session, status } = useSession();
   const { handleGetCartDetail } = useCartPanelStore();
   const [wishlist, setWishlist] = useState([]);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
@@ -83,15 +85,17 @@ const Wishlist = () => {
   }, []);
 
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
+    if (status === "loading") return;
 
-    if (!token || token === "undefined") {
+    const token = localStorage.getItem("accessToken");
+    const sessionToken = session?.user?.accessToken;
+    if ((!token || token === "undefined") && !sessionToken) {
       toast.error(LOGIN_MSG);
       router.replace("/login");
     } else {
       setIsCheckingAuth(false);
     }
-  }, [router]);
+  }, [router, status, session]);
 
   if (isCheckingAuth) {
     return (
