@@ -46,6 +46,17 @@ export default function AccountPage() {
   const [profileInfo, setProfileInfo] = useState([]);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
+  // For Google sign-in users the backend may return a different user's profile.
+  // Override name/email with the verified Google session values.
+  const isGoogleSession = !!session?.user?.email;
+  const displayProfile = isGoogleSession
+    ? {
+        ...profileInfo,
+        name: session.user.name || profileInfo?.name,
+        email: session.user.email || profileInfo?.email,
+      }
+    : profileInfo;
+
 
   const handleLoggedOut = async () => {
     try {
@@ -80,7 +91,7 @@ export default function AccountPage() {
   const renderContent = (selectedTab) => {
     switch (selectedTab) {
       case "account":
-        return <AccountDetails data={profileInfo} />;
+        return <AccountDetails data={displayProfile} />;
       case "orders":
         return <OrderHistory />;
       case "addresses":
@@ -151,7 +162,7 @@ export default function AccountPage() {
           <p className="text-2xl text-gray-700 text-center -translate-x-[-10px]">
             Hello{" "}
             <span className="text-3xl font-semibold">
-              {profileInfo?.name} 👋
+              {displayProfile?.name} 👋
             </span>
           </p>
           <h1 className="text-3xl font-bold text-black text-center">
