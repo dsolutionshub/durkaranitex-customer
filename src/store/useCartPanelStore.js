@@ -61,6 +61,16 @@ const useCartPanelStore = create((set, get) => ({
   setCartCount: (count) => set({ cartCount: count }),
   setWishListCount: (count) => set({ wishListCount: count }),
 
+  resetCart: () =>
+    set({
+      cartProducts: [],
+      cartTotalAmount: 0,
+      wishListData: [],
+      wishListCount: 0,
+      cartCount: 0,
+      isCartOpen: false,
+    }),
+
   handleGetCartDetail: async () => {
     const { cardDetails } = get();
     await cardDetails();

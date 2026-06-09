@@ -15,7 +15,7 @@ import { getProfileInfo, logout } from "../api/services/authService";
 import { getErrorMessage } from "../utils/helperFn";
 import { loader } from "../components/loader/loaderManager";
 import { useAuthStore } from "@/store/useAuthStore";
-import { LOGGED_OUT_MSG, LOGIN_MSG } from "../utils/constants";
+import { LOGIN_MSG } from "../utils/constants";
 import useCartPanelStore from "@/store/useCartPanelStore";
 import Loader from "../components/loader/loader";
 
@@ -40,7 +40,7 @@ const LogOutComponent = ({ handleLoggedOut }) => {
 export default function AccountPage() {
   const router = useRouter();
   const { handleLogout, isLoggedIn } = useAuthStore();
-  const { setWishListCount, setCartCount } = useCartPanelStore();
+  const { resetCart } = useCartPanelStore();
   const { data: session, status } = useSession();
   const [selectedTab, setSelectedTab] = useState("account");
   const [profileInfo, setProfileInfo] = useState([]);
@@ -66,8 +66,7 @@ export default function AccountPage() {
       // ignore backend logout errors — proceed with client-side cleanup
     }
     handleLogout();
-    setCartCount(0);
-    setWishListCount(0);
+    resetCart();
     await signOut({ callbackUrl: "/login" });
   };
 
