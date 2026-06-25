@@ -3,7 +3,7 @@ export const initiateRazorpayPayment = ({ order, customer }) => {
     key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
     amount: order.amount,
     currency: order.currency || "INR",
-    name: "Dhurgarani Tex",
+    name: "Kavya Creation",
     description: "Order Payment",
     order_id: order.order_id,
     handler: function (response) {

@@ -41,15 +41,15 @@ const About = () => {
                 height={100}
                 width={100}
                 src="/images/home/banner_about.png"
-                alt="Dhurgarani Tex"
+                alt="Kavya Creation"
                 className="w-full h-64 object-cover rounded-lg mb-6"
               />
               <div className="text-center">
                 <p className="text-black mb-2 text-lg">
-                  6/380, Ashok Nagar, Perumagoundampatti,
+                  6/329-4, Ashok Nagar, Near Sanjeeviraya Perumal kovil,
                 </p>
                 <p className="text-black mb-4 text-lg">
-                  Salem, Tamil Nadu 637502
+                  Perumagoundampatty, Elampilai, Salem, Tamil Nadu 637502
                 </p>
                 <p className="text-black mb-6">
                   Our store featuring the largest collection of designer and
@@ -60,7 +60,7 @@ const About = () => {
                 {/* Google Maps Embed */}
                 <div className="w-full h-64">
                   <iframe
-                    title="Dhurgarani Tex Location"
+                    title="Kavya Creation Location"
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.372387065994!2d78.009571!3d11.5948415!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3babe35d303e1d15%3A0xbb3f6971d3f74ddb!2sDhurgarani%20Tex!5e0!3m2!1sen!2sin!4v1718888888888!5m2!1sen!2sin"
                     width="100%"
                     height="100%"
@@ -110,7 +110,7 @@ const About = () => {
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div>
               <p className="text-black leading-relaxed mb-4">
-                Founded in 1998 by textile enthusiast Sathish Kumar, our saree
+                Founded in 1998 by textile enthusiast Karthick, our saree
                 collection began as a small boutique in Salem&apos;s bustling
                 textile district. What started as a passion for preserving
                 traditional Indian weaving techniques has grown into one of

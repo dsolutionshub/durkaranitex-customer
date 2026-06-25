@@ -108,11 +108,14 @@ export default function LoginPage() {
       <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-6">
         <div className="text-center">
           <Image
-            src="/images/home/logo.svg"
-            alt="Dhurgarani Tex"
+            src="/images/home/KCLogo.png"
+            alt="Kavya Creation"
             width={200}
             height={100}
             className="mx-auto mb-2"
+            style={{
+              filter: "brightness(0.80)",
+            }}
           />
           <h2 className="text-2xl font-bold text-black">
             {isLogin ? "Welcome Back" : "Join Our Collection"}

@@ -158,7 +158,7 @@ const ShippingPolicy = () => {
               If you experience any shipping-related issues:
             </p>
             <ul className="text-black space-y-2">
-              <li>• Contact us immediately at dhuragaranitex@gmail.com</li>
+              <li>• Contact us immediately at kavyacreation1471@gmail.com</li>
               <li>• Provide your order number and tracking details</li>
               <li>
                 • We&apos;ll work with our courier partners to resolve issues

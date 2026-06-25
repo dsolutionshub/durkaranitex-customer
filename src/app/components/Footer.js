@@ -29,17 +29,17 @@ const userPolicies = [
 const socialLinks = [
   {
     id: 1,
-    path: "https://www.facebook.com/p/Dhurgarani-Tex-100094106706250/?_rdr",
+    path: "https://www.facebook.com/share/18uH7anG1X/?mibextid=wwXIfr",
     icon: FaFacebookF,
   },
   {
     id: 2,
-    path: "https://www.instagram.com/dhurga_rani_tex?igsh=ZHN3b2o2ajRjYW5o",
+    path: "https://www.instagram.com/kav_ya_creations?igsh=eGh2NzU5MHQzMGE0",
     icon: FaInstagram,
   },
   {
     id: 3,
-    path: "https://youtube.com/@dhurgaranitex?si=hXZOkvxf1naBMHwq",
+    path: "https://youtube.com/@kavya_creations_?si=GeKOQc_qlkPi5gVd",
     icon: FaYoutube,
   },
 ];
@@ -105,11 +105,12 @@ export default function Footer() {
               <Image
                 height={200}
                 width={200}
-                src="/images/home/logo.svg"
+                src="/images/home/KCLogo.png"
                 alt="logo"
                 style={{
                   width: "13rem",
                   marginLeft: "-1rem",
+                  filter: "brightness(0.80)",
                 }}
               />
             </div>
@@ -128,7 +129,7 @@ export default function Footer() {
 
                 <div className="text-gray-600 leading-relaxed ml-3">
                   <p className="font-medium text-gray-800">
-                    6/380, Ashok Nagar, Perumagoundampatti, Salem, Tamil Nadu
+                    6/329-4, Ashok Nagar, Near Sanjeeviraya Perumal kovil, Perumagoundampatty, Elampilai, Salem, Tamil Nadu
                     637502,
                   </p>
                 </div>
@@ -139,7 +140,7 @@ export default function Footer() {
                   <Phone className="w-5 h-5 primary-color" />
                 </div>
                 <span className="font-medium text-gray-800 ml-3">
-                  9952252964
+                  7904749251
                 </span>
               </div>
 
@@ -148,7 +149,7 @@ export default function Footer() {
                   <Mail className="w-5 h-5 primary-color" />
                 </div>
                 <span className="font-medium text-gray-800 ml-3">
-                  dhuragaranitex@gmail.com
+                  kavyacreation1471@gmail.com
                 </span>
               </div>
             </div>
@@ -201,7 +202,7 @@ export default function Footer() {
 
         <div className="border-t border-gray-100 mt-12 pt-8 text-center">
           <p className="text-gray-500">
-            &copy; {new Date().getFullYear()} Dhurgarani Tex. All rights
+            &copy; {new Date().getFullYear()} Kavya Creation. All rights
             reserved.
           </p>
         </div>

@@ -100,11 +100,14 @@ export default function Navbar() {
 
         <div className="absolute left-1/2 transform -translate-x-1/2">
           <Image
-            src={"/images/home/logo.svg"}
+            src={"/images/home/KCLogo.png"}
             height={100}
             width={400}
             alt="logo"
-            className="h-[9.7rem] w-[8rem] cursor-pointer"
+            className="h-[9.5rem] w-[12rem] cursor-pointer object-contain"
+            style={{
+                   filter: "brightness(0.80)",
+                 }}
             onClick={handleNavigateHome}
           />
         </div>
@@ -123,13 +126,16 @@ export default function Navbar() {
       {/* Desktop Navbar */}
       <div className="hidden lg:flex items-center justify-between ">
         <Image
-          src={"/images/home/logo.svg"}
-          height={100}
-          width={400}
-          alt="logo"
-          className="h-[3.5rem] w-[12rem] cursor-pointer"
-          onClick={handleNavigateHome}
-        />
+                 src={"/images/home/KCLogo.png"}
+                 height={100}
+                 width={400}
+                 alt="logo"
+                 className="h-[3.5rem] w-[12rem] cursor-pointer "
+                 style={{
+                   filter: "brightness(0.80)",
+                 }}
+                 onClick={handleNavigateHome}
+               />
 
         <ul className="flex gap-8 text-lg font-semibold text-gray-700 mb-0">
           {navItems.map((item) => (

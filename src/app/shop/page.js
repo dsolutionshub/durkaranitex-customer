@@ -10,7 +10,7 @@ export const metadata = {
     "Elampillai sarees",
     "salem sarees",
     "semi silk sarees",
-    "dhurgarani tex",
+    "Kavya Creation",
   ],
 };
 

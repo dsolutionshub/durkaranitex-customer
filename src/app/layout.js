@@ -25,8 +25,8 @@ const mukta = Mukta({
 
 export const metadata = {
   title: {
-    default: "Dhurgarani Tex",
-    template: "%s | Dhurgarani Tex",
+    default: "Kavya Creation",
+    template: "%s | Kavya Creation",
   },
   description:
     "Shop a wide range of Silk Sarees, Cottonn Sarees with different type of varieties which made in Elampillai Salem, Also provided in best prices both Wholesale and Retail",
@@ -37,7 +37,11 @@ export const metadata = {
     "ELAMPILLAI Sarees",
   ],
   icons: {
-    icon: "/dhurgaraniFavicon.png",
+    icon: [
+      { url: "/KCF2.jpg", type: "image/jpeg" },
+    ],
+    shortcut: "/KCF2.jpg",
+    apple: "/KCF2.jpg",
   },
 };
 
@@ -59,7 +63,7 @@ export default async function RootLayout({ children }) {
             <ReactQueryProvider>
               <div className="site-wrap">
                 <Link
-                  href="https://api.whatsapp.com/send?phone=919952252964&text=Hi%2C%20I'm%20interested%20in%20your%20products"
+                  href="https://api.whatsapp.com/send?phone=917904749251&text=Hi%2C%20I'm%20interested%20in%20your%20products"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

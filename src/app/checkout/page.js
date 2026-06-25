@@ -183,11 +183,14 @@ export default function CheckoutPage() {
     <div className="min-h-screen py-1 md:mx-3 m-3 md:m-0">
       <div className="flex items-center justify-center mb-4">
         <Image
-          src={"/images/home/logo.svg"}
+          src={"/images/home/KCLogo.png"}
           height={100}
           width={400}
           alt="logo"
           className="h-[3.5rem] w-[12rem] cursor-pointer "
+          style={{
+            filter: "brightness(0.80)",
+          }}
           onClick={handleNavigateHome}
         />
       </div>

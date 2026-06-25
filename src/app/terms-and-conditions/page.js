@@ -364,11 +364,11 @@ const TermsAndConditions = () => {
               <div className="grid md:grid-cols-2 gap-1">
                 <div>
                   <p className="font-semibold text-gray-800">Email:</p>
-                  <p className="text-pink-600">dhuragaranitex@gmail.com</p>
+                  <p className="text-pink-600">kavyacreation1471@gmail.com</p>
                 </div>
                 <div>
                   <p className="font-semibold text-gray-800">Phone:</p>
-                  <p className="text-pink-600">+91 9952252964</p>
+                  <p className="text-pink-600">+91 7904749251</p>
                 </div>
               </div>
             </div>

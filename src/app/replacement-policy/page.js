@@ -117,7 +117,7 @@ const ReturnPolicy = () => {
                 const steps = [
                   {
                     title: "Contact Our Team",
-                    desc: "Email us at dhuragaranitex@gmail.com or call +91 98765 43210 to initiate your replacement request. Please have your order number ready.",
+                    desc: "Email us at kavyacreation1471@gmail.com or call +91 98765 43210 to initiate your replacement request. Please have your order number ready.",
                   },
                   {
                     title: "Quality Check & Approval",
@@ -228,12 +228,12 @@ const ReturnPolicy = () => {
                 <div className="flex items-center">
                   <span className="font-semibold text-gray-800">Email:</span>
                   <span className="ml-2 text-pink-600">
-                    dhuragaranitex@gmail.com
+                    kavyacreation1471@gmail.com
                   </span>
                 </div>
                 <div className="flex items-center">
                   <span className="font-semibold text-gray-800">Phone:</span>
-                  <span className="ml-2 text-pink-600">+91 9952252964</span>
+                  <span className="ml-2 text-pink-600">+91 7904749251</span>
                 </div>
               </div>
             </div>

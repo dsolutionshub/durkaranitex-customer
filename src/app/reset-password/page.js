@@ -76,12 +76,12 @@ function ChangePassword() {
               Reset Password
             </h5>
             <p className="text-sm text-gray-700">
-              Reset your password with Dhurgarani Tex.
+              Reset your password with Kavya Creation.
             </p>
           </div>
           <div className="absolute -bottom-6 left-6 w-16 h-16 rounded-full bg-white shadow flex items-center justify-center p-2">
             <Image
-              src={"/dhurgaraniFavicon.png"}
+              src={"/KCF2.jpg"}
               height={100}
               width={100}
               alt="logo"

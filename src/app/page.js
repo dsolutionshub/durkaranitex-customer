@@ -37,7 +37,7 @@
 //   return (
 //     <main>
 //       <div className="visually-hidden">
-//         <h1>Welcome to Dhurgarani Tex</h1>
+//         <h1>Welcome to Kavya Creation</h1>
 //         <p>
 //           We offer a premium selection of <strong>Elampillai sarees</strong>{" "}
 //           from Salem, Tamil Nadu. Explore our semi-silk, handloom, and
@@ -115,7 +115,7 @@ export default function Home() {
   return (
     <main>
       <div className="visually-hidden">
-        <h1>Welcome to Dhurgarani Tex</h1>
+        <h1>Welcome to Kavya Creation</h1>
         <p>
           We offer a premium selection of <strong>Ellampillai sarees</strong>{" "}
           from Salem, Tamil Nadu. Explore our semi-silk, handloom, and

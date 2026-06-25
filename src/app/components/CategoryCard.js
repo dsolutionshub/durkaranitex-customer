@@ -96,23 +96,24 @@ const CompanyInfo = () => {
 
   return (
     <section className="py-8 bg-background">
-      <div className="container mx-auto px-2">
+      {/* <div className="container mx-auto px-2">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <div>
             <Image
               height={200}
               width={200}
-              src="/images/home/logo.svg"
+              src="/images/home/KCLogo.png"
               alt="logo"
               style={{
                 width: "13rem",
 
                 marginLeft: "-1rem",
+                filter: "brightness(0.80)",
               }}
             />
 
             <p className="font-medium text-gray-800">
-              For over two decades, Dhurgarani Tex has been crafting exquisite
+              For over two decades, Kavya Creation has been crafting exquisite
               traditional Indian wear that celebrates our rich heritage while
               embracing contemporary style. From handpicked fabrics to intricate
               embroidery, every piece tells a story of artisanal excellence..
@@ -178,7 +179,7 @@ const CompanyInfo = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </section>
   );
 };

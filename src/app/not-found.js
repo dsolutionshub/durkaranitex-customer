@@ -141,7 +141,7 @@ export default function NotFound() {
 
         {/* Footer Note */}
         <p className="mt-12 text-sm text-gray-500">
-          Lost? Let Dhurgarani Tex guide you back to elegance and style.
+          Lost? Let Kavya Creation guide you back to elegance and style.
         </p>
       </div>
     </div>
