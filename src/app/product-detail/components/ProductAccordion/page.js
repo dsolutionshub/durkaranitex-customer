@@ -32,7 +32,51 @@ export default function ProductAccordion({
   const { handleGetCartDetail, wishlistDetails, isCartOpen } =
     useCartPanelStore();
   const [showButtons, setShowButtons] = useState(true);
-  const [description, setDescription] = useState([]);
+  const [description, setDescription] = useState("");
+
+  const renderDescriptionHtml = (value) => {
+    if (typeof value === "string") {
+      const trimmed = value.trim();
+      const looksLikeJson =
+        (trimmed.startsWith("{") && trimmed.endsWith("}")) ||
+        (trimmed.startsWith("[") && trimmed.endsWith("]"));
+
+      if (looksLikeJson) {
+        try {
+          value = JSON.parse(trimmed);
+        } catch (error) {
+          // keep original string if parse fails
+        }
+      }
+    }
+
+    if (Array.isArray(value)) {
+      return value
+        .map(
+          (item) =>
+            `<p><strong>${item?.title || ""}</strong> ${
+              item?.description || ""
+            }</p>`
+        )
+        .join("");
+    }
+
+    if (value && typeof value === "object") {
+      return `<p><strong>${value?.title || ""}</strong> ${
+        value?.description || ""
+      }</p>`;
+    }
+
+    if (typeof value === "string") {
+      return value
+        .split(/\r?\n/)
+        .filter((line) => line.trim())
+        .map((line) => `<p>${line.trim()}</p>`)
+        .join("");
+    }
+
+    return "";
+  };
 
   async function handleLike() {
     loader(true);
@@ -60,15 +104,8 @@ export default function ProductAccordion({
       title: "Product Description",
       content: `
       <div style='border-top: 1px solid #ddd; padding-top: 10px; font-size: 14px; color: #01279;'>
-        ${description
-          ?.map(
-            (item) =>
-              `<p><strong>${item?.title || ""}</strong> ${
-                item?.description || ""
-              }</p>`
-          )
-          .join("")}
-          <p><strong>Disclaimer: </strong> Product color may slightly vary due to photographic lighting sources or your monitor settings</p>
+        ${renderDescriptionHtml(description)}
+        <p><strong>Disclaimer: </strong> Product color may slightly vary due to photographic lighting sources or your monitor settings</p>
       </div>`,
     },
     {
@@ -138,7 +175,7 @@ export default function ProductAccordion({
   };
 
   useEffect(() => {
-    setDescription(sections?.description || []);
+    setDescription(sections?.description || "");
   }, [sections]);
 
   useEffect(() => {
