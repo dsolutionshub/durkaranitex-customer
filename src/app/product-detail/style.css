@@ -73,14 +73,16 @@
   font-size: 14px;
   color: var(--gray-color);
   font-weight: 500;
+  padding: 0px 10px;
   @media screen and (max-width: 600px) {
     overflow: auto;
   }
 }
 
 .product-accordion-content.open {
-  max-height: 300px;
+  max-height: 2000px;
   opacity: 1;
+  padding: 10px 10px;
 }
 
 .product-accordion-content.closed {

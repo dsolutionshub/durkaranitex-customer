@@ -15,7 +15,7 @@ const About = () => {
             <Image
               height={100}
               width={100}
-              src="/images/home/banner_about.png"
+              src="/images/home/About-us.png"
               alt="Beautiful saree collection"
               className="w-full h-64 object-cover rounded-lg shadow-lg"
             />
@@ -40,7 +40,7 @@ const About = () => {
               <Image
                 height={100}
                 width={100}
-                src="/images/home/banner_about.png"
+                src="/images/home/About.png"
                 alt="Kavya Creation"
                 className="w-full h-64 object-cover rounded-lg mb-6"
               />
@@ -58,7 +58,7 @@ const About = () => {
                 </p>
 
                 {/* Google Maps Embed */}
-                <div className="w-full h-64">
+                {/* <div className="w-full h-64">
                   <iframe
                     title="Kavya Creation Location"
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.372387065994!2d78.009571!3d11.5948415!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3babe35d303e1d15%3A0xbb3f6971d3f74ddb!2sDhurgarani%20Tex!5e0!3m2!1sen!2sin!4v1718888888888!5m2!1sen!2sin"
@@ -69,7 +69,7 @@ const About = () => {
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
                   ></iframe>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
@@ -127,7 +127,7 @@ const About = () => {
             <Image
               height={100}
               width={100}
-              src="/images/home/our_story.png"
+              src="/images/home/About.png"
               alt="Traditional saree weaving"
               className="w-full h-64 object-cover rounded-lg shadow-lg"
             />

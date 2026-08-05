@@ -32,8 +32,8 @@ export default function ForgotPasswordModal({ onClose }) {
             </div>
 
             <div className="bg-green-100 text-green-800 text-sm p-4 rounded text-center mb-4">
-              If you had correctly entered an email associated with a Dhurgarani
-              Tex account, you will receive an email shortly. Please check your
+              If you had correctly entered an email associated with a kavya 
+              Creation account, you will receive an email shortly. Please check your
               email inbox to continue.
             </div>
 
