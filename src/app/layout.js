@@ -2,7 +2,7 @@ import Script from "next/script";
 import Link from "next/link";
 import { Mukta } from "next/font/google";
 import { PrimeReactProvider } from "primereact/api";
-import { Toaster } from "react-hot-toast";
+import BazaroToaster from "./components/toast/BazaroToaster";
 import { getServerSession } from "next-auth/next";
 
 import ClientLayout from "./ClientLayout";
@@ -11,7 +11,6 @@ import { ReactQueryProvider } from "./QueryClientProvider ";
 import ToastManager from "./components/toast/ToastManager";
 import Loader from "./components/loader/loader";
 import ScrollProgress from "./components/ScrollProgress";
-import { TOAST_OPTIONS } from "./utils/constants";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./styles/style.css";
@@ -77,13 +76,7 @@ export default async function RootLayout({ children }) {
               </div>
               <Loader />
               <ScrollProgress />
-              <Toaster
-                position="top-center"
-                reverseOrder={false}
-                toastOptions={TOAST_OPTIONS}
-                pauseOnHover={false}
-                pauseOnFocusLoss={false}
-              />
+              <BazaroToaster />
               <ToastManager />
             </ClientLayout>
           </ReactQueryProvider>

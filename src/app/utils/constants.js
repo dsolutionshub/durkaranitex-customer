@@ -19,30 +19,26 @@ export const COD_SUCCESS_MSG = "Order placed successfully (Cash on Delivery)";
 export const SELECT_ADDRESS_ERROR_MSG = "Please Select or Add Address";
 export const PAYMENT_METHOD = "Please Select payment method";
 
-// toastConfig
+// toastConfig — Bazaro fashion-v3 palette
 export const TOAST_OPTIONS = {
+  duration: 2000,
+  style: {
+    background: "transparent",
+    boxShadow: "none",
+    padding: 0,
+    color: "#141414",
+  },
   success: {
-    style: {
-      background: "#ecfdf5",
-      color: "#065f46",
-      border: "1px solid #a7f3d0",
-    },
     iconTheme: {
-      primary: "#34d399",
-      secondary: "#ecfdf5",
+      primary: "#ffffff",
+      secondary: "#9c362d",
     },
   },
   error: {
     duration: 2000,
-    style: {
-      background: "#fef2f2",
-      color: "#991b1b",
-      border: "1px solid #fecaca",
-    },
     iconTheme: {
-      primary: "#f87171",
-      secondary: "#fef2f2",
+      primary: "#ffffff",
+      secondary: "#de1518",
     },
   },
-  duration: 2000,
 };

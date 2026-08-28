@@ -1,9 +1,39 @@
 "use client";
+
 import { useEffect } from "react";
-import { CheckCircle, AlertCircle } from "lucide-react";
+
+import "./toaster.css";
+
+function SuccessIcon() {
+  return (
+    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path
+        d="M3.2 8.2L6.4 11.2L12.8 4.8"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function ErrorIcon() {
+  return (
+    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path
+        d="M4.2 4.2L11.8 11.8M11.8 4.2L4.2 11.8"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
 
 export default function Toast({ message, show, onClose, type = "success" }) {
   const isSuccess = type === "success";
+
   useEffect(() => {
     if (show) {
       const timer = setTimeout(() => {
@@ -16,40 +46,19 @@ export default function Toast({ message, show, onClose, type = "success" }) {
   if (!show) return null;
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        top: "1rem",
-        left: "50%",
-        transform: "translateX(-50%)",
-        zIndex: 9999,
-        width: "100%",
-        maxWidth: "90vw",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
+    <div className="aq-toast-host">
       <div
-        className={`flex items-center justify-center gap-2 px-4 py-2 rounded shadow-lg`}
-        style={{
-          border: "1px solid",
-          borderColor: isSuccess ? "#bbf7d0" : "#fecaca",
-          boxShadow: isSuccess
-            ? "0 2px 8px rgba(34, 197, 94, 0.1)"
-            : "0 2px 8px rgba(239, 68, 68, 0.1)",
-          background: isSuccess ? "#ecfdf5" : "#fef2f2",
-          color: isSuccess ? "#065f46" : "#991b1b",
-          maxWidth: "450px",
-          width: "100%",
-        }}
+        className={`aq-toast aq-toast--${isSuccess ? "success" : "error"}`}
+        role="status"
       >
-        {isSuccess ? (
-          <CheckCircle className="text-xl text-[var(--primary-main)]" />
-        ) : (
-          <AlertCircle className="text-xl text-red-600" />
-        )}
-        <span>{message}</span>
+        <span className="aq-toast-icon" aria-hidden="true">
+          {isSuccess ? <SuccessIcon /> : <ErrorIcon />}
+        </span>
+        <div className="aq-toast-message">{message}</div>
+        <button type="button" className="aq-toast-close" onClick={onClose} aria-label="Close">
+          ×
+        </button>
+        <span className="aq-toast-progress" />
       </div>
     </div>
   );

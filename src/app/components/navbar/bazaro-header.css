@@ -486,7 +486,7 @@
 }
 @media only screen and (min-width: 992px) and (max-width: 1199px), only screen and (min-width: 768px) and (max-width: 991px), (max-width: 767px) {
   .aq-header-logo {
-    padding: 10px 8px;
+    padding: 0 8px;
   }
 }
 .aq-header-bottom-bdr {
@@ -900,7 +900,7 @@
   }
   .aq-header-logo img {
     width: 220px;
-    max-height: 60px;
+    max-height: 56px;
   }
   .aq-header-right-options {
     padding-inline-end: 6px;
@@ -912,8 +912,8 @@
 
 @media (max-width: 575px) {
   .aq-header-logo img {
-    width: 200px;
-    max-height: 54px;
+    width: 196px;
+    max-height: 50px;
   }
   .aq-header-right-options > ul > li:not(:last-child) {
     margin-inline-end: 10px;

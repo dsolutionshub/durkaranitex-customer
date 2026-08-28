@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import toast from "react-hot-toast";
 import Link from "next/link";
 import Image from "next/image";
@@ -37,19 +37,31 @@ const SORT_OPTIONS = [
 
 const LAYOUTS = ["list", "col-6", "col-4", "col-3", "col-2"];
 
-function useDebounce(value, delay = 1000, setCurrentPage) {
+function useDebounce(value, delay = 1000) {
   const [debouncedValue, setDebouncedValue] = useState(value);
 
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedValue(value);
-      setCurrentPage(1);
     }, delay);
 
     return () => clearTimeout(handler);
-  }, [value, delay, setCurrentPage]);
+  }, [value, delay]);
 
   return debouncedValue;
+}
+
+function pageFromSearchParams(searchParams) {
+  const parsed = parseInt(searchParams.get("page"), 10);
+  if (!Number.isFinite(parsed) || parsed < 1) {
+    return 1;
+  }
+  return parsed;
+}
+
+function pushShopQuery(router, params) {
+  const qs = params.toString();
+  router.push(qs ? `?${qs}` : "/shop");
 }
 
 function LayoutIcon({ layout }) {
@@ -107,18 +119,19 @@ function Product() {
   const [priceRange, setPriceRange] = useState({});
   const [sortOption, setSortOption] = useState("Sort by All");
   const [sortedProducts, setSortedProducts] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
   const [productList, setProductList] = useState(null);
   const { data: categoryList = {} } = useCategoryList();
   const [openFilter, setOpenFilter] = useState(false);
   const [totalPage, setTotalPage] = useState(0);
   const [totalProducts, setTotalProducts] = useState(0);
   const [search, setSearch] = useState(urlSearch);
-  const [selectedCat, setSelectedCat] = useState("New Arrival");
+  const [selectedCat, setSelectedCat] = useState("Explore the Full Collection");
   const [layout, setLayout] = useState("col-3");
   const [wishlistMap, setWishlistMap] = useState({});
 
-  const debouncedSearch = useDebounce(search, 1000, setCurrentPage);
+  const currentPage = pageFromSearchParams(searchParams);
+  const debouncedSearch = useDebounce(search, 1000);
+  const prevSearchRef = useRef(debouncedSearch);
   const [filtersInitialized, setFiltersInitialized] = useState(false);
 
   useEffect(() => {
@@ -134,7 +147,8 @@ function Product() {
     const params = new URLSearchParams(window.location.search);
     params.set("priceMin", range.min || 0);
     params.set("priceMax", range.max || 0);
-    router.push(`?${params.toString()}`);
+    params.delete("page");
+    pushShopQuery(router, params);
   };
 
   const productDetails = useCallback(
@@ -188,8 +202,17 @@ function Product() {
   }, [openFilter]);
 
   useEffect(() => {
-    setCurrentPage(1);
-  }, [selectedCategories, priceRange]);
+    if (prevSearchRef.current === debouncedSearch) {
+      return;
+    }
+    prevSearchRef.current = debouncedSearch;
+    const params = new URLSearchParams(window.location.search);
+    if (!params.has("page")) {
+      return;
+    }
+    params.delete("page");
+    pushShopQuery(router, params);
+  }, [debouncedSearch, router]);
 
   useEffect(() => {
     if (!filtersInitialized) return;
@@ -229,7 +252,10 @@ function Product() {
     } catch (error) {
       const status = error?.response?.status;
       if (status === 401) {
-        sessionStorage.setItem("postLoginRedirect", "/shop");
+        sessionStorage.setItem(
+          "postLoginRedirect",
+          `/shop${searchParams.toString() ? `?${searchParams.toString()}` : ""}`
+        );
         router.push("/login");
         toast.error(LOGIN_ERROR_MSG);
         return;
@@ -249,7 +275,10 @@ function Product() {
     } catch (error) {
       const status = error?.response?.status;
       if (status === 401) {
-        sessionStorage.setItem("postLoginRedirect", "/shop");
+        sessionStorage.setItem(
+          "postLoginRedirect",
+          `/shop${searchParams.toString() ? `?${searchParams.toString()}` : ""}`
+        );
         router.push("/login");
         toast.error(LOGIN_ERROR_MSG);
         return;
@@ -275,7 +304,8 @@ function Product() {
     } else {
       params.delete("categories");
     }
-    router.push(`?${params.toString()}`);
+    params.delete("page");
+    pushShopQuery(router, params);
   };
 
   const handleCategoryChip = (categoryId) => {
@@ -285,7 +315,14 @@ function Product() {
     handleCheckbox(next);
   };
 
-  const scrollToTop = () => {
+  const goToPage = (page) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (!page || page <= 1) {
+      params.delete("page");
+    } else {
+      params.set("page", String(page));
+    }
+    pushShopQuery(router, params);
     window.scrollTo({
       top: 0,
       behavior: "smooth",
@@ -310,10 +347,7 @@ function Product() {
   }, []);
 
   useEffect(() => {
-    const queryString = searchParams.toString();
-    if (queryString) {
-      sessionStorage.setItem("shopQueryParams", queryString);
-    }
+    sessionStorage.setItem("shopQueryParams", searchParams.toString());
   }, [searchParams]);
 
   useEffect(() => {
@@ -324,9 +358,9 @@ function Product() {
       const matchedCategory = categoryList.categories.find(
         (cat) => String(cat.id).trim() === String(selectedCategories[0]).trim()
       );
-      setSelectedCat(matchedCategory?.name || "New Arrival");
+      setSelectedCat(matchedCategory?.name || "Explore the Full Collection");
     } else {
-      setSelectedCat("New Arrival");
+      setSelectedCat("Explore the Full Collection");
     }
   }, [categoryList, selectedCategories]);
 
@@ -355,7 +389,11 @@ function Product() {
                 </div>
                 <div className="aq-breadcrumb-content">
                   <h2 className="aq-breadcrumb-title fs-44">{selectedCat}</h2>
-                  <p>Shop through our latest selection of Fashion</p>
+                  <p>
+                    {selectedCategories.length === 1
+                      ? "Handpicked weaves from this collection — for everyday wear, festive days, and everything in between."
+                      : "Authentic silk and cotton sarees from every collection, gathered in one shop so you can find the piece that feels right."}
+                  </p>
                 </div>
               </div>
             </div>
@@ -364,7 +402,7 @@ function Product() {
       </div>
 
       {categories.length > 0 && (
-        <div className="aqf-categories-area inner-categories-style pt-80">
+        <div className="aqf-categories-area inner-categories-style">
           <div className="container">
             <Swiper
               className="aqf-categories-active"
@@ -546,10 +584,7 @@ function Product() {
                             ) : (
                               <button
                                 type="button"
-                                onClick={() => {
-                                  scrollToTop();
-                                  setCurrentPage(page);
-                                }}
+                                onClick={() => goToPage(page)}
                               >
                                 {page}
                               </button>
@@ -560,10 +595,7 @@ function Product() {
                           <li>
                             <button
                               type="button"
-                              onClick={() => {
-                                scrollToTop();
-                                setCurrentPage(currentPage + 1);
-                              }}
+                              onClick={() => goToPage(currentPage + 1)}
                             >
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
