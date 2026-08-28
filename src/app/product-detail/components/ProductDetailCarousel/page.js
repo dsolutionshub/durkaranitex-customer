@@ -1,107 +1,103 @@
 "use client";
-import Carousel from "react-bootstrap/Carousel";
-import Image from "next/image";
-import { FaSearchMinus, FaSearchPlus } from "react-icons/fa";
 
-import "../../style.css";
+import Image from "next/image";
 
 export default function ImageCarousel({
-  images,
+  images = [],
   selectedIndex,
   setSelectedIndex,
-  handleZoomToggle,
-  zoom,
   loading,
+  onZoom,
 }) {
+  const list = (images || []).filter((img) => img?.image);
+  const current = list[selectedIndex] || list[0];
+
+  const go = (direction) => {
+    if (!list.length) {
+      return;
+    }
+    const next = (selectedIndex + direction + list.length) % list.length;
+    setSelectedIndex(next);
+  };
+
+  if (loading) {
+    return (
+      <div className="product-slider-for-img" aria-hidden>
+        <span className="d-none">loading</span>
+      </div>
+    );
+  }
+
   return (
-    <>
-      {loading ? (
-        <div
-          className="carousel-wrapper animate-pulse image-container bg-gray-200 h-[300px] w-[300px] xl:h-[500px] xl:w-[500px] 
-                bg-gray-200 flex items-center justify-center"
-        >
-          <span className="d-none">yeiwuy</span>
-        </div>
-      ) : (
-        <div className="carousel-wrapper">
-          <Carousel
-            activeIndex={selectedIndex}
-            onSelect={(selected) => setSelectedIndex(selected)}
-            interval={null}
-            slide={false}
-            className="carousel"
-          >
-            {images?.map((img, index) =>
-              img?.image ? (
-                <Carousel.Item key={index}>
-                  <div
-                    className="image-container"
-                    onDoubleClick={() => handleZoomToggle(index)}
+    <div className="product-details-slider-wrap aq-sticky-on">
+      <div className="row">
+        {list.length > 1 ? (
+          <div className="col-xl-2">
+            <div className="product-slider-nav slider-nav">
+              {list.map((img, index) => (
+                <button
+                  type="button"
+                  key={img?.id || img?.image || index}
+                  className={`product-slider-nav-img${
+                    index === selectedIndex ? " is-current" : ""
+                  }`}
+                  onClick={() => setSelectedIndex(index)}
+                >
+                  <Image
+                    src={img.image}
+                    alt=""
+                    width={85}
+                    height={135}
+                  />
+                </button>
+              ))}
+            </div>
+          </div>
+        ) : null}
+        <div className={list.length > 1 ? "col-xl-10" : "col-xl-12"}>
+          <div className="product-slider-main-wrap p-relative">
+            <div className="product-slider-main slider-for p-relative">
+              <div className="product-slider-for-img">
+                {current?.image ? (
+                  <a
+                    className="popup-image"
+                    href={current.image}
+                    onClick={(event) => {
+                      event.preventDefault();
+                      onZoom?.(current.image);
+                    }}
                   >
                     <Image
-                      src={img?.image}
-                      alt={`Image ${img.id}`}
-                      width={500}
-                      height={500}
-                      className={`carousel-image ${
-                        zoom === index ? "zoomed" : ""
-                      }`}
+                      src={current.image}
+                      alt="Product"
+                      width={580}
+                      height={780}
                     />
-
-                    <div className="zoom-icon-wrapper">
-                      {zoom === index ? (
-                        <FaSearchMinus className="zoom-icon" />
-                      ) : (
-                        <FaSearchPlus className="zoom-icon" />
-                      )}
-                    </div>
-                  </div>
-                </Carousel.Item>
-              ) : (
-                <Carousel.Item key={index}>
-                  <div
-                    className="h-[300px] w-[300px] xl:h-[500px] xl:w-[500px] 
-                bg-gray-200 flex items-center justify-center"
-                  >
+                  </a>
+                ) : (
+                  <div className="d-flex h-100 w-100 align-items-center justify-content-center">
                     No Image
                   </div>
-                </Carousel.Item>
-              )
-            )}
-          </Carousel>
-        </div>
-      )}
-
-      {images?.length > 1 && !loading && (
-        <div className="flex md:flex-row md:gap-2 lg:gap-12 mt-4 space-x-2 md:space-x-0 md:space-y-2 mb-3 md:mb-0">
-          {images?.map((img, index) => (
-            <div
-              key={index}
-              className={`overflow-hidden cursor-pointer ${
-                index === selectedIndex ? "border-blue-500" : ""
-              }`}
-              onClick={() => setSelectedIndex(index)}
-            >
-              {img.image ? (
-                <Image
-                  src={img.image}
-                  alt="Thumbnail"
-                  width={80}
-                  height={80}
-                  className="object-cover border rounded-lg"
-                />
-              ) : (
-                <div
-                  className="h-[70px] w-[70px] md:h-[80px] md:w-[80px] flex items-center 
-              justify-center dark-color text-sx bg-gray-200"
-                >
-                  No Image
-                </div>
-              )}
+                )}
+              </div>
             </div>
-          ))}
+            {list.length > 1 && (
+              <div className="product-slider-arrow">
+                <button type="button" onClick={() => go(-1)} aria-label="Previous">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="7" height="12" viewBox="0 0 7 12" fill="none">
+                    <path d="M5.75 10.75L0.75 5.75L5.75 0.75" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+                <button type="button" className="slick-next" onClick={() => go(1)} aria-label="Next">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="7" height="12" viewBox="0 0 7 12" fill="none">
+                    <path d="M0.75 10.75L5.75 5.75L0.75 0.75" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+              </div>
+            )}
+          </div>
         </div>
-      )}
-    </>
+      </div>
+    </div>
   );
 }

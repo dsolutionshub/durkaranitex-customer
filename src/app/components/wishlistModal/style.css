@@ -1,0 +1,288 @@
+/* Minimum Bazaro wishlist popup CSS extracted from bazaro/assets/css/main.css */
+
+.aq-wishlist-popup.aq-wishlist-popup-wrap {
+  position: fixed;
+  top: 55%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  width: min(800px, calc(100vw - 32px));
+  max-width: min(800px, calc(100vw - 32px));
+  height: auto;
+  margin: 0;
+  opacity: 0;
+  z-index: 99999980;
+  visibility: hidden;
+  pointer-events: none;
+  overflow: visible;
+  transition: 0.45s ease-in-out;
+  transform: translate(-50%, -50%);
+  font-family: "Satoshi", sans-serif;
+  color: var(--aq-common-black, #141414);
+  background-color: var(--aq-common-white, #fff);
+}
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .aq-wishlist-popup.aq-wishlist-popup-wrap {
+    width: min(700px, calc(100vw - 32px));
+    max-width: 700px;
+  }
+}
+@media (max-width: 767px) {
+  .aq-wishlist-popup.aq-wishlist-popup-wrap {
+    width: calc(100vw - 32px);
+    max-width: 550px;
+  }
+}
+.aq-wishlist-popup.aq-wishlist-active.opened {
+  top: 50%;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate(-50%, -50%);
+}
+.aq-wishlist-popup-top {
+  padding: 10px 30px;
+  background-color: var(--aq-common-black, #141414);
+}
+.aq-wishlist-popup-bottom {
+  padding: 19px 30px;
+  background-color: #f5f5f5;
+}
+.aq-wishlist-popup-bottom a,
+.aq-wishlist-popup-bottom button {
+  line-height: 1.3;
+  display: inline-block;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--aq-common-black, #141414);
+  text-transform: uppercase;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0;
+  font-family: "Onest", sans-serif;
+}
+.aq-wishlist-popup-middle {
+  padding: 30px;
+  max-height: min(480px, calc(100vh - 220px));
+  overflow: hidden;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.aq-wishlist-popup-item:not(:last-child) {
+  margin-bottom: 10px;
+}
+@media (max-width: 767px) {
+  .aq-wishlist-popup-item {
+    flex-wrap: wrap;
+  }
+}
+.aq-wishlist-popup-thumb {
+  cursor: pointer;
+  gap: 12px;
+}
+
+.aq-wishlist-popup-thumb button {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+}
+
+.aq-wishlist-popup-thumb img {
+  width: 80px;
+  height: 95px;
+  object-fit: cover;
+  margin-inline-end: 0;
+  background-color: var(--aq-gray-5, #f5f5f5);
+}
+.aq-wishlist-popup-thumb-info {
+  padding-inline-end: 30px;
+}
+@media (max-width: 767px) {
+  .aq-wishlist-popup-thumb-wrap {
+    margin-bottom: 15px;
+  }
+  .aq-wishlist-popup-thumb-info {
+    padding-inline-end: 0;
+  }
+}
+.aq-wishlist-popup-remove {
+  position: relative;
+  cursor: pointer;
+  margin-inline-end: 12px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  overflow: visible;
+  line-height: 1;
+  color: rgba(15, 15, 15, 0.55);
+  transition: all 0.3s ease-out;
+}
+.aq-wishlist-popup-remove svg {
+  display: block;
+  width: 18px;
+  height: 18px;
+}
+.aq-wishlist-popup-remove:hover {
+  color: var(--aq-common-red, #de1518);
+}
+.aq-wishlist-popup-remove .aq-tooltip-item {
+  position: absolute;
+  top: 50%;
+  inset-inline-start: calc(100% + 8px);
+  inset-inline-end: auto;
+  opacity: 0;
+  z-index: 5;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 1;
+  padding: 6px 8px;
+  border-radius: 4px;
+  width: max-content;
+  visibility: hidden;
+  pointer-events: none;
+  color: #fff;
+  font-family: "Satoshi", sans-serif;
+  background-color: #141414;
+  transform: translateY(-50%) translateX(-6px);
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+}
+.aq-wishlist-popup-remove .aq-tooltip-item::before {
+  position: absolute;
+  content: "";
+  top: 50%;
+  inset-inline-end: 100%;
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-right: 5px solid #141414;
+  transform: translateY(-50%);
+}
+.aq-wishlist-popup-remove:hover .aq-tooltip-item,
+.aq-wishlist-popup-remove:focus-visible .aq-tooltip-item {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+.aq-wishlist-popup-title {
+  cursor: pointer;
+  margin: 0 0 6px;
+  font-weight: 500;
+  transition: all 0.3s ease-out;
+}
+.aq-wishlist-popup-title:hover,
+.aq-wishlist-popup-title button:hover {
+  color: var(--aq-common-red, #de1518);
+}
+.aq-wishlist-popup-title button {
+  color: inherit;
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  padding: 0;
+  text-align: start;
+  font: inherit;
+  cursor: pointer;
+}
+.aq-wishlist-popup-title,
+.aq-wishlist-popup-name,
+.aq-wishlist-popup-count {
+  font-size: 16px;
+  line-height: 1.1;
+  color: var(--aq-common-black, #141414);
+  font-family: "Onest", sans-serif;
+}
+.aq-wishlist-popup-price {
+  display: block;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.2;
+  color: rgba(1, 15, 28, 0.8);
+  font-family: "Onest", sans-serif;
+}
+.aq-wishlist-popup-name,
+.aq-wishlist-popup-count {
+  color: var(--aq-common-white, #fff);
+}
+.aq-wishlist-popup-text {
+  position: absolute;
+  bottom: 0;
+  inset-inline-start: 0;
+  width: 100%;
+  text-align: center;
+  padding: 17px 30px;
+  background-color: #e1eeb7;
+}
+.aq-wishlist-popup-text p {
+  margin-bottom: 0;
+  font-size: 16px;
+  line-height: 1.4;
+  color: var(--aq-common-black, #141414);
+  font-family: "Onest", sans-serif;
+}
+.aq-wishlist-popup-text p b {
+  font-weight: 700;
+}
+@media (max-width: 767px) {
+  .aq-wishlist-popup-text p {
+    font-size: 14px;
+  }
+}
+.aq-wishlist-popup-btn {
+  flex: 0 0 auto;
+}
+@media (max-width: 767px) {
+  .aq-wishlist-popup-btn {
+    width: 100%;
+    text-align: center;
+  }
+  .aq-wishlist-popup-btn .aq-btn-black {
+    width: 100%;
+  }
+}
+.aq-wishlist-close {
+  cursor: pointer;
+  font-size: 18px;
+  width: auto;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  transition: all 0.3s ease-out;
+  color: var(--aq-common-white, #fff);
+}
+.aq-wishlist-close svg {
+  width: 14px;
+  height: 14px;
+}
+.aq-wishlist-close:hover {
+  color: var(--aq-common-white, #fff);
+  opacity: 0.8;
+}
+
+.aq-wishlist-popup-empty {
+  text-align: center;
+  padding: 20px 0;
+  margin: 0;
+  font-size: 16px;
+  color: var(--aq-common-black, #141414);
+  font-family: "Onest", sans-serif;
+}
+
+.aq-wishlist-popup-btn .aq-btn-black.btn-h-40 {
+  padding: 13px 22px;
+  border-radius: 0;
+}
+
+.aq-wishlist-popup-oos {
+  opacity: 0.4;
+  pointer-events: none;
+}

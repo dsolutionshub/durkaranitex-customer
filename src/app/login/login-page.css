@@ -1,0 +1,620 @@
+/* Bazaro login / register / auth modal — scoped to avoid Tailwind spacing clashes */
+
+.aq-auth-page,
+.aq-login-modal-style {
+  --aq-ff-satoshi-regular: "Satoshi", sans-serif;
+  --aq-ff-satoshi-medium: "Satoshi", sans-serif;
+  --aq-ff-satoshi-bold: "Satoshi", sans-serif;
+  --aq-common-white: #ffffff;
+  --aq-common-black: #141414;
+}
+
+.aq-auth-page .aq-login-ptb {
+  padding: 100px 0;
+}
+
+@media (max-width: 767px) {
+  .aq-auth-page .aq-login-ptb {
+    padding: 50px 0;
+  }
+}
+
+.aq-auth-page .aq-auth-mb-10,
+.aq-login-modal-style .aq-auth-mb-10 {
+  margin-bottom: 10px;
+}
+
+.aq-auth-page .aq-auth-mb-15,
+.aq-login-modal-style .aq-auth-mb-15 {
+  margin-bottom: 15px;
+}
+
+.aq-auth-page .aq-auth-mb-20,
+.aq-login-modal-style .aq-auth-mb-20 {
+  margin-bottom: 20px;
+}
+
+.aq-auth-page .aq-auth-mb-30,
+.aq-login-modal-style .aq-auth-mb-30 {
+  margin-bottom: 30px;
+}
+
+.aq-auth-page .aq-login-wrapper,
+.aq-login-modal-style .aq-login-wrapper {
+  padding: 40px;
+  border-radius: 16px;
+  padding-bottom: 35px;
+  background: var(--aq-common-white);
+  box-shadow: 0 30px 70px 0 rgba(1, 15, 28, 0.1);
+}
+
+.aq-auth-page .aq-login-title,
+.aq-login-modal-style .aq-login-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--aq-common-black);
+  font-family: var(--aq-ff-satoshi-medium);
+}
+
+.aq-auth-page .aq-login-top p,
+.aq-login-modal-style .aq-login-top p {
+  font-size: 16px;
+  font-weight: 400;
+  color: #49535b;
+  margin-bottom: 0;
+  font-family: var(--aq-ff-satoshi-regular);
+}
+
+.aq-auth-page .aq-form-label,
+.aq-login-modal-style .aq-form-label {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  margin-bottom: 12px;
+  display: block;
+  color: var(--aq-common-black);
+  font-family: var(--aq-ff-satoshi-bold);
+}
+
+.aq-auth-page .aq-form-control,
+.aq-login-modal-style .aq-form-control {
+  height: 46px;
+  width: 100%;
+  outline: none;
+  font-size: 16px;
+  line-height: 46px;
+  border-radius: 6px;
+  padding-inline-start: 20px;
+  padding-inline-end: 60px;
+  border: 1px solid #f6f6f9;
+  color: var(--aq-common-black);
+  background-color: var(--aq-common-white);
+  box-shadow: 0 0 1px 0 rgba(20, 20, 20, 0.4);
+}
+
+.aq-auth-page .aq-form-control::placeholder,
+.aq-login-modal-style .aq-form-control::placeholder {
+  font-size: 16px;
+  color: #6e6e73;
+}
+
+.aq-auth-page .aq-form-control:focus,
+.aq-login-modal-style .aq-form-control:focus {
+  background-color: transparent;
+  border-color: var(--aq-common-black);
+}
+
+.aq-auth-page .aq-form-control:focus::placeholder,
+.aq-login-modal-style .aq-form-control:focus::placeholder {
+  opacity: 0;
+}
+
+.aq-auth-page .aq-form-checkbox,
+.aq-login-modal-style .aq-form-checkbox {
+  display: none;
+}
+
+.aq-auth-page .aq-form-checkbox:checked ~ label::before,
+.aq-login-modal-style .aq-form-checkbox:checked ~ label::before {
+  border-color: var(--aq-common-black);
+  background-color: var(--aq-common-black);
+}
+
+.aq-auth-page .aq-form-checkbox-label,
+.aq-login-modal-style .aq-form-checkbox-label {
+  z-index: 1;
+  font-size: 15px;
+  font-weight: 500;
+  color: #6e6e73;
+  position: relative;
+  padding-inline-start: 26px;
+  margin-bottom: 0;
+}
+
+.aq-auth-page .aq-form-checkbox-label::before,
+.aq-login-modal-style .aq-form-checkbox-label::before {
+  position: absolute;
+  content: "";
+  top: 4px;
+  inset-inline-start: 0;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  transition: all 0.4s ease;
+  border: 1px solid #d9d9d9;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 12px 10px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='9' viewBox='0 0 10 9' fill='none'%3E%3Cpath d='M0.750122 5.50012C0.750122 5.50012 2.35012 6.41265 3.15012 7.75012C3.15012 7.75012 5.55012 2.50012 8.75012 0.750122' stroke='%23ffffff' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-color: var(--aq-common-white);
+}
+
+.aq-auth-page .aq-form-checkbox-label:hover,
+.aq-login-modal-style .aq-form-checkbox-label:hover {
+  cursor: pointer;
+}
+
+.aq-auth-page .aq-login-input-wrapper,
+.aq-login-modal-style .aq-login-input-wrapper {
+  margin-bottom: 20px;
+}
+
+.aq-auth-page .aq-login-input-box,
+.aq-login-modal-style .aq-login-input-box {
+  position: relative;
+}
+
+.aq-auth-page .aq-login-input-box:not(:last-child),
+.aq-login-modal-style .aq-login-input-box:not(:last-child) {
+  margin-bottom: 15px;
+}
+
+.aq-auth-page .aq-login-input-eye,
+.aq-login-modal-style .aq-login-input-eye {
+  position: absolute;
+  inset-inline-end: 26px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #6e6e73;
+  line-height: 0;
+  cursor: pointer;
+}
+
+.aq-auth-page .aq-login-input-eye .open-eye,
+.aq-login-modal-style .aq-login-input-eye .open-eye {
+  display: none;
+}
+
+.aq-auth-page .aq-login-input.is-visible .open-eye,
+.aq-login-modal-style .aq-login-input.is-visible .open-eye {
+  display: inline-flex;
+}
+
+.aq-auth-page .aq-login-input.is-visible .close-eye,
+.aq-login-modal-style .aq-login-input.is-visible .close-eye {
+  display: none;
+}
+
+.aq-auth-page .aq-login-input-eye:hover span,
+.aq-login-modal-style .aq-login-input-eye:hover span {
+  color: var(--aq-common-black);
+}
+
+.aq-auth-page .aq-login-forgot a,
+.aq-auth-page .aq-login-forgot button,
+.aq-login-modal-style .aq-login-forgot a,
+.aq-login-modal-style .aq-login-forgot button {
+  font-size: 15px;
+  font-weight: 400;
+  display: inline-block;
+  position: relative;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--aq-common-black);
+}
+
+.aq-auth-page .aq-login-forgot a::after,
+.aq-auth-page .aq-login-forgot button::after,
+.aq-login-modal-style .aq-login-forgot a::after,
+.aq-login-modal-style .aq-login-forgot button::after {
+  position: absolute;
+  content: "";
+  inset-inline-start: auto;
+  inset-inline-end: 0;
+  bottom: 4px;
+  width: 0%;
+  height: 1px;
+  transition: 0.3s;
+  background-color: #b91d1f;
+}
+
+.aq-auth-page .aq-login-forgot a:hover,
+.aq-auth-page .aq-login-forgot button:hover,
+.aq-login-modal-style .aq-login-forgot a:hover,
+.aq-login-modal-style .aq-login-forgot button:hover {
+  color: #b91d1f;
+}
+
+.aq-auth-page .aq-login-forgot a:hover::after,
+.aq-auth-page .aq-login-forgot button:hover::after,
+.aq-login-modal-style .aq-login-forgot a:hover::after,
+.aq-login-modal-style .aq-login-forgot button:hover::after {
+  inset-inline-start: 0;
+  inset-inline-end: auto;
+  width: 100%;
+}
+
+.aq-auth-page .aq-login-btn,
+.aq-login-modal-style .aq-login-btn {
+  position: relative;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 9px 30px;
+  text-align: center;
+  border-radius: 6px;
+  display: inline-block;
+  color: var(--aq-common-white);
+  border: 1px solid transparent;
+  background-color: #010f1c;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.aq-auth-page .aq-login-btn.w-100,
+.aq-login-modal-style .aq-login-btn.w-100 {
+  display: block;
+  width: 100%;
+}
+
+.aq-auth-page .aq-login-btn.btn-transparent,
+.aq-login-modal-style .aq-login-btn.btn-transparent {
+  border: 1px solid #bfbfbf;
+  color: var(--aq-common-black);
+  background-color: transparent;
+}
+
+.aq-auth-page .aq-login-btn:hover,
+.aq-login-modal-style .aq-login-btn:hover {
+  color: #fff;
+  border-color: #b91d1f;
+  background-color: #b91d1f;
+}
+
+.aq-auth-page .aq-login-account,
+.aq-login-modal-style .aq-login-account {
+  font-size: 16px;
+  text-decoration: underline;
+  color: var(--aq-common-black);
+}
+
+.aq-auth-page .aq-login-account a,
+.aq-auth-page .aq-login-account button,
+.aq-login-modal-style .aq-login-account a,
+.aq-login-modal-style .aq-login-account button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-decoration: underline;
+  color: inherit;
+  cursor: pointer;
+}
+
+.aq-auth-page .aq-login-account:hover a,
+.aq-auth-page .aq-login-account:hover button,
+.aq-login-modal-style .aq-login-account:hover a,
+.aq-login-modal-style .aq-login-account:hover button {
+  color: #b91d1f;
+}
+
+.aq-auth-page .aq-login-mail,
+.aq-login-modal-style .aq-login-mail {
+  position: relative;
+  z-index: 1;
+}
+
+.aq-auth-page .aq-login-mail p,
+.aq-login-modal-style .aq-login-mail p {
+  font-size: 15px;
+  font-weight: 400;
+  color: #49535b;
+  margin-bottom: 0;
+  padding: 0 20px;
+  position: relative;
+  display: inline-block;
+  background-color: var(--aq-common-white);
+  font-family: var(--aq-ff-satoshi-regular);
+}
+
+.aq-auth-page .aq-login-mail::after,
+.aq-login-modal-style .aq-login-mail::after {
+  inset-inline-start: 0;
+  inset-inline-end: 0;
+  content: "";
+  bottom: 12px;
+  width: 100%;
+  height: 1px;
+  z-index: -1;
+  position: absolute;
+  background-color: #c6c6c6;
+}
+
+.aq-auth-page .aq-login-option-item,
+.aq-login-modal-style .aq-login-option-item {
+  margin-bottom: 10px;
+}
+
+.aq-auth-page .aq-login-option-item:not(:last-child),
+.aq-login-modal-style .aq-login-option-item:not(:last-child) {
+  margin-inline-end: 10px;
+}
+
+.aq-auth-page .aq-login-option-item a,
+.aq-auth-page .aq-login-option-item button,
+.aq-login-modal-style .aq-login-option-item a,
+.aq-login-modal-style .aq-login-option-item button {
+  font-size: 16px;
+  width: 50px;
+  height: 50px;
+  border: 0;
+  padding: 0;
+  border-radius: 50%;
+  text-align: center;
+  display: inline-grid;
+  place-content: center;
+  background-color: #f6f6f9;
+  cursor: pointer;
+}
+
+.aq-auth-page .aq-login-option-item a:hover,
+.aq-auth-page .aq-login-option-item button:hover,
+.aq-login-modal-style .aq-login-option-item a:hover,
+.aq-login-modal-style .aq-login-option-item button:hover {
+  transform: translateY(-2px);
+}
+
+.aq-auth-page .aq-login-remeber,
+.aq-login-modal-style .aq-login-remeber {
+  display: flex;
+  align-items: center;
+}
+
+.aq-auth-page .aq-login-suggetions,
+.aq-login-modal-style .aq-login-suggetions {
+  gap: 12px;
+}
+
+.aq-auth-page .aq-login-field-error,
+.aq-login-modal-style .aq-login-field-error {
+  font-size: 13px;
+  color: #b91d1f;
+  margin-top: 6px;
+}
+
+.aq-auth-page .aq-login-box {
+  overflow: hidden;
+  border-radius: 16px;
+  border: 1px solid #e8eaeb;
+}
+
+.aq-auth-page .aq-login-account span,
+.aq-login-modal-style .aq-login-account span {
+  display: inline-flex;
+  vertical-align: middle;
+  margin-inline-end: 4px;
+}
+
+.aq-auth-page .aq-login-box .aq-login-thumb-wrap {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  min-height: 420px;
+  background-color: #f1efee;
+}
+
+.aq-auth-page .aq-login-box .aq-login-thumb-wrap.custom-hight {
+  height: 630px;
+}
+
+.aq-auth-page .aq-login-box .aq-login-thumb-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 16px 0 0 16px;
+}
+
+@media (max-width: 991px) {
+  .aq-auth-page .aq-login-box .aq-login-thumb-wrap,
+  .aq-auth-page .aq-login-box .aq-login-thumb-wrap.custom-hight {
+    height: 280px;
+    min-height: 280px;
+  }
+
+  .aq-auth-page .aq-login-box .aq-login-thumb-wrap img {
+    border-radius: 0 0 16px 16px;
+  }
+}
+
+.aq-auth-page .aq-login-box .aq-login-wrapper {
+  box-shadow: none;
+  padding: 40px 60px 25px;
+  background-color: transparent;
+}
+
+@media (max-width: 1199px) {
+  .aq-auth-page .aq-login-box .aq-login-wrapper {
+    padding: 40px 30px 25px;
+  }
+}
+
+.aq-auth-page .aq-auth-status {
+  text-align: center;
+  padding: 24px 0;
+}
+
+.aq-auth-page .aq-auth-status-spin {
+  width: 32px;
+  height: 32px;
+  margin: 0 auto 12px;
+  border: 4px solid #108910;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: aq-auth-spin 0.8s linear infinite;
+}
+
+@keyframes aq-auth-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.aq-auth-page .aq-auth-alert {
+  border-radius: 8px;
+  padding: 16px;
+  text-align: left;
+  margin-bottom: 16px;
+}
+
+.aq-auth-page .aq-auth-alert.error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+}
+
+.aq-auth-page .aq-auth-alert.success {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+}
+
+.aq-auth-page .aq-login-feature {
+  padding-top: 40px;
+}
+
+.aq-auth-page .aq-login-feature-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-around;
+  background-color: #9c362d;
+  border-radius: 0;
+  padding: 15px 20px;
+}
+
+.aq-auth-page .aq-login-feature-item {
+  display: flex;
+  align-items: center;
+  padding: 15px 24px;
+}
+
+.aq-auth-page .aq-login-feature-item:not(:first-of-type) {
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.aq-auth-page .aq-login-feature-icon {
+  width: 50px;
+  flex: 0 0 auto;
+  margin-inline-end: 16px;
+  color: #fff;
+  line-height: 0;
+}
+
+.aq-auth-page .aq-login-feature-item h4 {
+  font-size: 18px;
+  line-height: 1;
+  margin-bottom: 8px;
+  color: #fff;
+  font-family: var(--aq-ff-satoshi-bold);
+}
+
+.aq-auth-page .aq-login-feature-item p {
+  margin: 0;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+@media (max-width: 991px) {
+  .aq-auth-page .aq-login-feature-wrap {
+    justify-content: space-between;
+  }
+
+  .aq-auth-page .aq-login-feature-item {
+    width: 50%;
+  }
+
+  .aq-auth-page .aq-login-feature-item:not(:first-of-type) {
+    border-left: none;
+  }
+}
+
+@media (max-width: 575px) {
+  .aq-auth-page .aq-login-feature-item {
+    width: 100%;
+    padding: 12px 8px;
+  }
+}
+
+/* Sign-in modal */
+.aq-auth-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999990;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  overflow-y: auto;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.aq-login-modal-style .aq-auth-modal-dialog {
+  width: 100%;
+  max-width: 480px;
+  margin: auto;
+}
+
+.aq-login-modal-style .aq-auth-modal-content {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #fff;
+}
+
+.aq-login-modal-style .aq-auth-modal-close {
+  position: absolute;
+  top: 25px;
+  inset-inline-end: 25px;
+  width: 30px;
+  height: 30px;
+  z-index: 3;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  opacity: 0.7;
+  background: transparent
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23141414'%3E%3Cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707A1 1 0 0 1 .293.293z'/%3E%3C/svg%3E")
+    center / 12px no-repeat;
+}
+
+.aq-login-modal-style .aq-auth-modal-close:hover {
+  opacity: 1;
+}
+
+.aq-login-modal-style .aq-login-wrapper {
+  box-shadow: none;
+}
+
+body.aq-auth-modal-open {
+  overflow: hidden;
+}
+
+.aq-header-discount-item button.aq-line-anim {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+}

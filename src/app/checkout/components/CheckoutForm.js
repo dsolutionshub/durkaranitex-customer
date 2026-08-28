@@ -1,8 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { FiCreditCard } from "react-icons/fi";
-import { LiaRupeeSignSolid } from "react-icons/lia";
 
 import AddressCard from "./AddressCard";
 import { loader } from "@/app/components/loader/loaderManager";
@@ -14,20 +12,20 @@ import {
   getSelectAddress,
   updateCheckoutAddress,
 } from "@/app/api/services/authService";
-import CodItemCard from "./CodItemCard";
 
 export default function CheckoutForm({
   checkoutData,
-  selectedPayment,
-  setSelectedPayment,
   handleCheckoutList,
-  isAnyProductNotCodAvailable,
+  couponCode,
+  setCouponCode,
+  isCouponApplied,
+  handleApplyCoupon,
 }) {
   const [addressList, setAddressList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [addressDetail, setAddressDetail] = useState([]);
-  const [isOpen, setIsOpen] = useState(false);
+  const [showCoupon, setShowCoupon] = useState(false);
 
   const getAddressList = async () => {
     loader(true);
@@ -106,7 +104,88 @@ export default function CheckoutForm({
   }, []);
 
   return (
-    <div className="md:col-span-2 space-y-6">
+    <div>
+      <div className="aq-checkout-verify">
+        <div className="aq-checkout-verify-item">
+          {isCouponApplied ? (
+            <div className="aq-coupon-applied-card">
+              <div className="aq-coupon-applied-head">
+                <span className="aq-coupon-applied-icon" aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                    <circle cx="9" cy="9" r="8.25" stroke="currentColor" strokeWidth="1.5" />
+                    <path
+                      d="M5.25 9.15L7.8 11.7L12.75 6.6"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </span>
+                <div className="aq-coupon-applied-copy">
+                  <h4>Coupon Applied</h4>
+                  <p>
+                    Code:{" "}
+                    <strong>
+                      {couponCode || checkoutData?.coupon_info?.code}
+                    </strong>
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  className="aq-coupon-applied-remove"
+                  aria-label="Remove coupon"
+                  onClick={handleApplyCoupon}
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14" fill="none">
+                    <path
+                      d="M12.75 0.75L0.75 12.75M0.75 0.75L12.75 12.75"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <p className="aq-coupon-applied-save">
+                You saved Rs. {parseInt(checkoutData?.coupon_discount, 10) || 0}
+              </p>
+            </div>
+          ) : (
+            <>
+              <p className="aq-checkout-verify-reveal">
+                Have a coupon?{" "}
+                <button type="button" onClick={() => setShowCoupon((open) => !open)}>
+                  Click here to enter your code
+                </button>
+              </p>
+              {showCoupon ? (
+                <div className="aq-return-customer">
+                  <div className="aq-return-customer-input">
+                    <label htmlFor="checkout-coupon">Coupon Code :</label>
+                    <input
+                      id="checkout-coupon"
+                      type="text"
+                      placeholder="Coupon"
+                      value={couponCode}
+                      onChange={(e) => setCouponCode(e.target.value)}
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    className="aq-checkout-btn"
+                    disabled={couponCode === ""}
+                    onClick={handleApplyCoupon}
+                  >
+                    Apply
+                  </button>
+                </div>
+              ) : null}
+            </>
+          )}
+        </div>
+      </div>
+
       <AddressCard
         addressList={addressList}
         handleDeleteAddress={handleDeleteAddress}
@@ -115,112 +194,63 @@ export default function CheckoutForm({
         handleEditAddress={handleEditAddress}
         checkoutData={checkoutData}
       />
-      <div className="bg-white p-6 rounded-xl shadow">
-        <h3 className="text-medium text-black font-medium mb-4">
-          Select Payment Method
-        </h3>
-        <div className="space-y-4">
-          <div
-            className={
-              "flex items-center border rounded-md px-3 py-2 cursor-pointer hover:bg-gray-100"
-            }
-            onClick={() => setSelectedPayment("payNow")}
-          >
-            <input
-              type="radio"
-              name="payment"
-              checked={selectedPayment === "payNow"}
-              onChange={() => setSelectedPayment("payNow")}
-              className="accent-[var(--primary-main)] mr-3 scale-115 cursor-pointer"
-            />
-            <FiCreditCard className="mr-2 ml-1 text-gray-500" size={25} />
-            <div>
-              <p className="font-semibold m-0 text-dark h-5">Pay Now</p>
-              <p className="text-gray-500 m-0">
-                Pay securely online with credit/debit card
-              </p>
+
+      <div className="aq-checkout-guide">
+        {checkoutData?.address ? (
+          <div className="aq-checkout-guide-card">
+            <h4>Continue with this address</h4>
+            <p>
+              Your order will be delivered to{" "}
+              <strong>{checkoutData.address.name}</strong>,{" "}
+              {checkoutData.address.city}
+              {checkoutData.address?.state?.name
+                ? `, ${checkoutData.address.state.name}`
+                : ""}{" "}
+              - {checkoutData.address.pincode}.
+            </p>
+            <div className="aq-checkout-guide-actions">
+              {/* <a href="#aq-checkout-payment" className="aq-checkout-btn">
+                Continue to payment
+              </a> */}
+              <button
+                type="button"
+                className="aq-checkout-add-btn"
+                onClick={() => handleOpenModel("add")}
+              >
+                Add New Address
+              </button>
             </div>
           </div>
+        ) : (
+          <div className="aq-checkout-guide-card">
+            <h4>Select a delivery address</h4>
+            <p>Choose an address above or add a new one to continue checkout.</p>
+            <div className="aq-checkout-guide-actions">
+              <button
+                type="button"
+                className="aq-checkout-btn"
+                onClick={() => handleOpenModel("add")}
+              >
+                Add New Address
+              </button>
+            </div>
+          </div>
+        )}
 
-          {isAnyProductNotCodAvailable ? (
-            <div
-              className={`flex items-center border rounded-md px-3 py-2 hover:bg-gray-100
-              ${isAnyProductNotCodAvailable ? "bg-gray-100" : ""}`}
-            >
-              <input
-                checked={false}
-                type="radio"
-                name="payment"
-                className={`accent-[var(--primary-main)] mr-3 scale-115 pointer-events-none  ${
-                  isAnyProductNotCodAvailable ? "" : ""
-                }`}
-              />
-              <LiaRupeeSignSolid className="mr-2 text-gray-500" size={25} />
-              <div>
-                <p
-                  className={`font-semibold m-0 text-dark h-5  ${
-                    isAnyProductNotCodAvailable ? " opacity-60" : ""
-                  }`}
-                >
-                  Pay Later (Cash on Delivery)
-                </p>
-                <p
-                  className={`text-blue-500 font-semibold m-0 cursor-pointer text-blue-500 opacity-100  ${
-                    isAnyProductNotCodAvailable ? "" : ""
-                  }`}
-                >
-                  <span className="text-gray-500 font-normal cursor-default">
-                    {" "}
-                    Not available for a few or all items.
-                  </span>
-                  <span onClick={() => setIsOpen(true)}> View items</span>
-                </p>
-              </div>
-            </div>
-          ) : (
-            <div
-              className={`flex items-center border rounded-md px-3 py-2 cursor-pointer hover:bg-gray-100
-              ${
-                checkoutData?.delivery_fee?.isCodAvailable === false
-                  ? "bg-gray-200 pointer-events-none opacity-60"
-                  : ""
-              }`}
-              onClick={() => setSelectedPayment("payLater")}
-            >
-              <input
-                type="radio"
-                name="payment"
-                checked={selectedPayment === "payLater"}
-                onChange={() => setSelectedPayment("payLater")}
-                className="accent-[var(--primary-main)] mr-3 scale-115 cursor-pointer"
-              />
-              <LiaRupeeSignSolid className="mr-2 text-gray-500" size={25} />
-              <div>
-                <p className="font-semibold m-0 text-dark h-5">
-                  Pay Later (Cash on Delivery)
-                </p>
-                <p className="text-gray-500 m-0">
-                  ⚠️ COD available only for orders ≤ 5000 (incl. shipping)
-                </p>
-              </div>
-            </div>
-          )}
-
-          {selectedPayment === "payLater" && (
-            <div
-              className={
-                "flex items-center border rounded-md px-3 py-2.5 cursor-pointer bg-gray-100 "
-              }
-            >
-              <p className="text-black text-sm m-0">
-                For Cash on Delivery (COD) orders, shipping charges must be paid
-                upfront through our payment gateway. The remaining product
-                amount will be collected in cash at the time of delivery
-              </p>
-            </div>
-          )}
+        <div className="aq-checkout-guide-card">
+          <h4>Payment information</h4>
+          <ul>
+            <li>Pay Now is processed securely through Razorpay — UPI, cards, wallets, and net banking.</li>
+            <li>
+              For Cash on Delivery, shipping is paid now. The remaining product amount
+              is collected in cash at delivery (orders ≤ Rs. 5000).
+            </li>
+            <li>Replacement only. Orders are typically delivered in 1 day. No refunds.</li>
+            <li>Need help? Support is available Mon–Sat, 10am–7pm.</li>
+          </ul>
         </div>
       </div>
+
       <AddAdressModel
         isModalOpen={isModalOpen}
         handleCloseModel={handleCloseModel}
@@ -228,11 +258,6 @@ export default function CheckoutForm({
         getAddressList={getAddressList}
         addressDetail={addressDetail}
         handleCheckoutList={handleCheckoutList}
-      />{" "}
-      <CodItemCard
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-        checkoutData={checkoutData}
       />
     </div>
   );

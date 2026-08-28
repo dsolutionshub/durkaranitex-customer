@@ -5,13 +5,16 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { signOut, useSession } from "next-auth/react";
 
-import { User, Package, MapPin, LogOut } from "lucide-react";
-
 import OrderHistory from "./components/OrderHistory";
 import AccountDetails from "./components/AccountDetails";
 import AddressForm from "./components/Addresses";
+import DashboardSidebar, { DASHBOARD_MENU } from "./components/DashboardSidebar";
+import DashboardHome from "./components/DashboardHome";
+import SecurityPanel from "./components/SecurityPanel";
+import WishlistPanel from "./components/WishlistPanel";
+import EmptyPanel from "./components/EmptyPanel";
 
-import { getProfileInfo, logout } from "../api/services/authService";
+import { getProfileInfo, logout, getOrderList } from "../api/services/authService";
 import { getErrorMessage } from "../utils/helperFn";
 import { loader } from "../components/loader/loaderManager";
 import { useAuthStore } from "@/store/useAuthStore";
@@ -19,22 +22,41 @@ import { LOGIN_MSG } from "../utils/constants";
 import useCartPanelStore from "@/store/useCartPanelStore";
 import Loader from "../components/loader/loader";
 
-const tabs = [
-  { key: "account", label: "Account", Icon: User },
-  { key: "orders", label: "Order History", Icon: Package },
-  { key: "addresses", label: "Addresses", Icon: MapPin },
-  { key: "logout", label: "Log Out", Icon: LogOut },
+import "./account-page.css";
+
+const VALID_TABS = [
+  "dashboard",
+  "orders",
+  "downloads",
+  "invoices",
+  "returns",
+  "reviews",
+  "wishlist",
+  "offers",
+  "profile",
+  "security",
+  "addresses",
 ];
 
-const LogOutComponent = ({ handleLoggedOut }) => {
-  return (
-    <button
-      className="dark-color bg-red-700 rounded text-white hover:bg-red-600 px-3 py-1"
-      onClick={handleLoggedOut}
-    >
-      Logout
-    </button>
-  );
+const HIDDEN_TABS = DASHBOARD_MENU.filter((item) => item.hidden).map((item) => item.key);
+
+const EMPTY_COPY = {
+  downloads: {
+    title: "Downloads",
+    message: "You have no downloadable products yet.",
+  },
+  returns: {
+    title: "Order Return Request",
+    message: "You have not requested any returns.",
+  },
+  reviews: {
+    title: "Product Reviews",
+    message: "You have not written any reviews yet.",
+  },
+  offers: {
+    title: "Special Offers",
+    message: "There are no special offers on your account right now.",
+  },
 };
 
 export default function AccountPage() {
@@ -42,17 +64,15 @@ export default function AccountPage() {
   const { handleLogout, isLoggedIn } = useAuthStore();
   const { resetCart } = useCartPanelStore();
   const { data: session, status } = useSession();
-  const [selectedTab, setSelectedTab] = useState("account");
+  const [selectedTab, setSelectedTab] = useState("profile");
   const [profileInfo, setProfileInfo] = useState([]);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+  const [orderCount, setOrderCount] = useState(0);
 
-  // For Google sign-in users the backend always returns the admin user's profile.
-  // Ignore backend profileInfo entirely and use only the verified Google session data.
   const isGoogleSession = !!session?.user?.email;
   const displayProfile = isGoogleSession
     ? { name: session.user.name, email: session.user.email }
     : profileInfo;
-
 
   const handleLoggedOut = async () => {
     try {
@@ -67,9 +87,6 @@ export default function AccountPage() {
   };
 
   const handleProfileInfo = async () => {
-    // Skip the API call for Google sign-in users — the backend returns the
-    // wrong user's profile (admin) for all Google accounts. Display is
-    // built from the verified Google session data instead.
     if (isGoogleSession) return;
     loader(true);
     try {
@@ -77,8 +94,8 @@ export default function AccountPage() {
       setProfileInfo(customer || []);
     } catch (error) {
       const MSG = getErrorMessage(error);
-      const status = error.response.status;
-      if (status === 401) {
+      const errorStatus = error?.response?.status;
+      if (errorStatus === 401) {
         return;
       }
       toast.error(MSG);
@@ -87,29 +104,85 @@ export default function AccountPage() {
     }
   };
 
-  const renderContent = (selectedTab) => {
+  const handleSelect = (key) => {
+    if (key === "logout") {
+      handleLoggedOut();
+      return;
+    }
+    if (HIDDEN_TABS.includes(key)) {
+      return;
+    }
+    setSelectedTab(key);
+    sessionStorage.setItem("tab", key);
+    if (typeof window !== "undefined" && window.matchMedia("(max-width: 991px)").matches) {
+      window.requestAnimationFrame(() => {
+        document.getElementById("aq-dashboard-main")?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      });
+    }
+  };
+
+  const renderContent = () => {
     switch (selectedTab) {
+      case "dashboard":
+        return (
+          <DashboardHome
+            profile={displayProfile}
+            orderCount={orderCount}
+            onNavigate={handleSelect}
+          />
+        );
+      case "orders":
+        return <OrderHistory profile={displayProfile} />;
+      case "invoices":
+        return <OrderHistory profile={displayProfile} variant="invoices" />;
+      case "profile":
       case "account":
         return <AccountDetails data={displayProfile} />;
-      case "orders":
-        return <OrderHistory />;
       case "addresses":
         return <AddressForm />;
+      case "security":
+        return (
+          <SecurityPanel
+            email={displayProfile?.email}
+            onBack={() => handleSelect("dashboard")}
+          />
+        );
+      case "wishlist":
+        return <WishlistPanel />;
+      case "downloads":
+      case "returns":
+      case "reviews":
+      case "offers":
+        return (
+          <EmptyPanel
+            title={EMPTY_COPY[selectedTab].title}
+            message={EMPTY_COPY[selectedTab].message}
+          />
+        );
       default:
-        return <></>;
+        return <AccountDetails data={displayProfile} />;
     }
   };
 
   useEffect(() => {
     handleProfileInfo();
     const selectionTab = sessionStorage.getItem("tab");
-    if (selectionTab) {
-      setSelectedTab(selectionTab);
-      renderContent(selectionTab);
+    const mappedTab = selectionTab === "account" ? "profile" : selectionTab;
+    if (mappedTab && VALID_TABS.includes(mappedTab)) {
+      setSelectedTab(HIDDEN_TABS.includes(mappedTab) ? "dashboard" : mappedTab);
     }
+    getOrderList()
+      .then((data) =>
+        setOrderCount(
+          data?.cartOrderCount || data?.cartOrderProducts?.length || 0
+        )
+      )
+      .catch(() => {});
   }, []);
 
-  // Re-fetch profile for email/password users when token arrives late.
   useEffect(() => {
     if (isLoggedIn === true && !isGoogleSession && !profileInfo?.name) {
       handleProfileInfo();
@@ -138,8 +211,6 @@ export default function AccountPage() {
       return;
     }
 
-    // Authenticated via Google, token acquisition in progress (isLoggedIn is null, not false).
-    // Don't redirect — SessionSync will set the token and isLoggedIn will become true.
     if (status === "authenticated" && isLoggedIn !== false) return;
 
     toast.error(LOGIN_MSG);
@@ -155,126 +226,21 @@ export default function AccountPage() {
   }
 
   return (
-    <div className="px-4 py-10 min-h-screen">
-      <div className="max-w-6xl mx-auto flex flex-col gap-6">
-        <div>
-          <p className="text-2xl text-gray-700 text-center -translate-x-[-10px]">
-            Hello{" "}
-            <span className="text-3xl font-semibold">
-              {displayProfile?.name} 👋
-            </span>
-          </p>
-          <h1 className="text-3xl font-bold text-black text-center">
-            Great to see you again!
-          </h1>
-        </div>
-
-        <div className="flex flex-col md:flex-row gap-6">
-          {/* Side Menu */}
-          <div className="md:w-1/4 w-full d-none d-md-block">
-            <div className="bg-white/70 backdrop-blur-md rounded-2xl shadow-xl border border-white/20 p-6 account-tab h-full">
-              <div className="flex flex-wrap md:flex-col gap-3">
-                {tabs.map(({ key, label, Icon }) => {
-                  const isActive = selectedTab === key;
-                  return (
-                    <div
-                      key={key}
-                      className={`group relative flex items-center gap-2 p-4 rounded-xl cursor-pointer transition-all duration-300 transform hover:scale-105 ${
-                        isActive
-                          ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-lg shadow-blue-500/25"
-                          : "text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:text-blue-700"
-                      }`}
-                      onClick={() => {
-                        setSelectedTab(key);
-                        if (key === "logout") {
-                          handleLoggedOut();
-                        }
-                      }}
-                    >
-                      <div
-                        className={`p-1 rounded-lg transition-colors ${
-                          isActive
-                            ? "bg-white/20"
-                            : "bg-gray-100 group-hover:bg-blue-100"
-                        }`}
-                      >
-                        <Icon
-                          className={`w-4 h-4 sm:w-5 sm:h-5 ${
-                            isActive
-                              ? "text-white"
-                              : "text-gray-600 group-hover:text-blue-600"
-                          }`}
-                        />
-                      </div>
-                      <span className="font-medium text-sm">{label}</span>
-
-                      {isActive && (
-                        <div className="absolute right-[6px]">
-                          <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
+    <div className="aq-dashboard-page" data-bg-color="#F9F9F9">
+      <div className="aq-dashboard-ptb">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-3">
+              <DashboardSidebar
+                profile={displayProfile}
+                activeKey={selectedTab === "account" ? "profile" : selectedTab}
+                onSelect={handleSelect}
+              />
+            </div>
+            <div className="col-lg-9" id="aq-dashboard-main">
+              {renderContent()}
             </div>
           </div>
-
-          <div className="md:w-1/4 w-full d-md-none">
-            <div className="bg-white/70 backdrop-blur-md rounded-2xl shadow-xl border border-white/20 p-6 max-[640px]:p-3 h-full">
-              <div className="flex flex-wrap md:flex-col gap-3 max-[640px]:gap-1.5">
-                {tabs.map(({ key, label, Icon }) => {
-                  const isActive = selectedTab === key;
-                  return (
-                    <div
-                      key={key}
-                      className={`group relative flex items-center gap-2 max-[640px]:gap-1 
-              tab-item 
-              rounded-xl max-[640px]:rounded-md 
-              cursor-pointer transition-all duration-300 transform hover:scale-105 
-              ${
-                isActive
-                  ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-lg shadow-blue-500/25"
-                  : "text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:text-blue-700"
-              }`}
-                      onClick={() => {
-                        setSelectedTab(key);
-                        if (key === "logout") {
-                          handleLoggedOut();
-                        }
-                      }}
-                    >
-                      <div
-                        className={`p-1 max-[640px]:p-0.5 rounded-lg transition-colors ${
-                          isActive
-                            ? "bg-white/20"
-                            : "bg-gray-100 group-hover:bg-blue-100"
-                        }`}
-                      >
-                        <Icon
-                          className={`w-5 h-5 max-[640px]:w-4 max-[640px]:h-4 ${
-                            isActive
-                              ? "text-white"
-                              : "text-gray-600 group-hover:text-blue-600"
-                          }`}
-                        />
-                      </div>
-                      <span className="font-medium text-sm">{label}</span>
-
-                      {isActive && (
-                        <div className="absolute right-[6px] max-[640px]:right-[4px]">
-                          <div className="w-2 h-2 max-[640px]:w-1.5 max-[640px]:h-1.5 bg-white rounded-full animate-pulse"></div>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-
-          {/* Main Content */}
-          <div className="md:w-3/4 w-full">{renderContent(selectedTab)}</div>
         </div>
       </div>
     </div>

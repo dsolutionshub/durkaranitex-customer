@@ -1,0 +1,216 @@
+@font-face {
+  font-family: "Satoshi-Regular";
+  src: url("/fonts/Satoshi-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Satoshi-Medium";
+  src: url("/fonts/Satoshi-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Satoshi-Bold";
+  src: url("/fonts/Satoshi-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+.aq-offer-area {
+  --aq-ff-satoshi-regular: "Satoshi-Regular", sans-serif;
+  --aq-ff-satoshi-medium: "Satoshi-Medium", sans-serif;
+  --aq-ff-satoshi-bold: "Satoshi-Bold", sans-serif;
+  --aq-common-white: #ffffff;
+  --aq-common-black: #141414;
+  --aq-common-red: #de1518;
+  --aq-text-body: #6d6868;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  font-family: var(--aq-ff-satoshi-medium);
+  color: var(--aq-text-body);
+  background: var(--aq-common-white);
+}
+
+.aq-offer-area button {
+  font-family: inherit;
+}
+
+.aq-offer-area .aqf-banner-2-box {
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+  min-height: 280px;
+  margin-bottom: 30px;
+  background: #f8f8f8;
+}
+
+.aq-offer-area .aqf-banner-2-thumb {
+  position: relative;
+  flex: 0 0 46%;
+  width: 46%;
+  min-height: 280px;
+  overflow: hidden;
+}
+
+.aq-offer-area .aqf-banner-2-thumb img {
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.5s ease-in-out;
+}
+
+.aq-offer-area .aqf-banner-2-box:hover .aqf-banner-2-thumb img {
+  transform: scale(1.08);
+}
+
+.aq-offer-area .aqf-banner-2-content {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: none;
+  padding: 36px 32px;
+  background: #f8f8f8;
+}
+
+@media only screen and (min-width: 1200px) and (max-width: 1399px) {
+  .aq-offer-area .aqf-banner-2-content {
+    padding: 28px 24px;
+  }
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  .aq-offer-area .aqf-banner-2-content {
+    padding: 24px 20px;
+  }
+}
+
+@media (max-width: 767px) {
+  .aq-offer-area .aqf-banner-2-box {
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .aq-offer-area .aqf-banner-2-thumb {
+    flex: none;
+    width: 100%;
+    min-height: 200px;
+    height: 200px;
+  }
+
+  .aq-offer-area .aqf-banner-2-content {
+    padding: 24px 20px;
+  }
+}
+
+.aq-offer-area .aq-section-subtitle {
+  display: inline-block;
+  margin-bottom: 15px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--aq-common-black);
+  font-family: var(--aq-ff-satoshi-bold);
+}
+
+.aq-offer-area .aq-section-title {
+  display: block;
+  margin: 0 0 16px;
+  font-size: 28px;
+  line-height: 1.2;
+  letter-spacing: -0.4px;
+  font-weight: 500;
+  color: var(--aq-common-black);
+  font-family: var(--aq-ff-satoshi-bold);
+}
+
+.aq-offer-area .aq-section-title.is-single-line {
+  white-space: normal;
+}
+
+@media (max-width: 1199px) {
+  .aq-offer-area .aq-section-title {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 767px) {
+  .aq-offer-area .aq-section-title {
+    font-size: 24px;
+  }
+}
+
+.aq-offer-area .aq-offer-banner-meta {
+  margin: 0 0 18px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #55585b;
+}
+
+.aq-offer-area .aq-coupon-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--aq-common-red);
+  background-color: rgba(222, 21, 24, 0.1);
+  border: 2px dashed rgba(222, 21, 24, 0.4);
+}
+
+.aq-offer-area .aq-coupon-copy-btn em {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 500;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: rgba(20, 20, 20, 0.7);
+}
+
+.aq-offer-area .aq-coupon-copy-btn span {
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+.aq-offer-area .aq-coupon-copy-btn:hover {
+  border-color: var(--aq-common-red);
+}
+
+.aq-offer-area .aq-btn-black {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  padding: 0 30px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 48px;
+  text-transform: uppercase;
+  border-radius: 0;
+  cursor: pointer;
+  color: var(--aq-common-white);
+  background-color: var(--aq-common-black);
+  border: 1px solid transparent;
+  font-family: var(--aq-ff-satoshi-bold);
+}
+
+.aq-offer-area .aq-btn-black:hover {
+  color: var(--aq-common-black) !important;
+  background-color: transparent;
+  border-color: var(--aq-common-black);
+}

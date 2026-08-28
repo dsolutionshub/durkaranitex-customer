@@ -1,8 +1,8 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import toast from "react-hot-toast";
-import { Dialog } from "primereact/dialog";
-import { IoClose } from "react-icons/io5";
 
 import { loader } from "@/app/components/loader/loaderManager";
 import { getErrorMessage } from "@/app/utils/helperFn";
@@ -12,6 +12,40 @@ import {
   updateAddress,
 } from "@/app/api/services/authService";
 import { addressValidationSchema } from "@/app/utils/validationSchema";
+
+import "./address-modal.css";
+
+function FieldError({ formik, name }) {
+  if (!formik.touched[name] || !formik.errors[name]) return null;
+  return <p className="aq-address-field-error">{formik.errors[name]}</p>;
+}
+
+function TextField({ formik, name, label, placeholder, type = "text", required, maxLength }) {
+  const invalid = formik.touched[name] && formik.errors[name];
+
+  return (
+    <div className="aq-checkout-input">
+      {label ? (
+        <label htmlFor={name}>
+          {label}
+          {required ? <span> *</span> : null}
+        </label>
+      ) : null}
+      <input
+        id={name}
+        name={name}
+        type={type}
+        placeholder={placeholder}
+        maxLength={maxLength}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        value={formik.values[name]}
+        className={invalid ? "is-invalid" : undefined}
+      />
+      <FieldError formik={formik} name={name} />
+    </div>
+  );
+}
 
 export default function AddAdressModel({
   isModalOpen,
@@ -93,163 +127,157 @@ export default function AddAdressModel({
     }
   }, [isEdit, isModalOpen, addressDetail]);
 
+  useEffect(() => {
+    if (!isModalOpen) return undefined;
+
+    document.body.classList.add("aq-address-modal-open");
+
+    const onKeyDown = (event) => {
+      if (event.key === "Escape") {
+        handleCloseModel();
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.classList.remove("aq-address-modal-open");
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [isModalOpen, handleCloseModel]);
+
+  if (!isModalOpen) return null;
+
+  const stateInvalid = formik.touched.state_id && formik.errors.state_id;
+
   return (
-    <Dialog
-      visible={isModalOpen}
-      style={{
-        width: "95vw",
-        maxWidth: "500px",
-        backgroundColor: "#fff",
-      }}
-      className="shadow-2xl rounded-md m-2 md:m-0 p-[.5rem] md:p-[1rem]"
-      onHide={handleCloseModel}
-      breakpoints={{ "960px": "75vw", "640px": "100vw" }}
-      showHeader={false}
-    >
-      <div className="flex items-center justify-between px-2">
-        <h5 className="mb-0 dark-color mt-1 md:mt-0">
-          {isEdit ? "Edit Address" : "Add New Address"}
-        </h5>
-        <IoClose
-          onClick={handleCloseModel}
-          size={21}
-          className="cursor-pointer dark-color"
-        />
+    <div className="aq-address-modal">
+      <div
+        className="aq-address-modal-overlay"
+        onClick={handleCloseModel}
+        role="presentation"
+      >
+        <div
+          className="aq-address-modal-dialog"
+          onClick={(event) => event.stopPropagation()}
+          role="dialog"
+          aria-modal="true"
+          aria-label={isEdit ? "Edit Address" : "Add New Address"}
+        >
+          <div className="aq-address-modal-content">
+            <button
+              type="button"
+              className="aq-address-modal-close"
+              aria-label="Close"
+              onClick={handleCloseModel}
+            />
+            <h3 className="aq-address-modal-title">
+              {isEdit ? "Edit Address" : "Add New Address"}
+            </h3>
+
+            <form onSubmit={formik.handleSubmit}>
+              <div className="row">
+                <div className="col-md-12">
+                  <TextField
+                    formik={formik}
+                    name="name"
+                    label="Full Name"
+                    placeholder="Full Name"
+                    required
+                  />
+                </div>
+                <div className="col-md-6">
+                  <TextField
+                    formik={formik}
+                    name="email"
+                    label="Email address"
+                    placeholder="Email address"
+                    type="email"
+                    required
+                  />
+                </div>
+                <div className="col-md-6">
+                  <TextField
+                    formik={formik}
+                    name="mobile"
+                    label="Phone"
+                    placeholder="Phone"
+                    required
+                  />
+                </div>
+                <div className="col-md-12">
+                  <TextField
+                    formik={formik}
+                    name="address"
+                    label="Street address"
+                    placeholder="House number and street name"
+                    required
+                  />
+                  <TextField
+                    formik={formik}
+                    name="address1"
+                    placeholder="Apartment, suite, unit, etc. (optional)"
+                  />
+                </div>
+                <div className="col-md-12">
+                  <TextField
+                    formik={formik}
+                    name="city"
+                    label="Town / City"
+                    placeholder="Town / City"
+                    required
+                  />
+                </div>
+                <div className="col-md-6">
+                  <div className="aq-checkout-input">
+                    <label htmlFor="state_id">
+                      State / County <span>*</span>
+                    </label>
+                    <select
+                      id="state_id"
+                      name="state_id"
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.state_id}
+                      className={stateInvalid ? "is-invalid" : undefined}
+                    >
+                      <option value="">Select state</option>
+                      {stateList.map((state) => (
+                        <option key={state.id} value={state.id}>
+                          {state.name}
+                        </option>
+                      ))}
+                    </select>
+                    <FieldError formik={formik} name="state_id" />
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <TextField
+                    formik={formik}
+                    name="pincode"
+                    label="Postcode ZIP"
+                    placeholder="6-digit PIN code"
+                    required
+                    maxLength={6}
+                  />
+                </div>
+              </div>
+
+              <div className="aq-address-modal-actions">
+                <button
+                  type="button"
+                  className="aq-checkout-btn border-style"
+                  onClick={handleCloseModel}
+                >
+                  Cancel
+                </button>
+                <button type="submit" className="aq-checkout-btn">
+                  {isEdit ? "Update Address" : "Add Address"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
-
-      <form className="space-y-1 p-2" onSubmit={formik.handleSubmit}>
-        {[
-          { name: "name", label: "Full Name" },
-          { name: "email", label: "Email" },
-          { name: "mobile", label: "Mobile Number" },
-          { name: "address", label: "Address" },
-        ].map(({ name, label }) => (
-          <div key={name}>
-            <label htmlFor={name} className="block font-medium dark-color">
-              {label} *
-            </label>
-            <input
-              id={name}
-              name={name}
-              type="text"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values[name]}
-              className={`w-full border rounded px-3 py-2 dark-color ${
-                formik.touched[name] && formik.errors[name]
-                  ? "border-red-500"
-                  : "border-gray-300"
-              }`}
-              placeholder={`Enter ${label.toLowerCase()}`}
-            />
-            {formik.touched[name] && formik.errors[name] && (
-              <p className="text-red-500 text-sm mb-0">{formik.errors[name]}</p>
-            )}
-          </div>
-        ))}
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4">
-          {["address1", "city"].map((name) => (
-            <div key={name}>
-              <label htmlFor={name} className="block font-medium dark-color">
-                {name === "address1" ? "Address Line 2" : "City"}{" "}
-                {name === "city" && "*"}
-              </label>
-              <input
-                id={name}
-                name={name}
-                type="text"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values[name]}
-                className={`w-full border rounded px-3 py-2 dark-color ${
-                  formik.touched[name] && formik.errors[name]
-                    ? "border-red-500"
-                    : "border-gray-300"
-                }`}
-                placeholder={name === "address1" ? "Optional" : "Enter city"}
-              />
-              {formik.touched[name] && formik.errors[name] && (
-                <p className="text-red-500 text-sm mb-0">
-                  {formik.errors[name]}
-                </p>
-              )}
-            </div>
-          ))}
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label htmlFor="state_id" className="block font-medium dark-color">
-              State *
-            </label>
-            <select
-              id="state_id"
-              name="state_id"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.state_id}
-              className={`w-full border rounded px-3 py-2 dark-color ${
-                formik.touched.state_id && formik.errors.state_id
-                  ? "border-red-500"
-                  : "border-gray-300"
-              }`}
-            >
-              <option value="">Select state</option>
-              {stateList.map((state) => (
-                <option key={state.id} value={state.id}>
-                  {state.name}
-                </option>
-              ))}
-            </select>
-            {formik.touched.state_id && formik.errors.state_id && (
-              <p className="text-red-500 text-sm mb-0">
-                {formik.errors.state_id}
-              </p>
-            )}
-          </div>
-
-          <div>
-            <label htmlFor="pincode" className="block font-medium dark-color">
-              PIN Code *
-            </label>
-            <input
-              id="pincode"
-              name="pincode"
-              type="text"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.pincode}
-              maxLength={6}
-              className={`w-full border rounded px-3 py-2 dark-color ${
-                formik.touched.pincode && formik.errors.pincode
-                  ? "border-red-500"
-                  : "border-gray-300"
-              }`}
-              placeholder="6-digit PIN code"
-            />
-            {formik.touched.pincode && formik.errors.pincode && (
-              <p className="text-red-500 text-sm">{formik.errors.pincode}</p>
-            )}
-          </div>
-        </div>
-
-        <div className="flex justify-end gap-3 pt-2">
-          <button
-            type="button"
-            onClick={handleCloseModel}
-            className="border border-gray-400 text-gray-700 px-4 py-2 rounded hover:bg-gray-100"
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            className="bg-[var(--primary-main)] text-white px-4 py-2 rounded hover:bg-[var(--primary-dark)]"
-          >
-            {isEdit ? "Update Address" : "Add Address"}
-          </button>
-        </div>
-      </form>
-    </Dialog>
+    </div>
   );
 }

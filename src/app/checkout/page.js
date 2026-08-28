@@ -1,20 +1,20 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import Image from "next/image";
 import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
 
 import CheckoutForm from "./components/CheckoutForm";
 import OrderSummary from "./components/OrderSummary";
-import Loader from "../components/loader/loader";
+import { LoaderComponent } from "../components/loader/loader";
 import { loader } from "../components/loader/loaderManager";
 
 import {
   applyCoupon,
   getCheckoutList,
   payment,
-  removeCart,
 } from "../api/services/authService";
 import { useAuthStore } from "@/store/useAuthStore";
 import { getErrorMessage, loadRazorpayScript } from "../utils/helperFn";
@@ -25,6 +25,8 @@ import {
   SELECT_ADDRESS_ERROR_MSG,
 } from "../utils/constants";
 
+import "./checkout-page.css";
+
 export default function CheckoutPage() {
   const router = useRouter();
   const { data: session, status } = useSession();
@@ -33,6 +35,7 @@ export default function CheckoutPage() {
   const [checkoutData, setCheckoutData] = useState(null);
   const [selectedPayment, setSelectedPayment] = useState("payNow");
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+  const [isPageLoading, setIsPageLoading] = useState(true);
   const [couponCode, setCouponCode] = useState("");
   const [isCouponApplied, setIsCouponApplied] = useState(false);
   const [isAnyProductNotCodAvailable, setIsAnyProductNotCodAvailable] =
@@ -66,8 +69,8 @@ export default function CheckoutPage() {
       initiateRazorpayPayment({ order: data, customer: userData });
     } catch (error) {
       const MSG = getErrorMessage(error);
-      const status = error?.response?.status;
-      if (status === 401) {
+      const responseStatus = error?.response?.status;
+      if (responseStatus === 401) {
         sessionStorage.setItem("postLoginRedirect", "/checkout");
         router.push("/login");
         return;
@@ -103,22 +106,7 @@ export default function CheckoutPage() {
       toast.error(MSG);
     } finally {
       loader(false);
-    }
-  };
-
-  const removeFromCart = async (id) => {
-    loader(true);
-    try {
-      const data = await removeCart({
-        cart_id: id,
-      });
-      handleCheckoutList();
-      toast.success(data?.message);
-    } catch (error) {
-      const MSG = getErrorMessage(error);
-      toast.error(MSG);
-    } finally {
-      loader(false);
+      setIsPageLoading(false);
     }
   };
 
@@ -171,53 +159,70 @@ export default function CheckoutPage() {
     }
   }, [router, status, session]);
 
-  if (isCheckingAuth) {
-    return (
-      <div className="h-[60vh]">
-        <Loader />
-      </div>
-    );
+  if (isCheckingAuth || isPageLoading) {
+    return <LoaderComponent />;
   }
 
   return (
-    <div className="min-h-screen py-1 md:mx-3 m-3 md:m-0">
-      <div className="flex items-center justify-center mb-4">
+    <div className="aq-checkout-page">
+      <div className="aq-checkout-brand">
         <Image
           src={"/images/home/KCLogo.png"}
-          height={100}
-          width={400}
-          alt="logo"
-          className="h-[3.5rem] w-[12rem] cursor-pointer "
-          style={{
-            filter: "brightness(0.80)",
-          }}
+          height={80}
+          width={260}
+          alt="Kavya Creation"
           onClick={handleNavigateHome}
+          style={{ width: 260, height: "auto" }}
         />
       </div>
 
-      <h2 className="text-2xl text-center pb-1 md:pb-4 text-black font-semibold checkout-text">
-        Checkout
-      </h2>
-
-      <div className="max-w-6xl mx-auto grid lg:grid-cols-3 gap-6 ">
-        <CheckoutForm
-          checkoutData={checkoutData}
-          selectedPayment={selectedPayment}
-          setSelectedPayment={setSelectedPayment}
-          handleCheckoutList={handleCheckoutList}
-          isAnyProductNotCodAvailable={isAnyProductNotCodAvailable}
-        />
-        <OrderSummary
-          checkoutData={checkoutData}
-          handlePayment={handlePayment}
-          removeFromCart={removeFromCart}
-          selectedPayment={selectedPayment}
-          handleApplyCoupon={handleApplyCoupon}
-          setCouponCode={setCouponCode}
-          couponCode={couponCode}
-          isCouponApplied={isCouponApplied}
-        />
+      <div className="aq-breadcrumb-area">
+        <div className="container">
+          <div className="row align-items-center">
+            <div className="col-xl-12">
+              <div className="aq-breadcrumb-wrap text-center">
+                <div className="pd-breadcrumb-list">
+                  <span>
+                    <Link href="/">home</Link>
+                  </span>
+                  <span>/</span>
+                  <span>checkout</span>
+                </div>
+                <div className="aq-breadcrumb-content">
+                  <h1 className="aq-breadcrumb-title">Checkout Page</h1>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+
+      <section className="aq-checkout-area">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-7">
+              <CheckoutForm
+                checkoutData={checkoutData}
+                handleCheckoutList={handleCheckoutList}
+                couponCode={couponCode}
+                setCouponCode={setCouponCode}
+                isCouponApplied={isCouponApplied}
+                handleApplyCoupon={handleApplyCoupon}
+              />
+            </div>
+            <div className="col-lg-5">
+              <OrderSummary
+                checkoutData={checkoutData}
+                handlePayment={handlePayment}
+                selectedPayment={selectedPayment}
+                setSelectedPayment={setSelectedPayment}
+                isAnyProductNotCodAvailable={isAnyProductNotCodAvailable}
+                isCouponApplied={isCouponApplied}
+              />
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

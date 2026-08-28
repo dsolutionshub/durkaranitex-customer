@@ -2,26 +2,40 @@
 
 import { useState, useEffect, useCallback } from "react";
 import toast from "react-hot-toast";
-import { FaSearch } from "react-icons/fa";
-import { BiFilterAlt } from "react-icons/bi";
+import Link from "next/link";
+import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay } from "swiper/modules";
 
-import ProductCard from "@/app/components/ProductCard";
-import SortProduct from "../SortProduct.js/page";
-import CustomBreadCrumb from "@/app/components/CustomBreadCrumb";
-import ProductPagination from "../ProductPagination/page";
+import BazaroProductCard from "../BazaroProductCard";
 import ProductFilter from "../ProductFilter/page";
+import ShopSortSelect from "../ShopSortSelect";
 
 import { loader } from "@/app/components/loader/loaderManager";
 import { getErrorMessage } from "@/app/utils/helperFn";
-import { LOGIN_ERROR_MSG, SHOP_MODEL } from "@/app/utils/constants";
+import { LOGIN_ERROR_MSG } from "@/app/utils/constants";
 import useCartPanelStore from "@/store/useCartPanelStore";
+import { useCategoryList } from "@/app/hooks/useCategoryList";
 import {
-  getCategoryList,
   getProductList,
   modifyCart,
   modifyWishlist,
 } from "@/app/api/services/authService";
+
+import "swiper/css";
+import "@/app/components/home/featured-products.css";
+import "../../shop-page.css";
+
+const SORT_OPTIONS = [
+  { label: "Sort by All", value: "Sort by All" },
+  { label: "Name A to Z", value: "Name A to Z" },
+  { label: "Name Z to A", value: "Name Z to A" },
+  { label: "Price, low to high", value: "Price low to high" },
+  { label: "Price, high to low", value: "Price high to low" },
+];
+
+const LAYOUTS = ["list", "col-6", "col-4", "col-3", "col-2"];
 
 function useDebounce(value, delay = 1000, setCurrentPage) {
   const [debouncedValue, setDebouncedValue] = useState(value);
@@ -33,9 +47,50 @@ function useDebounce(value, delay = 1000, setCurrentPage) {
     }, delay);
 
     return () => clearTimeout(handler);
-  }, [value, delay]);
+  }, [value, delay, setCurrentPage]);
 
   return debouncedValue;
+}
+
+function LayoutIcon({ layout }) {
+  if (layout === "list") {
+    return (
+      <svg width="24" height="18" viewBox="0 0 24 18" fill="currentColor" aria-hidden>
+        <circle cx="2.1" cy="3.6" r="2.1" />
+        <rect x="6.4" y="2.5" width="17.2" height="2.2" rx="1.1" />
+        <circle cx="2.1" cy="14.4" r="2.1" />
+        <rect x="6.4" y="13.3" width="17.2" height="2.2" rx="1.1" />
+      </svg>
+    );
+  }
+
+  const cols =
+    layout === "col-6" ? 2 : layout === "col-4" ? 3 : layout === "col-3" ? 4 : 5;
+  const radius = 1.85;
+  const step = 5.2;
+  const width = (cols - 1) * step + radius * 2;
+  const y1 = 3.6;
+  const y2 = 14.4;
+
+  return (
+    <svg
+      width={Math.ceil(width)}
+      height="18"
+      viewBox={`0 0 ${width} 18`}
+      fill="currentColor"
+      aria-hidden
+    >
+      {Array.from({ length: cols }).map((_, index) => {
+        const cx = radius + index * step;
+        return (
+          <g key={index}>
+            <circle cx={cx} cy={y1} r={radius} />
+            <circle cx={cx} cy={y2} r={radius} />
+          </g>
+        );
+      })}
+    </svg>
+  );
 }
 
 function Product() {
@@ -43,6 +98,7 @@ function Product() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
+  const urlSearch = searchParams.get("search") || "";
   const [selectedCategories, setSelectedCategories] = useState(
     id ? [Number(id)] : []
   );
@@ -53,14 +109,23 @@ function Product() {
   const [sortedProducts, setSortedProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [productList, setProductList] = useState(null);
-  const [categoryList, setCategoryList] = useState([]);
+  const { data: categoryList = {} } = useCategoryList();
   const [openFilter, setOpenFilter] = useState(false);
   const [totalPage, setTotalPage] = useState(0);
-  const [search, setSearch] = useState("");
-  const [selectedCat, setSelectedCat] = useState("");
+  const [totalProducts, setTotalProducts] = useState(0);
+  const [search, setSearch] = useState(urlSearch);
+  const [selectedCat, setSelectedCat] = useState("New Arrival");
+  const [layout, setLayout] = useState("col-3");
+  const [wishlistMap, setWishlistMap] = useState({});
 
   const debouncedSearch = useDebounce(search, 1000, setCurrentPage);
   const [filtersInitialized, setFiltersInitialized] = useState(false);
+
+  useEffect(() => {
+    if (urlSearch && urlSearch !== search) {
+      setSearch(urlSearch);
+    }
+  }, [urlSearch]);
 
   const handlePriceChange = (range) => {
     setPriceRange(range);
@@ -73,7 +138,7 @@ function Product() {
   };
 
   const productDetails = useCallback(
-    async (filter = null, min = 0, max = 0) => {
+    async (filter = null) => {
       loader(true);
       try {
         let { products, total_products } = await getProductList(
@@ -84,10 +149,18 @@ function Product() {
           priceRange.max !== 0 ? priceRange.max : null,
           debouncedSearch
         );
-        setProductList(products || []);
-        setSortedProducts(products || []);
-        const totalPages = Math.ceil(total_products / itemsPerPage);
+        const list = products || [];
+        setProductList(list);
+        setSortedProducts(list);
+        setTotalProducts(total_products || list.length || 0);
+        const totalPages = Math.ceil((total_products || 0) / itemsPerPage);
         setTotalPage(totalPages);
+        setWishlistMap(
+          list.reduce((acc, item) => {
+            acc[item.id] = item.wishList;
+            return acc;
+          }, {})
+        );
       } catch (error) {
         getErrorMessage(error);
       } finally {
@@ -97,25 +170,22 @@ function Product() {
     [currentPage, selectedCategories, priceRange, debouncedSearch]
   );
 
-  const categoryDetails = async () => {
-    loader(true);
-    try {
-      const data = await getCategoryList();
-      setCategoryList(data || []);
-    } catch (error) {
-      getErrorMessage(error);
-    } finally {
-      loader(false);
-    }
-  };
-
   const handleOpenFilter = () => {
     setOpenFilter((prev) => !prev);
   };
 
   useEffect(() => {
-    categoryDetails();
-  }, []);
+    if (!openFilter) {
+      return undefined;
+    }
+    const onKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setOpenFilter(false);
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [openFilter]);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -140,13 +210,19 @@ function Product() {
       case "Sort by All":
         productDetails();
         break;
+      default:
+        productDetails();
     }
   }, [sortOption, productDetails, filtersInitialized]);
 
-  const addToWishlist = async (id) => {
+  const addToWishlist = async (productId) => {
     loader(true);
     try {
-      const data = await modifyWishlist({ product_id: id });
+      const data = await modifyWishlist({ product_id: productId });
+      setWishlistMap((prev) => ({
+        ...prev,
+        [productId]: data?.wishlist,
+      }));
       productDetails();
       wishlistDetails();
       toast.success(data?.message);
@@ -164,10 +240,10 @@ function Product() {
     }
   };
 
-  const addToCart = async (id) => {
+  const addToCart = async (productId) => {
     loader(true);
     try {
-      await modifyCart({ product_id: id, quantity: 1, type: "list" });
+      await modifyCart({ product_id: productId, quantity: 1, type: "list" });
       toast.success("Added to cart");
       handleGetCartDetail();
     } catch (error) {
@@ -194,12 +270,19 @@ function Product() {
     setSelectedCategories(arr);
 
     const params = new URLSearchParams(window.location.search);
-    params.set("categories", arr.join(","));
+    if (arr.length) {
+      params.set("categories", arr.join(","));
+    } else {
+      params.delete("categories");
+    }
     router.push(`?${params.toString()}`);
   };
 
-  const navigateToProductDetail = (product_id) => {
-    router.push(`/product-detail?id=${product_id}`);
+  const handleCategoryChip = (categoryId) => {
+    const next = selectedCategories.includes(categoryId)
+      ? selectedCategories.filter((value) => value !== categoryId)
+      : [categoryId];
+    handleCheckbox(next);
   };
 
   const scrollToTop = () => {
@@ -234,129 +317,295 @@ function Product() {
   }, [searchParams]);
 
   useEffect(() => {
-    const fallbackTitle = "Our Saree Collection";
     if (
       Array.isArray(categoryList?.categories) &&
-      selectedCategories?.length === 1 &&
-      Boolean(id)
+      selectedCategories?.length === 1
     ) {
       const matchedCategory = categoryList.categories.find(
         (cat) => String(cat.id).trim() === String(selectedCategories[0]).trim()
       );
-
-      setSelectedCat(
-        `${
-          matchedCategory?.name ? matchedCategory?.name : "Our Saree"
-        } Collection`
-      );
+      setSelectedCat(matchedCategory?.name || "New Arrival");
     } else {
-      setSelectedCat(fallbackTitle);
+      setSelectedCat("New Arrival");
     }
   }, [categoryList, selectedCategories]);
 
+  const published = (productList || []).filter(
+    (item) => item?.is_published === "1"
+  );
+  const categories = categoryList?.categories || [];
+  const isList = layout === "list";
+  const pageNumbers = Array.from({ length: totalPage }, (_, index) => index + 1);
+
   return (
-    <>
-      <CustomBreadCrumb model={SHOP_MODEL} useBackNavigation={true} />
-      <div className="py-0 md:py-4 pt-1">
-        <div className="container-fluid">
-          <div className="row">
-            <div className="col-12 col-xxl-9 order-2">
-              <div className="row p-1">
-                <div className="col-xl-12">
-                  <div className="d-flex flex-column flex-xl-row justify-content-between align-items-center">
-                    <h2 className="text-black h5">{selectedCat}</h2>
-                    <div className="input-group mb-3 mb-xl-0 product-detail-search">
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Search"
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                      />
-                      <span className="input-group-text">
-                        <FaSearch />
-                      </span>
-                    </div>
-
-                    <div className="flex items-center gap-3 ">
-                      <button
-                        className={`px-4 py-2 flex items-center gap-2 bg-green-900 text-light fs-6 xl:hidden `}
-                        onClick={handleOpenFilter}
-                      >
-                        <BiFilterAlt />
-                        Filter
-                      </button>
-
-                      <SortProduct
-                        selected={sortOption}
-                        onChange={setSortOption}
-                      />
-                    </div>
-                  </div>
+    <div className="aq-shop-page">
+      <div className="aq-breadcrumb-area">
+        <div className="container">
+          <div className="row align-items-center">
+            <div className="col-xl-12">
+              <div className="aq-breadcrumb-wrap text-center">
+                <div className="pd-breadcrumb-list mb-10">
+                  <span>
+                    <Link href="/">home</Link>
+                  </span>
+                  <span>/</span>
+                  <span>
+                    <Link href="/shop">shop</Link>
+                  </span>
+                </div>
+                <div className="aq-breadcrumb-content">
+                  <h2 className="aq-breadcrumb-title fs-44">{selectedCat}</h2>
+                  <p>Shop through our latest selection of Fashion</p>
                 </div>
               </div>
-
-              <div className="row my-5 md:p-1 product-container-mobile">
-                {productList?.length === 0 ? (
-                  <p className="text-center text-muted w-100">
-                    No products found.
-                  </p>
-                ) : (
-                  productList
-                    ?.filter((item) => item?.is_published === "1")
-                    ?.map((item) => (
-                      <div
-                        className="col-md-4 col-lg-3 md:mb-4 product-list-card-mobile"
-                        key={item.id}
-                      >
-                        <ProductCard
-                          id={item?.id}
-                          type="heart"
-                          btn1={() => addToWishlist(item.id)}
-                          btn2={() => addToCart(item.id)}
-                          title={item?.title}
-                          price={item?.price}
-                          oldPrice={item?.product_price}
-                          image={item?.images?.[0]?.image}
-                          image1={item?.images?.[1]?.image}
-                          discount={item?.discount || 0}
-                          isInWishlist={item?.wishList}
-                          onClick={() => navigateToProductDetail(item?.id)}
-                          quantity={item?.quantity}
-                        />
-                      </div>
-                    ))
-                )}
-              </div>
-
-              {totalPage > 1 && (
-                <ProductPagination
-                  totalPages={totalPage}
-                  currentPage={currentPage}
-                  onPageChange={(page) => {
-                    scrollToTop();
-                    setCurrentPage(page);
-                  }}
-                />
-              )}
             </div>
-
-            <ProductFilter
-              categoryList={categoryList}
-              categories={categoryList?.categories}
-              selectedCategories={selectedCategories}
-              filterProducts={setSortedProducts}
-              onChange={handleCheckbox}
-              onPriceChange={handlePriceChange}
-              priceRange={categoryList?.product_amount}
-              priceObj={priceRange}
-              openFilter={openFilter}
-              handleOpenFilter={handleOpenFilter}
-            />
           </div>
         </div>
       </div>
-    </>
+
+      {categories.length > 0 && (
+        <div className="aqf-categories-area inner-categories-style pt-80">
+          <div className="container">
+            <Swiper
+              className="aqf-categories-active"
+              modules={[Autoplay]}
+              slidesPerView={8}
+              spaceBetween={20}
+              speed={1000}
+              loop={categories.length > 8}
+              autoplay={{ delay: 3000, disableOnInteraction: false }}
+              breakpoints={{
+                0: { slidesPerView: 3, spaceBetween: 10 },
+                576: { slidesPerView: 4, spaceBetween: 10 },
+                768: { slidesPerView: 5, spaceBetween: 10 },
+                992: { slidesPerView: 6, spaceBetween: 20 },
+                1200: { slidesPerView: 8, spaceBetween: 20 },
+              }}
+            >
+              {categories.map((category) => (
+                <SwiperSlide key={category.id}>
+                  <div
+                    className={`aqf-categories-item text-center${
+                      selectedCategories.includes(category.id) ? " is-active" : ""
+                    }`}
+                  >
+                    <button
+                      type="button"
+                      onClick={() => handleCategoryChip(category.id)}
+                    >
+                      <div className="aqf-categories-img">
+                        {category?.image || category?.thumbnail || category?.banner ? (
+                          <Image
+                            src={
+                              category.image ||
+                              category.thumbnail ||
+                              category.banner
+                            }
+                            alt={category.name || "Category"}
+                            width={140}
+                            height={140}
+                          />
+                        ) : (
+                          <span className="aqf-categories-fallback">
+                            {(category.name || "C").charAt(0)}
+                          </span>
+                        )}
+                      </div>
+                      <span>{category.name}</span>
+                    </button>
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+        </div>
+      )}
+
+      <div className="aq-product-area pt-100 pb-100">
+        <div className="container">
+          <div className="row">
+            <div className="col-xl-12">
+              <div className="aq-product-wrap">
+                <div className="row">
+                  <div className="col-xl-12">
+                    <div className="aq-product-sidebar-top pb-10">
+                      <div className="row align-items-center aq-shop-toolbar-row">
+                        <div className="col-4">
+                          <div className="aq-product-sidebar-left mb-20">
+                            <button
+                              type="button"
+                              className="aq-product-filter-btn"
+                              onClick={handleOpenFilter}
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="13"
+                                height="12"
+                                viewBox="0 0 13 12"
+                                fill="none"
+                              >
+                                <path
+                                  d="M11.75 0.75H0.750015L5.15002 6.00556V9.63889L7.35002 10.75V6.00556L11.75 0.75Z"
+                                  stroke="currentColor"
+                                  strokeWidth="1.5"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>{" "}
+                              Filter
+                            </button>
+                            <div className="aq-product-sidebar-text d-none d-lg-block">
+                              <p className="mb-0">
+                                There are {totalProducts} results in total
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-4">
+                          <div className="aq-layout-switcher mb-20">
+                            <ul className="aq-layout-switcher-list d-flex justify-content-md-center">
+                              {LAYOUTS.map((item) => (
+                                <li
+                                  key={item}
+                                  data-layout={item}
+                                  className={`aq-layout-switcher-item${
+                                    layout === item ? " active" : ""
+                                  }`}
+                                  onClick={() => setLayout(item)}
+                                >
+                                  <div className="aq-layout-switcher-icon">
+                                    <LayoutIcon layout={item} />
+                                  </div>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                        <div className="col-4">
+                          <div className="aq-product-sidebar-right justify-content-end mb-20">
+                            <p>Sort by:</p>
+                            <ShopSortSelect
+                              options={SORT_OPTIONS}
+                              value={sortOption}
+                              onChange={setSortOption}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {published.length === 0 ? (
+                      <p className="aq-shop-empty">No products found.</p>
+                    ) : isList ? (
+                      <div id="aq-listLayout" className="aq-list-layout-wrap aq-list-layout">
+                        {published.map((item) => (
+                          <BazaroProductCard
+                            key={item.id}
+                            item={item}
+                            variant="list"
+                            isInWishlist={wishlistMap[item.id]}
+                            onAddToCart={addToCart}
+                            onAddToWishlist={addToWishlist}
+                          />
+                        ))}
+                      </div>
+                    ) : (
+                      <div
+                        id="aq-gridLayout"
+                        className={`aq-grid-layout aq-${layout}`}
+                      >
+                        {published.map((item) => (
+                          <BazaroProductCard
+                            key={item.id}
+                            item={item}
+                            variant="grid"
+                            isInWishlist={wishlistMap[item.id]}
+                            onAddToCart={addToCart}
+                            onAddToWishlist={addToWishlist}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {totalPage > 1 && (
+            <div className="aq-product-bottom">
+              <div className="row">
+                <div className="col-lg-12">
+                  <div className="aq-pagination">
+                    <nav>
+                      <ul className="justify-content-center">
+                        {pageNumbers.map((page) => (
+                          <li key={page}>
+                            {page === currentPage ? (
+                              <span className="current">{page}</span>
+                            ) : (
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  scrollToTop();
+                                  setCurrentPage(page);
+                                }}
+                              >
+                                {page}
+                              </button>
+                            )}
+                          </li>
+                        ))}
+                        {currentPage < totalPage && (
+                          <li>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                scrollToTop();
+                                setCurrentPage(currentPage + 1);
+                              }}
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="15"
+                                height="12"
+                                viewBox="0 0 15 12"
+                                fill="none"
+                              >
+                                <path
+                                  d="M13.7498 5.97108H0.75M13.7498 5.97108L8.50674 0.75M13.7498 5.97108L8.50674 11.1923"
+                                  stroke="currentColor"
+                                  strokeWidth="1.5"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                            </button>
+                          </li>
+                        )}
+                      </ul>
+                    </nav>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <ProductFilter
+        categoryList={categoryList}
+        categories={categories}
+        selectedCategories={selectedCategories}
+        filterProducts={setSortedProducts}
+        onChange={handleCheckbox}
+        onPriceChange={handlePriceChange}
+        priceRange={categoryList?.product_amount}
+        priceObj={priceRange}
+        openFilter={openFilter}
+        handleOpenFilter={handleOpenFilter}
+      />
+    </div>
   );
 }
 

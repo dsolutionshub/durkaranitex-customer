@@ -1,177 +1,209 @@
-import { CircleCheckBig, Tag } from "lucide-react";
+import { useState } from "react";
 import Image from "next/image";
-import { IoClose } from "react-icons/io5";
-import { RiDeleteBinLine } from "react-icons/ri";
+import { useRouter } from "next/navigation";
+import CodItemCard from "./CodItemCard";
 
 const OrderSummary = ({
   checkoutData,
   handlePayment,
-  removeFromCart,
   selectedPayment,
-  handleApplyCoupon,
-  setCouponCode,
-  couponCode,
+  setSelectedPayment,
+  isAnyProductNotCodAvailable,
   isCouponApplied,
 }) => {
+  const router = useRouter();
+  const [isOpen, setIsOpen] = useState(false);
+  const products = checkoutData?.products_list || [];
+  const shipping =
+    checkoutData?.delivery_fee?.isCodAvailable === true &&
+    selectedPayment === "payLater"
+      ? checkoutData?.delivery_fee?.cod_fee
+      : checkoutData?.delivery_fee?.normal_delivery;
+  const total =
+    selectedPayment === "payLater"
+      ? checkoutData?.total_cod_payment
+      : checkoutData?.total_full_payment;
+  const payLabel =
+    selectedPayment === "payLater"
+      ? `Pay Shipping Rs. ${checkoutData?.delivery_fee?.cod_fee}`
+      : `Pay Now Rs. ${checkoutData?.total_full_payment || 0}`;
+  const codDisabled =
+    isAnyProductNotCodAvailable ||
+    checkoutData?.delivery_fee?.isCodAvailable === false;
+
+  const openProduct = (productId) => {
+    if (productId) {
+      router.push(`/product-detail?id=${productId}`);
+    }
+  };
+
   return (
-    <div className="space-y-6">
-      <div className="bg-white p-6 rounded-xl shadow">
-        <h4 className="font-semibold text-black mb-4">Order Details</h4>
-        <h5 className="font-semibold text-black mb-4">Product Summary</h5>
-        <div className="space-y-3 text-sm max-h-[20rem] overflow-y-auto scrollbar-hide-on-idle">
-          {checkoutData?.products_list?.length > 0 ? (
-            checkoutData?.products_list.map((item) => (
-              <div
-                className="flex items-center space-x-3 border-b border-gray-300 pb-3"
-                key={item.id}
-              >
-                <div className="h-14 w-14 flex-shrink-0 bg-neutral-light rounded-md overflow-hidden">
-                  <Image
-                    alt="image"
-                    src={item?.product?.images[0]?.image}
-                    width={50}
-                    height={50}
-                    className="h-14 w-14 flex-shrink-0 bg-neutral-light rounded-md overflow-hidden"
-                  />
-                </div>
-                <div className="flex-grow">
-                  <p className="font-semibold text-black m-0">
-                    {item?.product?.title}
-                  </p>
-                  <div className="flex justify-between">
-                    <p className="text-gray-500 m-0">Qty: {item?.quantity}</p>
-                    <p className="text-gray-500 m-0">₹{item?.price}</p>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <p className="text-black font-semibold mb-0">
-                    ₹{item?.total_amount}
-                  </p>
-                  <div className="flex items-center gap-1 cursor-pointer  d-none">
-                    <RiDeleteBinLine className="text-red-600" />
+    <div className="aq-checkout-place" id="aq-checkout-payment">
+      <h3 className="aq-checkout-place-title">Your Order</h3>
+      <div className="aq-order-info-list">
+        <ul>
+          <li className="aq-order-info-list-header">
+            <h4>Product</h4>
+            <h4>Total</h4>
+          </li>
+        </ul>
+        <div className="aq-order-product-scroll">
+          <ul>
+            {products.length > 0 ? (
+              products.map((item) => (
+                <li className="aq-order-info-list-desc" key={item.id}>
+                  <div className="aq-order-product">
                     <button
-                      className="text-red-600 text-sm"
-                      onClick={() => removeFromCart(item?.product_id)}
+                      type="button"
+                      className="aq-order-product-thumb"
+                      onClick={() =>
+                        openProduct(item?.product_id || item?.product?.id)
+                      }
                     >
-                      Remove
+                      <Image
+                        src={
+                          item?.product?.images?.[0]?.image ||
+                          "/images/home/KCLogo.png"
+                        }
+                        alt={item?.product?.title || "Product"}
+                        width={64}
+                        height={80}
+                      />
                     </button>
+                    <p>
+                      {item?.product?.title} <span> x {item?.quantity}</span>
+                    </p>
                   </div>
-                </div>
-              </div>
-            ))
-          ) : (
-            <p className="dark-color">No Product found</p>
-          )}
+                  <span>Rs. {item?.total_amount}</span>
+                </li>
+              ))
+            ) : (
+              <li className="aq-order-info-list-desc">
+                <p>No product found</p>
+                <span />
+              </li>
+            )}
+          </ul>
         </div>
-      </div>
-
-      <div className="space-y-5 bg-muted p-6 rounded-lg shadow-sm">
-        <h5 className="font-semibold text-black mb-4">Payment Summary</h5>
-        <div className="text-sm space-y-3">
-          <div className="flex justify-between text-black font-medium">
-            <span>Subtotal ({checkoutData?.total_products} items)</span>
-            <span>₹{checkoutData?.sub_total}</span>
-          </div>
+        <ul>
+          <li className="aq-order-info-list-subtotal">
+            <span>Subtotal ({checkoutData?.total_products || 0} items)</span>
+            <span>Rs. {checkoutData?.sub_total}</span>
+          </li>
           {isCouponApplied ? (
-            <div className="bg-green-50 border border-green-50 px-3 pt-3 rounded-md">
-              <div className="flex items-start justify-between">
-                <div className="flex items-center gap-2">
-                  <CircleCheckBig size={17} className="primary-color" />
-                  <p className="mb-0 primary-color font-bold">
-                    Coupon Applied!
-                    <br />
-                    <span className="font-medium text-green-600">
-                      Code: {couponCode || checkoutData?.coupon_info?.code}
-                    </span>
-                  </p>
-                </div>
-
-                <IoClose
-                  size={20}
-                  className="cursor-pointer text-gray-500"
-                  onClick={handleApplyCoupon}
-                />
-              </div>
-
-              <p className="my-3 bg-green-100 p-2 text-center font-bold primary-color">
-                You saved ₹{parseInt(checkoutData?.coupon_discount)}!
-              </p>
-            </div>
-          ) : (
-            <>
-              <p className="flex items-center gap-1 text-black my-2 font-semibold">
-                <Tag size={16} className="text-gray-500" />
-                Have a coupon code?
-              </p>
-
-              <div className="flex items-center space-x-2 gap-2">
-                <input
-                  type="text"
-                  className="flex-grow border rounded-md p-2 bg-white text-black"
-                  placeholder="Enter coupon code"
-                  onChange={(e) => setCouponCode(e.target.value)}
-                />
-                <button
-                  disabled={couponCode === ""}
-                  className={`bg-[var(--primary-dark)] text-white py-2 px-3 rounded ${
-                    couponCode === "" && "opacity-70"
-                  }`}
-                  onClick={handleApplyCoupon}
-                >
-                  Apply
-                </button>
-              </div>
-            </>
-          )}
-          <div className="flex justify-between text-black font-medium">
-            <span>Shipping Charges</span>
-            <span>
-              ₹
-              {checkoutData?.delivery_fee?.isCodAvailable === true &&
-              selectedPayment === "payLater"
-                ? checkoutData?.delivery_fee?.cod_fee
-                : checkoutData?.delivery_fee?.normal_delivery}
-            </span>
-          </div>
-
-          {isCouponApplied && (
-            <div className="flex items-center justify-between mt-3 bg-green-50 p-2">
-              <p className="flex items-center gap-1 text-green-600 mb-0">
-                <Tag size={16} />
-                Coupon Discount
-              </p>
-              <p className="mb-0 primary-color font-bold">
-                - ₹{parseInt(checkoutData?.coupon_discount)}
-              </p>
-            </div>
-          )}
-
-          <hr />
-          <div className="flex justify-between font-bold text-xl text-black font-semibold">
+            <li className="aq-order-info-list-discount">
+              <span>Coupon Discount</span>
+              <span>- Rs. {parseInt(checkoutData?.coupon_discount, 10) || 0}</span>
+            </li>
+          ) : null}
+          <li className="aq-order-info-list-shipping">
+            <span>Shipping</span>
+            <span>Rs. {shipping}</span>
+          </li>
+          <li className="aq-order-info-list-total">
             <span>Total</span>
-            <span>
-              ₹
-              {selectedPayment === "payLater"
-                ? checkoutData?.total_cod_payment
-                : checkoutData?.total_full_payment}
-            </span>
-          </div>
-          <button
-            className="w-full mt-3 bg-[var(--primary-dark)] text-white py-2 rounded"
-            onClick={handlePayment}
-          >
-            {selectedPayment === "payLater"
-              ? `Pay Shipping ₹ ${checkoutData?.delivery_fee?.cod_fee}`
-              : `Pay Now ₹ ${checkoutData?.total_full_payment || 0}`}
-          </button>
-
-          {selectedPayment === "payLater" && (
-            <span className="mx-15 pt-2 h-10 block text-black">
-              You will pay ₹{ isCouponApplied ? checkoutData?.total_full_payment : checkoutData?.sub_total} upon delivery
-            </span>
-          )}
-        </div>
+            <span>Rs. {total}</span>
+          </li>
+        </ul>
       </div>
+
+      <div className="aq-checkout-payment">
+        <div
+          className="aq-checkout-payment-item"
+          onClick={() => setSelectedPayment("payNow")}
+        >
+          <input
+            type="radio"
+            id="pay_now"
+            name="payment"
+            checked={selectedPayment === "payNow"}
+            onChange={() => setSelectedPayment("payNow")}
+          />
+          <label htmlFor="pay_now">Pay Now (UPI, Cards, Wallets, NetBanking)</label>
+          {selectedPayment === "payNow" ? (
+            <div className="aq-checkout-payment-desc">
+              <p>
+                After clicking Pay Now, you will be redirected to Razorpay to complete
+                your purchase securely.
+              </p>
+            </div>
+          ) : null}
+        </div>
+
+        {isAnyProductNotCodAvailable ? (
+          <div className="aq-checkout-payment-item is-disabled">
+            <input
+              type="radio"
+              id="pay_later_off"
+              name="payment"
+              checked={false}
+              readOnly
+            />
+            <label htmlFor="pay_later_off">Cash on Delivery</label>
+            <div className="aq-checkout-payment-desc is-visible">
+              <p>
+                Not available for a few or all items.{" "}
+                <button
+                  type="button"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    setIsOpen(true);
+                  }}
+                >
+                  View items
+                </button>
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div
+            className={`aq-checkout-payment-item${codDisabled ? " is-disabled" : ""}`}
+            onClick={() => {
+              if (!codDisabled) {
+                setSelectedPayment("payLater");
+              }
+            }}
+          >
+            <input
+              type="radio"
+              id="pay_later"
+              name="payment"
+              checked={selectedPayment === "payLater"}
+              disabled={codDisabled}
+              onChange={() => setSelectedPayment("payLater")}
+            />
+            <label htmlFor="pay_later">Cash on Delivery</label>
+            {selectedPayment === "payLater" || codDisabled ? (
+              <div className="aq-checkout-payment-desc is-visible">
+                <p>
+                  {codDisabled
+                    ? "Cash on Delivery is not available for this order."
+                    : "COD available only for orders ≤ Rs. 5000 (incl. shipping). Shipping charges must be paid upfront. The remaining product amount will be collected in cash at delivery."}
+                </p>
+              </div>
+            ) : null}
+          </div>
+        )}
+      </div>
+
+      <div className="aq-checkout-btn-wrapper">
+        <button type="button" className="aq-checkout-btn w-100" onClick={handlePayment}>
+          {payLabel}
+        </button>
+      </div>
+      {selectedPayment === "payLater" ? (
+        <p className="aq-checkout-cod-note">
+          You will pay Rs.{" "}
+          {isCouponApplied ? checkoutData?.total_full_payment : checkoutData?.sub_total}{" "}
+          upon delivery
+        </p>
+      ) : null}
+
+      <CodItemCard
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        checkoutData={checkoutData}
+      />
     </div>
   );
 };

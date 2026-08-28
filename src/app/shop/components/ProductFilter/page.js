@@ -1,140 +1,17 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
-import { Sidebar } from "primereact/sidebar";
+import { useEffect, useState, useRef } from "react";
+import { createPortal } from "react-dom";
 import { Range } from "react-range";
-import { IoClose } from "react-icons/io5";
 
 const STEP = 100;
 
-function FilterComponent({
-  categories,
-  selectedCategories,
-  handleChange,
-  handleCheckboxChange,
-  values,
-  MIN,
-  MAX,
-  showPriceFilter,
-}) {
-  return (
-    <>
-      <div className="border px-4 py-3 rounded mb-4">
-        <h3 className="mb-3 h6 text-uppercase text-black d-block">
-          Categories
-        </h3>
-        <ul
-          className="list-none pl-0 mb-0 overflow-y-auto scrollbar-hide-on-idle"
-          style={{ maxHeight: "32rem", paddingLeft: "0px" }}
-        >
-          {categories?.map((category) => (
-            <li
-              key={category?.id}
-              className="flex items-start justify-between gap-2 mb-2"
-            >
-              <div className="flex items-start cursor-pointer gap-2">
-                <input
-                  id={category?.id}
-                  type="checkbox"
-                  value={category?.id}
-                  checked={selectedCategories?.includes(category?.id)}
-                  onChange={(e) =>
-                    handleCheckboxChange(e.target.checked, category?.id)
-                  }
-                  className="form-checkbox h-4 w-4 cursor-pointer"
-                  style={{
-                    accentColor: "var(--bs-primary)",
-                    marginTop: ".35rem",
-                  }}
-                />
-                <label
-                  htmlFor={category?.id}
-                  className="text-md text-black mb-0 cursor-pointer"
-                  title={category.name}
-                >
-                  {category.name}
-                </label>
-              </div>
-              <span className="text-md text-black">
-                ({category?.productCount})
-              </span>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="border px-4 py-3 rounded mb-4">
-        <h3 className="mb-3 h6 text-uppercase text-black d-block">
-          Filter by Price
-        </h3>
-        <div className="max-w-xl mx-auto px-1">
-          <div className="flex justify-between text-sm font-medium text-gray-700 mb-2">
-            <span>Rs. {values[0]}</span>
-            <span>Rs. {values[1]}</span>
-          </div>
-          {!showPriceFilter ? (
-            <Range
-              values={values}
-              step={STEP}
-              min={MIN}
-              max={MAX}
-              onChange={handleChange}
-              renderTrack={({ props, children }) => {
-                const percentage1 = ((values[0] - MIN) / (MAX - MIN)) * 100;
-                const percentage2 = ((values[1] - MIN) / (MAX - MIN)) * 100;
-
-                return (
-                  <div
-                    {...props}
-                    style={{
-                      ...props.style,
-                      height: ".2rem",
-                      width: "100%",
-                      borderRadius: "4px",
-                      background: `linear-gradient(to right, 
-  gray 0%, 
-  gray ${percentage1}%, 
-  black ${percentage1}%, 
-  black ${percentage2}%, 
-  gray ${percentage2}%, 
-  gray 100%)`,
-                    }}
-                  >
-                    {children}
-                  </div>
-                );
-              }}
-              renderThumb={({ props }) => {
-                const { key, ...rest } = props;
-                return (
-                  <div
-                    key={key}
-                    {...rest}
-                    style={{
-                      ...rest.style,
-                      height: "20px",
-                      width: "20px",
-                      borderRadius: "50%",
-                      backgroundColor: "#000",
-                      border: "2px solid white",
-                      boxShadow: "0 0 3px rgba(0,0,0,0.3)",
-                    }}
-                  />
-                );
-              }}
-            />
-          ) : (
-            <p className="text-black">All products have the same price.</p>
-          )}
-        </div>
-        <div className="mt-4 text-sm text-gray-700">
-          Price:{" "}
-          <span className="fw-bold">
-            Rs. {values[0]} – Rs. {values[1]}
-          </span>
-        </div>
-      </div>
-    </>
-  );
+function formatPrice(value) {
+  const amount = Number(value);
+  if (Number.isNaN(amount)) {
+    return value || "0";
+  }
+  return amount.toLocaleString("en-IN");
 }
 
 const ProductFilter = ({
@@ -144,24 +21,52 @@ const ProductFilter = ({
   filterProducts,
   onChange,
   onPriceChange,
-  priceRange = { min: 50, max: 900 },
   openFilter,
   handleOpenFilter,
   priceObj,
 }) => {
-  const [values, setValues] = useState([priceRange.min, priceRange.max]);
+  const minValue = parseFloat(categoryList?.product_amount?.min) || 0;
+  const maxValue = parseFloat(categoryList?.product_amount?.max) || 1000;
+  const [mounted, setMounted] = useState(false);
+  const [values, setValues] = useState([minValue, maxValue]);
   const [showPriceFilter, setShowPriceFilter] = useState(false);
-
+  const [categoryOpen, setCategoryOpen] = useState(true);
+  const [priceOpen, setPriceOpen] = useState(true);
   const debounceRef = useRef(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (typeof document === "undefined") {
+      return undefined;
+    }
+    document.body.style.overflow = openFilter ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [openFilter]);
+
+  useEffect(() => {
+    if (priceObj && Object.keys(priceObj).length > 0) {
+      setValues([priceObj.min || minValue, priceObj.max || maxValue]);
+    } else {
+      setValues([minValue, maxValue]);
+    }
+  }, [categoryList, priceObj, minValue, maxValue]);
+
+  useEffect(() => {
+    setShowPriceFilter(parseInt(minValue, 10) === parseInt(maxValue, 10));
+  }, [minValue, maxValue, openFilter]);
 
   const handleChange = (newValues) => {
     setValues(newValues);
-
-    if (debounceRef.current) clearTimeout(debounceRef.current);
-
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
     debounceRef.current = setTimeout(() => {
       onPriceChange({ min: newValues[0], max: newValues[1] });
-
       const filteredProducts = categories.filter(
         (item) => item.price >= newValues[0] && item.price <= newValues[1]
       );
@@ -169,81 +74,168 @@ const ProductFilter = ({
     }, 500);
   };
 
-  const handleCheckboxChange = (isChecked, categoryID) => {
-    if (isChecked) {
-      onChange([...selectedCategories, categoryID]);
-    } else {
-      onChange(selectedCategories?.filter((id) => id !== categoryID));
+  const handleCategoryClick = (categoryID) => {
+    if (selectedCategories?.includes(categoryID)) {
+      onChange(selectedCategories.filter((id) => id !== categoryID));
+      return;
     }
+    onChange([...(selectedCategories || []), categoryID]);
   };
 
-  useEffect(() => {
-    if (Object.keys(priceObj).length > 0) {
-      setValues([priceObj.min || 0, priceObj.max || 1000]);
-    } else {
-      setValues([
-        parseFloat(categoryList?.product_amount?.min) || 0,
-        parseFloat(categoryList?.product_amount?.max) || 1000,
-      ]);
-    }
-  }, [categoryList]);
+  if (!mounted) {
+    return null;
+  }
 
-  useEffect(() => {
-    if (
-      parseInt(categoryList?.product_amount?.min) ===
-      parseInt(categoryList?.product_amount?.max)
-    ) {
-      setShowPriceFilter(true);
-    } else {
-      setShowPriceFilter(false);
-    }
-  }, [openFilter]);
+  const categoryCount = (category) =>
+    category?.productCount || category?.product_count || 0;
 
-  return (
+  const rangeSpan = maxValue - minValue || 1;
+  const percentage1 = ((values[0] - minValue) / rangeSpan) * 100;
+  const percentage2 = ((values[1] - minValue) / rangeSpan) * 100;
+
+  return createPortal(
     <>
-      <div className="col-md-3 order-1 mb-5 mb-md-0 hidden xl:block">
-        <FilterComponent
-          categoryList={categoryList}
-          categories={categories}
-          selectedCategories={selectedCategories}
-          handleChange={handleChange}
-          handleCheckboxChange={handleCheckboxChange}
-          values={values}
-          MIN={parseFloat(categoryList?.product_amount?.min)}
-          MAX={parseFloat(categoryList?.product_amount?.max)}
-          showPriceFilter={showPriceFilter}
-        />
-      </div>
-
-      <Sidebar
-        visible={openFilter}
-        position="left"
-        onHide={handleOpenFilter}
-        showCloseIcon={false}
-        className="cart-sidebar xl:hidden h-full"
+      <div
+        className={`aq-shop-body-overlay${openFilter ? " opened" : ""}`}
+        onClick={handleOpenFilter}
+        aria-hidden={!openFilter}
+      />
+      <aside
+        className={`aq-shop-filter aq-sidebar-bg aq-filter-active d-flex flex-column justify-content-between${
+          openFilter ? " opened" : ""
+        }`}
+        aria-hidden={!openFilter}
       >
-        <div className="bg-white h-full w-full max-w-md right-0 product-filter-scroll">
-          <div className="pt-4 flex items-center justify-between mb-3">
-            <h4 className="dark-color">Filter</h4>
-            <IoClose
-              onClick={handleOpenFilter}
-              className="dark-color cursor-pointer"
+        <button type="button" className="aq-sidebar-close" onClick={handleOpenFilter}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path
+              d="M13 1L1 13M1 1L13 13"
+              stroke="black"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
+          </svg>
+        </button>
+        <div className="aq-product-sidebar-offcanvas">
+          <h4 className="aq-product-sidebar-offcanvas-title">Filters</h4>
+          <div className="aq-product-sidebar-wrap">
+            <div className="aq-product-sidebar-widget mb-25">
+              <div
+                className={`aq-product-sidebar-widget-top${categoryOpen ? "" : " collapsed"}`}
+                onClick={() => setCategoryOpen((open) => !open)}
+              >
+                <h3 className="aq-product-sidebar-widget-title">Products Category</h3>
+                <span className="aq-product-sidebar-item-close">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="7" viewBox="0 0 12 7" fill="none">
+                    <path
+                      d="M0.75 0.75L5.75 5.75L10.75 0.75"
+                      stroke="#141414"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </span>
+              </div>
+              {categoryOpen && (
+                <div className="aq-product-sidebar-widget-content">
+                  <div className="aq-product-sidebar-widget-categories">
+                    <ul>
+                      <li>
+                        <button
+                          type="button"
+                          className={!selectedCategories?.length ? "active" : undefined}
+                          onClick={() => onChange([])}
+                        >
+                          All ({categories?.reduce((sum, cat) => sum + categoryCount(cat), 0) || 0})
+                        </button>
+                      </li>
+                      {categories?.map((category) => (
+                        <li key={category?.id}>
+                          <button
+                            type="button"
+                            className={
+                              selectedCategories?.includes(category?.id) ? "active" : undefined
+                            }
+                            onClick={() => handleCategoryClick(category?.id)}
+                          >
+                            {category?.name} ({categoryCount(category)})
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="aq-product-sidebar-widget mb-25">
+              <div
+                className={`aq-product-sidebar-widget-top${priceOpen ? "" : " collapsed"}`}
+                onClick={() => setPriceOpen((open) => !open)}
+              >
+                <h3 className="aq-product-sidebar-widget-title no-border">Price</h3>
+                <span className="aq-product-sidebar-item-close">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="7" viewBox="0 0 12 7" fill="none">
+                    <path
+                      d="M0.75 0.75L5.75 5.75L10.75 0.75"
+                      stroke="#141414"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </span>
+              </div>
+              {priceOpen && (
+                <div className="aq-product-sidebar-widget-content">
+                  <div className="aq-product-sidebar-widget-filter pt-10">
+                    {showPriceFilter ? (
+                      <p>All products have the same price.</p>
+                    ) : (
+                      <Range
+                        values={values}
+                        step={STEP}
+                        min={minValue}
+                        max={maxValue}
+                        onChange={handleChange}
+                        renderTrack={({ props, children }) => {
+                          const { key, ...rest } = props;
+                          return (
+                            <div
+                              key={key}
+                              {...rest}
+                              className="aq-shop-range"
+                              style={{
+                                ...rest.style,
+                                background: `linear-gradient(to right, #ededed 0%, #ededed ${percentage1}%, #141414 ${percentage1}%, #141414 ${percentage2}%, #ededed ${percentage2}%, #ededed 100%)`,
+                              }}
+                            >
+                              {children}
+                            </div>
+                          );
+                        }}
+                        renderThumb={({ props }) => {
+                          const { key, ...rest } = props;
+                          return <div key={key} {...rest} className="aq-shop-range-thumb" />;
+                        }}
+                      />
+                    )}
+                    <div className="aq-product-sidebar-widget-filter-info d-flex align-items-center justify-content-between">
+                      <span className="input-range">
+                        Rs. {formatPrice(values[0])} — Rs. {formatPrice(values[1])}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
-          <FilterComponent
-            categoryList={categoryList}
-            categories={categories}
-            selectedCategories={selectedCategories}
-            handleChange={handleChange}
-            handleCheckboxChange={handleCheckboxChange}
-            values={values}
-            MIN={parseFloat(categoryList?.product_amount?.min)}
-            MAX={parseFloat(categoryList?.product_amount?.max)}
-            showPriceFilter={showPriceFilter}
-          />
         </div>
-      </Sidebar>
-    </>
+      </aside>
+    </>,
+    document.body
   );
 };
 

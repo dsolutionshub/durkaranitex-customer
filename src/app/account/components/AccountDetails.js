@@ -1,57 +1,73 @@
 "use client";
 
-import { User, Mail, Phone, Calendar } from "lucide-react";
+import { useEffect, useState } from "react";
+import { getInitials } from "./DashboardIcons";
 
 export default function AccountDetails({ data }) {
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    mobile: "",
+  });
+
+  useEffect(() => {
+    setForm({
+      name: data?.name || "",
+      email: data?.email || "",
+      mobile: data?.mobile || "",
+    });
+  }, [data]);
+
   return (
-    <div className="space-y-8">
-      <h2 className="text-3xl font-bold dark-color">Account Details</h2>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="space-y-6">
-          <div>
-            <label className="flex items-center text-sm font-semibold text-gray-700 mb-1 pl-2">
-              <User className="w-4 h-4 mr-2 inline-block" />
-              <span className="translate-y-[1px] inline-block">Full Name</span>
-            </label>
-            <div className="px-4 py-3 bg-gray-200 rounded-xl text-gray-900 font-medium">
-              {data?.name || '-'}
+    <div className="aq-dashboard-wrapper aq-dash-pt-30">
+      <h3 className="aq-dashboard-title">My Profile</h3>
+      <div className="aq-dashboard-content-layout aq-dash-mb-40">
+        <div className="aq-dashboard-box aq-dash-mb-20">
+          <div className="aq-dashboard-profile-box">
+            <div className="aq-dashboard-profile-avatar-wrap text-center aq-dash-mb-45">
+              <div className="aq-dashboard-profile-avatar p-relative">
+                <div className="aq-dashboard-avatar-text">{getInitials(form.name)}</div>
+              </div>
             </div>
-          </div>
-
-          <div>
-            <label className="flex items-center text-sm font-semibold text-gray-700 mb-1 pl-2">
-              <Mail className="w-4 h-4 mr-2 inline-block" />
-              <span className="translate-y-[1px] inline-block">
-                Email Address
-              </span>
-            </label>
-            <div className="px-4 py-3 bg-gray-200 rounded-xl text-gray-900 font-medium">
-              {data?.email || '-'}
-            </div>
-          </div>
-
-          <div>
-            <label className="flex items-center text-sm font-semibold text-gray-700 mb-1 pl-2">
-              <Phone className="w-4 h-4 mr-2 inline-block" />
-              <span className="translate-y-[1px] inline-block">
-                Phone Number
-              </span>
-            </label>
-            <div className="px-4 py-3 bg-gray-200 rounded-xl text-gray-900 font-medium">
-              {data?.mobile || "-"}
-            </div>
-          </div>
-
-          <div>
-            <label className="flex items-center text-sm font-semibold text-gray-700 mb-1 pl-2">
-              <Calendar className="w-4 h-4 mr-2 inline-block" />
-              <span className="translate-y-[1px] inline-block">
-                Member Since
-              </span>
-            </label>
-            <div className="px-4 py-3 bg-gray-200 rounded-xl text-gray-900 font-medium">
-              {data?.created_date || "-"}
+            <div className="aq-dashboard-profile-from-wrap">
+              <div className="row">
+                <div className="col-lg-12">
+                  <div className="aq-dashboard-from-input">
+                    <label className="aq-form-label">Full Name</label>
+                    <input
+                      className="aq-form-control"
+                      type="text"
+                      name="name"
+                      value={form.name}
+                      readOnly
+                    />
+                  </div>
+                </div>
+                <div className="col-lg-6">
+                  <div className="aq-dashboard-from-input">
+                    <label className="aq-form-label">Your Email</label>
+                    <input
+                      className="aq-form-control"
+                      type="text"
+                      name="email"
+                      value={form.email}
+                      readOnly
+                    />
+                  </div>
+                </div>
+                <div className="col-lg-6">
+                  <div className="aq-dashboard-from-input">
+                    <label className="aq-form-label">Mobile No</label>
+                    <input
+                      className="aq-form-control"
+                      type="text"
+                      name="mobile"
+                      value={form.mobile}
+                      readOnly
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

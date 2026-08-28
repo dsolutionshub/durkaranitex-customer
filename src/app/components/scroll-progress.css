@@ -1,0 +1,68 @@
+/* Bazaro fashion-v3 back to top — from bazaro/assets/css/main.css */
+
+.progress-wrap {
+  --aq-common-white: #ffffff;
+  --aq-common-black: #141414;
+  position: fixed;
+  inset-inline-end: 50px;
+  bottom: 120px;
+  height: 46px;
+  width: 46px;
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+  display: block;
+  z-index: 99;
+  opacity: 0;
+  visibility: hidden;
+  border-radius: 50px;
+  transform: translateY(15px);
+  transition: all 200ms linear;
+  background-color: var(--aq-common-white);
+  box-shadow: 0px 8px 16px rgba(3, 4, 28, 0.3);
+}
+
+@media (max-width: 1199px) {
+  .progress-wrap {
+    inset-inline-end: 16px;
+    bottom: 100px;
+  }
+}
+
+.progress-wrap.active-progress {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.progress-wrap::after {
+  position: absolute;
+  content: "";
+  top: 0;
+  width: 46px;
+  height: 44px;
+  border-radius: 4px;
+  inset-inline-start: 0;
+  transition: all 0.4s ease;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 12px 10px;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='7' viewBox='0 0 12 7' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 6L6 1L1 6' stroke='%23141414' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3C/path%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+.progress-wrap.active-progress:hover {
+  transform: translateY(-4px);
+}
+
+.progress-wrap svg path {
+  fill: none;
+}
+
+.progress-wrap svg.progress-circle path {
+  stroke-width: 4;
+  box-sizing: border-box;
+  stroke: var(--aq-common-black);
+  stroke-linecap: round;
+  transition: all 200ms linear;
+}

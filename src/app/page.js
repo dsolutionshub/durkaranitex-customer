@@ -74,9 +74,12 @@ import { getHome } from "./api/services/authService";
 import { getErrorMessage } from "./utils/helperFn";
 import { loader } from "./components/loader/loaderManager";
 
-import { BannerCarousel } from "./components/HeroSection";
+import FashionHero from "./components/home/FashionHero";
 import CollectionsSection from "./components/CollectionsSection";
 import FeaturedProducts from "./components/FeaturedProducts";
+import TrendingProductsGrid from "./components/home/TrendingProductsGrid";
+import CategoryCoverflow from "./components/home/CategoryCoverflow";
+import ShopFeatures from "./components/home/ShopFeatures";
 import SaleSection from "./components/SaleSection";
 import NewCollections from "./components/NewArrivals";
 import CategorySection from "./components/CategoryCard";
@@ -123,7 +126,7 @@ export default function Home() {
         </p>
       </div>
 
-      <BannerCarousel images={homeDetails.banners} />
+      <FashionHero home={homeDetails} />
       <CollectionsSection />
 
       {homeDetails.featured_products?.length > 0 && (
@@ -133,12 +136,16 @@ export default function Home() {
         />
       )}
 
-      {homeDetails.new_collection_categories?.length > 0 && (
-        <NewCollections data={homeDetails.new_collection_categories} />
-      )}
-
       {homeDetails.coupons?.length > 0 && (
         <SaleSection data={homeDetails.coupons} />
+      )}
+
+      <TrendingProductsGrid />
+      <CategoryCoverflow />
+      <ShopFeatures />
+
+      {homeDetails.new_collection_categories?.length > 0 && (
+        <NewCollections data={homeDetails.new_collection_categories} />
       )}
 
       {homeDetails.shop_collection?.length > 0 && (

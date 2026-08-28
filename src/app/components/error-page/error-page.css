@@ -1,0 +1,99 @@
+/* Bazaro error.html — from bazaro/assets/css/main.css */
+
+.aq-error-page {
+  --aq-ff-satoshi-regular: "Satoshi-Regular", sans-serif;
+  --aq-ff-satoshi-medium: "Satoshi-Medium", sans-serif;
+  --aq-ff-satoshi-bold: "Satoshi-Bold", sans-serif;
+  --aq-common-white: #ffffff;
+  --aq-common-black: #141414;
+  background: var(--aq-common-white);
+  color: var(--aq-common-black);
+}
+
+.aq-error-page a {
+  text-decoration: none;
+}
+
+.aq-error-page .aq-error-area {
+  padding-top: 130px;
+  padding-bottom: 120px;
+}
+
+@media (max-width: 767px) {
+  .aq-error-page .aq-error-area {
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+}
+
+.aq-error-page .aq-error-title {
+  font-size: 64px;
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 0 0 50px;
+  color: var(--aq-common-black);
+  font-family: var(--aq-ff-satoshi-bold);
+}
+
+@media (max-width: 767px) {
+  .aq-error-page .aq-error-title {
+    font-size: 42px;
+    margin-bottom: 30px;
+  }
+}
+
+.aq-error-page .aq-error-thumb {
+  margin-bottom: 55px;
+}
+
+.aq-error-page .aq-error-thumb img {
+  display: inline-block;
+  max-width: 100%;
+  height: auto;
+}
+
+.aq-error-page .aq-error-title-sm {
+  font-size: 26px;
+  line-height: 1.2;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin: 0 0 12px;
+  color: var(--aq-common-black);
+  font-family: var(--aq-ff-satoshi-medium);
+}
+
+@media (max-width: 767px) {
+  .aq-error-page .aq-error-title-sm {
+    font-size: 20px;
+  }
+}
+
+.aq-error-page .aq-error-content p {
+  font-weight: 400;
+  font-size: 18px;
+  color: #57575a;
+  margin: 0 0 30px;
+}
+
+.aq-error-page .aq-btn-black {
+  padding: 18px 30px;
+  font-weight: 600;
+  line-height: 1;
+  font-size: 14px;
+  transition: 0.3s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--aq-common-white);
+  border: 1px solid transparent;
+  font-family: var(--aq-ff-satoshi-bold);
+  background-color: var(--aq-common-black);
+}
+
+.aq-error-page .aq-btn-black:hover {
+  color: var(--aq-common-black);
+  background-color: transparent;
+  border-color: var(--aq-common-black);
+}

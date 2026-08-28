@@ -1,0 +1,193 @@
+/* Bazaro fashion-v3 shop features — from bazaro/assets/css/main.css */
+
+.aqf-shop-feature-style {
+  --aq-ff-satoshi-medium: "Satoshi-Medium", sans-serif;
+  --aq-ff-satoshi-bold: "Satoshi-Bold", sans-serif;
+  --aq-common-white: #ffffff;
+  --aq-common-black: #141414;
+  --aq-text-body: #6d6868;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+@media only screen and (min-width: 1200px) and (max-width: 1399px),
+  only screen and (min-width: 992px) and (max-width: 1199px),
+  only screen and (min-width: 768px) and (max-width: 991px),
+  (max-width: 767px) {
+  .aqf-shop-feature-ptb {
+    padding-bottom: 40px;
+  }
+}
+
+@media (max-width: 767px) {
+  .aqf-shop-feature-style {
+    padding-top: 48px;
+    padding-bottom: 24px;
+  }
+
+  .aqf-shop-feature-ptb {
+    padding-bottom: 24px;
+  }
+}
+
+.aqf-shop-feature-style .container-1830 {
+  max-width: 1830px;
+}
+
+.aqf-shop-feature-style .aqf-shop-feature-wrap {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 48px;
+  width: 100%;
+  padding: 40px 48px;
+  background-color: #f1efee;
+}
+
+@media (min-width: 1600px) {
+  .aqf-shop-feature-style .aqf-shop-feature-wrap {
+    gap: 64px;
+    padding: 40px 56px;
+  }
+}
+
+@media only screen and (min-width: 1200px) and (max-width: 1399px) {
+  .aqf-shop-feature-style .aqf-shop-feature-wrap {
+    gap: 28px;
+    padding: 40px 32px;
+  }
+}
+
+@media (max-width: 991px) {
+  .aqf-shop-feature-style .aqf-shop-feature-wrap {
+    flex-wrap: wrap;
+    gap: 0 20px;
+    padding: 30px 20px 10px;
+  }
+}
+
+.aqf-shop-feature-style .aqf-shop-feature-item {
+  display: flex;
+  align-items: center;
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  margin-bottom: 0;
+}
+
+.aqf-shop-feature-content {
+  min-width: 0;
+}
+
+@media (min-width: 1600px) {
+  .aqf-shop-feature-style .aqf-shop-feature-item {
+    flex: 0 0 auto;
+    min-width: auto;
+  }
+
+  .aqf-shop-feature-content {
+    min-width: auto;
+  }
+
+  .aqf-shop-feature-style .aqf-shop-feature-content p {
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 991px) {
+  .aqf-shop-feature-style .aqf-shop-feature-item {
+    flex: 1 1 calc(50% - 12px);
+    min-width: calc(50% - 12px);
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 767px) {
+  .aqf-shop-feature-style .aqf-shop-feature-item {
+    flex: 1 1 100%;
+    min-width: 100%;
+    margin-bottom: 20px;
+  }
+}
+
+.aqf-shop-feature-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+  width: 60px;
+  margin-inline-end: 16px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+  color: var(--aq-common-black);
+  background-color: var(--aq-common-white);
+}
+
+@media only screen and (min-width: 1200px) and (max-width: 1399px) {
+  .aqf-shop-feature-icon {
+    height: 40px;
+    width: 40px;
+  }
+}
+
+@media (max-width: 767px) {
+  .aqf-shop-feature-icon {
+    height: 50px;
+    width: 50px;
+    margin-inline-end: 12px;
+  }
+}
+
+.aqf-shop-feature-style .aqf-shop-feature-icon span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0;
+  color: var(--aq-common-black);
+}
+
+.aqf-shop-feature-content h4 {
+  font-size: 20px;
+  line-height: 1;
+  margin-top: 0;
+  margin-bottom: 10px;
+  letter-spacing: 0.2px;
+  color: var(--aq-common-black);
+  font-family: var(--aq-ff-satoshi-bold);
+}
+
+@media only screen and (min-width: 1200px) and (max-width: 1399px) {
+  .aqf-shop-feature-content h4 {
+    font-size: 15px;
+    margin-bottom: 8px;
+  }
+}
+
+@media (max-width: 767px) {
+  .aqf-shop-feature-content h4 {
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+}
+
+.aqf-shop-feature-style .aqf-shop-feature-content p {
+  margin-bottom: 0;
+  font-size: 14px;
+  line-height: 133.663%;
+  color: var(--aq-text-body);
+  font-family: var(--aq-ff-satoshi-medium);
+}
+
+@media only screen and (min-width: 1200px) and (max-width: 1399px) {
+  .aqf-shop-feature-style .aqf-shop-feature-content p {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 767px) {
+  .aqf-shop-feature-style .aqf-shop-feature-content p {
+    font-size: 14px;
+  }
+}

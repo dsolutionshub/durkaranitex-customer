@@ -1,0 +1,186 @@
+/* Bazaro-themed add / edit address modal */
+
+.aq-address-modal {
+  --aq-ff-satoshi-regular: "Satoshi", sans-serif;
+  --aq-ff-satoshi-medium: "Satoshi", sans-serif;
+  --aq-ff-satoshi-bold: "Satoshi", sans-serif;
+  --aq-common-white: #ffffff;
+  --aq-common-black: #141414;
+}
+
+.aq-address-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999990;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 24px 16px;
+  overflow-y: auto;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.aq-address-modal-dialog {
+  width: 100%;
+  max-width: 680px;
+  margin: auto;
+}
+
+.aq-address-modal-content {
+  position: relative;
+  padding: 40px 40px 32px;
+  border-radius: 16px;
+  background: var(--aq-common-white);
+  box-shadow: 0 30px 70px 0 rgba(1, 15, 28, 0.1);
+}
+
+@media (max-width: 767px) {
+  .aq-address-modal-content {
+    padding: 36px 20px 24px;
+  }
+}
+
+.aq-address-modal-close {
+  position: absolute;
+  top: 22px;
+  inset-inline-end: 22px;
+  width: 30px;
+  height: 30px;
+  z-index: 3;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  opacity: 0.7;
+  background: transparent
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23141414'%3E%3Cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707A1 1 0 0 1 .293.293z'/%3E%3C/svg%3E")
+    center / 12px no-repeat;
+}
+
+.aq-address-modal-close:hover {
+  opacity: 1;
+}
+
+.aq-address-modal-title {
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0 40px 28px 0;
+  color: var(--aq-common-black);
+  font-family: var(--aq-ff-satoshi-medium);
+}
+
+.aq-address-modal .aq-checkout-input {
+  margin-bottom: 20px;
+}
+
+.aq-address-modal .aq-checkout-input label {
+  display: block;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 12px;
+  color: var(--aq-common-black);
+  font-family: var(--aq-ff-satoshi-medium);
+}
+
+.aq-address-modal .aq-checkout-input label span {
+  color: #de1518;
+}
+
+.aq-address-modal .aq-checkout-input input,
+.aq-address-modal .aq-checkout-input select {
+  width: 100%;
+  height: 56px;
+  padding: 0 26px;
+  line-height: 56px;
+  font-size: 14px;
+  outline: none;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  color: var(--aq-common-black);
+  background: #f5f5f5;
+  font-family: var(--aq-ff-satoshi-regular);
+  box-shadow: none;
+}
+
+.aq-address-modal .aq-checkout-input select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' fill='none' stroke='%236E6E73' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 20px center;
+  padding-inline-end: 44px;
+  cursor: pointer;
+}
+
+.aq-address-modal .aq-checkout-input input::placeholder,
+.aq-address-modal .aq-checkout-input select::placeholder {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.aq-address-modal .aq-checkout-input input:focus,
+.aq-address-modal .aq-checkout-input select:focus {
+  background: var(--aq-common-white);
+  border-color: var(--aq-common-black);
+  box-shadow: none;
+}
+
+.aq-address-modal .aq-checkout-input input.is-invalid,
+.aq-address-modal .aq-checkout-input select.is-invalid {
+  border-color: #de1518;
+}
+
+.aq-address-modal .aq-address-field-error {
+  font-size: 13px;
+  color: #b91d1f;
+  margin-top: 6px;
+  margin-bottom: 0;
+}
+
+.aq-address-modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+  padding-top: 8px;
+}
+
+.aq-address-modal .aq-checkout-btn {
+  font-size: 16px;
+  font-weight: 500;
+  height: 50px;
+  padding: 0 30px;
+  line-height: 48px;
+  text-align: center;
+  border-radius: 8px;
+  display: inline-block;
+  cursor: pointer;
+  color: var(--aq-common-white);
+  background-color: var(--aq-common-black);
+  border: 1px solid transparent;
+  font-family: var(--aq-ff-satoshi-medium);
+}
+
+.aq-address-modal .aq-checkout-btn:hover {
+  border-color: var(--aq-common-black);
+  color: var(--aq-common-black);
+  background-color: transparent;
+}
+
+.aq-address-modal .aq-checkout-btn.border-style {
+  font-weight: 500;
+  font-size: 15px;
+  color: var(--aq-common-black);
+  background-color: transparent;
+  border: 1px solid rgba(77, 61, 48, 0.12);
+}
+
+.aq-address-modal .aq-checkout-btn.border-style:hover {
+  color: var(--aq-common-white);
+  background-color: var(--aq-common-black);
+  border-color: var(--aq-common-black);
+}
+
+body.aq-address-modal-open {
+  overflow: hidden;
+}

@@ -81,11 +81,11 @@ function ChangePassword() {
           </div>
           <div className="absolute -bottom-6 left-6 w-16 h-16 rounded-full bg-white shadow flex items-center justify-center p-2">
             <Image
-              src={"/KCF2.jpg"}
-              height={100}
-              width={100}
-              alt="logo"
-              className="w-full object-cover"
+              src={"/images/home/KCLogo.png"}
+              height={70}
+              width={220}
+              alt="Kavya Creation"
+              className="w-full object-contain"
             />
           </div>
         </div>

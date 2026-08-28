@@ -134,13 +134,13 @@ const CollectionsBox = () => {
 };
 
 export default function SilkCollections() {
-  return (
-    <Section
-      title={"Shop By Silk Collections"}
-      desc={
-        "Explore our diverse collection of beautiful silk sarees for every occasion"
-      }
-      section={<CollectionsBox />}
-    />
-  );
+  // return (
+  //   <Section
+  //     title={"Shop By Silk Collections"}
+  //     desc={
+  //       "Explore our diverse collection of beautiful silk sarees for every occasion"
+  //     }
+  //     section={<CollectionsBox />}
+  //   />
+  // );
 }

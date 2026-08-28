@@ -4,12 +4,10 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
-import { ShoppingBag } from "lucide-react";
 
 import CartProducts from "./components/CartProducts";
-import CustomBreadCrumb from "../components/CustomBreadCrumb";
 import { loader } from "../components/loader/loaderManager";
-import Loader from "../components/loader/loader";
+import { LoaderComponent } from "../components/loader/loader";
 import { toastCom } from "../components/toast/ToastManager";
 
 import {
@@ -18,9 +16,11 @@ import {
   modifyCart,
   removeCart,
 } from "../api/services/authService";
-import { CART_MODEL, LOGIN_MSG } from "../utils/constants";
+import { LOGIN_MSG } from "../utils/constants";
 import { getErrorMessage } from "../utils/helperFn";
 import useCartPanelStore from "@/store/useCartPanelStore";
+
+import "./cart-page.css";
 
 const Cart = () => {
   const router = useRouter();
@@ -28,7 +28,7 @@ const Cart = () => {
   const { setCartOpen, cardDetails } = useCartPanelStore();
   const [totalCost, setTotalCost] = useState(0);
   const [products, setProducts] = useState([]);
-  // const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+  const [isPageLoading, setIsPageLoading] = useState(true);
   const [totalQuantities, setTotalQuantities] = useState(0);
 
   const fetchCart = async () => {
@@ -48,11 +48,13 @@ const Cart = () => {
         totalQuantity: item?.product?.quantity,
       }));
 
-      setProducts(formattedProducts);
+      setProducts(formattedProducts || []);
     } catch (err) {
       getErrorMessage(err);
+      setProducts([]);
     } finally {
       loader(false);
+      setIsPageLoading(false);
     }
   };
 
@@ -161,111 +163,108 @@ const Cart = () => {
     }
   }, [router, status, session]);
 
-  // if (isCheckingAuth === true) {
-  //   return (
-  //     <div className="h-[60vh]">
-  //       <Loader />
-  //     </div>
-  //   );
-  // }
+  if (isPageLoading) {
+    return <LoaderComponent />;
+  }
 
   return (
-    <>
-      <CustomBreadCrumb model={CART_MODEL} title={"Shopping Cart"} />
-      {products?.length > 0 ? (
-        <div className="container mt-4 mb-5">
-          <CartProducts
-            products={products}
-            decreaseCount={decreaseCount}
-            increaseCount={increaseCount}
-            removeFromCart={removeFromCart}
-          />
-
-          <div className="row">
-            <div className="col-md-6 order-1 order-md-0">
-              <div className="row mt-3 mt-md-0 mb-3  mb-md-5">
-                <div className="col-md-6">
-                  <button
-                    className="shop btn btn-outline-primary btn-sm btn-block primary-color"
-                    onClick={() => router.push("/shop")}
-                  >
-                    Continue Shopping
-                  </button>
+    <div className="aq-cart-page">
+      <div className="aq-breadcrumb-area">
+        <div className="container">
+          <div className="row align-items-center">
+            <div className="col-xl-12">
+              <div className="aq-breadcrumb-wrap text-center">
+                <div className="pd-breadcrumb-list">
+                  <span>
+                    <Link href="/">home</Link>
+                  </span>
+                  <span>/</span>
+                  <span>cart</span>
                 </div>
-              </div>
-
-              <hr className="d-block d-md-none" />
-
-              <div className="row d-none">
-                <div className="col-md-12">
-                  <label className="text-black h4">Coupon</label>
-                  <p>Enter your Coupon code if you have one.</p>
-                </div>
-                <div className="col-md-8 mb-md-0">
-                  <input
-                    type="text"
-                    className="form-control py-3"
-                    id="coupon"
-                    placeholder="Coupon Code"
-                  />
-                </div>
-                <div className="col-md-4 mt-3 mt-md-0">
-                  <button className="btn btn-primary btn-sm">
-                    Apply Coupon
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div className="col-md-6 pl-5 order-0 order-md-1">
-              <div className="row justify-content-end">
-                <div className="col-md-7">
-                  <div className="row">
-                    <div className="col-md-12 text-right border-bottom mb-5">
-                      <h3 className="text-black h4">Cart Totals</h3>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <p className="dark-color mb-0 text-[1.2rem]">Subtotal</p>
-                    <p className="dark-color mb-0 text-[1.2rem] fw-semibold">
-                      Rs. {totalCost}
-                    </p>
-                  </div>
-                  <div className="row mb-3">
-                    <div className="col-md-12">
-                      <span className="">Shipping calculated at checkout.</span>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-12">
-                      <button
-                        className="btn-sm bg-[var(--primary-main)] text-white border border-white rounded px-4 py-2"
-                        onClick={handleNavigateToCheckout}
-                      >
-                        Proceed to checkout
-                      </button>
-                    </div>
-                  </div>
+                <div className="aq-breadcrumb-content">
+                  <h1 className="aq-breadcrumb-title">Cart Page</h1>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      ) : (
-        <p className="mb-5 text-center text-dark fs-5 mt-4">
-          <ShoppingBag size={66} className="mx-auto text-gray-300 mb-3" />
-          <span className="d-block fw-bold text-xl mb-0">
-            Your Cart is empty
-          </span>
-          <br />
-          <Link href="/shop" className="">
-            <button className="bg-[var(--primary-main)] text-white py-2 px-3 rounded">
-              Explore Sarees
-            </button>
-          </Link>
-        </p>
-      )}
-    </>
+      </div>
+
+      <section className="aq-cart-area">
+        <div className="container">
+          {products?.length > 0 ? (
+            <div className="row">
+              <div className="col-xl-9 col-lg-8">
+                <CartProducts
+                  products={products}
+                  decreaseCount={decreaseCount}
+                  increaseCount={increaseCount}
+                  removeFromCart={removeFromCart}
+                />
+                <div className="aq-cart-bottom">
+                  <div className="row align-items-end">
+                    <div className="col-xl-6 col-md-8" />
+                    <div className="col-xl-6 col-md-4">
+                      <div className="aq-cart-update text-md-end">
+                        <button
+                          type="button"
+                          className="aq-cart-update-btn"
+                          onClick={() => router.push("/shop")}
+                        >
+                          Continue Shopping
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="col-xl-3 col-lg-4 col-md-6">
+                <div className="aq-cart-checkout-wrapper">
+                  <div className="aq-cart-checkout-top d-flex align-items-center justify-content-between">
+                    <span className="aq-cart-checkout-top-title">Subtotal</span>
+                    <span className="aq-cart-checkout-top-price">Rs. {totalCost}</span>
+                  </div>
+                  <div className="aq-cart-checkout-shipping">
+                    <h2 className="aq-cart-checkout-shipping-title">Shipping</h2>
+                    <div className="aq-cart-checkout-shipping-option-wrapper">
+                      <div className="aq-cart-checkout-shipping-option is-active">
+                        <label>Calculated at checkout</label>
+                      </div>
+                    </div>
+                    <p className="aq-cart-checkout-shipping-note">
+                      Shipping will be calculated at checkout.
+                    </p>
+                  </div>
+                  <div className="aq-cart-checkout-total d-flex align-items-center justify-content-between">
+                    <span>Total</span>
+                    <span>Rs. {totalCost}</span>
+                  </div>
+                  <div className="aq-cart-checkout-proceed">
+                    <button
+                      type="button"
+                      className="aq-cart-checkout-btn"
+                      onClick={handleNavigateToCheckout}
+                    >
+                      Proceed to Checkout
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="aq-cart-empty">
+              <h2 className="aq-cart-empty-title">Your cart is empty</h2>
+              <p className="aq-cart-empty-text">
+                Browse our sarees and add pieces you love.
+              </p>
+              <Link href="/shop" className="aq-cart-checkout-btn">
+                Continue Shopping
+              </Link>
+            </div>
+          )}
+        </div>
+      </section>
+    </div>
   );
 };
 

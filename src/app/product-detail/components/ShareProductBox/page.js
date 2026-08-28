@@ -1,98 +1,123 @@
 "use client";
-import React, { useState } from "react";
-import { Sidebar } from "primereact/sidebar";
-import { IoShareSocialSharp } from "react-icons/io5";
-import { FaWhatsapp, FaInstagram } from "react-icons/fa";
-import { MdOutlineContentCopy } from "react-icons/md";
-import { BsThreeDotsVertical } from "react-icons/bs";
 
-const IconButton = ({ icon, label, onClick }) => (
-  <div
-    className="flex flex-column items-center cursor-pointer gap-1"
-    onClick={onClick}
-    style={{ width: "4rem" }}
-  >
-    {icon}
-    <small className="dark-color">{label}</small>
-  </div>
-);
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
-const ShareProductBox = () => {
-  const [visibleBottom, setVisibleBottom] = useState(false);
+export default function ShareProductBox({ open, onClose, url = "", title = "" }) {
+  const [copied, setCopied] = useState(false);
+  const shareUrl = url || (typeof window !== "undefined" ? window.location.href : "");
+  const encoded = encodeURIComponent(shareUrl);
+  const encodedTitle = encodeURIComponent(title || "Kavya Creation");
 
-  const handleShare = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: document.title,
-          text: "Check this out!",
-          url: window.location.href,
-        });
-      } catch {
-        // share cancelled or not supported — fall through to manual share UI
-      }
-    } else {
-      setVisibleBottom(true);
+  useEffect(() => {
+    if (!open) {
+      setCopied(false);
+      return undefined;
     }
-  };
+    const onKey = (event) => {
+      if (event.key === "Escape") {
+        onClose?.();
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open, onClose]);
+
+  if (!open) {
+    return null;
+  }
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(window.location.href);
-      alert("Link copied!");
+      await navigator.clipboard.writeText(shareUrl);
+      setCopied(true);
+      toast.success("Link copied");
     } catch {
-      alert("Failed to copy.");
+      toast.error("Failed to copy.");
     }
   };
 
   return (
-    <>
-      <IoShareSocialSharp
-        className="primary-color fs-5 cursor-pointer d-none"
-        title="Share"
-        onClick={handleShare}
-      />
-
-      <Sidebar
-        visible={visibleBottom}
-        position="bottom"
-        onHide={() => setVisibleBottom(false)}
-        dismissableMask
-        showCloseIcon={false}
-        style={{ height: "15rem", padding: "2rem", backgroundColor: "white" }}
+    <div
+      className="aq-pd-modal-overlay"
+      onClick={onClose}
+      role="presentation"
+    >
+      <div
+        className="aq-pd-modal share"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="aq-share-title"
+        onClick={(event) => event.stopPropagation()}
       >
-        <div className="flex flex-column gap-4">
-          <div className="flex gap-4 justify-content-start">
-            <IconButton
-              icon={<FaWhatsapp size={32} color="#25D366" />}
-              label="WhatsApp"
-              onClick={() =>
-                window.open(
-                  `https://wa.me/?text=${window.location.href}`,
-                  "_blank"
-                )
-              }
-            />
-            <IconButton
-              icon={<FaInstagram size={32} color="#C13584" />}
-              label="Instagram"
-              onClick={() => alert("Instagram share not implemented")}
-            />
-            <IconButton
-              icon={<BsThreeDotsVertical size={28} className="dark-color" />}
-              label="More"
-            />
+        <button type="button" className="aq-pd-modal-close" onClick={onClose} aria-label="Close">
+          ×
+        </button>
+        <div className="aq-share-wrapper">
+          <div className="aq-share-top mb-15">
+            <h3 className="aq-login-title" id="aq-share-title">
+              Share link
+            </h3>
           </div>
-
-          <IconButton
-            icon={<MdOutlineContentCopy size={24} className="dark-color" />}
-            label="Copy Link"
-            onClick={handleCopy}
-          />
+          <div className="aq-share-container">
+            {copied ? <p className="aq-share-copied">Copied to clipboard</p> : null}
+            <div className="aq-share-link-wrapper">
+              <input type="text" className="aq-share-input" value={shareUrl} readOnly />
+              <button type="button" className="aq-share-copy-btn" onClick={handleCopy} aria-label="Copy link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M3.69994 12.7001H2.79996C2.32258 12.7001 1.86476 12.5104 1.5272 12.1728C1.18964 11.8353 1 11.3774 1 10.9001V2.80001C1 2.32262 1.18964 1.86478 1.5272 1.52721C1.86476 1.18964 2.32258 1 2.79996 1H10.8998C11.3772 1 11.835 1.18964 12.1726 1.52721C12.5101 1.86478 12.6998 2.32262 12.6998 2.80001V3.70001M9.10074 7.30005H17.2006C18.1947 7.30005 19.0005 8.10594 19.0005 9.10006V17.2001C19.0005 18.1942 18.1947 19.0001 17.2006 19.0001H9.10074C8.10665 19.0001 7.30078 18.1942 7.30078 17.2001V9.10006C7.30078 8.10594 8.10665 7.30005 9.10074 7.30005Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+            </div>
+            <div className="aq-share-socials">
+              <a
+                className="aq-share-social-item"
+                href={`https://www.facebook.com/sharer/sharer.php?u=${encoded}`}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Share on Facebook"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <path d="M8.775 0C7.03947 0 5.34292 0.514645 3.89987 1.47885C2.45683 2.44306 1.33212 3.81353 0.667961 5.41695C0.00380206 7.02037 -0.169972 8.78473 0.168613 10.4869C0.507198 12.1891 1.34294 13.7527 2.57014 14.9799C3.79735 16.2071 5.3609 17.0428 7.06309 17.3814C8.76527 17.72 10.5296 17.5462 12.133 16.882C13.7365 16.2179 15.1069 15.0932 16.0711 13.6501C17.0354 12.2071 17.55 10.5105 17.55 8.775C17.5475 6.44848 16.6222 4.21795 14.9772 2.57285C13.3321 0.927752 11.1015 0.00245685 8.775 0ZM9.45 16.1688V10.8H11.475C11.654 10.8 11.8257 10.7289 11.9523 10.6023C12.0789 10.4757 12.15 10.304 12.15 10.125C12.15 9.94598 12.0789 9.77429 11.9523 9.6477C11.8257 9.52111 11.654 9.45 11.475 9.45H9.45V7.425C9.45 7.06696 9.59224 6.72358 9.84541 6.47041C10.0986 6.21723 10.442 6.075 10.8 6.075H12.15C12.329 6.075 12.5007 6.00388 12.6273 5.8773C12.7539 5.75071 12.825 5.57902 12.825 5.4C12.825 5.22098 12.7539 5.04929 12.6273 4.9227C12.5007 4.79612 12.329 4.725 12.15 4.725H10.8C10.0839 4.725 9.39716 5.00946 8.89082 5.51581C8.38447 6.02216 8.1 6.70891 8.1 7.425V9.45H6.075C5.89598 9.45 5.72429 9.52111 5.59771 9.6477C5.47112 9.77429 5.4 9.94598 5.4 10.125C5.4 10.304 5.47112 10.4757 5.59771 10.6023C5.72429 10.7289 5.89598 10.8 6.075 10.8H8.1V16.1688C6.19717 15.9951 4.43455 15.0945 3.17878 13.6544C1.923 12.2142 1.27075 10.3454 1.35769 8.43668C1.44464 6.52791 2.26408 4.72614 3.64557 3.40614C5.02707 2.08614 6.86426 1.34953 8.775 1.34953C10.6857 1.34953 12.5229 2.08614 13.9044 3.40614C15.2859 4.72614 16.1054 6.52791 16.1923 8.43668C16.2793 10.3454 15.627 12.2142 14.3712 13.6544C13.1155 15.0945 11.3528 15.9951 9.45 16.1688Z" fill="currentColor" />
+                </svg>
+              </a>
+              <a
+                className="aq-share-social-item"
+                href={`https://twitter.com/intent/tweet?url=${encoded}&text=${encodedTitle}`}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Share on X"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <path d="M15.1002 14.8859L10.6987 7.96852L15.0419 3.19078C15.1401 3.08006 15.1907 2.93508 15.1828 2.78727C15.1748 2.63947 15.1089 2.50076 14.9994 2.40121C14.8899 2.30166 14.7455 2.2493 14.5976 2.25548C14.4497 2.26166 14.3102 2.32588 14.2094 2.43422L10.0722 6.98484L7.22524 2.51086C7.17447 2.43095 7.10436 2.36515 7.02139 2.31955C6.93843 2.27395 6.8453 2.25003 6.75063 2.25H3.37563C3.27477 2.24995 3.17576 2.27702 3.08896 2.32837C3.00215 2.37972 2.93075 2.45347 2.88223 2.54188C2.83371 2.6303 2.80985 2.73014 2.81316 2.83094C2.81646 2.93174 2.84681 3.0298 2.90102 3.11484L7.30258 10.0315L2.95938 14.8127C2.90866 14.8672 2.86926 14.9312 2.84346 15.001C2.81766 15.0709 2.80598 15.1451 2.80908 15.2195C2.81219 15.2939 2.83003 15.3669 2.86156 15.4343C2.8931 15.5017 2.9377 15.5622 2.99279 15.6123C3.04787 15.6623 3.11235 15.701 3.18247 15.7259C3.2526 15.7509 3.32698 15.7617 3.40131 15.7577C3.47564 15.7537 3.54844 15.735 3.61548 15.7026C3.68252 15.6703 3.74248 15.625 3.79188 15.5693L7.92907 11.0187L10.776 15.4927C10.8272 15.5719 10.8975 15.637 10.9804 15.682C11.0634 15.727 11.1563 15.7503 11.2506 15.75H14.6256C14.7264 15.75 14.8253 15.7229 14.912 15.6716C14.9987 15.6202 15.07 15.5466 15.1185 15.4583C15.167 15.37 15.1909 15.2703 15.1877 15.1696C15.1845 15.0689 15.1543 14.9709 15.1002 14.8859ZM11.5593 14.625L4.40008 3.375H6.43915L13.6012 14.625H11.5593Z" fill="currentColor" />
+                </svg>
+              </a>
+              <a
+                className="aq-share-social-item"
+                href={`https://wa.me/?text=${encodedTitle}%20${encoded}`}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Share on WhatsApp"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <path d="M15.1875 2.8125C13.5773 1.20234 11.4223 0.3125 9.14062 0.3125C4.41562 0.3125 0.5625 4.16562 0.5625 8.89062C0.5625 10.4031 0.95625 11.8719 1.70156 13.1641L0.3125 17.6875L4.94922 16.3219C6.19688 17.0031 7.65078 17.3594 9.14062 17.3594H9.14531C13.8703 17.3594 17.7188 13.5062 17.7188 8.78594C17.7188 6.50469 16.7977 4.42266 15.1875 2.8125ZM9.14531 15.8984C7.85391 15.8984 6.58594 15.5516 5.48438 14.8969L5.21719 14.7391L2.41875 15.5625L3.25625 12.8328L3.08438 12.5516C2.3625 11.4094 1.97812 10.1719 1.97812 8.89062C1.97812 4.94688 5.19688 1.73281 9.14062 1.73281C11.0516 1.73281 12.8484 2.47969 14.1984 3.83281C15.5484 5.18594 16.3031 6.98281 16.2984 8.78594C16.3031 12.7344 13.0844 15.8984 9.14531 15.8984Z" fill="currentColor" />
+                </svg>
+              </a>
+              <a
+                className="aq-share-social-item"
+                href={`https://pinterest.com/pin/create/button/?url=${encoded}&description=${encodedTitle}`}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Share on Pinterest"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M17.3254 8.66261C17.3254 10.4083 16.7144 12.0039 15.606 13.1571C14.5712 14.2314 13.1682 14.8501 11.7566 14.8501C10.3737 14.8501 9.45025 14.3969 8.86167 13.922L8.0279 17.4659C7.99613 17.6018 7.91932 17.7231 7.80993 17.8098C7.70054 17.8966 7.56502 17.9439 7.42539 17.9439C7.3775 17.9438 7.32976 17.9384 7.28308 17.9276C7.20367 17.9094 7.12864 17.8757 7.06229 17.8284C6.99595 17.7811 6.93961 17.7211 6.89649 17.652C6.85337 17.5829 6.82433 17.5059 6.81104 17.4255C6.79774 17.3451 6.80045 17.2629 6.81902 17.1836L9.29402 6.66482C9.33156 6.50502 9.43103 6.36669 9.57057 6.28024C9.71011 6.19379 9.87827 6.16631 10.0381 6.20385C10.1979 6.24139 10.3362 6.34087 10.4226 6.4804C10.5091 6.61994 10.5366 6.7881 10.499 6.9479L9.19192 12.5012C9.43633 12.8392 10.1556 13.6126 11.7566 13.6126C13.8859 13.6126 16.0879 11.761 16.0879 8.66261C16.0876 7.80863 15.8908 6.96616 15.5129 6.20036C15.135 5.43456 14.586 4.76593 13.9084 4.24618C13.2308 3.72643 12.4427 3.36949 11.6051 3.20295C10.7676 3.03641 9.90289 3.06473 9.07801 3.28573C8.25312 3.50673 7.49011 3.91449 6.84798 4.47747C6.20584 5.04045 5.70179 5.74358 5.3748 6.53247C5.04781 7.32137 4.90663 8.1749 4.96219 9.02708C5.01775 9.87925 5.26855 10.7072 5.69521 11.447C5.77218 11.5887 5.79076 11.7549 5.747 11.9101C5.70324 12.0654 5.6006 12.1974 5.46094 12.278C5.32128 12.3587 5.15565 12.3817 4.99932 12.342C4.84299 12.3023 4.70832 12.2032 4.624 12.0657C4.10226 11.1616 3.79548 10.1496 3.72739 9.10791C3.65929 8.06626 3.83171 7.0229 4.23129 6.05853C4.63088 5.09416 5.24694 4.23463 6.03181 3.54641C6.81668 2.85818 7.74934 2.35972 8.75765 2.08956C9.76596 1.8194 10.8229 1.78479 11.8467 1.9884C12.8706 2.19201 13.8338 2.62839 14.662 3.26379C15.4903 3.89919 16.1612 4.71657 16.6231 5.65273C17.0849 6.58889 17.3252 7.61873 17.3254 8.66261Z" fill="currentColor" />
+                </svg>
+              </a>
+            </div>
+          </div>
         </div>
-      </Sidebar>
-    </>
+      </div>
+    </div>
   );
-};
-
-export default ShareProductBox;
+}

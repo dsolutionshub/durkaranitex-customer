@@ -1,0 +1,305 @@
+@font-face {
+  font-family: "Satoshi-Regular";
+  src: url("/fonts/Satoshi-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Satoshi-Medium";
+  src: url("/fonts/Satoshi-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Satoshi-Bold";
+  src: url("/fonts/Satoshi-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+.aq-payment-status {
+  --aq-ff-satoshi-regular: "Satoshi-Regular", sans-serif;
+  --aq-ff-satoshi-medium: "Satoshi-Medium", sans-serif;
+  --aq-ff-satoshi-bold: "Satoshi-Bold", sans-serif;
+  --aq-common-white: #ffffff;
+  --aq-common-black: #141414;
+  --aq-common-red: #de1518;
+  --aq-common-success: #079d6d;
+  --aq-gray-5: #f5f5f5;
+  --aq-text-body: #6d6868;
+  min-height: 70vh;
+  font-family: var(--aq-ff-satoshi-medium);
+  color: var(--aq-text-body);
+  background: var(--aq-common-white);
+}
+
+.aq-payment-status a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.aq-payment-status button {
+  font-family: inherit;
+}
+
+.aq-payment-status ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.aq-payment-status .aq-breadcrumb-area {
+  padding-top: 24px;
+  padding-bottom: 24px;
+  background-color: #ffffff;
+}
+
+.aq-payment-status .pd-breadcrumb-list {
+  margin-bottom: 6px;
+}
+
+.aq-payment-status .pd-breadcrumb-list span {
+  font-size: 14px;
+  line-height: 1;
+  color: rgba(15, 15, 15, 0.6);
+  font-family: var(--aq-ff-satoshi-medium);
+  text-transform: lowercase;
+}
+
+.aq-payment-status .pd-breadcrumb-list span + span {
+  margin: 0 6px;
+}
+
+.aq-payment-status .pd-breadcrumb-list a:hover {
+  color: var(--aq-common-black);
+}
+
+.aq-payment-status .aq-breadcrumb-title {
+  font-size: 32px;
+  font-weight: 500;
+  letter-spacing: -0.3px;
+  margin: 0;
+  line-height: 1.2;
+  color: var(--aq-common-black);
+  font-family: var(--aq-ff-satoshi-medium);
+}
+
+@media (max-width: 767px) {
+  .aq-payment-status .aq-breadcrumb-title {
+    font-size: 26px;
+  }
+}
+
+.aq-payment-status .aq-payment-area {
+  padding-top: 40px;
+  padding-bottom: 80px;
+}
+
+@media (max-width: 767px) {
+  .aq-payment-status .aq-payment-area {
+    padding-top: 28px;
+    padding-bottom: 50px;
+  }
+}
+
+.aq-payment-status .aq-payment-card {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 44px 40px 40px;
+  text-align: center;
+  background: var(--aq-common-white);
+  box-shadow: 0 30px 70px rgba(1, 15, 28, 0.1);
+}
+
+@media (max-width: 767px) {
+  .aq-payment-status .aq-payment-card {
+    padding: 32px 20px 28px;
+  }
+}
+
+.aq-payment-status .aq-payment-icon {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  display: grid;
+  place-content: center;
+}
+
+.aq-payment-status.is-success .aq-payment-icon {
+  color: var(--aq-common-success);
+  background: #f3faf7;
+}
+
+.aq-payment-status.is-failed .aq-payment-icon {
+  color: var(--aq-common-red);
+  background: #fdf2f2;
+}
+
+.aq-payment-status .aq-payment-title {
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0 0 12px;
+  color: var(--aq-common-black);
+  font-family: var(--aq-ff-satoshi-medium);
+}
+
+@media (max-width: 767px) {
+  .aq-payment-status .aq-payment-title {
+    font-size: 26px;
+  }
+}
+
+.aq-payment-status .aq-payment-lead {
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0 0 24px;
+  color: #55585b;
+}
+
+.aq-payment-status .aq-payment-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0 0 20px;
+  padding: 18px 20px;
+  text-align: left;
+  background: var(--aq-gray-5);
+}
+
+.aq-payment-status .aq-payment-meta-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.aq-payment-status .aq-payment-meta-row span {
+  font-size: 14px;
+  color: #55585b;
+}
+
+.aq-payment-status .aq-payment-meta-row strong {
+  font-size: 15px;
+  font-weight: 600;
+  word-break: break-all;
+  text-align: right;
+  color: var(--aq-common-black);
+}
+
+.aq-payment-status .aq-payment-box {
+  margin: 0 0 24px;
+  padding: 20px 22px;
+  text-align: left;
+  background: var(--aq-gray-5);
+}
+
+.aq-payment-status .aq-payment-box h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 12px;
+  color: var(--aq-common-black);
+}
+
+.aq-payment-status .aq-payment-box ul li {
+  position: relative;
+  padding-inline-start: 16px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #55585b;
+}
+
+.aq-payment-status .aq-payment-box ul li:last-child {
+  margin-bottom: 0;
+}
+
+.aq-payment-status .aq-payment-box ul li::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  top: 8px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--aq-common-black);
+}
+
+.aq-payment-status .aq-payment-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.aq-payment-status .aq-btn-black,
+.aq-payment-status .aq-btn-outline {
+  min-width: 170px;
+  height: 50px;
+  padding: 0 24px;
+  line-height: 48px;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  text-transform: uppercase;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--aq-ff-satoshi-bold);
+}
+
+.aq-payment-status .aq-btn-black {
+  color: var(--aq-common-white);
+  background-color: var(--aq-common-black);
+  border: 1px solid transparent;
+}
+
+.aq-payment-status .aq-btn-black:hover {
+  color: var(--aq-common-black) !important;
+  background-color: transparent;
+  border-color: var(--aq-common-black);
+}
+
+.aq-payment-status .aq-btn-outline {
+  color: var(--aq-common-black);
+  background: transparent;
+  border: 1px solid rgba(77, 61, 48, 0.12);
+}
+
+.aq-payment-status .aq-btn-outline:hover {
+  color: var(--aq-common-white) !important;
+  background-color: var(--aq-common-black);
+  border-color: var(--aq-common-black);
+}
+
+@media (max-width: 767px) {
+  .aq-payment-status .aq-btn-black,
+  .aq-payment-status .aq-btn-outline {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+.aq-payment-status .aq-payment-help {
+  margin: 24px 0 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #55585b;
+}
+
+.aq-payment-status .aq-payment-help a {
+  color: var(--aq-common-black);
+  text-decoration: underline;
+}
+
+.aq-payment-status .aq-payment-help a:hover {
+  color: var(--aq-common-black);
+}

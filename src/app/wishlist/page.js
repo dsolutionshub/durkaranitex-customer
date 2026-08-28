@@ -3,14 +3,12 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Heart } from "lucide-react";
 import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
 
-import ProductCard from "../components/ProductCard";
+import BazaroProductCard from "@/app/shop/components/BazaroProductCard";
 import { loader } from "../components/loader/loaderManager";
-import CustomBreadCrumb from "../components/CustomBreadCrumb";
-import Loader from "../components/loader/loader";
+import { LoaderComponent } from "../components/loader/loader";
 
 import useCartPanelStore from "@/store/useCartPanelStore";
 import {
@@ -18,33 +16,41 @@ import {
   modifyCart,
   modifyWishlist,
 } from "../api/services/authService";
-import { LOGIN_ERROR_MSG, LOGIN_MSG, WISHLIST_MODEL } from "../utils/constants";
+import { LOGIN_ERROR_MSG, LOGIN_MSG } from "../utils/constants";
 import { getErrorMessage } from "../utils/helperFn";
+
+import "@/app/components/home/featured-products.css";
+import "./wishlist-page.css";
 
 const Wishlist = () => {
   const router = useRouter();
   const { data: session, status } = useSession();
-  const { handleGetCartDetail } = useCartPanelStore();
+  const { handleGetCartDetail, setWishListCount } = useCartPanelStore();
   const [wishlist, setWishlist] = useState([]);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+  const [isPageLoading, setIsPageLoading] = useState(true);
 
   const fetchWishlist = async () => {
     loader(true);
     try {
       const data = await getWishlist();
-      setWishlist(data?.WishLists || []);
+      const items = data?.WishLists || [];
+      setWishlist(items);
+      setWishListCount(items.length);
     } catch (error) {
       getErrorMessage(error);
+      setWishlist([]);
     } finally {
       loader(false);
+      setIsPageLoading(false);
     }
   };
 
   const removeFromWishlist = async (id) => {
     loader(true);
     try {
-      const data = await modifyWishlist({ product_id: id });
-      fetchWishlist();
+      await modifyWishlist({ product_id: id });
+      await fetchWishlist();
     } catch (error) {
       getErrorMessage(error);
     } finally {
@@ -53,8 +59,9 @@ const Wishlist = () => {
   };
 
   const addToCart = async (id) => {
+    loader(true);
     try {
-      const data = await modifyCart({
+      await modifyCart({
         product_id: id,
         quantity: 1,
         type: "list",
@@ -62,8 +69,8 @@ const Wishlist = () => {
       toast.success("Added to cart");
       handleGetCartDetail();
     } catch (error) {
-      const status = error?.response?.status;
-      if (status === 401) {
+      const responseStatus = error?.response?.status;
+      if (responseStatus === 401) {
         sessionStorage.setItem("postLoginRedirect", "/shop");
         router.push("/login");
         toast.error(LOGIN_ERROR_MSG);
@@ -97,61 +104,80 @@ const Wishlist = () => {
     }
   }, [router, status, session]);
 
-  if (isCheckingAuth) {
-    return (
-      <div className="h-[60vh]">
-        <Loader />
-      </div>
-    );
+  if (isCheckingAuth || isPageLoading) {
+    return <LoaderComponent />;
   }
 
   return (
-    <>
-      <CustomBreadCrumb model={WISHLIST_MODEL} />
-      <div className="container mt-3">
-        <h2 className="md:mb-4 text-center text-dark fs-3">My Wishlist</h2>
-
-        <div className="row my-5 md:p-1 product-container-mobile">
-          {wishlist?.length > 0 ? (
-            wishlist?.map((item) => (
-              <div
-                className="col-md-4 col-lg-3 md:mb-4 product-list-card-mobile"
-                key={item.id}
-              >
-                <ProductCard
-                  id={item?.product_id}
-                  title={item?.product?.title}
-                  price={item?.product?.price}
-                  oldPrice={item?.product?.product_price}
-                  image={item?.product?.images[0]?.["image"]}
-                  image1={item?.product?.images[1]?.["image"]}
-                  isInWishlist={item?.product?.wishList}
-                  type="delete"
-                  btn1={() => removeFromWishlist(item?.product?.id)}
-                  btn2={() => addToCart(item?.product?.id)}
-                  discount={item?.product?.discount || 0}
-                  quantity={item?.product?.quantity}
-                />
+    <div className="aq-wishlist-page">
+      <div className="aq-breadcrumb-area">
+        <div className="container">
+          <div className="row align-items-center">
+            <div className="col-xl-12">
+              <div className="aq-breadcrumb-wrap text-center">
+                <div className="pd-breadcrumb-list">
+                  <span>
+                    <Link href="/">home</Link>
+                  </span>
+                  <span>/</span>
+                  <span>wishlist</span>
+                </div>
+                <div className="aq-breadcrumb-content">
+                  <h1 className="aq-breadcrumb-title">Wishlist Page</h1>
+                </div>
               </div>
-            ))
-          ) : (
-            <p className="mb-5 text-center text-dark fs-5">
-              <Heart size={66} className="mx-auto text-gray-300 mb-3" />
-              <span className="d-block fw-bold text-xl mb-2">
-                Your wishlist is empty
-              </span>
-              Save your favorite sarees here!
-              <br />
-              <Link href="/shop" className="">
-                <button className="bg-[var(--primary-main)] text-white py-2 px-3 rounded mt-3">
-                  Explore Sarees
-                </button>
-              </Link>
-            </p>
-          )}
+            </div>
+          </div>
         </div>
       </div>
-    </>
+
+      <section className="aq-wishlist-area">
+        <div className="container">
+          {wishlist?.length > 0 ? (
+            <>
+              <div className="aq-product-area">
+                <div className="row row-cols-xl-4 row-cols-lg-3 row-cols-md-2 row-cols-2">
+                  {wishlist.map((item) => {
+                    const product = item?.product || item;
+                    const productId = product?.id || item?.product_id;
+                    return (
+                      <div className="col" key={item?.id || productId}>
+                        <BazaroProductCard
+                          item={product}
+                          isInWishlist
+                          onAddToCart={() => addToCart(productId)}
+                          onAddToWishlist={() => removeFromWishlist(productId)}
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+              <div className="aq-cart-bottom">
+                <div className="aq-cart-update">
+                  <Link href="/cart" className="aq-cart-update-btn">
+                    Go To Cart
+                  </Link>
+                  <Link href="/shop" className="aq-cart-update-btn">
+                    Continue Shopping
+                  </Link>
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className="aq-cart-empty">
+              <h2 className="aq-cart-empty-title">Your wishlist is empty</h2>
+              <p className="aq-cart-empty-text">
+                Save sarees you love and find them here later.
+              </p>
+              <Link href="/shop" className="aq-btn-black">
+                Continue Shopping
+              </Link>
+            </div>
+          )}
+        </div>
+      </section>
+    </div>
   );
 };
 

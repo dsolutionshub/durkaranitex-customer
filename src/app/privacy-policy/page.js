@@ -1,319 +1,132 @@
-"use client";
+import Link from "next/link";
 
-import React from "react";
-import {
-  Shield,
-  Lock,
-  Eye,
-  Database,
-  UserCheck,
-  AlertTriangle,
-} from "lucide-react";
-import CustomBreadCrumb from "../components/CustomBreadCrumb";
-import { PRIVACY_POLICY_MODEL } from "../utils/constants";
+import PolicyPage, {
+  PolicySection,
+  STORE_EMAIL,
+  STORE_PHONE,
+  STORE_PHONE_HREF,
+} from "../components/policy/PolicyPage";
 
-const PrivacyPolicy = () => {
+export default function PrivacyPolicyPage() {
   return (
-    <>
-      <CustomBreadCrumb model={PRIVACY_POLICY_MODEL} title={"Privacy Policy"} />
-      <main className="px-6 sm:p-8 max-w-7xl mx-auto">
-        <div className="prose max-w-none">
-          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-lg mb-8 border border-blue-200">
-            <div className="flex items-center mb-2 space-x-2">
-              <Shield className="w-6 h-6 text-blue-600" />
-              <span className="text-blue-800 font-bold text-lg flex items-center h-6">
-                Your Privacy Matters to Us
-              </span>
-            </div>
+    <PolicyPage
+      title="Privacy Policy"
+      crumb="privacy policy"
+      subtitle="How Kavya Creation collects, uses, and protects your information."
+    >
+      <PolicySection title="Introduction" as="h3">
+        <p>
+          At Kavya Creation, we value your privacy and are committed to
+          protecting your personal information. This Privacy Policy explains how
+          we collect, use, disclose, and safeguard your data when you browse
+          our website, create an account, or place an order. By using our
+          website or services, you consent to the practices described here.
+        </p>
+      </PolicySection>
 
-            <p className="text-black mb-2">
-              <strong>Last updated:</strong> {new Date().toLocaleDateString()}
-            </p>
-            <p className="text-black">
-              We are committed to protecting your privacy and handling your
-              personal information with care and transparency.
-            </p>
-          </div>
+      <PolicySection title="Information We Collect">
+        <p>We may collect various types of information from you, including:</p>
+        <ul>
+          <li>Personal information: name, email address, and phone number.</li>
+          <li>
+            Billing and shipping information: addresses used to complete an
+            order.
+          </li>
+          <li>
+            Payment details processed securely through Razorpay. We do not store
+            your full card or UPI credentials on our servers.
+          </li>
+          <li>
+            Order history, wishlist items, and customer-service messages.
+          </li>
+          <li>
+            Usage data: pages viewed, device and browser information, and
+            similar technical data needed to run the site.
+          </li>
+          <li>
+            Cookies and similar tracking data used to keep you signed in and
+            remember cart or preference settings.
+          </li>
+        </ul>
+      </PolicySection>
 
-          {/* INTRODUCTION */}
-          <section className="mb-10">
-            <h2 className="text-2xl font-bold text-black mb-6">Introduction</h2>
-            <p className="text-black leading-relaxed mb-4">
-              At our Saree Store, we are committed to protecting your privacy.
-              This Privacy Policy explains how we collect, use, disclose, and
-              safeguard your information when you visit our website and make
-              purchases from our saree collection. We believe transparency is
-              key to building trust with our customers.
-            </p>
-          </section>
+      <PolicySection title="How We Use Your Information">
+        <p>We use your information for the following purposes:</p>
+        <ul>
+          <li>To provide, maintain, and improve our website and services.</li>
+          <li>
+            To process orders, payments, shipping, and replacement requests.
+          </li>
+          <li>To send order confirmations and important account updates.</li>
+          <li>To respond to your questions, comments, or support requests.</li>
+          <li>
+            To personalise your shopping experience, such as showing relevant
+            sarees.
+          </li>
+          <li>
+            To send newsletters or offers only if you choose to subscribe. You
+            can unsubscribe at any time.
+          </li>
+        </ul>
+      </PolicySection>
 
-          {/* INFORMATION WE COLLECT */}
-          <section className="mb-10">
-            <h2 className="text-2xl font-bold text-black mb-6">
-              Information We Collect
-            </h2>
-            <div className="grid md:grid-cols-2 gap-6 mb-6">
-              <div className="bg-green-50 p-6 rounded-lg border border-green-200">
-                <div className="flex items-center mb-4 space-x-3">
-                  <UserCheck className="w-6 h-6 text-green-600" />
-                  <span className="text-lg font-bold text-black flex items-center h-6">
-                    Personal Information
-                  </span>
-                </div>
+      <PolicySection title="Information Sharing">
+        <p>
+          We do not sell, trade, or rent your personal information for others'
+          marketing. We may share information with trusted partners who help us
+          operate the website — including payment processing through Razorpay
+          and courier partners who deliver your order — provided they use the
+          data only to perform those services. We may also share information
+          when required by law or to protect our rights and customers.
+        </p>
+      </PolicySection>
 
-                <ul className="text-black space-y-2">
-                  <li>• Name and contact information</li>
-                  <li>• Billing and shipping addresses</li>
-                  <li>• Email address and phone number</li>
-                  <li>• Payment information (processed securely)</li>
-                  <li>• Order history and preferences</li>
-                  <li>• Customer service interactions</li>
-                  <li>• Account credentials and settings</li>
-                </ul>
-              </div>
+      <PolicySection title="Data Security">
+        <p>
+          We implement security measures to protect your personal information,
+          including encrypted connections on checkout and access controls on
+          our systems. No method of transmission over the internet is completely
+          secure, but we take reasonable steps to keep your data safe.
+        </p>
+      </PolicySection>
 
-              <div className="bg-blue-50 p-6 rounded-lg border border-blue-200">
-                <div className="flex items-center mb-4 space-x-3">
-                  <Database className="w-6 h-6 text-blue-600" />
-                  <span className="text-lg font-bold text-black flex items-center h-6">
-                    Usage Information
-                  </span>
-                </div>
+      <PolicySection title="Cookies and Tracking Technologies">
+        <p>
+          We use cookies and similar technologies to keep you signed in,
+          remember cart contents, and understand how the site is used. You can
+          disable cookies in your browser settings; some features, including
+          checkout and account pages, may not work correctly if you do.
+        </p>
+      </PolicySection>
 
-                <ul className="text-black space-y-2">
-                  <li>• Website usage patterns and analytics</li>
-                  <li>• Product preferences and browsing history</li>
-                  <li>• Device and browser information</li>
-                  <li>• IP address and location data</li>
-                  <li>• Search queries and filters used</li>
-                  <li>• Time spent on pages</li>
-                  <li>• Referral sources</li>
-                </ul>
-              </div>
-            </div>
-          </section>
+      <PolicySection title="Your Choices">
+        <p>
+          You may choose not to provide certain information; that may limit
+          features such as placing an order or saving a wishlist. You can ask
+          us to access, correct, or delete personal data we hold by emailing{" "}
+          <a href={`mailto:${STORE_EMAIL}`}>{STORE_EMAIL}</a> or calling{" "}
+          <a href={STORE_PHONE_HREF}>{STORE_PHONE}</a>. Support hours are
+          Monday–Saturday, 10am to 7pm.
+        </p>
+      </PolicySection>
 
-          {/* HOW WE USE INFO */}
-          <section className="mb-10">
-            <h2 className="text-2xl font-bold text-black mb-6">
-              How We Use Your Information
-            </h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[
-                {
-                  icon: <Lock className="w-6 h-6 text-purple-600" />,
-                  title: "Order Processing",
-                  desc: "To process and fulfill your saree orders, manage payments, and provide order updates",
-                },
-                {
-                  icon: <UserCheck className="w-6 h-6 text-green-600" />,
-                  title: "Customer Service",
-                  desc: "To respond to your inquiries, provide support, and resolve any issues you may have",
-                },
-                {
-                  icon: <Eye className="w-6 h-6 text-pink-600" />,
-                  title: "Personalization",
-                  desc: "To recommend sarees based on your preferences and improve your shopping experience",
-                },
-                {
-                  icon: <Database className="w-6 h-6 text-blue-600" />,
-                  title: "Marketing",
-                  desc: "To send you updates about new saree collections and offers (with your consent)",
-                },
-                {
-                  icon: <Shield className="w-6 h-6 text-indigo-600" />,
-                  title: "Legal Compliance",
-                  desc: "To comply with applicable laws, regulations, and legal obligations",
-                },
-                {
-                  icon: <AlertTriangle className="w-6 h-6 text-orange-600" />,
-                  title: "Security",
-                  desc: "To detect and prevent fraud, protect our systems, and ensure website security",
-                },
-              ].map(({ icon, title, desc }, i) => (
-                <div
-                  key={i}
-                  className="bg-white p-6 rounded-lg shadow-md border"
-                >
-                  <div className="flex items-center mb-3 space-x-2">
-                    <div className="w-6 h-6 flex items-center justify-center">
-                      {icon}
-                    </div>
-                    <span className="font-bold text-black flex items-center h-6">
-                      {title}
-                    </span>
-                  </div>
-                  <p className="text-black text-lg">{desc}</p>
-                </div>
-              ))}
-            </div>
-          </section>
-          <section className="mb-10">
-            <h2 className="text-2xl font-bold text-black mb-6">
-              Information Sharing
-            </h2>
-            <div className="bg-yellow-50 p-6 rounded-lg border border-yellow-200 mb-6">
-              <div className="flex items-center mb-3">
-                <div className="w-6 h-6 flex items-center justify-center mr-3">
-                  <AlertTriangle className="w-6 h-6 text-yellow-600" />
-                </div>
-                <span className="text-lg font-bold text-yellow-800 flex items-center h-6">
-                  Important Notice
-                </span>
-              </div>
-              <p className="text-black font-medium">
-                We do not sell, trade, or otherwise transfer your personal
-                information to third parties for their marketing purposes.
-              </p>
-            </div>
+      <PolicySection title="Changes to this Privacy Policy">
+        <p>
+          We may update this Privacy Policy from time to time. When we do, we
+          will revise the date at the bottom of this page. Please review this
+          page periodically for the latest information on our privacy
+          practices.
+        </p>
+      </PolicySection>
 
-            <p className="text-black leading-relaxed mb-4">
-              We may share your information only in the following limited
-              circumstances:
-            </p>
-            <ul className="text-black space-y-3">
-              <li>
-                • <span className="font-bold">With your explicit consent:</span>{" "}
-                When you authorize us to share specific information
-              </li>
-              <li>
-                • <span className="font-bold">Service providers:</span> Trusted
-                partners who assist in operating our website, processing
-                payments, and fulfilling orders
-              </li>
-              <li>
-                • <span className="font-bold">Legal requirements:</span> When
-                required by law, court order, or to protect our rights and
-                safety
-              </li>
-              <li>
-                • <span className="font-bold">Business transfers:</span> In
-                connection with a merger, acquisition, or sale of business
-                assets
-              </li>
-              <li>
-                • <span className="font-bold">Fraud prevention:</span> To
-                detect, prevent, or investigate fraudulent activities
-              </li>
-            </ul>
-          </section>
-
-          <section className="mb-10">
-            <h2 className="text-2xl font-bold text-black mb-6">
-              Data Security
-            </h2>
-            <div className="bg-green-50 p-6 rounded-lg border border-green-200">
-              <div className="flex items-center mb-4">
-                <div className="w-6 h-6 flex items-center justify-center mr-3">
-                  <Lock className="w-6 h-6 text-green-600" />
-                </div>
-                <span className="text-lg font-semibold text-green-800 flex items-center h-6">
-                  Security Measures
-                </span>
-              </div>
-
-              <p className="text-black leading-relaxed mb-4">
-                We implement comprehensive security measures to protect your
-                personal information against unauthorized access, alteration,
-                disclosure, or destruction:
-              </p>
-              <ul className="text-black space-y-2">
-                <li>• SSL encryption for all data transmission</li>
-                <li>• Secure payment processing through certified providers</li>
-                <li>• Regular security audits and vulnerability assessments</li>
-                <li>• Employee training on data protection practices</li>
-                <li>• Access controls and authentication systems</li>
-                <li>• Encrypted storage of sensitive information</li>
-              </ul>
-            </div>
-          </section>
-
-          <section className="mb-10">
-            <h2 className="text-2xl font-bold text-black mb-6">
-              Your Rights and Choices
-            </h2>
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-blue-50 p-6 rounded-lg border border-blue-200">
-                <h3 className="text-lg font-semibold text-blue-800 mb-3 !text-blue-800">
-                  Your Rights Include
-                </h3>
-                <ul className="text-black space-y-2">
-                  <li>• Access your personal information</li>
-                  <li>• Correct inaccurate data</li>
-                  <li>• Request deletion of your data</li>
-                  <li>• Object to certain processing</li>
-                  <li>• Data portability rights</li>
-                  <li>• Withdraw consent at any time</li>
-                </ul>
-              </div>
-
-              <div className="bg-purple-50 p-6 rounded-lg border border-purple-200">
-                <h3 className="text-lg font-semibold mb-3 !text-purple-800">
-                  Communication Preferences
-                </h3>
-                <ul className="text-black space-y-2">
-                  <li>• Opt-out of marketing emails</li>
-                  <li>• Unsubscribe from newsletters</li>
-                  <li>• Manage notification settings</li>
-                  <li>• Update contact preferences</li>
-                  <li>• Control cookie settings</li>
-                  <li>• Modify account privacy settings</li>
-                </ul>
-              </div>
-            </div>
-          </section>
-
-          <section className="mb-10">
-            <h2 className="text-2xl font-bold text-black mb-6">
-              Cookies and Tracking
-            </h2>
-            <p className="text-black leading-relaxed mb-4">
-              We use cookies and similar tracking technologies to enhance your
-              browsing experience, analyze website traffic, and understand user
-              preferences. You can control cookie settings through your browser
-              preferences.
-            </p>
-            <div className="bg-gray-50 p-6 rounded-lg">
-              <h3 className="text-2xl font-bold text-black mb-6">
-                Types of Cookies We Use:
-              </h3>
-              <ul className="text-black space-y-3">
-                <li>
-                  • <span className="font-bold">Essential cookies:</span>{" "}
-                  Required for website functionality
-                </li>
-                <li>
-                  • <span className="font-bold">Analytics cookies:</span> Help
-                  us understand website usage
-                </li>
-                <li>
-                  • <span className="font-bold">Marketing cookies:</span> Used
-                  for personalized advertising
-                </li>
-                <li>
-                  • <span className="font-bold">Preference cookies:</span>{" "}
-                  Remember your settings and choices
-                </li>
-              </ul>
-            </div>
-          </section>
-
-          <section className="mb-10">
-            <h2 className="text-2xl font-bold text-black mb-6">
-              Data Retention
-            </h2>
-            <p className="text-black leading-relaxed mb-4">
-              We retain your personal information only for as long as necessary
-              to fulfill the purposes outlined in this policy, comply with legal
-              obligations, resolve disputes, and enforce our agreements.
-              Specific retention periods vary based on the type of information
-              and applicable legal requirements.
-            </p>
-          </section>
-        </div>
-      </main>
-    </>
+      <PolicySection title="Contact Us">
+        <p>
+          If you have questions or concerns about this Privacy Policy, contact
+          us at <a href={`mailto:${STORE_EMAIL}`}>{STORE_EMAIL}</a> or{" "}
+          <a href={STORE_PHONE_HREF}>{STORE_PHONE}</a>. You can also use our{" "}
+          <Link href="/contact">Contact</Link> page.
+        </p>
+      </PolicySection>
+    </PolicyPage>
   );
-};
-
-export default PrivacyPolicy;
+}

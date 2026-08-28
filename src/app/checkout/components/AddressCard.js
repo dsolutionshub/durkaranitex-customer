@@ -1,6 +1,3 @@
-import { Button } from "primereact/button";
-import { Edit, Home, MapPin, Package, Plus, Trash2 } from "lucide-react";
-
 export default function AddressCard({
   addressList,
   handleDeleteAddress,
@@ -10,67 +7,45 @@ export default function AddressCard({
   checkoutData,
 }) {
   return (
-    <div className="shadow-lg border-0 rounded-lg overflow-hidden bg-white">
-      <div className="bg-gradient-to-r from-green-50 to-green-50  p-4 sm:p-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-[var(--primary-light)] rounded-lg flex-shrink-0">
-              <Package className="h-5 w-5 sm:h-6 sm:w-6 text-[var(--primary-main)]" />
-            </div>
-            <div>
-              <h4 className="text-lg sm:text-xl font-bold text-gray-900 mb-0 dark-color">
-                Delivery Address
-              </h4>
-              <p className="text-xs sm:text-sm text-gray-600 font-normal mb-0">
-                Choose where you want your order delivered
-              </p>
-            </div>
-          </div>
+    <div className="aq-checkout-bill-area">
+      <div className="aq-checkout-bill-head">
+        <h3 className="aq-checkout-bill-title">Billing Details</h3>
+        {/* <button
+          type="button"
+          className="aq-checkout-add-btn"
+          onClick={() => handleOpenModel("add")}
+        >
+          Add New Address
+        </button> */}
+      </div>
+
+      {addressList?.length === 0 ? (
+        <div className="aq-checkout-empty">
+          <h4>No delivery address yet</h4>
+          <p>Add your first delivery address to continue with your order.</p>
           <button
+            type="button"
+            className="aq-checkout-btn"
             onClick={() => handleOpenModel("add")}
-            className="bg-gradient-to-r from-[var(--primary-main)] to-[var(--primary-main)] hover:from-[var(--primary-dark)]
-              hover:to-[var(--primary-dark)] 
-              text-white shadow-md hover:shadow-lg transition-all duration-200 w-full 
-              sm:w-auto text-sm sm:text-base px-4 py-2 rounded-md flex items-center justify-center"
           >
-            <Plus className="h-4 w-4 mr-2" />
             Add New Address
           </button>
         </div>
-      </div>
-
-      <div className="p-4 sm:p-6">
-        {addressList?.length === 0 ? (
-          <div className="text-center py-8 sm:py-12 flex flex-column items-center">
-            <div
-              className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-[var(--primary-light)] to-[var(--primary-light)] 
-            rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6"
-            >
-              <Home className="h-8 w-8 sm:h-10 sm:w-10 text-[var(--primary-main)]" />
-            </div>
-            <h3 className="text-lg sm:text-xl font-semibold mb-2 dark-color">
-              No delivery address yet
-            </h3>
-            <p className="text-gray-500 mb-4 sm:mb-6 max-w-md mx-auto text-sm sm:text-base">
-              Add your first delivery address to continue with your order.
-              We&apos;ll save it for future purchases too!
-            </p>
-            <button
-              onClick={() => handleOpenModel("add")}
-              className="bg-gradient-to-r from-[var(--primary-main)] to-[var(--primary-main)] hover:from-[var(--primary-dark)]
-              hover:to-[var(--primary-dark)] text-white px-6 sm:px-8 py-2 sm:py-3 
-              rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm sm:text-base flex items-center justify-center"
-            >
-              <Plus className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
-              Add New Address
-            </button>
-          </div>
-        ) : (
-          <div className="space-y-3 max-h-[22rem] overflow-y-auto custom-scroll">
-            {addressList?.map((address) => {
-              const isSelected = checkoutData?.address?.id === address.id;
-              return (
-                <div key={address.id} className="flex items-start gap-3 ml-1">
+      ) : (
+        <div className="aq-address-list">
+          {addressList?.map((address) => {
+            const isSelected = checkoutData?.address?.id === address.id;
+            return (
+              <div
+                key={address.id}
+                className={`aq-address-item${isSelected ? " is-selected" : ""}`}
+                onClick={() => {
+                  if (!isSelected) {
+                    handleSelectAddress(address.id);
+                  }
+                }}
+              >
+                <div className="aq-checkout-option">
                   <input
                     type="radio"
                     id={`address-${address.id}`}
@@ -78,85 +53,63 @@ export default function AddressCard({
                     value={address.id}
                     checked={isSelected}
                     onChange={() => handleSelectAddress(address.id)}
-                    className="mt-3 accent-[var(--primary-main)] mr-3 scale-135 cursor-pointer"
                   />
-
-                  <div
-                    className={`flex-1 px-2 py-2 md:px-4 md:py-3 rounded-md relative transition-all duration-300 border-l-5
-                        border-b-1 border-r-1 border-t-1 border-green-800 ${
-                          isSelected
-                            ? "border-green-800 bg-green-50 shadow"
-                            : "border-gray-200 bg-white "
-                        }`}
-                  >
-                    <div className="flex flex-col md:flex-row justify-between items-start gap-3">
-                      <div className="flex flex-col md:flex-row gap-3 items-start">
-                        <div
-                          className={`p-2 rounded-full d-none d-md-block ${
-                            isSelected ? "bg-green-100" : "bg-gray-100"
-                          }`}
-                        >
-                          <Home
-                            className={`h-5 w-5 ${
-                              isSelected ? "text-green-600" : "text-gray-600"
-                            }`}
-                          />
-                        </div>
-                        <div>
-                          <div className="flex gap-2 items-center mb-1">
-                            <h5 className="text-gray-900 text-base mb-0 dark-color">
-                              {address.name}
-                            </h5>
-                          </div>
-
-                          <div className="flex items-start gap-2">
-                            <MapPin className="h-4 w-4 text-gray-600 mt-[.3rem]" />
-                            <div>
-                              <p className="mb-0 fw-medium dark-color">
-                                {address.address}
-                              </p>
-                              <p className="mb-0 fw-medium dark-color">
-                                {address.address1}
-                              </p>
-                              <p className="text-sm text-gray-600 mb-0">
-                                {address.city}, {address?.state?.name} -{" "}
-                                <span className="font-medium">
-                                  {address.pincode}
-                                </span>
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="flex gap-3">
-                        <Button
-                          icon={<Edit className="h-4 w-4" />}
-                          className="p-button-text p-button-sm text-gray-600"
-                          onClick={() => {
-                            handleEditAddress(address.id);
-                          }}
-                        />
-                        <Button
-                          icon={<Trash2 className="h-4 w-4" />}
-                          className="p-button-text p-button-sm text-red-600"
-                          onClick={() => handleDeleteAddress(address.id)}
-                        />
-                      </div>
-                    </div>
-
-                    {isSelected && (
-                      <div className="absolute top-2 right-2">
-                        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                      </div>
-                    )}
-                  </div>
+                  <label htmlFor={`address-${address.id}`} />
                 </div>
-              );
-            })}
-          </div>
-        )}
-      </div>
+                <div className="aq-address-body">
+                  <h5 className="aq-address-name">{address.name}</h5>
+                  <p className="aq-address-lines">
+                    {address.address}
+                    {address.address1 ? `, ${address.address1}` : ""}
+                    <br />
+                    {address.city}, {address?.state?.name} - {address.pincode}
+                  </p>
+                </div>
+                <div className="aq-address-actions">
+                  <button
+                    type="button"
+                    className="aq-address-action"
+                    aria-label="Edit address"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      handleEditAddress(address.id);
+                    }}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                      <path
+                        d="M11.333 2.00004C11.5081 1.82494 11.716 1.68605 11.9447 1.59129C12.1735 1.49653 12.4187 1.44775 12.6663 1.44775C12.914 1.44775 13.1592 1.49653 13.3879 1.59129C13.6167 1.68605 13.8246 1.82494 13.9997 2.00004C14.1748 2.17513 14.3137 2.383 14.4084 2.61178C14.5032 2.84055 14.552 3.08575 14.552 3.33337C14.552 3.58099 14.5032 3.82619 14.4084 4.05497C14.3137 4.28374 14.1748 4.49161 13.9997 4.66671L5.00033 13.666L1.33301 14.6667L2.33366 11L11.333 2.00004Z"
+                        stroke="currentColor"
+                        strokeWidth="1.4"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </button>
+                  <button
+                    type="button"
+                    className="aq-address-action"
+                    aria-label="Delete address"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      handleDeleteAddress(address.id);
+                    }}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                      <path
+                        d="M6 2H10M2 4H14M12.6667 4L12.1991 11.9417C12.129 13.1032 11.1622 14 9.99808 14H6.00192C4.83783 14 3.87097 13.1032 3.80087 11.9417L3.33333 4M6.66667 7V10.6667M9.33333 7V10.6667"
+                        stroke="currentColor"
+                        strokeWidth="1.4"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

@@ -1,99 +1,104 @@
 "use client";
+
 import { useRouter } from "next/navigation";
-import { XCircle, RefreshCw, Home } from "lucide-react";
-import "./style.css";
+import Link from "next/link";
+
+import "../payment-status.css";
 
 const OrderFailure = ({ payment_id }) => {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-16 relative z-10">
-        <div className="max-w-md mx-auto text-center">
-          <div className="mb-8">
-            <div className="relative mb-6">
-              <XCircle
-                size={80}
-                className="mx-auto text-red-600 animate-checkmark"
-              />
+    <div className="aq-payment-status is-failed">
+      <div className="aq-breadcrumb-area">
+        <div className="container">
+          <div className="row align-items-center">
+            <div className="col-xl-12">
+              <div className="aq-breadcrumb-wrap text-center">
+                <div className="pd-breadcrumb-list">
+                  <span>
+                    <Link href="/">home</Link>
+                  </span>
+                  <span>/</span>
+                  <span>payment failed</span>
+                </div>
+                <div className="aq-breadcrumb-content">
+                  <h1 className="aq-breadcrumb-title">Payment Failed</h1>
+                </div>
+              </div>
             </div>
+          </div>
+        </div>
+      </div>
 
-            <h1 className="text-3xl font-bold text-gray-900 mb-4 animate-fade-in dark-color">
-              Payment Failed
-            </h1>
-            <p className="text-gray-600 mb-6 animate-fade-in delay-200">
+      <section className="aq-payment-area">
+        <div className="container">
+          <div className="aq-payment-card">
+            <div className="aq-payment-icon" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 14 14" fill="none">
+                <path
+                  d="M12.75 0.75L0.75 12.75M0.75 0.75L12.75 12.75"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </div>
+            <h2 className="aq-payment-title">Something went wrong</h2>
+            <p className="aq-payment-lead">
               We couldn&apos;t process your payment. Please check your payment
               details and try again.
             </p>
 
-            <div className="bg-red-50 border border-red-200 rounded-lg shadow-sm p-4 mb-6 animate-fade-in delay-400 d-none">
-              <p className="text-sm text-red-600 mb-1">Payment ID</p>
-              <p className="text-lg font-semibold text-red-900">
-                {payment_id || "-"}
-              </p>
-            </div>
+            {payment_id ? (
+              <div className="aq-payment-meta d-none">
+                <div className="aq-payment-meta-row">
+                  <span>Payment ID</span>
+                  <strong>{payment_id}</strong>
+                </div>
+              </div>
+            ) : null}
 
-            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-8 animate-fade-in delay-500">
-              <h3 className="text-sm font-semibold text-rose-700 mb-2">
-                Reasons for payment failure:
-              </h3>
-
-              <ul className="text-sm text-amber-700 text-left space-y-1">
-                <li>• Insufficient funds in your account</li>
-                <li>• Incorrect card details or expired card</li>
-                <li>• Network connectivity issues</li>
-                <li>• Card blocked by your bank</li>
+            <div className="aq-payment-box">
+              <h3>Reasons for payment failure</h3>
+              <ul>
+                <li>Insufficient funds in your account</li>
+                <li>Incorrect card details or expired card</li>
+                <li>Network connectivity issues</li>
+                <li>Card blocked by your bank</li>
               </ul>
             </div>
-          </div>
 
-          <div className="d-flex flex-column flex-lg-row align-items-lg-center w-full lg:gap-2">
-            <button
-              onClick={() => router.push("/checkout")}
-              className="flex-grow-1 flex items-center justify-center bg-red-600 
-              text-white py-2 gap-2 rounded hover:bg-red-700 transition-all duration-200 hover:scale-105"
-            >
-              <RefreshCw size={20} />
-              Back to Checkout
-            </button>
+            <div className="aq-payment-actions">
+              <button
+                type="button"
+                className="aq-btn-black"
+                onClick={() => router.push("/checkout")}
+              >
+                Back to Checkout
+              </button>
+              <button
+                type="button"
+                className="aq-btn-outline"
+                onClick={() => router.push("/shop")}
+              >
+                Continue Shopping
+              </button>
+              <button type="button" className="aq-btn-outline" onClick={() => router.push("/")}>
+                Back to Home
+              </button>
+            </div>
 
-            <button
-              onClick={() => router.push("/shop")}
-              className="flex-grow-1 py-2 border rounded hover:bg-red-100 dark-color
-              transition-all duration-200 hover:scale-105"
-            >
-              Continue Shopping
-            </button>
-            <button
-              onClick={() => router.push("/")}
-              className="flex-grow-1 flex items-center rounded justify-center  py-2 gap-2 dark-color 
-              hover:bg-red-100 transition-all duration-200 hover:scale-105"
-            >
-              <Home size={20} />
-              Back to Home
-            </button>
-          </div>
-
-          <div className="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg animate-fade-in delay-800">
-            <p className="text-sm text-blue-800">
+            <p className="aq-payment-help">
               Need help? Contact our support team at{" "}
-              <a
-                href="tel:7904749251"
-                className="font-semibold underline hover:text-amber-900 break-all"
-              >
-                +91 7904749251
-              </a>{" "}
-              or{" "}
-              <a
-                href="mailto:kavyacreation1471@gmail.com"
-                className="font-semibold underline hover:text-blue-900"
-              >
+              <a href="tel:+917904749251">+91 7904749251</a> or{" "}
+              <a href="mailto:kavyacreation1471@gmail.com">
                 kavyacreation1471@gmail.com
               </a>
             </p>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 };
