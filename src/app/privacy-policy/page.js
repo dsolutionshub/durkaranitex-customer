@@ -72,8 +72,8 @@ export default function PrivacyPolicyPage() {
 
       <PolicySection title="Information Sharing">
         <p>
-          We do not sell, trade, or rent your personal information for others'
-          marketing. We may share information with trusted partners who help us
+          We do not sell, trade, or rent your personal information to others
+          for marketing. We may share information with trusted partners who help us
           operate the website — including payment processing through Razorpay
           and courier partners who deliver your order — provided they use the
           data only to perform those services. We may also share information
