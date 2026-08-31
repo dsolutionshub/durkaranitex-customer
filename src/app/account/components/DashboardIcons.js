@@ -76,8 +76,39 @@ export const MENU_ICONS = {
   ),
 };
 
-export function getInitials(name) {
-  if (!name) return "K";
-  const parts = String(name).trim().split(/\s+/).filter(Boolean);
-  return ((parts[0]?.[0] || "") + (parts[1]?.[0] || "")).toUpperCase() || "K";
+export function getProfilePhoto(profile) {
+  return (
+    profile?.image ||
+    profile?.avatar ||
+    profile?.photo ||
+    profile?.profile_image ||
+    profile?.picture ||
+    ""
+  );
+}
+
+export function ProfileAvatar({ src = "", alt = "Profile", className = "" }) {
+  return (
+    <div className={`aq-dashboard-avatar ${className}`.trim()}>
+      {src ? (
+        <img src={src} alt={alt} />
+      ) : (
+        <span className="aq-dashboard-avatar-icon" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 16" fill="none">
+            <path
+              d="M6.76 7.75C8.69 7.75 10.26 6.18 10.26 4.25C10.26 2.32 8.69 0.75 6.76 0.75C4.83 0.75 3.26 2.32 3.26 4.25C3.26 6.18 4.83 7.75 6.76 7.75Z"
+              stroke="currentColor"
+              strokeWidth="1.5"
+            />
+            <path
+              d="M12.78 14.75C12.78 12.04 10.08 9.85 6.76 9.85C3.45 9.85 0.75 12.04 0.75 14.75"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            />
+          </svg>
+        </span>
+      )}
+    </div>
+  );
 }

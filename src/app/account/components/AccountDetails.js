@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getInitials } from "./DashboardIcons";
 
 export default function AccountDetails({ data }) {
   const [form, setForm] = useState({
@@ -24,11 +23,6 @@ export default function AccountDetails({ data }) {
       <div className="aq-dashboard-content-layout aq-dash-mb-40">
         <div className="aq-dashboard-box aq-dash-mb-20">
           <div className="aq-dashboard-profile-box">
-            <div className="aq-dashboard-profile-avatar-wrap text-center aq-dash-mb-45">
-              <div className="aq-dashboard-profile-avatar p-relative">
-                <div className="aq-dashboard-avatar-text">{getInitials(form.name)}</div>
-              </div>
-            </div>
             <div className="aq-dashboard-profile-from-wrap">
               <div className="row">
                 <div className="col-lg-12">

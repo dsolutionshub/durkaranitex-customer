@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { MENU_ICONS, getInitials } from "./DashboardIcons";
+import { MENU_ICONS, ProfileAvatar, getProfilePhoto } from "./DashboardIcons";
 
 export const DASHBOARD_MENU = [
   { key: "dashboard", label: "Dashboard" },
@@ -36,7 +36,11 @@ export default function DashboardSidebar({ profile, activeKey, onSelect }) {
       <aside className="aq-dashboard-sidebar">
         <div className="aq-dashboard-profile-info">
           <div className="aq-dashboard-profile-thumb">
-            <div className="aq-dashboard-avatar-text avatar">{getInitials(name)}</div>
+            <ProfileAvatar
+              src={getProfilePhoto(profile)}
+              alt={name}
+              className="avatar"
+            />
           </div>
           <div className="aq-dashboard-profile-copy">
             <h3>{name}</h3>

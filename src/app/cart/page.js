@@ -194,7 +194,7 @@ const Cart = () => {
         <div className="container">
           {products?.length > 0 ? (
             <div className="row">
-              <div className="col-xl-9 col-lg-8">
+              <div className="col-12 col-lg-8 col-xl-9">
                 <CartProducts
                   products={products}
                   decreaseCount={decreaseCount}
@@ -218,7 +218,7 @@ const Cart = () => {
                   </div>
                 </div>
               </div>
-              <div className="col-xl-3 col-lg-4 col-md-6">
+              <div className="col-12 col-lg-4 col-xl-3">
                 <div className="aq-cart-checkout-wrapper">
                   <div className="aq-cart-checkout-top d-flex align-items-center justify-content-between">
                     <span className="aq-cart-checkout-top-title">Subtotal</span>

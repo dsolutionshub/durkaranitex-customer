@@ -8,8 +8,9 @@ import { formatPrice, renderDescriptionHtml } from "../utils";
 const TABS = [
   { id: "description", label: "Description" },
   { id: "addInfo", label: "Additional information" },
-  { id: "review", label: "Reviews (0)" },
-  { id: "question", label: "Ask & Question" },
+  // Hidden for now — uncomment to restore Reviews and Ask Question tabs
+  // { id: "review", label: "Reviews (0)" },
+  // { id: "question", label: "Ask & Question" },
   { id: "faq", label: "Faq" },
 ];
 
@@ -235,7 +236,8 @@ export default function ProductTabs({ product, onAskQuestion }) {
                   </div>
                 )}
 
-                {tab === "review" && (
+                {/* Hidden for now — uncomment with the TABS entries above to restore Reviews */}
+                {false && tab === "review" && (
                   <div className="product-details-tab-item">
                     <div className="product-details-review-wrapper">
                       <div className="row">
@@ -397,7 +399,8 @@ export default function ProductTabs({ product, onAskQuestion }) {
                   </div>
                 )}
 
-                {tab === "question" && (
+                {/* Hidden for now — uncomment with the TABS entries above to restore Ask Question */}
+                {false && tab === "question" && (
                   <div className="product-details-tab-item">
                     <div className="product-details-question-container">
                       <div className="product-details-question-header">

@@ -793,14 +793,14 @@
   font-size: 14px;
   font-weight: 500;
   line-height: 1;
-  color: var(--aq-common-white) !important;
-  background-color: var(--aq-common-black);
+  color: #ffffff !important;
+  background-color: #128c7e;
   font-family: var(--aq-ff-satoshi-medium);
   transition: all 0.3s;
 }
 .aq-offcanvas-whatsapp:hover {
-  color: var(--aq-common-white) !important;
-  background-color: var(--aq-common-red);
+  color: #ffffff !important;
+  background-color: #075e54;
 }
 
 /* Fontshare uses family name "Satoshi"; map Bazaro token names to it */

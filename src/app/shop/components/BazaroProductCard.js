@@ -85,20 +85,6 @@ function WishlistIcon() {
   );
 }
 
-function CompareIcon() {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="14" viewBox="0 0 16 14" fill="none">
-      <path
-        d="M11.6755 5.91828L14.2612 3.33412M14.2612 3.33412L11.6755 0.75M14.2612 3.33412L1.74999 3.33374M3.33562 8.07153L0.75 10.6557L3.33562 13.2398M13.7724 10.75H1.26122"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
 function getProductImages(item) {
   return (item?.images || []).filter((entry) => entry?.image);
 }
@@ -231,10 +217,6 @@ export default function BazaroProductCard({
                 {isInWishlist ? "Remove From Wishlist" : "Add To Wishlist"}
               </span>
             </button>
-            <button type="button" className="aq-product-action-btn aq-compare-btn aq-tooltip">
-              <CompareIcon />
-              <span className="aq-tooltip-item">Add To Compare</span>
-            </button>
           </div>
         )}
         {outOfStock && (
@@ -331,10 +313,6 @@ export default function BazaroProductCard({
               <span className="aq-tooltip-item">
                 {isInWishlist ? "Remove From Wishlist" : "Add To Wishlist"}
               </span>
-            </button>
-            <button type="button" className="aq-product-action-btn aq-compare-btn aq-tooltip-top">
-              <CompareIcon />
-              <span className="aq-tooltip-item">Add To Compare</span>
             </button>
           </div>
         )}

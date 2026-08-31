@@ -157,25 +157,7 @@ export default function SearchPanel({ open, onClose }) {
           </button>
         </form>
 
-        {!query ? (
-          <div className="aq-search-cat-wrap">
-            <h4 className="aq-search-cat-title mb-35">Popular Searches</h4>
-            <div className="aq-search-cat">
-              <Link href="/shop" onClick={onClose}>
-                Shop
-              </Link>
-              <Link href="/shop" onClick={onClose}>
-                Products
-              </Link>
-              <Link href="/about" onClick={onClose}>
-                About us
-              </Link>
-              <Link href="/contact" onClick={onClose}>
-                Contact
-              </Link>
-            </div>
-          </div>
-        ) : (
+        {query ? (
           <div className="aq-search-results">
             {loading && results.length === 0 ? (
               <p className="aq-search-status">Searching...</p>
@@ -239,7 +221,7 @@ export default function SearchPanel({ open, onClose }) {
               </Link>
             ) : null}
           </div>
-        )}
+        ) : null}
       </div>
     </div>
   );

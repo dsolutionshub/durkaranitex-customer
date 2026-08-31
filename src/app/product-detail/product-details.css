@@ -787,20 +787,25 @@
 
 .product-details-nav {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  align-items: center;
   justify-content: center;
+  gap: 8px;
   border-bottom: 1px solid rgba(20, 20, 20, 0.08);
   margin-bottom: 0;
+  overflow-x: auto;
 }
 
 .product-details-nav button {
   position: relative;
+  flex: 0 0 auto;
   font-size: 18px;
   font-weight: 500;
   line-height: 1;
-  padding: 20px 15px;
-  margin: 0 10px;
+  padding: 20px 12px;
+  margin: 0;
   letter-spacing: -0.18px;
+  white-space: nowrap;
   color: rgba(15, 15, 15, 0.6);
   font-family: var(--aq-ff-onest);
   border: 0;
@@ -810,8 +815,8 @@
 
 @media (max-width: 767px) {
   .product-details-nav button {
-    margin: 0 8px;
-    padding: 12px 8px;
+    margin: 0;
+    padding: 12px 10px;
     font-size: 15px;
   }
 

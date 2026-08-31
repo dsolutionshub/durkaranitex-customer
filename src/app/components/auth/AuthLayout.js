@@ -50,21 +50,21 @@ export default function AuthLayout({ children, tallThumb = false }) {
           <div className="row justify-content-center">
             <div className="col-lg-10">
               <div className="aq-login-box">
-                <div className="row gx-0">
-                  <div className="col-lg-6 order-2 order-lg-1">
+                <div className="row gx-0 aq-login-box-row">
+                  <div className="col-lg-6 order-2 order-lg-1 aq-login-thumb-col">
                     <div
                       className={`aq-login-thumb-wrap${tallThumb ? " custom-hight" : ""}`}
                     >
                       <Image
-                        src="/images/home/kanjivaram.png"
-                        alt="Kavya Creation"
+                        src="/images/auth/login-welcome.jpg"
+                        alt="Welcome to Kavya Creation"
                         fill
-                        sizes="(max-width: 991px) 100vw, 50vw"
-                        style={{ objectFit: "cover" }}
+                        sizes="436px"
+                        style={{ objectFit: "cover", objectPosition: "center" }}
                       />
                     </div>
                   </div>
-                  <div className="col-lg-6 order-1 order-lg-2">
+                  <div className="col-lg-6 order-1 order-lg-2 aq-login-form-col">
                     <div className="aq-login-wrapper">{children}</div>
                   </div>
                 </div>

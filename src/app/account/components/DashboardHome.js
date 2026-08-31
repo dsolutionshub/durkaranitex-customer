@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowIcon, getInitials } from "./DashboardIcons";
+import { ArrowIcon, ProfileAvatar, getProfilePhoto } from "./DashboardIcons";
 
 export default function DashboardHome({ profile, orderCount = 0, onNavigate }) {
   const name = profile?.name || "";
@@ -11,7 +11,11 @@ export default function DashboardHome({ profile, orderCount = 0, onNavigate }) {
       <h3 className="aq-dashboard-title">Dashboard</h3>
       <div className="aq-dashboard-content-layout">
         <div className="aq-dashboard-box aq-dashboard-welcome-card">
-          <div className="aq-dashboard-avatar-text avatar avatar-lg">{getInitials(name)}</div>
+          <ProfileAvatar
+            src={getProfilePhoto(profile)}
+            alt={name || "Profile"}
+            className="avatar avatar-lg"
+          />
           <div className="welcome-text">
             <h2>Welcome back {name}</h2>
             <p>

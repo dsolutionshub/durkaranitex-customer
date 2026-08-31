@@ -36,13 +36,24 @@ const CloseIcon = ({ size = 14 }) => (
 );
 
 const DeleteIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14" fill="none">
     <path
-      d="M6.75 2.25H11.25M2.25 4.5H15.75M14.25 4.5L13.724 13.409C13.645 14.581 12.67 15.5 11.496 15.5H6.504C5.33 15.5 4.355 14.581 4.276 13.409L3.75 4.5M7.5 8.25V12M10.5 8.25V12"
+      d="M12.75 0.75L0.75 12.75M0.75 0.75L12.75 12.75"
       stroke="currentColor"
-      strokeWidth="1.4"
+      strokeWidth="1.5"
       strokeLinecap="round"
       strokeLinejoin="round"
+    />
+  </svg>
+);
+
+const CartIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18" fill="none">
+    <path
+      d="M6.19751 0.75L3.30151 3.654M11.3015 0.75L14.1975 3.654M6.95776 10.3501V13.1901M10.6375 10.3501V13.1901M1.94997 7.14993L3.07797 14.0619C3.33397 15.6139 3.94997 16.7499 6.23796 16.7499H11.062C13.55 16.7499 13.918 15.6619 14.206 14.1579L15.55 7.14993M0.75 5.42996C0.75 3.94996 1.542 3.82996 2.526 3.82996H14.974C15.958 3.82996 16.75 3.94996 16.75 5.42996C16.75 7.14996 15.958 7.02996 14.974 7.02996H2.526C1.542 7.02996 0.75 7.14996 0.75 5.42996Z"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
     />
   </svg>
 );
@@ -198,7 +209,7 @@ const WishlistModal = ({ isOpen, onClose }) => {
             return (
               <div
                 key={item?.id || productId}
-                className="aq-wishlist-popup-item d-flex justify-content-center justify-content-sm-between align-items-center"
+                className="aq-wishlist-popup-item d-flex justify-content-between align-items-center"
               >
                 <div className="aq-wishlist-popup-thumb-wrap d-flex align-items-center">
                   <button
@@ -245,16 +256,19 @@ const WishlistModal = ({ isOpen, onClose }) => {
                   </div>
                 </div>
                 <div className="aq-wishlist-popup-btn">
-                  <button
-                    type="button"
-                    className={`aq-btn-black btn-red-bg btn-h-40${
-                      outOfStock ? " disable-btn" : ""
-                    }`}
-                    disabled={outOfStock}
-                    onClick={() => addToCart(productId)}
-                  >
-                    {outOfStock ? "Out of Stock" : "Add to bag"}
-                  </button>
+                  {outOfStock ? (
+                    <span className="aq-wishlist-popup-stock">Out of stock</span>
+                  ) : (
+                    <button
+                      type="button"
+                      className="aq-wishlist-popup-cart-btn"
+                      aria-label="Add to Cart"
+                      onClick={() => addToCart(productId)}
+                    >
+                      <CartIcon />
+                      <span>Add to Cart</span>
+                    </button>
+                  )}
                 </div>
               </div>
             );

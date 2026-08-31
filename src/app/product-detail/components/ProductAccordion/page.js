@@ -241,12 +241,6 @@ export default function ProductAccordion({
               </svg>
               <span className="aq-tooltip-item">Wishlist</span>
             </button>
-            <button type="button" className="aq-product-action-btn action-btn-2 aq-compare-btn aq-tooltip-top">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="14" viewBox="0 0 16 14" fill="none">
-                <path d="M11.6755 5.91828L14.2612 3.33412M14.2612 3.33412L11.6755 0.75M14.2612 3.33412L1.74999 3.33374M3.33562 8.07153L0.75 10.6557L3.33562 13.2398M13.7724 10.75H1.26122" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-              <span className="aq-tooltip-item">Compare</span>
-            </button>
           </div>
         </div>
         <div className="aq-product-details-buy-now-btn">

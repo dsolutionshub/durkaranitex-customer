@@ -14,13 +14,10 @@ import useCartPanelStore from "@/store/useCartPanelStore";
 import { useAuthStore } from "@/store/useAuthStore";
 
 import {
-  AppleIcon,
   BackArrowIcon,
   CloseEyeIcon,
-  FacebookIcon,
   GoogleIcon,
   OpenEyeIcon,
-  XIcon,
 } from "./AuthIcons";
 
 const FieldError = ({ formik, name }) => {
@@ -76,28 +73,14 @@ export const SocialContinue = () => (
     <div className="aq-login-mail text-center aq-auth-mb-20">
       <p>Or continue with</p>
     </div>
-    <div className="aq-login-social d-flex flex-wrap align-items-center justify-content-center">
-      <div className="aq-login-option-item">
-        <button type="button" onClick={handleGoogleSignIn} aria-label="Continue with Google">
-          <GoogleIcon />
-        </button>
-      </div>
-      <div className="aq-login-option-item">
-        <button type="button" aria-label="Apple">
-          <AppleIcon />
-        </button>
-      </div>
-      <div className="aq-login-option-item">
-        <button type="button" aria-label="Facebook">
-          <FacebookIcon />
-        </button>
-      </div>
-      <div className="aq-login-option-item">
-        <button type="button" aria-label="X">
-          <XIcon />
-        </button>
-      </div>
-    </div>
+    <button
+      type="button"
+      className="aq-login-google-btn"
+      onClick={handleGoogleSignIn}
+    >
+      <GoogleIcon />
+      <span>Continue with Google</span>
+    </button>
   </>
 );
 

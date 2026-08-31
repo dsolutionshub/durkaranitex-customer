@@ -10,12 +10,12 @@
 }
 
 .aq-auth-page .aq-login-ptb {
-  padding: 100px 0;
+  padding: 56px 0 64px;
 }
 
 @media (max-width: 767px) {
   .aq-auth-page .aq-login-ptb {
-    padding: 50px 0;
+    padding: 28px 0 36px;
   }
 }
 
@@ -343,6 +343,38 @@
   background-color: #c6c6c6;
 }
 
+.aq-auth-page .aq-login-google-btn,
+.aq-login-modal-style .aq-login-google-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 20px;
+  border: 1px solid rgba(20, 20, 20, 0.12);
+  border-radius: 6px;
+  background: #ffffff;
+  color: #141414;
+  font-size: 15px;
+  font-weight: 500;
+  font-family: var(--aq-ff-satoshi-medium);
+  cursor: pointer;
+}
+
+.aq-auth-page .aq-login-google-btn:hover,
+.aq-login-modal-style .aq-login-google-btn:hover {
+  color: #141414 !important;
+  border-color: #141414;
+  background: #ffffff;
+}
+
+.aq-auth-page .aq-login-google-btn svg,
+.aq-login-modal-style .aq-login-google-btn svg {
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
+}
+
 .aq-auth-page .aq-login-option-item,
 .aq-login-modal-style .aq-login-option-item {
   margin-bottom: 10px;
@@ -408,34 +440,55 @@
   margin-inline-end: 4px;
 }
 
-.aq-auth-page .aq-login-box .aq-login-thumb-wrap {
-  position: relative;
-  overflow: hidden;
-  height: 100%;
-  min-height: 420px;
-  background-color: #f1efee;
+.aq-auth-page .aq-login-box-row {
+  display: flex;
+  align-items: stretch;
 }
 
+.aq-auth-page .aq-login-box .aq-login-thumb-wrap,
 .aq-auth-page .aq-login-box .aq-login-thumb-wrap.custom-hight {
-  height: 630px;
+  position: relative;
+  overflow: hidden;
+  width: 436px;
+  height: auto;
+  min-height: 630px;
+  flex: 1 1 auto;
+  align-self: stretch;
+  background-color: #3c1d1a;
 }
 
 .aq-auth-page .aq-login-box .aq-login-thumb-wrap img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   border-radius: 16px 0 0 16px;
 }
 
-@media (max-width: 991px) {
-  .aq-auth-page .aq-login-box .aq-login-thumb-wrap,
-  .aq-auth-page .aq-login-box .aq-login-thumb-wrap.custom-hight {
-    height: 280px;
-    min-height: 280px;
+@media (min-width: 992px) {
+  .aq-auth-page .aq-login-thumb-col {
+    display: flex;
+    flex: 0 0 auto;
+    width: auto;
+    max-width: none;
+    align-self: stretch;
+    background-color: #3c1d1a;
   }
 
-  .aq-auth-page .aq-login-box .aq-login-thumb-wrap img {
-    border-radius: 0 0 16px 16px;
+  .aq-auth-page .aq-login-form-col {
+    flex: 1 1 0%;
+    width: auto;
+    max-width: none;
+  }
+
+  .aq-auth-page .aq-login-box .aq-login-wrapper {
+    height: 100%;
+  }
+}
+
+@media (max-width: 991px) {
+  .aq-auth-page .aq-login-thumb-col {
+    display: none;
   }
 }
 

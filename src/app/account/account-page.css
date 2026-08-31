@@ -133,10 +133,10 @@
   }
 
   .aq-dashboard-page .aq-dashboard-sidebar .avatar,
-  .aq-dashboard-page .aq-dashboard-sidebar .aq-dashboard-avatar-text {
+  .aq-dashboard-page .aq-dashboard-sidebar .aq-dashboard-avatar-text,
+  .aq-dashboard-page .aq-dashboard-sidebar .aq-dashboard-avatar {
     width: 48px;
     height: 48px;
-    font-size: 16px;
   }
 
   .aq-dashboard-page .aq-dashboard-profile-info h3 {
@@ -204,7 +204,8 @@
 }
 
 .aq-dashboard-page .avatar,
-.aq-dashboard-page .aq-dashboard-avatar-text {
+.aq-dashboard-page .aq-dashboard-avatar-text,
+.aq-dashboard-page .aq-dashboard-avatar {
   width: 80px;
   height: 80px;
   border-radius: 50%;
@@ -216,14 +217,36 @@
   height: 100px;
 }
 
-.aq-dashboard-page .aq-dashboard-avatar-text {
+.aq-dashboard-page .aq-dashboard-avatar {
   display: flex;
-  font-size: 24px;
-  font-weight: 500;
+  overflow: hidden;
   align-items: center;
   justify-content: center;
-  color: var(--aq-common-success);
-  background-color: rgba(0, 174, 118, 0.1);
+  color: #141414;
+  background-color: #f1efee;
+}
+
+.aq-dashboard-page .aq-dashboard-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.aq-dashboard-page .aq-dashboard-avatar-icon {
+  display: flex;
+  width: 44%;
+  height: 44%;
+  align-items: center;
+  justify-content: center;
+}
+
+.aq-dashboard-page .aq-dashboard-avatar-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.aq-dashboard-page .aq-dashboard-avatar-text {
+  display: none;
 }
 
 .aq-dashboard-page .aq-dashboard-profile-info h3 {
@@ -252,6 +275,52 @@
   display: flex;
   align-items: center;
   margin-bottom: 20px;
+}
+
+.aq-dashboard-page .aq-dashboard-welcome-card .aq-dashboard-avatar {
+  flex: 0 0 72px;
+  width: 72px;
+  height: 72px;
+  min-width: 72px;
+  min-height: 72px;
+  max-width: 72px;
+  max-height: 72px;
+  aspect-ratio: 1 / 1;
+  align-self: center;
+  border-radius: 50%;
+}
+
+.aq-dashboard-page .aq-dashboard-welcome-card .welcome-text {
+  flex: 1;
+  min-width: 0;
+}
+
+@media (max-width: 767px) {
+  .aq-dashboard-page .aq-dashboard-welcome-card {
+    gap: 14px;
+    padding: 18px 16px;
+    align-items: flex-start;
+  }
+
+  .aq-dashboard-page .aq-dashboard-welcome-card .aq-dashboard-avatar {
+    flex: 0 0 56px;
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
+    min-height: 56px;
+    max-width: 56px;
+    max-height: 56px;
+    margin-top: 2px;
+  }
+
+  .aq-dashboard-page .aq-dashboard-welcome-card .welcome-text h2 {
+    font-size: 18px;
+    line-height: 1.3;
+  }
+
+  .aq-dashboard-page .aq-dashboard-welcome-card .welcome-text p {
+    font-size: 14px;
+  }
 }
 
 .aq-dashboard-page .aq-dashboard-welcome-card .welcome-text h2 {
@@ -501,12 +570,12 @@
 }
 
 .aq-dashboard-page .aq-dashboard-profile-box {
-  padding: 60px 70px;
+  padding: 36px 40px;
 }
 
 @media (max-width: 991px) {
   .aq-dashboard-page .aq-dashboard-profile-box {
-    padding: 40px 20px;
+    padding: 20px 16px;
   }
 }
 
@@ -515,7 +584,8 @@
 }
 
 .aq-dashboard-page .aq-dashboard-profile-avatar img,
-.aq-dashboard-page .aq-dashboard-profile-avatar .aq-dashboard-avatar-text {
+.aq-dashboard-page .aq-dashboard-profile-avatar .aq-dashboard-avatar-text,
+.aq-dashboard-page .aq-dashboard-profile-avatar .aq-dashboard-avatar {
   width: 140px;
   height: 140px;
   border-radius: 50%;
