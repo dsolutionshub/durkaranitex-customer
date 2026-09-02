@@ -12,6 +12,7 @@ export default function BazaroToaster() {
       reverseOrder={false}
       toastOptions={TOAST_OPTIONS}
       containerClassName="aq-toaster"
+      containerStyle={{ zIndex: 2147483647 }}
       gutter={12}
     >
       {(t) => (

@@ -44,23 +44,6 @@ function getSizes(product) {
   return [];
 }
 
-function StarRating() {
-  return (
-    <div className="aq-product-details-rating">
-      {Array.from({ length: 5 }).map((_, index) => (
-        <span key={index}>
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="13" viewBox="0 0 14 13" fill="none">
-            <path
-              d="M6.6574 0L8.50892 4.4516L13.3148 4.83688L9.65322 7.9734L10.7719 12.6631L6.6574 10.15L2.5429 12.6631L3.66157 7.9734L0 4.83688L4.80587 4.4516L6.6574 0Z"
-              fill="currentColor"
-            />
-          </svg>
-        </span>
-      ))}
-    </div>
-  );
-}
-
 export default function QuickViewModal() {
   const router = useRouter();
   const pathname = usePathname();
@@ -93,9 +76,6 @@ export default function QuickViewModal() {
     (typeof product?.category === "string" ? product.category : "");
   const selectedColor =
     images[selectedIndex]?.color || images[selectedIndex]?.title || "";
-  const reviewCount = Number(
-    product?.review_count ?? product?.reviews_count ?? product?.total_reviews ?? 0
-  );
   const stockLeft = parseInt(product?.quantity, 10);
   const showLowStock = Number.isFinite(stockLeft) && stockLeft > 0 && stockLeft <= 10;
   const detailHref = product?.id ? `/product-detail?id=${product.id}` : "/shop";
@@ -375,25 +355,13 @@ export default function QuickViewModal() {
                     {product?.title}
                   </h3>
 
-                  <div className="tp-product-details-inventory">
-                    <div className="aq-product-details-rating-wrapper">
-                      <div className="aq-product-details-rating-box">
-                        <StarRating />
-                        <div className="aq-product-details-reviews">
-                          <span>
-                            ({" "}
-                            {reviewCount} review{reviewCount === 1 ? "" : "s"}{" "}
-                            )
-                          </span>
-                        </div>
+                  {showLowStock ? (
+                    <div className="tp-product-details-inventory">
+                      <div className="aq-product-details-fomo-mesg">
+                        <span>Only {stockLeft} left in stock!</span>
                       </div>
-                      {showLowStock ? (
-                        <div className="aq-product-details-fomo-mesg">
-                          <span>Only {stockLeft} left in stock!</span>
-                        </div>
-                      ) : null}
                     </div>
-                  </div>
+                  ) : null}
 
                   <div className="aq-product-details-price-wrap">
                     <ins>

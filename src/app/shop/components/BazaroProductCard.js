@@ -6,9 +6,6 @@ import Image from "next/image";
 
 import useQuickViewStore from "@/store/useQuickViewStore";
 
-const STAR_PATH =
-  "M5.21608 0.307961C5.38688 -0.102685 5.9686 -0.102684 6.1394 0.307962L7.34463 3.20568C7.41664 3.3788 7.57944 3.49709 7.76634 3.51207L10.8947 3.76287C11.338 3.79841 11.5178 4.35166 11.18 4.641L8.79653 6.68268C8.65414 6.80466 8.59195 6.99605 8.63546 7.17843L9.36364 10.2311C9.46684 10.6638 8.99621 11.0057 8.61666 10.7739L5.93837 9.13797C5.77836 9.04024 5.57712 9.04024 5.41711 9.13797L2.73882 10.7739C2.35927 11.0057 1.88865 10.6638 1.99184 10.2311L2.72003 7.17843C2.76353 6.99605 2.70135 6.80466 2.55895 6.68268L0.175492 4.641C-0.162276 4.35166 0.0174878 3.79841 0.460815 3.76287L3.58915 3.51207C3.77604 3.49709 3.93885 3.3788 4.01085 3.20568L5.21608 0.307961Z";
-
 function formatPrice(value) {
   const amount = Number(value);
   if (Number.isNaN(amount)) {
@@ -22,20 +19,6 @@ function stripHtml(value) {
     return "";
   }
   return value.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
-}
-
-function StarRating() {
-  return (
-    <div className="aq-product-ratting">
-      {Array.from({ length: 5 }).map((_, index) => (
-        <span key={index}>
-          <svg width="12" height="11" viewBox="0 0 12 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d={STAR_PATH} fill="currentColor" />
-          </svg>
-        </span>
-      ))}
-    </div>
-  );
 }
 
 function CartIcon() {
@@ -248,7 +231,6 @@ export default function BazaroProductCard({
         </Link>
       </div>
       <div className={`aq-product-content${isList ? "" : " text-center text-md-start"}`}>
-        <StarRating />
         {isList ? (
           <h3 className="aq-product-title mb-10">
             <Link href={href}>{item?.title}</Link>

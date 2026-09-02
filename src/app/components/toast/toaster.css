@@ -2,6 +2,7 @@
 
 .aq-toaster {
   top: 16px !important;
+  z-index: 2147483647 !important;
 }
 
 .aq-toast-host {
@@ -9,7 +10,7 @@
   top: 16px;
   left: 0;
   right: 0;
-  z-index: 9999;
+  z-index: 2147483647;
   display: flex;
   justify-content: center;
   pointer-events: none;

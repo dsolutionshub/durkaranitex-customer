@@ -145,8 +145,16 @@ function Product() {
     setOpenFilter(false);
 
     const params = new URLSearchParams(window.location.search);
-    params.set("priceMin", range.min || 0);
-    params.set("priceMax", range.max || 0);
+    if (Number.isFinite(Number(range?.min))) {
+      params.set("priceMin", String(range.min));
+    } else {
+      params.delete("priceMin");
+    }
+    if (Number.isFinite(Number(range?.max))) {
+      params.set("priceMax", String(range.max));
+    } else {
+      params.delete("priceMax");
+    }
     params.delete("page");
     pushShopQuery(router, params);
   };
@@ -154,13 +162,15 @@ function Product() {
   const productDetails = useCallback(
     async (filter = null) => {
       loader(true);
+      const minPrice = Number(priceRange?.min);
+      const maxPrice = Number(priceRange?.max);
       try {
         let { products, total_products } = await getProductList(
           currentPage,
           filter,
-          selectedCategories,
-          priceRange.min !== 0 ? priceRange.min : null,
-          priceRange.max !== 0 ? priceRange.max : null,
+          selectedCategories?.length ? selectedCategories : null,
+          Number.isFinite(minPrice) && minPrice > 0 ? minPrice : null,
+          Number.isFinite(maxPrice) && maxPrice > 0 ? maxPrice : null,
           debouncedSearch
         );
         const list = products || [];
@@ -467,41 +477,39 @@ function Product() {
                 <div className="row">
                   <div className="col-xl-12">
                     <div className="aq-product-sidebar-top pb-10">
-                      <div className="row align-items-center aq-shop-toolbar-row">
-                        <div className="col-4">
-                          <div className="aq-product-sidebar-left mb-20">
-                            <button
-                              type="button"
-                              className="aq-product-filter-btn"
-                              onClick={handleOpenFilter}
+                      <div className="aq-shop-toolbar">
+                        <div className="aq-shop-toolbar-left">
+                          <button
+                            type="button"
+                            className="aq-product-filter-btn"
+                            onClick={handleOpenFilter}
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="13"
+                              height="12"
+                              viewBox="0 0 13 12"
+                              fill="none"
                             >
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="13"
-                                height="12"
-                                viewBox="0 0 13 12"
-                                fill="none"
-                              >
-                                <path
-                                  d="M11.75 0.75H0.750015L5.15002 6.00556V9.63889L7.35002 10.75V6.00556L11.75 0.75Z"
-                                  stroke="currentColor"
-                                  strokeWidth="1.5"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                              </svg>{" "}
-                              Filter
-                            </button>
-                            <div className="aq-product-sidebar-text d-none d-lg-block">
-                              <p className="mb-0">
-                                There are {totalProducts} results in total
-                              </p>
-                            </div>
+                              <path
+                                d="M11.75 0.75H0.750015L5.15002 6.00556V9.63889L7.35002 10.75V6.00556L11.75 0.75Z"
+                                stroke="currentColor"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>{" "}
+                            Filter
+                          </button>
+                          <div className="aq-product-sidebar-text d-none d-lg-block">
+                            <p className="mb-0">
+                              There are {totalProducts} results in total
+                            </p>
                           </div>
                         </div>
-                        <div className="col-4">
-                          <div className="aq-layout-switcher mb-20">
-                            <ul className="aq-layout-switcher-list d-flex justify-content-md-center">
+                        <div className="aq-shop-toolbar-center">
+                          <div className="aq-layout-switcher">
+                            <ul className="aq-layout-switcher-list">
                               {LAYOUTS.map((item) => (
                                 <li
                                   key={item}
@@ -519,15 +527,12 @@ function Product() {
                             </ul>
                           </div>
                         </div>
-                        <div className="col-4">
-                          <div className="aq-product-sidebar-right justify-content-end mb-20">
-                            <p>Sort by:</p>
-                            <ShopSortSelect
-                              options={SORT_OPTIONS}
-                              value={sortOption}
-                              onChange={setSortOption}
-                            />
-                          </div>
+                        <div className="aq-shop-toolbar-right">
+                          <ShopSortSelect
+                            options={SORT_OPTIONS}
+                            value={sortOption}
+                            onChange={setSortOption}
+                          />
                         </div>
                       </div>
                     </div>
@@ -629,7 +634,6 @@ function Product() {
         categoryList={categoryList}
         categories={categories}
         selectedCategories={selectedCategories}
-        filterProducts={setSortedProducts}
         onChange={handleCheckbox}
         onPriceChange={handlePriceChange}
         priceRange={categoryList?.product_amount}

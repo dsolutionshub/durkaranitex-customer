@@ -73,12 +73,8 @@
 }
 @media (max-width: 767px) {
   .aq-search-area {
-    width: 420px;
-  }
-}
-@media (max-width: 575px) {
-  .aq-search-area {
-    width: 100%;
+    width: min(360px, calc(100% - 48px));
+    max-width: calc(100% - 48px);
   }
 }
 .aq-search-area.opened {
@@ -602,6 +598,13 @@
 .aq-offcanvas-wrap.opened {
   pointer-events: auto;
   transform: translateX(0);
+}
+
+@media (max-width: 767px) {
+  .aq-offcanvas-wrap {
+    width: 320px;
+    max-width: calc(100% - 56px);
+  }
 }
 .aq-offcanvas-wrap .aq-megamenu-shop-wrap, .aq-offcanvas-wrap .aq-megamenu-product-wrap {
   background: transparent;
@@ -1168,4 +1171,77 @@
 
 .aq-search-view-all:hover {
   color: var(--aq-common-red) !important;
+}
+
+@media (max-width: 767px) {
+  .aq-search-area .aq-search-inner-wrap {
+    padding: 16px;
+  }
+
+  .aq-search-area .aq-search-close {
+    top: 16px;
+    inset-inline-end: 12px;
+    width: 36px;
+    height: 36px;
+  }
+
+  .aq-search-area .aq-search-panel-title {
+    font-size: 22px;
+    margin: 0 44px 16px 0;
+  }
+
+  .aq-search-area .aq-search-input.mb-30 {
+    margin-bottom: 16px;
+  }
+
+  .aq-search-area .aq-search-input input {
+    height: 44px;
+    line-height: 44px;
+    font-size: 15px;
+    padding-inline-start: 14px;
+    padding-inline-end: 44px;
+  }
+
+  .aq-search-area .aq-search-input-btn {
+    inset-inline-end: 12px;
+  }
+
+  .aq-search-area .aq-search-results {
+    padding-inline-end: 0;
+    scrollbar-width: thin;
+  }
+
+  .aq-search-area .aq-search-result-card {
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .aq-search-area .aq-search-result-thumb {
+    flex: 0 0 64px;
+    width: 64px;
+    height: 64px;
+  }
+
+  .aq-search-area .aq-search-result-name {
+    font-size: 14px;
+  }
+
+  .aq-search-area .aq-search-result-meta {
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 8px;
+  }
+
+  .aq-search-area .aq-search-result-price {
+    font-size: 14px;
+  }
+
+  .aq-search-area .aq-search-result-price del {
+    margin-inline-start: 6px;
+    font-size: 12px;
+  }
+
+  .aq-search-area .aq-search-result-stock {
+    font-size: 12px;
+  }
 }

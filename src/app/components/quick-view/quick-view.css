@@ -214,38 +214,8 @@ body.aq-qv-open {
   }
 }
 
-.aq-product-modal .aq-product-details-rating-wrapper {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.aq-product-modal .aq-product-details-rating-box {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.aq-product-modal .aq-product-details-rating {
-  margin-inline-end: 7px;
-}
-
-.aq-product-modal .aq-product-details-rating span {
-  display: inline-block;
-  transform: translateY(-3px);
-  color: var(--aq-common-black);
-}
-
-.aq-product-modal .aq-product-details-reviews span {
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 1;
-  font-family: var(--aq-ff-onest);
-  color: rgba(15, 15, 15, 0.75);
-}
-
 .aq-product-modal .aq-product-details-fomo-mesg {
-  margin-inline-start: 25px;
+  margin-inline-start: 0;
   margin-bottom: 10px;
 }
 

@@ -1,5 +1,36 @@
 /* Bazaro login / register / auth modal — scoped to avoid Tailwind spacing clashes */
 
+.aq-reset-password-page {
+  min-height: 100vh;
+  background: #ffffff;
+}
+
+.aq-reset-password-page .aq-reset-password-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px 16px 0;
+  pointer-events: none;
+}
+
+.aq-reset-password-page .aq-reset-password-logo img {
+  width: 210px;
+  height: auto;
+  max-height: 58px;
+  object-fit: contain;
+}
+
+@media (max-width: 767px) {
+  .aq-reset-password-page .aq-reset-password-logo {
+    padding: 16px 16px 0;
+  }
+
+  .aq-reset-password-page .aq-reset-password-logo img {
+    width: 168px;
+    max-height: 48px;
+  }
+}
+
 .aq-auth-page,
 .aq-login-modal-style {
   --aq-ff-satoshi-regular: "Satoshi", sans-serif;
@@ -170,6 +201,11 @@
   margin-bottom: 15px;
 }
 
+.aq-auth-page .aq-login-input,
+.aq-login-modal-style .aq-login-input {
+  position: relative;
+}
+
 .aq-auth-page .aq-login-input-eye,
 .aq-login-modal-style .aq-login-input-eye {
   position: absolute;
@@ -280,7 +316,7 @@
 
 .aq-auth-page .aq-login-btn:hover,
 .aq-login-modal-style .aq-login-btn:hover {
-  color: #fff;
+  color: #fff !important;
   border-color: #b91d1f;
   background-color: #b91d1f;
 }
@@ -307,7 +343,9 @@
 .aq-auth-page .aq-login-account:hover a,
 .aq-auth-page .aq-login-account:hover button,
 .aq-login-modal-style .aq-login-account:hover a,
-.aq-login-modal-style .aq-login-account:hover button {
+.aq-login-modal-style .aq-login-account:hover button,
+.aq-auth-page .aq-login-account.color:hover,
+.aq-login-modal-style .aq-login-account.color:hover {
   color: #b91d1f;
 }
 

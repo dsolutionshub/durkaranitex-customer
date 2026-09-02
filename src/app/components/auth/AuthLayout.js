@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 
+import "../../login/login-page.css";
+
 const FEATURES = [
   {
     title: "Affordable Shipping",

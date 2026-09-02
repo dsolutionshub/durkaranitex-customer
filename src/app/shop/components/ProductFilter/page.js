@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { Range } from "react-range";
 
@@ -18,7 +18,6 @@ const ProductFilter = ({
   categoryList,
   categories = [],
   selectedCategories = [],
-  filterProducts,
   onChange,
   onPriceChange,
   openFilter,
@@ -32,7 +31,6 @@ const ProductFilter = ({
   const [showPriceFilter, setShowPriceFilter] = useState(false);
   const [categoryOpen, setCategoryOpen] = useState(true);
   const [priceOpen, setPriceOpen] = useState(true);
-  const debounceRef = useRef(null);
 
   useEffect(() => {
     setMounted(true);
@@ -60,26 +58,31 @@ const ProductFilter = ({
     setShowPriceFilter(parseInt(minValue, 10) === parseInt(maxValue, 10));
   }, [minValue, maxValue, openFilter]);
 
+  const closeOnMobile = () => {
+    if (typeof window === "undefined" || !openFilter) {
+      return;
+    }
+    if (window.innerWidth <= 767) {
+      handleOpenFilter();
+    }
+  };
+
   const handleChange = (newValues) => {
     setValues(newValues);
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current);
-    }
-    debounceRef.current = setTimeout(() => {
-      onPriceChange({ min: newValues[0], max: newValues[1] });
-      const filteredProducts = categories.filter(
-        (item) => item.price >= newValues[0] && item.price <= newValues[1]
-      );
-      filterProducts(filteredProducts);
-    }, 500);
+  };
+
+  const handlePriceCommit = (newValues) => {
+    setValues(newValues);
+    onPriceChange({ min: newValues[0], max: newValues[1] });
   };
 
   const handleCategoryClick = (categoryID) => {
     if (selectedCategories?.includes(categoryID)) {
       onChange(selectedCategories.filter((id) => id !== categoryID));
-      return;
+    } else {
+      onChange([...(selectedCategories || []), categoryID]);
     }
-    onChange([...(selectedCategories || []), categoryID]);
+    closeOnMobile();
   };
 
   if (!mounted) {
@@ -146,7 +149,10 @@ const ProductFilter = ({
                         <button
                           type="button"
                           className={!selectedCategories?.length ? "active" : undefined}
-                          onClick={() => onChange([])}
+                          onClick={() => {
+                            onChange([]);
+                            closeOnMobile();
+                          }}
                         >
                           All ({categories?.reduce((sum, cat) => sum + categoryCount(cat), 0) || 0})
                         </button>
@@ -200,6 +206,7 @@ const ProductFilter = ({
                         min={minValue}
                         max={maxValue}
                         onChange={handleChange}
+                        onFinalChange={handlePriceCommit}
                         renderTrack={({ props, children }) => {
                           const { key, ...rest } = props;
                           return (

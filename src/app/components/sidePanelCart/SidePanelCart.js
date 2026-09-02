@@ -84,7 +84,7 @@ function CartQuantity({ decreaseCount, increaseCount, removeFromCart, product })
   const atMin = product?.quantity === 1;
 
   return (
-    <div className="aq-product-details-quantity d-flex align-items-center">
+    <div className="aq-cartmini-product-actions aq-product-details-quantity d-flex align-items-center">
       <div className={`aq-product-quantity${outOfStock ? " aq-cartmini-qty-disabled" : ""}`}>
         <button
           type="button"
@@ -305,7 +305,7 @@ const SidePanelCart = () => {
               return (
                 <div
                   key={product?.id || product?.product?.id}
-                  className="aq-cartmini-product-item mb-15 item-delete d-flex align-items-center"
+                  className="aq-cartmini-product-item mb-15 item-delete d-flex"
                 >
                   <div
                     className="aq-cartmini-product-thumbnail"
