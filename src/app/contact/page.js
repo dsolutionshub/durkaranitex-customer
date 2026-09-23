@@ -6,8 +6,8 @@ import toast from "react-hot-toast";
 import "./contact-page.css";
 
 const STORE_EMAIL = "kavyacreation1471@gmail.com";
-const STORE_PHONE = "+91 7904749251";
-const STORE_PHONE_HREF = "tel:7904749251";
+const STORE_PHONE = "+91 9445907841";
+const STORE_PHONE_HREF = "tel:9445907841";
 const STORE_ADDRESS =
   "6/329-4, Ashok Nagar, Near Sanjeeviraya Perumal kovil, Perumagoundampatty, Elampilai, Salem, Tamil Nadu 637502";
 const STORE_HOURS = "Mon-Sat from 10am to 7pm";
@@ -21,15 +21,15 @@ const REMEMBER_KEY = "aq-contact-remember";
 const FAQ_ITEMS = [
   {
     q: "What is the return process?",
-    a: "We offer replacements only — no refunds. If a saree arrives damaged, email kavyacreation1471@gmail.com or call +91 7904749251 within 1 day of delivery with your order number and photos if asked.",
+    a: "We offer replacements only — no refunds. If a saree arrives damaged, email kavyacreation1471@gmail.com or call +91 9445907841 within 1 day of delivery with your order number and photos if asked.",
   },
   {
     q: "Can I cancel my order after placing it?",
-    a: "Please contact us as soon as possible on +91 7904749251. Once an order is packed or dispatched, it cannot be cancelled.",
+    a: "Please contact us as soon as possible on +91 9445907841. Once an order is packed or dispatched, it cannot be cancelled.",
   },
   {
     q: "How can I check the status of my order?",
-    a: "Open Account → Orders after you sign in, or check the confirmation SMS and email sent after payment. You can also call +91 7904749251 with your order number.",
+    a: "Open Account → Orders after you sign in, or check the confirmation SMS and email sent after payment. You can also call +91 9445907841 with your order number.",
   },
   {
     q: "Which items are not eligible for return?",
@@ -41,7 +41,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "What should I do if I receive a damaged or incorrect product?",
-    a: "Keep the product and packaging, take clear photos, and contact us within 1 day of delivery at kavyacreation1471@gmail.com or +91 7904749251 with your order number.",
+    a: "Keep the product and packaging, take clear photos, and contact us within 1 day of delivery at kavyacreation1471@gmail.com or +91 9445907841 with your order number.",
   },
 ];
 

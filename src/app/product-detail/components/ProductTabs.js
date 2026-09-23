@@ -28,7 +28,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "How do I request a replacement?",
-    a: "Email kavyacreation1471@gmail.com or call +91 7904749251 within 1 day of delivery. Please keep your order number ready and share photos of the damaged product if asked.",
+    a: "Email kavyacreation1471@gmail.com or call +91 9445907841 within 1 day of delivery. Please keep your order number ready and share photos of the damaged product if asked.",
   },
   {
     q: "Is Cash on Delivery available?",
@@ -40,7 +40,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "How can I contact Kavya Creation?",
-    a: "Call +91 7904749251 or email kavyacreation1471@gmail.com. We are happy to help with orders, shipping, and replacements.",
+    a: "Call +91 9445907841 or email kavyacreation1471@gmail.com. We are happy to help with orders, shipping, and replacements.",
   },
 ];
 

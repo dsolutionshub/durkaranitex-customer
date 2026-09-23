@@ -29,14 +29,14 @@ const navItems = [
 ];
 
 const STORE_EMAIL = "kavyacreation1471@gmail.com";
-const STORE_PHONE = "+91 7904749251";
-const STORE_PHONE_HREF = "tel:7904749251";
+const STORE_PHONE = "+91 9445907841";
+const STORE_PHONE_HREF = "tel:9445907841";
 const STORE_ADDRESS =
   "6/329-4, Ashok Nagar, Near Sanjeeviraya Perumal kovil, Perumagoundampatty, Elampilai, Salem, Tamil Nadu 637502";
 const STORE_MAPS =
   "https://www.google.com/maps/dir//Kavya+Creation,+Perumagoundampatti,+Elampillai,+Tamil+Nadu+637502";
 const WHATSAPP_HREF =
-  "https://api.whatsapp.com/send?phone=917904749251&text=Hi%2C%20I'm%20interested%20in%20your%20products";
+  "https://api.whatsapp.com/send?phone=919445907841&text=Hi%2C%20I'm%20interested%20in%20your%20products";
 
 const HEADER_QUOTES = [
   "Quality you can feel in every thread",

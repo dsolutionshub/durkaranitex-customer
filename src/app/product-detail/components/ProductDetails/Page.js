@@ -257,7 +257,7 @@ const ProductDetails = () => {
               <p>Give us a shout if you have any other questions or concerns.</p>
               <ul className="product-details-policy-info mb-0">
                 <li>
-                  <a href="tel:7904749251">+91 7904749251</a>
+                  <a href="tel:9445907841">+91 9445907841</a>
                 </li>
                 <li>
                   <a href="mailto:kavyacreation1471@gmail.com">

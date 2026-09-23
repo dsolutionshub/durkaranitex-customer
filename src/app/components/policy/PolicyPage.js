@@ -3,8 +3,8 @@ import Link from "next/link";
 import "./policy-page.css";
 
 export const STORE_EMAIL = "kavyacreation1471@gmail.com";
-export const STORE_PHONE = "+91 7904749251";
-export const STORE_PHONE_HREF = "tel:7904749251";
+export const STORE_PHONE = "+91 9445907841";
+export const STORE_PHONE_HREF = "tel:9445907841";
 export const STORE_ADDRESS =
   "6/329-4, Ashok Nagar, Near Sanjeeviraya Perumal kovil, Perumagoundampatty, Elampilai, Salem, Tamil Nadu 637502";
 export const POLICY_UPDATED = "August 27, 2026";

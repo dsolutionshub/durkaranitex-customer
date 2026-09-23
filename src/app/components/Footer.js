@@ -46,7 +46,7 @@ const SOCIAL_LINKS = [
   },
   {
     label: "Instagram",
-    href: "https://www.instagram.com/kav_ya_creations?igsh=eGh2NzU5MHQzMGE0",
+    href: "https://www.instagram.com/kavya_creations_2.0?stkn=MXc0MHc5NXhwbW54bg%3D%3D&utm_source=qr",
     icon: (
       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
         <defs>
@@ -79,7 +79,7 @@ const SOCIAL_LINKS = [
   },
   {
     label: "WhatsApp",
-    href: "https://api.whatsapp.com/send?phone=917904749251&text=Hi%2C%20I'm%20interested%20in%20your%20products",
+    href: "https://api.whatsapp.com/send?phone=919445907841&text=Hi%2C%20I'm%20interested%20in%20your%20products",
     icon: (
       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
         <circle cx="12" cy="12" r="12" fill="#25D366" />

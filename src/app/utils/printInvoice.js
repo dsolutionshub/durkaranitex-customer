@@ -1,6 +1,6 @@
 const STORE_NAME = "Kavya Creation";
 const STORE_EMAIL = "kavyacreation1471@gmail.com";
-const STORE_PHONE = "+91 7904749251";
+const STORE_PHONE = "+91 9445907841";
 const STORE_ADDRESS =
   "6/329-4, Ashok Nagar, Near Sanjeeviraya Perumal kovil, Perumagoundampatty, Elampilai, Salem, Tamil Nadu 637502";
 

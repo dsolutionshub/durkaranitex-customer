@@ -91,7 +91,7 @@ const OrderFailure = ({ payment_id }) => {
 
             <p className="aq-payment-help">
               Need help? Contact our support team at{" "}
-              <a href="tel:+917904749251">+91 7904749251</a> or{" "}
+              <a href="tel:+919445907841">+91 9445907841</a> or{" "}
               <a href="mailto:kavyacreation1471@gmail.com">
                 kavyacreation1471@gmail.com
               </a>
