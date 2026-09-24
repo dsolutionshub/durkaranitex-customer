@@ -45,14 +45,14 @@
 }
 
 .aq-product-2-area {
-  padding-top: 105px;
+  padding-top: 44px;
   padding-bottom: 40px;
   overflow: hidden;
 }
 
 @media only screen and (min-width: 1200px) and (max-width: 1399px) {
   .aq-product-2-area {
-    padding-top: 70px;
+    padding-top: 40px;
     padding-bottom: 0;
   }
 }
@@ -60,14 +60,14 @@
 @media only screen and (min-width: 992px) and (max-width: 1199px),
   only screen and (min-width: 768px) and (max-width: 991px) {
   .aq-product-2-area {
-    padding-top: 70px;
+    padding-top: 34px;
     padding-bottom: 20px;
   }
 }
 
 @media (max-width: 767px) {
   .aq-product-2-area {
-    padding-top: 60px;
+    padding-top: 28px;
   }
 }
 
