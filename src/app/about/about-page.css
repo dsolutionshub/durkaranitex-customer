@@ -362,7 +362,8 @@
 
 .aq-about-page .aq-about-team-item-thumb img {
   width: 100%;
-  height: 320px;
+  height: auto;
+  aspect-ratio: 4 / 3;
   object-fit: cover;
   display: block;
   transition: all 0.5s ease-in-out;
@@ -460,11 +461,5 @@
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .aq-about-page .aq-about-feature-style.aq-login-page-style.grc-feature-style .aqf-shop-feature-item {
     padding: 15px 20px 15px 25px;
-  }
-}
-
-@media (max-width: 767px) {
-  .aq-about-page .aq-about-team-item-thumb img {
-    height: 280px;
   }
 }

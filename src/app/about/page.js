@@ -55,22 +55,22 @@ const CRAFT_ITEMS = [
   {
     title: "Authentic Quality",
     role: "Handpicked",
-    image: "/images/home/kanjivaram.png",
+    image: "/images/about/about-craft-quality.png",
   },
   {
     title: "Original Handcraft",
     role: "Elampilai weaves",
-    image: "/images/home/Bridal Tissue.png",
+    image: "/images/about/about-craft-handcraft.png",
   },
   {
     title: "Curated Collection",
     role: "Wedding & everyday",
-    image: "/images/home/Wedding Collection.png",
+    image: "/images/about/about-craft-collection.png",
   },
   {
     title: "Customer Care",
     role: "Personal styling",
-    image: "/images/home/Celebrity Collection.png",
+    image: "/images/about/about-craft-care.png",
   },
 ];
 
@@ -108,10 +108,11 @@ export default function AboutPage() {
             <div className="col-lg-12">
               <div className="aq-about-banner-wrap">
                 <Image
-                  src="/images/home/About-us.png"
+                  src="/images/about/about-banner.png"
                   alt="Kavya Creation showroom"
-                  width={1600}
-                  height={700}
+                  width={1024}
+                  height={576}
+                  priority
                 />
               </div>
             </div>
@@ -176,10 +177,10 @@ export default function AboutPage() {
               <div className="col-lg-6">
                 <div className="aq-about-product-thumb aq-about-mb-30">
                   <Image
-                    src="/images/home/About.png"
-                    alt="Kavya Creation store interior"
-                    width={800}
-                    height={640}
+                    src="/images/about/about-story.png"
+                    alt="Handloom silk saree weaving in Elampilai"
+                    width={1024}
+                    height={576}
                   />
                 </div>
               </div>
@@ -234,10 +235,10 @@ export default function AboutPage() {
               <div className="col-lg-6">
                 <div className="aq-about-product-thumb aq-about-mb-30">
                   <Image
-                    src="/images/home/kanjivaram.png"
-                    alt="Kanjivaram wedding sarees"
-                    width={800}
-                    height={640}
+                    src="/images/about/about-mission.png"
+                    alt="Silk sarees with gold zari borders"
+                    width={1024}
+                    height={576}
                   />
                 </div>
               </div>
@@ -259,7 +260,7 @@ export default function AboutPage() {
               <div className="col-lg-3 col-md-6" key={item.title}>
                 <div className="aq-about-team-item text-center aq-about-mb-30">
                   <div className="aq-about-team-item-thumb aq-about-mb-20">
-                    <Image src={item.image} alt={item.title} width={400} height={480} />
+                    <Image src={item.image} alt={item.title} width={1024} height={768} />
                   </div>
                   <div className="aq-about-team-item-content">
                     <h4 className="aq-about-team-item-title">{item.title}</h4>
