@@ -116,6 +116,27 @@
   opacity: 1;
 }
 
+@media (max-width: 767px) {
+  .aqf-hero-wrap {
+    height: auto;
+    max-height: none;
+  }
+
+  .aqf-hero-thumb {
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  .aqf-hero-thumb::after {
+    display: none;
+  }
+
+  .aqf-hero-thumb img {
+    object-fit: cover;
+    object-position: center;
+  }
+}
+
 .aq-section-subtitle {
   font-size: 16px;
   line-height: 1;

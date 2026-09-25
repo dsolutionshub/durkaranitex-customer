@@ -141,6 +141,12 @@
   }
 }
 
+@media (max-width: 767px) {
+  .aq-product-2-area h4.aq-section-title.fs-38.ff-satoshi-bold {
+    font-size: 30px;
+  }
+}
+
 .aq-product-2-area .aqf-seller-title-box p {
   margin-bottom: 0;
   font-size: 16px;

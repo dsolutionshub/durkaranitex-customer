@@ -147,7 +147,10 @@ export default function QuickViewModal() {
   };
 
   const requireLogin = (message) => {
-    sessionStorage.setItem("postLoginRedirect", pathname || detailHref);
+    sessionStorage.setItem(
+      "postLoginRedirect",
+      pathname ? `${pathname}${window.location.search}` : detailHref
+    );
     closeQuickView();
     router.push("/login");
     toast.error(message || LOGIN_ERROR_MSG);

@@ -30,6 +30,20 @@ export default function LoginPage() {
   const [isAcquiringToken, setIsAcquiringToken] = useState(false);
   const [tokenError, setTokenError] = useState(null);
   const acquireAttempted = useRef(false);
+  const redirectTargetRef = useRef(null);
+
+  if (redirectTargetRef.current === null && typeof window !== "undefined") {
+    redirectTargetRef.current = sessionStorage.getItem("postLoginRedirect") || "";
+  }
+
+  const goAfterLogin = () => {
+    const redirectPath =
+      sessionStorage.getItem("postLoginRedirect") ||
+      redirectTargetRef.current ||
+      "/account";
+    sessionStorage.removeItem("postLoginRedirect");
+    router.replace(redirectPath);
+  };
 
   useEffect(() => {
     if (status === "loading") return;
@@ -43,9 +57,7 @@ export default function LoginPage() {
         localStorage.setItem("accessToken", sessionToken);
         setIsLoginAuth(true);
       }
-      const redirectPath = sessionStorage.getItem("postLoginRedirect") || "/account";
-      sessionStorage.removeItem("postLoginRedirect");
-      router.replace(redirectPath);
+      goAfterLogin();
       return;
     }
 
@@ -68,9 +80,7 @@ export default function LoginPage() {
             name: customer?.name || displayName,
             email: session.user.email,
           });
-          const redirectPath = sessionStorage.getItem("postLoginRedirect") || "/account";
-          sessionStorage.removeItem("postLoginRedirect");
-          router.replace(redirectPath);
+          goAfterLogin();
         } else {
           setTokenError("Unable to complete sign-in. Please sign out and try again.");
           setIsAcquiringToken(false);
@@ -89,9 +99,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (isLoggedIn === true) {
-      const redirectPath = sessionStorage.getItem("postLoginRedirect") || "/account";
-      sessionStorage.removeItem("postLoginRedirect");
-      router.replace(redirectPath);
+      goAfterLogin();
     }
   }, [isLoggedIn, router]);
 

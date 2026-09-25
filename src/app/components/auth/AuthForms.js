@@ -63,8 +63,9 @@ const PasswordField = ({ formik, name, label, placeholder }) => {
 };
 
 const handleGoogleSignIn = () => {
+  const hasRedirect = Boolean(sessionStorage.getItem("postLoginRedirect"));
   signIn("google", {
-    callbackUrl: `${window.location.origin}/account`,
+    callbackUrl: `${window.location.origin}${hasRedirect ? "/login" : "/account"}`,
   });
 };
 
